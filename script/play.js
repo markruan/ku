@@ -17,11 +17,11 @@ function getInfo(id) {
 		name : 'cancelDownload',
 	});
 	$api.rmStorage('play');
-
-	api.getPrefs({
-		key : 'mul'
-	}, function(ret, err) {
-		var Idd = ret.value
+     
+//	api.getPrefs({
+//		key : 'mul'
+//	}, function(ret, err) {
+		var Idd = api.pageParam.name
 		api.ajax({
 			url : musicUrl + Idd + houZhui,
 			cache : true,
@@ -37,8 +37,8 @@ function getInfo(id) {
 				songsId = myobj[id].id
 				$api.setStorage('album', albumpic);
 							 
-				songCache(bb)
-//								play(bb)
+//				songCache(bb)
+								play(bb)
 				api.setPrefs({
 					key : 'songid2',
 					value : songsId
@@ -89,7 +89,7 @@ function getInfo(id) {
 				});
 			};
 		});
-	});
+//	});
 }
 
 function play(mp3) {
@@ -590,7 +590,7 @@ function songCache(mp3) {
 	var cachePath = $api.getStorage('path');
 
 	api.download({
-		//savePath : pp,
+		savePath : pp,
 		url : mp3,
 		report : true,
 		cache : true,
