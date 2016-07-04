@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
+		<style>
+			.play-up-bg {
+				width: 100%;
+				height: 60%;
+				/*height: 430px;*/
+				position: absolute;
+				 
+				/*图片模糊*/
+				/*-webkit-filter: blur(4px);*/ /* Chrome, Opera */
+			}
+			 
+		 
+		</style>
+	</head>
+	<body>
+	<div ><img id="bg" src="../../image/default.jpg" alt="" class="play-up-bg">
+	<img id="bg" src="../../image/shang.png" alt="" class="play-up-bg">
+		</div>
+		<header class="H-header "  id="header" >
+			<span tapmode="" onclick="goback()" class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="H-iconfont H-icon-arrow-left H-font-size-18 H-vertical-middle"></i><label class="H-display-block H-vertical-middle H-font-size-15">返回</label></span>
+			<!--<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent H-z-index-100">
+				 
+			</div>-->
+			<span class="H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-15 H-z-index-100"><i class="iconfont icon-gengduo  H-font-size-18 H-vertical-middle"></i></span>
+		</header>
+		 
+		
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/H.js"></script>
+	<script type="text/javascript" src="../../script/play.js"></script>
+	<script type="text/javascript">
+		function goback() {
+			var gou = api.pageParam.name
+			if ( gou = 1) {
+				goback1()
+			} else {
+				goback2()
+			}
+		}
+
+		function goback1() {
+			//coding...
+			$api.rmStorage('kee')
+			api.getPrefs({
+				key : 'mul'
+			}, function(ret, err) {
+				var key = ret.value
+				if (key == 60198) {
+					goback2()
+				} else {
+					api.openWin({
+						name : 'musiclist',
+						animation : {
+							type : 'push ',
+							subType : 'from_left ',
+							duration : 200
+						}
+					});
+					api.setPrefs({
+						key : 'play',
+						value : 1
+					});
+					api.removePrefs({
+						key : 'per'
+					});
+					var jsfun = 'bob();'
+					api.execScript({
+						name : 'musiclist',
+						script : jsfun
+					});
+				}
+			});
+		}
+
+		function goback2() {
+			api.openWin({
+				name : 'slidLayout'
+			})
+		}
+
+		apiready = function() {
+			var header = $api.byId('header');
+			$api.fixStatusBar(header);
+			var headerPos = $api.offset(header);
+			var body_h = $api.offset($api.dom('body')).h;
+			api.addEventListener({
+				name : 'min'
+			}, function(ret, err) {
+				var geshou = ret.value.artists
+				var biaoti = ret.value.name
+				var beijing=ret.value.apic
+				var img = $api.byId('bg');
+				 
+				$api.attr(img, 'src', beijing);
+				 
+			});
+			getidd() 
+			api.openFrame({
+				name : 'nn',
+				url : 'n.html?ID=' + idd,
+				rect : {
+					x : 0,
+					y : 380,
+					w : api.frameWidth,
+					h : api.frameHeight
+				}
+			});
+			
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) {
+				goback1()
+			});
+		};
+	</script>
+</html>

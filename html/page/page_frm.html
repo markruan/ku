@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+		<style>
+			.fresh {
+				height: 35px;
+				width: 100%;
+				background-image: url('../../image/loading_more.gif');
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-size: 15px 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="H-padding-vertical-bottom-10"></div>
+		<div id="main" class="H-padding-horizontal-right-10"></div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript" src="../../script/H.js"></script>
+	<script type="text/javascript">
+		function openMusicList(id) {
+			api.closeWin({
+				name : 'musiclist',
+			});
+			api.removePrefs({
+				key : 'mimg'
+			});
+			api.openWin({
+				name : 'musiclist',
+				url : '../../html/music/mlist_win.html',
+				delay : 200,
+				pageParam : {
+					name : id
+				}
+			});
+			api.removePrefs({
+				key : 'play'
+			});
+		}
+
+		function findinfo() {
+			var pageSize = 10;
+			api.ajax({
+				url : hostUrl + '/ku.php',
+				method : 'post',
+				timeout : 30,
+				dataType : 'json',
+				returnAll : false,
+				data : {
+					values : {
+						page : pageSize
+					},
+					//files: {file: 'fs://a.gif'}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					//					var objh = $api.byId('main');
+					//					var hh6 = $api.getStorage('list');
+					//
+					//					var len1=ret.length
+					//					var len2=$api.getStorage('lenpage');
+					//
+					//
+					//					if(len1=len2){
+					//					$api.html(objh, hh6);
+					//
+					//					}else{
+					for ( i = 0; i < ret.length; i++) {
+						var Idd = ret[i].idd;
+						var html = '';
+						$api.setStorage('lenpage', ret.length);
+						api.ajax({
+							url : musicUrl + Idd + houZhui,
+							cache : true,
+							dataType : 'json',
+						}, function(ret, err) {
+							var tracksName = ret.result.name;
+							var tracksId = ret.result.id;
+							var avatarUrl = ret.result.creator.avatarUrl;
+							var coverImgUrl = ret.result.coverImgUrl;
+							var nickname = ret.result.creator.nickname;
+							var description = ret.result.description
+							var arr = ret.result.tracks;
+							//							var myobj = eval(arr);
+							var obj = $api.byId('main');
+							html += '<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + tracksId + ')">';
+							html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class="  H-width-100-percent H-display-block H-padding-horizontal-left-10" alt="" title=""   >';
+							html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+							$api.html(obj, html);
+							//							$api.setStorage('list', html);
+							api.hideProgress();
+							api.refreshHeaderLoadDone();
+							echo.init({
+								offset : 0,
+								throttle : 150,
+								unload : false,
+								callback : function(element, op) {
+								}
+							});
+						});
+					}
+					//					}
+					//////////////////////////
+					///////////////////////
+				}
+				else {
+					//					api.alert({
+					//						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
+					//					});
+				};
+			});
+		}
+
+		apiready = function() {
+			findinfo()
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 2//设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				api.toast({
+					msg : '没有更多了...'
+				});
+			});
+		};
+	</script>
+</html>

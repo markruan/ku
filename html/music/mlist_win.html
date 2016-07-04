@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="copyright" content="www.apicloud.com" />
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>正在播放</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<!--<link rel="stylesheet" type="text/css" href="../../css/egret.css" />-->
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<style>
+			.egret-header-title {
+				position: absolute;
+				width: 100%;
+				text-align: center;
+				line-height: 20px;
+				color: #fff;
+				font-size: 20px;
+				padding-top: 5px;
+			}
+			.egret-header-title .musicname {
+				color: #fff;
+				font-size: 18px;
+			}
+			.egret-header-title .musicsinger {
+				color: #fff;
+				font-size: 12px;
+			}
+			/*	.aui-bar-primary {
+			 background: #D43C33
+			 }
+			 .aui-btn-primary {
+			 background: #D43C33
+			 }*/
+			.aui-bar-primary, .aui-btn-primary {
+				background-color: white;
+			}
+			.aui-bar .aui-btn .aui-iconfont {
+				background-color: white;
+				color: #625454;
+			}
+			.egret-header-title {
+				color: #625454;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 第二头部 -->
+		<header class="aui-bar aui-bar-nav aui-bar-primary" id="aui-header">
+			<div class="egret-header topbar">
+				<div class="egret-header-title">
+					<div class="egret-header-title">
+						歌单
+					</div>
+				</div>
+				<a class="aui-btn aui-btn-primary aui-pull-left" tapmode onclick="goback1()"> <span class="aui-iconfont aui-icon-left"></span> </a>
+				<a class="aui-btn aui-btn-primary aui-pull-right" tapmode onclick="openPlayer() "> <span id="bob" ></span> </a>
+			</div>
+			</div>
+		</header>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript">
+		function goback1() {
+			api.openWin({
+				name : 'slidLayout'
+			})
+		}
+
+		function openPlayer(pid) {
+			api.getPrefs({
+				key : 'play'
+			}, function(ret, err) {
+				var yi = ret.value
+				if (yi == 1) {
+					api.openWin({
+						name : 'nw',
+					});
+					api.bringFrameToFront({
+						to : 'nn'
+					});
+				} else {
+					alert('还没学会怎么初始化隐藏')
+				}
+			});
+			//
+		}
+
+		var jsfun = 'bob(),'
+		function bob() {
+			api.getPrefs({
+				key : 'play'
+			}, function(ret, err) {
+				var yi = ret.value
+				if (yi == 1) {
+					str1 = '<span  class="aui-iconfont aui-icon-notification"></span>';
+					$api.byId('bob').innerHTML = str1;
+				} else {
+				}
+			});
+		}
+
+		apiready = function() {
+			api.parseTapmode();
+			var header = $api.byId('aui-header');
+			$api.fixStatusBar(header);
+			var headerPos = $api.offset(header);
+			var body_h = $api.offset($api.dom('body')).h;
+			var ijj = api.pageParam.name
+			api.openFrame({
+				name : 'musiclist-fm',
+				url : './mlist_frm.html',
+				bounces : false,
+				opaque : false,
+				pageParam : {
+					name : ijj
+				},
+				rect : {
+					x : 0,
+					y : headerPos.h,
+					w : 'auto',
+					h : body_h - headerPos.h
+				}
+			});
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) {
+				goback1()
+			});
+		}
+	</script>
+</html>

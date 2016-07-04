@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>蜻蜓FM</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<style>
+			#miniplayer {
+				height: 52px;
+				border-top: 3px solid #3d3939;
+				background: url(../image/miniplay_bg.jpg) no-repeat;
+				-webkit-background-size: cover;
+				background-size: cover;
+				position: relative;
+			}
+			#miniplayer span {
+				position: absolute;
+				white-space: nowrap;
+				background-repeat: no-repeat;
+				background-position: center;
+				-webkit-background-size: contain;
+				background-size: contain;
+			}
+			#miniplayer .radio.active {
+				background-color: rgba(0,0,0,.2);
+			}
+			#miniplayer .radio .inner {
+				padding-left: 62px;
+				max-width: 60%;
+				color: #fff;
+				font-size: 14px;
+				line-height: 50px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				background: url(../image/scheduleliving2.png) no-repeat 48px center;
+				-webkit-background-size: 25px 13px;
+				background-size: 25px 13px;
+			}
+			#miniplayer .menu, #miniplayer .play, #miniplayer .xin, #miniplayer .pause, #miniplayer .buffer, #miniplayer .next {
+				width: 36px;
+				height: 36px;
+				top: 6px;
+			}
+			#miniplayer .menu {
+				left: 10px;
+				background-image: url(../image/miniplay_menu.png);
+			}
+			#miniplayer .menu.active {
+				background-image: url(../image/miniplay_menu_s.png);
+			}
+			#miniplayer .play {
+				right: 56px;
+				background-image: url(../image/miniplay_play.png);
+			}
+			#miniplayer .xin {
+				right: 10px;
+				background-image: url(../image/ic_channel_addfav.png);
+			}
+			#miniplayer .xin.active {
+				right: 10px;
+				background-image: url(../image/ic_play_faved.png);
+			}
+			#miniplayer .play.active {
+				background-image: url(../image/miniplay_play_s.png);
+			}
+			#miniplayer .pause {
+				right: 56px;
+				background-image: url(../image/miniplay_pause.png);
+			}
+			#miniplayer .pause.active {
+				background-image: url(../image/miniplay_pause_s.png);
+			}
+			#miniplayer .buffer {
+				background-image: none;
+				right: 56px;
+			}
+			@-webkit-keyframes rotate{
+			from {
+				-webkit-transform: rotate(0deg);
+			}
+			to {
+				-webkit-transform: rotate(360deg);
+			}
+			}
+			@keyframes
+			rotate {from{
+				transform: rotate(0deg);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+			}
+			#miniplayer .buffer:before {
+				content: '';
+				width: 100%;
+				height: 100%;
+				display: inline-block;
+				background: url(../image/miniplay_buffer.png) no-repeat center;
+				-webkit-background-size: contain;
+				background-size: contain;
+				-webkit-animation: rotate 4s linear infinite;
+				animation: rotate 4s linear infinite;
+			}
+			#miniplayer .next {
+				right: 10px;
+				background-image: url(../image/miniplay_next.png);
+			}
+			#miniplayer .next.active {
+				background-image: url(../image/miniplay_next_s.png);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="miniplayer">
+			<span class="menu" tapmode="active" onclick="kai()"> </span>
+			<div id="str6" class="radio" tapmode="active" >
+				<!--onclick="openRadioDetail()"-->
+				<div class="inner"  id="title">
+					加载中.....
+				</div>
+			</div>
+			<span id="pp" class="pause" tapmode="focus" data-click="0" onclick="switchmusic(this)"></span>
+			<span class="xin" tapmode="active" onclick="zan()"></span>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		function switchmusic(button) {
+			var audio = api.require('audio');
+			var click = button.getAttribute("data-click");
+			var pdd = $api.byId('pp');
+			if (click == 0) {
+				// 点开
+				button.setAttribute("data-click", 1);
+				$api.removeCls(pdd, 'pause');
+				$api.addCls(pdd, 'play');
+				audio.pause();
+				api.toast({
+					msg : '暂停播放'
+				});
+			} else {
+				// 关闭
+				button.setAttribute("data-click", 0);
+				$api.removeCls(pdd, 'play');
+				$api.addCls(pdd, 'pause');
+				audio.play();
+				//				getInfo(idd)
+				api.toast({
+					msg : '继续播放'
+				});
+				//				}
+			}
+		}
+
+		function pause() {
+			var audio = api.require('audio');
+			audio.pause();
+			api.toast({
+				msg : '暂停'
+			});
+		}
+
+		function play() {
+			var audio = api.require('audio');
+			audio.play();
+			api.toast({
+				msg : '播放'
+			});
+		}
+
+		function kai() {
+			api.alert({
+				msg : '客官，勿急还在开发中'
+			}, function(ret, err) {
+				//coding...
+			});
+		}
+
+		function zan() {
+			api.getPrefs({
+				key : 'user'
+			}, function(ret, err) {
+				user = ret.value
+			});
+			api.getPrefs({
+				key : 'songid3'
+			}, function(ret, err) {
+				var sid = ret.value
+				api.ajax({
+					url : hostUrl + '/mylist.php',
+					method : 'post',
+					cache : false,
+					timeout : 30,
+					dataType : 'text',
+					data : {
+						values : {
+							sid : sid,
+							username : user
+						}
+					}
+				}, function(ret, err) {
+					if (ret == 1) {
+						api.toast({
+							msg : '收藏成功'
+						});
+					} else {
+						api.toast({
+							msg : '收藏失败'
+						});
+					}
+					//coding...
+				});
+				////////////////
+			});
+		}
+
+		function audioCover(duration, songName, artists, per) {
+			var objj = api.require('audioCover');
+			var uul = $api.getStorage('uulr');
+			var msg = {
+				totalTime : duration,
+				cover : uul,
+				progress : per,
+				audio : songName,
+				author : artists,
+			}
+			objj.set(msg, function(ret, err) {
+				if (ret.eventType == 'pause') {
+					play();
+				} else if (ret.eventType == 'next') {
+					stop();
+					next()
+				} else if (ret.eventType == 'previous') {
+					stop();
+				} else if (ret.eventType == 'play') {
+					pause();
+				} else {
+				}
+			});
+		}
+
+		function getCache(pic) {
+			api.imageCache({
+				url : pic
+			}, function(ret, err) {
+				if (ret) {
+					albumC = ret.url;
+					$api.setStorage('uulr', albumC);
+					api.setPrefs({
+						key : 'apic',
+						value : albumC
+					});
+				} else {
+				}
+			});
+			$api.rmStorage('album')
+		}
+
+		apiready = function() {
+			var audio = api.require('audio');
+			var id = api.pageParam.name
+			var url = aUrl + id + '&ids=[' + id + ']'
+			var audio = api.require('audio');
+			api.ajax({
+				method : 'post',
+				url : url,
+				dataType : 'json',
+			}, function(ret, err) {
+				var mp3 = ret.songs[0].mp3Url
+				var song = ret.songs[0].name
+				var artists = ret.songs[0].artists[0].name
+				var id = ret.songs[0].id;
+				var cover = ret.songs[0].album.picUrl
+				getCache(cover)
+				api.setPrefs({
+					key : 'songid3',
+					value : id
+				});
+				str1 = '<div class="musicname">' + song + '-' + artists + '</div>';
+				$api.byId('title').innerHTML = str1;
+				api.hideProgress();
+				api.refreshHeaderLoadDone();
+				audio.play({
+					path : mp3
+				}, function(ret) {
+					if (ret) {
+						$api.rmStorage('ii');
+						var duration = ret.duration;
+						var tii = duration * 10;
+						var current = ret.current;
+						var percent = (current / duration) * 100;
+						var per = Math.round(percent);
+						audioCover(duration, song, artists, per)
+					}
+				});
+			});
+		};
+	</script>
+</html>
