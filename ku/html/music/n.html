@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
+		<style>
+			.controler {
+				height:300px;
+			}
+			.controler-bg {
+				width:100%;
+				position:absolute;
+				/*图片模糊*/
+				-webkit-filter:blur(30px);
+				max-height:300px;
+			}
+			.e {
+				left:10px;
+				text-align:right;
+				padding-left:100px;
+			}
+			.s {
+				right:100px;
+				text-align:left;
+			}
+			.icon-pause:before {
+				content:"\e603";
+				margin-top:2px;
+			}
+			.share-menu {
+				background-color:rgba(151, 118, 118, 0);
+			}
+			#men {
+				height:300px;
+			}
+			.icon-focus {
+				color:rgba(205, 198, 198, 0.2);
+			}
+			.kongZhi {
+				margin-top:12px;
+				width:80%;
+				margin:0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="controler " >
+			<img id="controler1" class="controler-bg H-center-all" src="../../image/default.jpg" />
+			<img id="men" class="controler-bg H-center-all" src="../../image/xia.png" />
+			<div id="slider" class="H-padding-horizontal-both-0" >
+				<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">0:00</span>
+				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10"style="font-size: 1.1rem">03:25</span>
+			</div>
+			<br />
+			<span id="title1" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent"  style="height:50px; "> </span>
+			<br />
+			<span id="titleName" class="H-header-title H-center-all H-font-size-12 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent"  style="height:50px;"> </span>
+			<br />
+			<!--<span class="   H-theme-font-color-white  H-width-100-percent " > <i class="iconfont icon-play H-center-all H-margin-vertical-top-10 "style="font-size:60px;color: white;top: 12px;"> </i> </span>-->
+			<div  class="H-n-grid kongZhi H-clear-both  H-overflow-auto H-margin-vertical-top-12">
+				<div  class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-center-all">
+					<div class=" leftB  H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 80px;">
+						<div>
+							<span  class="H-icon H-display-block H-horizontal-center"><i onclick="prev()" tapmode=" iconfont  icon-focus " class="iconfont icon-mediaprevious  H-font-size-32 H-vertical-middle H-theme-font-color-white"style="  font-size:30px;"></i></span>
+						</div>
+					</div>
+					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-0" style="min-height: 80px;">
+						<div>
+							<span   class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" onclick="switchmusic(this);" tapmode=" iconfont  icon-focus " id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white"style="  font-size:70px;"></i></span>
+						</div>
+					</div>
+					<div  class=" rightN H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 80px;">
+						<div>
+							<span id="next"   class="H-icon H-display-block H-horizontal-center"><i onclick="next()"  tapmode=" iconfont  icon-focus " class="iconfont icon-medianext   H-font-size-32 H-vertical-middle H-theme-font-color-white"style="  font-size:30px;"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="palyB" class="H-n-grid  H-clear-both H-center-all H-overflow-auto">
+				<div class="single-menu H-background-color-white H-flexbox-vertical H-display-none-important  H-vertical-top-0 H-horizontal-left-0 H-horizontal-right-0 H-vertical-bottom-0 H-height-100-percent H-width-100-percent H-z-index-1000000">
+					<!--<div class="space H-flex-item"></div>-->
+					<div class="share-menu H-z-index-1000000"  >
+						<div class="H-flexbox-horizontal H-text-align-center H-padding-vertical-both-10">
+							<div class="H-flex-item" onclick="shareWx('session')">
+								<span class="H-icon H-center-all H-theme-background-color1 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white"></i></span>
+								<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">分享好友</label>
+							</div>
+							<div class="H-flex-item"  onclick="shareWx('favorite')">
+								<span class="H-icon H-center-all H-theme-background-color2 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white"></i></span>
+								<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">收藏</label>
+							</div>
+							<div class="H-flex-item" onclick="shareWx('timeline')">
+								<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-friends H-font-size-22 H-theme-font-color-white"></i></span>
+								<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">朋友圈</label>
+							</div>
+							<div class="H-flex-item" onclick="H.swiperShare('.single-menu', '.share-menu', 'space');">
+								<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height:40px; width: 40px;"><i class="H-iconfont H-icon-close H-font-size-22 H-theme-font-color-white"></i></span>
+								<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">取消</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box">
+					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style=" min-height: 50px; ">
+						<div>
+							<span class="H-icon H-display-block H-horizontal-center"><i class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
+						</div>
+					</div>
+					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
+						<div>
+							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" onclick="shouCang()" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+						</div>
+					</div>
+					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent     H-padding-vertical-both-10" style="min-height: 50px;">
+						<div>
+							<span class="H-icon H-display-block H-horizontal-center"><i id="rep" data-click="0" onclick="switchi(this);" tapmode=" iconfont  icon-focus " class="iconfont icon-xunhuan   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+						</div>
+					</div>
+					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
+						<div>
+							<span  class="H-icon H-display-block H-horizontal-center"><i data-click="0" onclick="H.swiperShare('.single-menu', '.share-menu', 'space');" tapmode=" iconfont  icon-focus " class="iconfont icon-share   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+						</div>
+					</div>
+					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 50px;">
+						<div>
+							<span class="H-icon H-display-block H-horizontal-center"><i id="comm" tapmode=" iconfont  icon-focus "  class="iconfont icon-pinglun   H-vertical-middle H-theme-font-color-white"style="    font-size:25px; "></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/play.js"></script>
+	<script type="text/javascript" src="../../script/H.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+        	function pause1() {
+			var mPause = 'pause()'
+			api.execScript({
+				name : 'slider',
+				frameName : 'new',
+				script : mPause
+			});
+			 
+		}	
+	
+		function shareWx(cha) {
+			music = $api.getStorage('kee');
+			var uul = $api.getStorage('uulr');
+			var wx = api.require('wx');
+			wx.shareMusic({
+				apiKey : '',
+				scene : cha,
+				title : music.name,
+				description : music.art,
+				thumb : uul,
+				contentUrl : 'http://www.iqimeng.com/%e9%9f%b3%e4%b9%90/ ',
+				musicDataUrl : music.url
+			}, function(ret, err) {
+				if (ret.status) {
+					alert('分享成功');
+					H.swiperShare('.single-menu', '.share-menu', 'space');
+					$api.rmStorage('alb');
+				} else {
+					H.swiperShare('.single-menu', '.share-menu', 'space');
+					alert('取消分享');
+				}
+			});
+		}
+
+		function switchVoice(button) {
+			var click = button.getAttribute("data-click");
+			if (click == 0) {
+				// 点开
+				button.setAttribute("data-click", 1);
+				voiceController();
+				var slider = api.require('slider');
+				slider.show({
+					id : -1
+				});
+			} else {
+				// 关闭
+				button.setAttribute("data-click", 0);
+				hideS()
+			}
+		}
+
+		function hideS() {
+			var slider = api.require('slider');
+			slider.hide({
+				id : -1
+			});
+		}
+
+ 
+
+		function openComm(id) {
+			api.getPrefs({
+				key : 'user' // 用户信息key
+			}, function(ret, err) {
+				var val = ret.value;
+				if (val && val != "") {
+					api.openWin({
+						name : 'comm2',
+						url : '../../html/music/comm2/head.html',
+						opaque : true,
+						vScrollBarEnabled : false,
+						pageParam : {
+							name : 1
+						}
+					});
+				} else {
+					alert("登陆后方可评论");
+					api.openWin({
+						name : 'reg_login_win',
+						url : '../../html/login_win.html',
+						pageParam : {}
+					});
+				}
+			});
+		}
+
+		function switchmusic(button) {
+			var click = button.getAttribute("data-click");
+			if (click == 0) {
+				// 点开
+				button.setAttribute("data-click", 1);
+				pause();
+				//				api.toast({
+				//					msg : '暂停播放'
+				//				});
+			} else {
+				// 关闭
+				button.setAttribute("data-click", 0);
+				
+				play()
+				//				api.toast({
+				//					msg : '继续播放'
+				//				});
+			}
+			//			}
+		}
+
+		function switchi(button) {
+			var rep = $api.byId('rep');
+			var click = button.getAttribute("data-click");
+			if (click == 0) {
+				// 点开
+				button.setAttribute("data-click", 1);
+				$api.removeCls(rep, 'icon-xunhuan');
+				$api.addCls(rep, 'icon-danquxunhuan');
+				//				$api.addCls(rep, 'icon-xunhuan');
+				$api.setStorage('PlayAll', 'b');
+				//				api.toast({
+				//					msg : '单曲播放'
+				//				});
+			} else {
+				// 关闭
+				button.setAttribute("data-click", 0);
+				$api.removeCls(rep, 'icon-danquxunhuan');
+				$api.addCls(rep, 'icon-xunhuan');
+				$api.setStorage('PlayAll', 'a');
+				//				api.toast({
+				//					msg : '顺序播放'
+				//				});
+			}
+		}
+
+		function download() {
+			api.getPrefs({
+				key : 'urll'
+			}, function(ret, err) {
+				var v = ret.value;
+				api.download({
+					url : v,
+					report : true,
+					cache : true,
+					allowResume : true
+				}, function(ret, err) {
+					if (ret) {
+						var path = ret.savePath
+						var a = ret.state
+						var pers = parseInt(ret.percent)
+						var path = ret.savePath
+						setTimeout(api.showProgress({
+							title : '下载' + pers + '%',
+							text : '先喝杯茶...',
+							modal : false
+						}), 2000);
+						if (a == 1) {
+							api.hideProgress();
+							api.alert({
+								msg : "下载成功!下载地址：" + path
+							}, function(ret, err) {
+							});
+						} else {
+						}
+					} else {
+						var value = err.msg;
+					}
+				});
+			});
+			api.removePrefs({
+				key : 'urll'
+			});
+		}
+
+		apiready = function() {
+			api.parseTapmode();
+			var commn = $api.byId('comm');
+			api.addEventListener({
+				name : 'min'
+			}, function(ret, err) {
+				var beijing = ret.value.apic
+				var controler = $api.byId('controler1');
+				$api.attr(controler, 'src', beijing);
+			});
+			api.setPrefs({
+				key : 'isPlaying',
+				value : '1'
+			});
+			var pdd = $api.byId('playe');
+			var netAudio = api.require('audio');
+			$api.rmStorage('path');
+			pause1()
+			getidd()
+			getInfo(idd)
+			$api.setStorage('PlayAll', 'a')
+			var $slider = $('#slider');
+			var sliderPos = $slider.offset();
+			var slider = api.require('slider');
+			if (api.systemType == 'ios') {
+				sliderBarHight = 15
+			} else {
+				sliderBarHight = 7
+			}
+			slider.open({
+				//			    安卓配置
+				//				x : 38,
+				//				y : 6,
+				//				width : api.frameWidth - 73,
+				//				IOS 配置
+				x : 0,
+				y : 0,
+				width : api.winWidth,
+				height : 7,
+				bgImg : "widget://image/slider/slider-bg.png",
+				selectedBgImg : "widget://image/slider/slider-fg.png",
+				bar : {
+					barWidth : 4,
+					barHeight : sliderBarHight,
+					barImg : "widget://image/slider/slider-btn2.png"
+				},
+				bubble : {
+					bubbleWidth : 0,
+					bubbleHeight : 0
+				},
+				minValue : 0,
+				maxValue : 100,
+				defValue : 0,
+				fixed : false,
+				fixedOn : api.frameName
+			}, function(ret, err) {
+				if (ret) {
+					var ppp = ret.value
+					if (ret.touchCancel) {
+						var ppp = ret.value
+						var audio = api.require('audio');
+						audio.setProgress({
+							progress : ppp
+						});
+					}
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			///////////////
+			//			发送播放状态
+			$api.addEvt(commn, 'click', function() {
+				openComm()
+			});
+		}
+	</script>
+</html>
