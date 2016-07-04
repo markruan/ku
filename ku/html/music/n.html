@@ -330,8 +330,8 @@
 			getidd()
 			getInfo(idd)
 			$api.setStorage('PlayAll', 'a')
-			var $slider = $('#slider');
-			var sliderPos = $slider.offset();
+			var  slider = $api.byId('slider');
+			var sliderPos = $api.offset(slider);
 			var slider = api.require('slider');
 			if (api.systemType == 'ios') {
 				sliderBarHight = 15

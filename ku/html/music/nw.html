@@ -105,6 +105,8 @@
 			});
 			getidd() 
 			api.openFrame({
+			   
+			
 				name : 'nn',
 				url : 'n.html?ID=' + idd,
 				rect : {
@@ -112,7 +114,11 @@
 					y : 380,
 					w : api.frameWidth,
 					h : api.frameHeight
+				},
+				pageParam : {
+					name : api.pageParam.name
 				}
+				
 			});
 			
 			api.addEventListener({

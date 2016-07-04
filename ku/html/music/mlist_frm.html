@@ -601,10 +601,10 @@
 			}), 3000);
 			var html = '';
 			var Idd = api.pageParam.name
-			api.setPrefs({
-				key : 'mul',
-				value : Idd
-			});
+//			api.setPrefs({
+//				key : 'mul',
+//				value : Idd
+//			});
 			api.ajax({
 				url : musicUrl + Idd + houZhui,
 				cache : true,
@@ -666,6 +666,7 @@
 		}
 
 		function abc(el) {
+		var Idd = api.pageParam.name;
 			api.openWin({
 				name : 'nw',
 				//				url : './p_header.html?ID=' + el,
@@ -673,7 +674,7 @@
 				opaque : true,
 				vScrollBarEnabled : false,
 				pageParam : {
-					name : 1
+					name : Idd
 				}
 			});
 		};
