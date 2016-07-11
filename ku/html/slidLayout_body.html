@@ -83,27 +83,32 @@
 		}
 		 
 			function openLogin() {
-				api.getPrefs({
-					key : 'user'
-				}, function(ret, err) {
-					var v = ret.value;
-					username1 = v
-					var val = ret.value;
-					if (val && val != "") {
-						 
-						api.openWin({
-	                        name: 'ucenter',
-	                        url: 'ucenter/ucenter_head.html'
-                        });
-						
-					} else {
-						api.openWin({
-							name : 'my_win',
-							url : 'login_win.html',
-							delay : 200
-						});
-					}
-				});
+			
+			api.openWin({
+	            name: 'login',
+	            url: 'entry/entry_head.html'
+            });
+//				api.getPrefs({
+//					key : 'user'
+//				}, function(ret, err) {
+//					var v = ret.value;
+//					username1 = v
+//					var val = ret.value;
+//					if (val && val != "") {
+//						 
+//						api.openWin({
+//	                        name: 'ucenter',
+//	                        url: 'ucenter/ucenter_head.html'
+//                      });
+//						
+//					} else {
+//						api.openWin({
+//							name : 'my_win',
+//							url : 'login_win.html',
+//							delay : 200
+//						});
+//					}
+//				});
 			}
 
 			function loginout() {

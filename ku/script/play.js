@@ -17,11 +17,11 @@ function getInfo(id) {
 		name : 'cancelDownload',
 	});
 	$api.rmStorage('play');
-     
-//	api.getPrefs({
-//		key : 'mul'
-//	}, function(ret, err) {
-		var Idd = api.pageParam.name
+
+	api.getPrefs({
+		key : 'mul'
+	}, function(ret, err) {
+		var Idd = ret.value
 		api.ajax({
 			url : musicUrl + Idd + houZhui,
 			cache : true,
@@ -36,9 +36,10 @@ function getInfo(id) {
 				albumpic = myobj[id].album.picUrl;
 				songsId = myobj[id].id
 				$api.setStorage('album', albumpic);
-							 
-//				songCache(bb)
-								play(bb)
+                var controler = $api.byId('controler1');
+				$api.attr(controler, 'src', albumpic);
+//								songCache(bb)
+				play(bb)
 				api.setPrefs({
 					key : 'songid2',
 					value : songsId
@@ -59,11 +60,11 @@ function getInfo(id) {
 
 				//////////////////
 
-				var jia = 'jiaTitle()'
-				api.execScript({
-					name : 'slider',
-					script : jia
-				});
+				//				var jia = 'jiaTitle()'
+				//				api.execScript({
+				//					name : 'slider',
+				//					script : jia
+				//				});
 				$api.setStorage('idi', id);
 
 				var music = {};
@@ -82,21 +83,21 @@ function getInfo(id) {
 				});
 				var uul = ''
 				//播放模块
-				//					
+				//
 			} else {
 				api.alert({
 					msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
 				});
 			};
 		});
-//	});
+	});
 }
 
 function play(mp3) {
 	var pdd = $api.byId('playe');
 	var netAudio = api.require('audio');
 	var pdd = $api.byId('playerIcon');
-	
+
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
@@ -113,16 +114,16 @@ function play(mp3) {
 		});
 		var dur = formatSeconds(duration);
 		var cur = formatSeconds(current);
-		api.getPrefs({
-			key : 'isPlaying'
-		}, function(ret, err) {
-			if (ret.value == 1) {
-				strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span> <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
-				$api.byId('slider').innerHTML = strmiao;
-				///锁屏播放
-				audioCover(duration, songName, artists, per)
-			}
-		});
+		//		api.getPrefs({
+		//			key : 'isPlaying'
+		//		}, function(ret, err) {
+		//			if (ret.value == 1) {
+		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span> <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
+		$api.byId('slider').innerHTML = strmiao;
+		///锁屏播放
+		audioCover(duration, songName, artists, per)
+		//			}
+		//		});
 		$api.setStorage('bofang', 1);
 		api.setPrefs({
 			key : 'per',
@@ -139,7 +140,7 @@ function play(mp3) {
 			} else {
 				var mp34 = $api.getStorage('path');
 				play(mp34);
-				api.removePrefs({ 
+				api.removePrefs({
 					key : 'per'
 				});
 				//							$api.rmStorage('PlayAll')
@@ -296,7 +297,7 @@ function kai() {
 function quXiaoShouCang() {
 	music = $api.getStorage('kee');
 	var songName = music.name;
-	
+
 	api.getPrefs({
 		key : 'user'
 	}, function(ret, err) {
@@ -305,38 +306,38 @@ function quXiaoShouCang() {
 	api.getPrefs({
 		key : 'songid2'
 	}, function(ret, err) {
-     sidd= ret.value
- 
-	api.ajax({
-		url : 'http://v7idc.com/m/quxiao.php',
-		method : 'post',
-		cache : false,
-		timeout : 30,
-		dataType : 'text',
-		data : {
-			values : {
-				user : user,
-				songName : songName,
-				sid:sidd,
-				
-			}
-		}
-	}, function(ret, err) {
-		if (ret == 1) {
-			alert('成功')
+		sidd = ret.value
 
-		} else {
-			alert('失败')
-		}
+		api.ajax({
+			url : 'http://v7idc.com/m/quxiao.php',
+			method : 'post',
+			cache : false,
+			timeout : 30,
+			dataType : 'text',
+			data : {
+				values : {
+					user : user,
+					songName : songName,
+					sid : sidd,
+
+				}
+			}
+		}, function(ret, err) {
+			if (ret == 1) {
+				alert('成功')
+
+			} else {
+				alert('失败')
+			}
+		});
 	});
-});
 }
 
 function shouCang() {
 
 	music = $api.getStorage('kee');
-    var userIcon=$api.getStorage('usericon');
-  
+	var userIcon = $api.getStorage('usericon');
+
 	var bb = music.url;
 	var artists = music.art;
 	var songName = music.name;
@@ -381,7 +382,7 @@ function shouCang() {
 							user : user,
 							background : albumpic,
 							cover : albumpic,
-//							usericon: userIcon 
+							//							usericon: userIcon
 						}
 					}
 				}, function(ret, err) {
@@ -602,11 +603,11 @@ function songCache(mp3) {
 			var pers = parseInt(ret.percent)
 			var path = ret.savePath
 			$api.setStorage('path', path);
-						setTimeout(api.showProgress({
-							title : '缓存' + pers + '%',
-							text : '先喝杯茶...',
-							modal : false
-						}), 2000);
+			setTimeout(api.showProgress({
+				title : '缓存' + pers + '%',
+				text : '先喝杯茶...',
+				modal : false
+			}), 2000);
 
 			switch(state) {
 
@@ -617,9 +618,9 @@ function songCache(mp3) {
 					} else {
 						play(mp3);
 						$api.setStorage('play', 0);
-												api.toast({
-													msg : '.'
-												});
+						api.toast({
+							msg : '.'
+						});
 					}
 
 					break;
@@ -630,9 +631,9 @@ function songCache(mp3) {
 
 					} else {
 						play(path)
-												api.toast({
-													msg : '缓存播放'
-												});
+						api.toast({
+							msg : '缓存播放'
+						});
 					}
 
 			}

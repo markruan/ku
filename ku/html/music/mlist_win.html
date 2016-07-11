@@ -8,6 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
 		<!--<link rel="stylesheet" type="text/css" href="../../css/egret.css" />-->
 		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+			<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
 		<style>
 			.egret-header-title {
 				position: absolute;
@@ -42,11 +43,16 @@
 			.egret-header-title {
 				color: #625454;
 			}
+			hr{
+			width: 100%;
+			background-color:gray;
+			height: 1px;
+			}
 		</style>
 	</head>
 	<body>
 		<!-- 第二头部 -->
-		<header class="aui-bar aui-bar-nav aui-bar-primary" id="aui-header">
+		<header class="aui-bar aui-bar-nav aui-bar-primary  " id="aui-header">
 			<div class="egret-header topbar">
 				<div class="egret-header-title">
 					<div class="egret-header-title">
@@ -58,13 +64,16 @@
 			</div>
 			</div>
 		</header>
+		<hr />
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/Hui.js"></script>
 	<script type="text/javascript">
 		function goback1() {
-			api.openWin({
+					api.openWin({
 				name : 'slidLayout'
 			})
+			 
 		}
 
 		function openPlayer(pid) {
@@ -109,9 +118,10 @@
 			var ijj = api.pageParam.name
 			api.openFrame({
 				name : 'musiclist-fm',
-				url : './mlist_frm.html',
+				url : 'mlist_frm.html',
 				bounces : false,
 				opaque : false,
+				reload : true,
 				pageParam : {
 					name : ijj
 				},

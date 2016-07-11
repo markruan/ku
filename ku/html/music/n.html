@@ -8,41 +8,41 @@
 		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
 		<style>
 			.controler {
-				height:300px;
+				height: 300px;
 			}
 			.controler-bg {
-				width:100%;
-				position:absolute;
+				width: 100%;
+				position: absolute;
 				/*图片模糊*/
-				-webkit-filter:blur(30px);
-				max-height:300px;
+				-webkit-filter: blur(30px);
+				max-height: 300px;
 			}
 			.e {
-				left:10px;
-				text-align:right;
-				padding-left:100px;
+				left: 10px;
+				text-align: right;
+				padding-left: 100px;
 			}
 			.s {
-				right:100px;
-				text-align:left;
+				right: 100px;
+				text-align: left;
 			}
 			.icon-pause:before {
-				content:"\e603";
-				margin-top:2px;
+				content: "\e603";
+				margin-top: 2px;
 			}
 			.share-menu {
-				background-color:rgba(151, 118, 118, 0);
+				background-color: rgba(151, 118, 118, 0);
 			}
 			#men {
-				height:300px;
+				height: 300px;
 			}
 			.icon-focus {
-				color:rgba(205, 198, 198, 0.2);
+				color: rgba(205, 198, 198, 0.2);
 			}
 			.kongZhi {
-				margin-top:12px;
-				width:80%;
-				margin:0 auto;
+				margin-top: 12px;
+				width: 80%;
+				margin: 0 auto;
 			}
 		</style>
 	</head>
@@ -138,16 +138,15 @@
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript" src="../../script/zepto.min.js"></script>
 	<script type="text/javascript">
-        	function pause1() {
+		function pause1() {
 			var mPause = 'pause()'
 			api.execScript({
 				name : 'slider',
 				frameName : 'new',
 				script : mPause
 			});
-			 
-		}	
-	
+		}
+
 		function shareWx(cha) {
 			music = $api.getStorage('kee');
 			var uul = $api.getStorage('uulr');
@@ -196,8 +195,6 @@
 			});
 		}
 
- 
-
 		function openComm(id) {
 			api.getPrefs({
 				key : 'user' // 用户信息key
@@ -217,7 +214,7 @@
 					alert("登陆后方可评论");
 					api.openWin({
 						name : 'reg_login_win',
-						url : '../../html/login_win.html',
+						url : '../../html/entry/entry_head.html',
 						pageParam : {}
 					});
 				}
@@ -236,7 +233,6 @@
 			} else {
 				// 关闭
 				button.setAttribute("data-click", 0);
-				
 				play()
 				//				api.toast({
 				//					msg : '继续播放'
@@ -312,13 +308,6 @@
 		apiready = function() {
 			api.parseTapmode();
 			var commn = $api.byId('comm');
-			api.addEventListener({
-				name : 'min'
-			}, function(ret, err) {
-				var beijing = ret.value.apic
-				var controler = $api.byId('controler1');
-				$api.attr(controler, 'src', beijing);
-			});
 			api.setPrefs({
 				key : 'isPlaying',
 				value : '1'
@@ -329,8 +318,15 @@
 			pause1()
 			getidd()
 			getInfo(idd)
+			api.addEventListener({
+				name : 'min'
+			}, function(ret, err) {
+				var beijing = ret.value.apic
+				var controler = $api.byId('controler1');
+				$api.attr(controler, 'src', beijing);
+			});
 			$api.setStorage('PlayAll', 'a')
-			var  slider = $api.byId('slider');
+			var slider = $api.byId('slider');
 			var sliderPos = $api.offset(slider);
 			var slider = api.require('slider');
 			if (api.systemType == 'ios') {

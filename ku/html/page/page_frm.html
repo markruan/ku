@@ -25,16 +25,17 @@
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript">
 		function openMusicList(id) {
-			api.closeWin({
-				name : 'musiclist',
-			});
-			api.removePrefs({
-				key : 'mimg'
-			});
+//			api.closeWin({
+//				name : 'musiclist',
+//			});
+//			api.removePrefs({
+//				key : 'mimg'
+//			});
 			api.openWin({
 				name : 'musiclist',
 				url : '../../html/music/mlist_win.html',
 				delay : 200,
+				reload:true,
 				pageParam : {
 					name : id
 				}
