@@ -37,6 +37,7 @@
 /A6911302258372/css/aui.css
 /A6911302258372/html/music/image/musiclist/cm2_list_icn_arr.png
 /A6915194260483/image/templates-imgs/fz1.jpg
+/A6911302258372/res/send_bg.png
 /A6915194260483/image/bg.png
 /A6911302258372/css/api.css
 /A6915194260483/image/more_icon_90.png
@@ -45,6 +46,7 @@
 /A6915194260483/res/sqliteDemo.db
 /A6915194260483/image/templates/goods.jpg
 /A6915194260483/image/templates-imgs/youhui.png
+/A6911302258372/image/login_bg.jpg
 /A6911302258372/html/music/mlist_frm.html
 /A6911302258372/script/zepto.min.js
 /A6915194260483/html/music/comm2/head.html
@@ -55,6 +57,7 @@
 /A6911302258372/html/page/page_frm.html
 /A6915194260483/plugins/swise player/html/skins/vodRadio/controlbarbg.jpg
 /A6915194260483/image/templates-imgs/dou.png
+/A6911302258372/res/g3.jpg
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/big_play_btn.png
 /A6911302258372/html/music/image/musiclist/cm2_top_icn_share.png
 /A6915194260483/plugins/response-waterfall/responsive_waterfall.js
@@ -70,6 +73,7 @@
 /A6911302258372/css/Hui.ttf
 /A6911302258372/css/aui-win.css
 /A6915194260483/plugins/swise player/flash/AudioPlayer.swf
+/A6911302258372/html/music/player/index.html
 /A6915194260483/html/frm_miniplayer.html
 /A6915194260483/plugins/swise player/html/skins/liveWhite/buffer.gif
 /A6915194260483/plugins/swise player/html/skins/vodFlowPlayer/skin.html
@@ -80,6 +84,7 @@
 /A6911302258372/tppl/head.html
 /A6911302258372/image/slider/slider-btn1.png
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/buffer.png
+/A6911302258372/html/entry/reg_head.html
 /A6915194260483/html/fabu/index.html
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/skin.html
 /A6915194260483/image/more_icon_30.png
@@ -92,8 +97,8 @@
 /A6915194260483/html/music/mlist_frm.html
 /A6915194260483/css/aui.css
 /A6915194260483/launch/launch1080x1920.png
-/A6911302258372/script/play.js
 /A6911302258372/html/music/image/musiclist/musiclistmore_prs.png
+/A6911302258372/script/play.js
 /A6911302258372/html/common_index.html
 /A6915194260483/image/templates/entry_login.jpg
 /A6911302258372/script/echo.min.js
@@ -172,6 +177,7 @@
 /A6911302258372/tppl/body.html
 /A6915194260483/image/templates-imgs/lunbo3.jpg
 /A6911302258372/image/slider/slider-bg.png
+/A6911302258372/res/g1.jpeg
 /A6915194260483/plugins/photoswipe/default-skin/default-skin.png
 /A6911302258372/image/slider/slider-fg.png
 /A6915194260483/plugins/swise player/flash/SewisePlayer.swf
@@ -186,9 +192,9 @@
 /A6915194260483/image/pic.jpg
 /A6911302258372/html/search.html
 /A6915194260483/plugins/echo/echo.min.js
-/A6911302258372/html/music/comm/head.html
 /A6911302258372/html/index.html
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/logo.png
+/A6911302258372/html/music/comm/head.html
 /A6915194260483/html/launch/launch_body.html
 /A6915194260483/image/templates-imgs/meijia2.png
 /A6915194260483/image/templates/dazhong_faxian.jpg
@@ -262,6 +268,7 @@
 /A6911302258372/html/launch/launch_body.html
 /A6915194260483/image/templates-imgs/su.png
 /A6915194260483/plugins/photoswipe/default-skin/default-skin.css
+/A6911302258372/html/entry/entry_head.html
 /A6911302258372/image/shang.png
 /A6911302258372/html/music/image/musiclist/musiclistplay.png
 /A6915194260483/plugins/photoswipe/default-skin/default-skin.svg
@@ -286,6 +293,7 @@
 /A6915194260483/image/5555.gif
 /A6915194260483/html/music/image/musiclist/cm2_list_icn_arr.png
 /A6915194260483/plugins/photoswipe/photoswipe.css
+/A6911302258372/res/g2.jpeg
 /A6911302258372/html/slidLayout_body.html
 /A6915194260483/html/music/image/musiclist/FM.jpg
 /A6915194260483/image/jc.png

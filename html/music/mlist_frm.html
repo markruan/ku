@@ -601,10 +601,10 @@
 			}), 3000);
 			var html = '';
 			var Idd = api.pageParam.name
-//			api.setPrefs({
-//				key : 'mul',
-//				value : Idd
-//			});
+						api.setPrefs({
+							key : 'mul',
+							value : Idd
+						});
 			api.ajax({
 				url : musicUrl + Idd + houZhui,
 				cache : true,
@@ -658,7 +658,6 @@
 					api.hideProgress();
 					api.refreshHeaderLoadDone();
 				} else {
-					//alert(JSON.stringify(err));
 					api.hideProgress();
 				}
 			});
@@ -666,16 +665,17 @@
 		}
 
 		function abc(el) {
-		var Idd = api.pageParam.name;
+			var Idd = api.pageParam.name;
+			$api.setStorage('name',1);
 			api.openWin({
 				name : 'nw',
-				//				url : './p_header.html?ID=' + el,
 				url : './nw.html?ID=' + el,
 				opaque : true,
 				vScrollBarEnabled : false,
 				pageParam : {
 					name : Idd
 				}
+				
 			});
 		};
 		function openComm(id) {
@@ -698,7 +698,7 @@
 					alert("登陆后方可评论");
 					api.openWin({
 						name : 'reg_login_win',
-						url : '../../html/login_win.html',
+						url : '../../html/entry/entry_head.html',
 						pageParam : {}
 					});
 				}
