@@ -5,7 +5,7 @@
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
 		<title>title</title>
 		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="../../css/iconfont.css">
+		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
 		<style>
 			.controler {
 				height: 300px;
@@ -14,18 +14,17 @@
 				width: 100%;
 				position: absolute;
 				/*图片模糊*/
-				/*-webkit-filter: blur(30px);
-				 max-height: 300px;*/
+				-webkit-filter: blur(30px);
+				max-height: 300px;
 			}
 			.e {
 				left: 10px;
 				text-align: right;
-				/*padding-left: 100px;*/
+				padding-left: 100px;
 			}
 			.s {
 				right: 100px;
 				text-align: left;
-				padding-right: 5px;
 			}
 			.icon-pause:before {
 				content: "\e603";
@@ -45,29 +44,15 @@
 				width: 80%;
 				margin: 0 auto;
 			}
-			.H-width-80-percent {
-				width: 80%;
-			}
-			.H-range::-webkit-slider-thumb {
-				width: 10px;
-				height: 10px;
-				border-radius: 50%;
-				-webkit-border-radius: 50%;
-				border-color: #1abc9c;
-				background-color: #1abc9c;
-				appearance: none !important;
-				-webkit-appearance: none !important;
-			}
 		</style>
 	</head>
-	<body >
+	<body>
 		<div class="controler " >
-			<!--<img id="controler1" class="controler-bg H-center-all H-z-index-1" src="../../image/default.jpg" />-->
-			<img id="men" class="controler-bg H-center-all H-z-index-2" src="../../image/xia1.png" />
-			<div id="slider" class="H-padding-horizontal-both-0  " >
-				<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem; ">0:00</span>
-				<input id="hua" type="range" class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >
-				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000"style="font-size: 1.1rem">03:25</span>
+			<img id="controler1" class="controler-bg H-center-all" src="../../image/default.jpg" />
+			<img id="men" class="controler-bg H-center-all" src="../../image/xia.png" />
+			<div id="slider" class="H-padding-horizontal-both-0" >
+				<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">0:00</span>
+				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10"style="font-size: 1.1rem">03:25</span>
 			</div>
 			<br />
 			<span id="title1" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent"  style="height:50px; "> </span>
@@ -153,6 +138,7 @@
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<!--<script type="text/javascript" src="../../script/zepto.min.js"></script>-->
 	<script type="text/javascript">
+ 
 		function pause1() {
 			var mPause = 'pause()'
 			api.execScript({
@@ -242,11 +228,18 @@
 				// 点开
 				button.setAttribute("data-click", 1);
 				pause();
+				//				api.toast({
+				//					msg : '暂停播放'
+				//				});
 			} else {
 				// 关闭
 				button.setAttribute("data-click", 0);
 				play()
+				//				api.toast({
+				//					msg : '继续播放'
+				//				});
 			}
+			//			}
 		}
 
 		function switchi(button) {
@@ -259,18 +252,18 @@
 				$api.addCls(rep, 'icon-danquxunhuan');
 				//				$api.addCls(rep, 'icon-xunhuan');
 				$api.setStorage('PlayAll', 'b');
-				api.toast({
-					msg : '单曲播放'
-				});
+				//				api.toast({
+				//					msg : '单曲播放'
+				//				});
 			} else {
 				// 关闭
 				button.setAttribute("data-click", 0);
 				$api.removeCls(rep, 'icon-danquxunhuan');
 				$api.addCls(rep, 'icon-xunhuan');
 				$api.setStorage('PlayAll', 'a');
-				api.toast({
-					msg : '顺序播放'
-				});
+				//				api.toast({
+				//					msg : '顺序播放'
+				//				});
 			}
 		}
 
@@ -319,11 +312,69 @@
 			$api.addEvt(commn, 'click', function() {
 				openComm()
 			});
+//			api.setPrefs({
+//				key : 'isPlaying',
+//				value : '1'
+//			});
+//			var pdd = $api.byId('playe');
+//			var netAudio = api.require('audio');
 			$api.rmStorage('path');
 			pause1()
 			getidd()
 			getInfo(idd)
+ 
 			$api.setStorage('PlayAll', 'a')
+//			var slider = $api.byId('slider');
+//			var sliderPos = $api.offset(slider);
+//			var slider = api.require('slider');
+//			if (api.systemType == 'ios') {
+//				sliderBarHight = 15
+//			} else {
+//				sliderBarHight = 7
+//			}
+//			slider.open({
+//				//			    安卓配置
+//				//				x : 38,
+//				//				y : 6,
+//				//				width : api.frameWidth - 73,
+//				//				IOS 配置
+//				x : 0,
+//				y : 0,
+//				width : api.winWidth,
+//				height : 7,
+//				bgImg : "widget://image/slider/slider-bg.png",
+//				selectedBgImg : "widget://image/slider/slider-fg.png",
+//				bar : {
+//					barWidth : 4,
+//					barHeight : sliderBarHight,
+//					barImg : "widget://image/slider/slider-btn2.png"
+//				},
+//				bubble : {
+//					bubbleWidth : 0,
+//					bubbleHeight : 0
+//				},
+//				minValue : 0,
+//				maxValue : 100,
+//				defValue : 0,
+//				fixed : false,
+//				fixedOn : api.frameName
+//			}, function(ret, err) {
+//				if (ret) {
+//					var ppp = ret.value
+//					if (ret.touchCancel) {
+//						var ppp = ret.value
+//						var audio = api.require('audio');
+//						audio.setProgress({
+//							progress : ppp
+//						});
+//					}
+//				} else {
+//					alert(JSON.stringify(err));
+//				}
+//			});
+			///////////////
+			//			发送播放状态
+			
 		}
 	</script>
 </html>

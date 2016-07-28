@@ -10,8 +10,10 @@ function getidd() {
 	}
 	idd = strs[1].split("=")[0];
 }
-
+ 
 function getInfo(id) {
+
+    
 	H.toastLoading()
 	api.sendEvent({
 		name : 'cancelDownload',
@@ -36,9 +38,15 @@ function getInfo(id) {
 				albumpic = myobj[id].album.picUrl;
 				songsId = myobj[id].id
 				$api.setStorage('album', albumpic);
-                var controler = $api.byId('controler1');
-				$api.attr(controler, 'src', albumpic);
+//              var controler = $api.byId('controler1');
+//				$api.attr(controler, 'src', albumpic);
 //								songCache(bb)
+
+//               var controler = $api.byId('controler1');
+//				$api.attr(controler, 'src', albumpic);
+				
+				 
+				
 				play(bb)
 				api.setPrefs({
 					key : 'songid2',
@@ -109,18 +117,20 @@ function play(mp3) {
 		var per = Math.round(percent);
 		var complete = ret.complete;
 		var slider = api.require('slider');
-		slider.setValue({
-			value : per,
-		});
+//		slider.setValue({
+//			value : per,
+//		});
+		
 		var dur = formatSeconds(duration);
 		var cur = formatSeconds(current);
 		//		api.getPrefs({
 		//			key : 'isPlaying'
 		//		}, function(ret, err) {
 		//			if (ret.value == 1) {
-		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span> <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
+		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span><input id="hua" type="range" class="H-range H-width-80-percent H-position-relative  H-border-radius-1 H-theme-font-color5"  value="'+per+'" > <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
 		$api.byId('slider').innerHTML = strmiao;
 		///锁屏播放
+		 
 		audioCover(duration, songName, artists, per)
 		//			}
 		//		});

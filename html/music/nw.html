@@ -23,91 +23,31 @@
 		</div>
 		<header class="H-header "  id="header" >
 			<span tapmode="" onclick="goback()" class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="H-iconfont H-icon-arrow-left H-font-size-18 H-vertical-middle"></i><label class="H-display-block H-vertical-middle H-font-size-15">返回</label></span>
-			<!--<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent H-z-index-100">
-			</div>-->
+			 
 			<span class="H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-15 H-z-index-100"><i class="iconfont icon-gengduo  H-font-size-18 H-vertical-middle"></i></span>
 		</header>
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/H.js"></script>
-	<script type="text/javascript" src="../../script/play.js"></script>
 	<script type="text/javascript">
-//		function goback() {
-//			var gou = $api.getStorage('name');
-//			if ( gou = 1) {
-//				goback1()
-//			} else {
-//				goback2()
-//			}
-//		}
-
 		function goback() {
 			//coding...alert
 			$api.rmStorage('kee')
-			api.getPrefs({
-				key : 'mul'
-			}, function(ret, err) {
-				var key = ret.value
-				if (key == 60198) {
-					goback2()
-				} else {
-					api.openWin({
-						name : 'musiclist',
-						animation : {
-							type : 'push ',
-							subType : 'from_left ',
-							duration : 200
-						}
-					});
-					api.setPrefs({
-						key : 'play',
-						value : 1
-					});
-					api.removePrefs({
-						key : 'per'
-					});
-					var jsfun = 'bob();'
-					api.execScript({
-						name : 'musiclist',
-						script : jsfun
-					});
+			api.openWin({
+				name : 'musiclist',
+				animation : {
+					type : 'push ',
+					subType : 'from_left ',
+					duration : 200
 				}
 			});
 		}
 
-//		function goback2() {
-//		alert(2)
-//			api.openWin({
-//				name : 'slidLayout'
-//			})
-//		}s
-
 		apiready = function() {
-			var header = $api.byId('header');
-			$api.fixStatusBar(header);
-			var headerPos = $api.offset(header);
-			var body_h = $api.offset($api.dom('body')).h;
-			
-			getidd()
-			api.openFrame({
-				name : 'nn',
-				url : 'n.html?ID=' + idd,
-				rect : {
-					x : 0,
-					y : 380,
-					w : api.frameWidth,
-					h : api.frameHeight
-				},
-				pageParam : {
-					name : api.pageParam.name
-				}
-			});
-			
+		
+		 $api.fixStatusBar($api.byId('header'));
 			api.addEventListener({
 				name : 'min'
 			}, function(ret, err) {
-				var geshou = ret.value.artists
-				var biaoti = ret.value.name
 				var beijing = ret.value.apic
 				var img = $api.byId('bg');
 				$api.attr(img, 'src', beijing);
@@ -116,6 +56,20 @@
 				name : 'keyback'
 			}, function(ret, err) {
 				goback()
+			});
+			var idd = api.pageParam.name
+			api.openFrame({
+				name : 'player',
+				url : 'n.html?ID=' + idd,
+				rect : {
+					x : 0,
+					y : 370,
+					w : api.frameWidth,
+					h : api.frameHeight
+				},
+				pageParam : {
+					name : api.pageParam.name
+				}
 			});
 		};
 	</script>
