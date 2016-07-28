@@ -667,16 +667,33 @@
 		function abc(el) {
 			var Idd = api.pageParam.name;
 			$api.setStorage('name',1);
+			api.closeWin({
+			name:'nww',
+            });
+  
 			api.openWin({
-				name : 'nw',
+				name : 'nww',
 				url : './nw.html?ID=' + el,
-				opaque : true,
-				vScrollBarEnabled : false,
+//				opaque : true,
+//				vScrollBarEnabled : false,
 				pageParam : {
-					name : Idd
+					name : el
 				}
 				
 			});
+//       api.openFrame({
+//	         name: 'nw',
+//	         url: './nw.html?ID=' + el,
+//	         rect: {
+//		         x:0,
+//		         y:0,
+//		         w: api.frameWidth,
+//		         h:api.frameHeight
+//	         }
+//       });
+
+
+
 		};
 		function openComm(id) {
 			api.getPrefs({
