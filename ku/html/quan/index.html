@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>Hui</title>
+		<title>圈子</title>
 		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
 		<style type="text/css">
@@ -37,15 +37,9 @@
 			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
 			<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
 			</div>
-			<!--<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
-			<img data-echo="<%=list[i].cover %>" src="../../../image/default.jpg" class="H-width-100-percent H-display-block" alt="" title="">
-			</div>
-			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
-			<img data-echo="<%=list[i].cover %>" src="../../../image/default.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
-			</div>-->
 			</div>
 			<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="OpenBbs(1);">
-			<%=list[i].title %>-<%=list[i].artist %>
+			<%=list[i].text %>
 			</div>
 			<div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box H-border-vertical-top-margin-both-10-after">
 			<span class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color9 H-border-horizontal-right-after"><i class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle">3</label></span>
@@ -71,18 +65,21 @@
 			</div>
 			</div>
 			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10" onclick="OpenBbs(1);">
-			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
+			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
 			<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
 			</div>
-			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
+			<!--<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
 			<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" class="H-width-100-percent H-display-block" alt="" title="">
 			</div>
 			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
 			<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
-			</div>
+			</div>-->
 			</div>
 			<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="OpenBbs(1);">
 			<%=list[i].title %>-<%=list[i].artist %>
+			</div>
+			<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="OpenBbs(1);">
+			<%=list[i].text%>
 			</div>
 			<div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box H-border-vertical-top-margin-both-10-after">
 			<span class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color9 H-border-horizontal-right-after"><i class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle">3</label></span>
@@ -104,7 +101,12 @@
 		<script type="text/javascript">
 			H.tppl_flag = ["<%", "%>"];
 			var url = "http://v7idc.com/m/i.php";
-			$(function() {
+			function initPage() {
+				api.showProgress({
+					title : ' 加载中...',
+					text : '先喝杯茶...',
+					modal : false
+				})
 				$.ajax({
 					type : "post",
 					url : url,
@@ -117,6 +119,7 @@
 						};
 						var render = H.tppl(H.D("#tppl").innerHTML);
 						H.D(".result").innerHTML = render(data);
+						
 						//						懒加载
 						echo.init({
 							offset : 0,
@@ -127,7 +130,27 @@
 						});
 					}
 				});
-			});
+				api.hideProgress();
+			}
+
+			//			$(function() {
+			//				initPage()
+			//			});
+			apiready = function() {
+				initPage()
+				api.setRefreshHeaderInfo({
+					visible : true,
+					bgColor : '#f2f2f2',
+					textColor : '#4d4d4d',
+					textDown : '下拉刷新...',
+					textUp : '松开刷新...',
+					showTime : true
+				}, function(ret, err) {
+					initPage();
+					api.hideProgress();
+					api.refreshHeaderLoadDone();
+				});
+			}
 			function switchplay(button, mp3) {
 				var click = button.getAttribute("data-click");
 				if (click == 0) {

@@ -6,45 +6,97 @@
 		<title>title</title>
 		<link rel="stylesheet" type="text/css" href="../../css/Hui.css"/>
 		<style>
-			.H-iconfont{
-			     font-size: 4.8rem;
+			.H-iconfont {
+				font-size: 4.8 rem;
 			}
-			.ii{
-			margin-top: 70%;
+			.ii {
+				margin-top: 70%;
 			}
 		</style>
 	</head>
 	<body>
-	<div class="ii"></div>
-	 <div class="H-n-grid  H-clear-both  H-overflow-auto H-center-all H-theme-font-color-white ">
-		<div class="H-display-table-cell H-border-radius-circle H-float-left H-box-sizing-border-box H-width-avg-2 H-center-all H-theme-background-color-333 H-border-vertical-bottom-after H-padding-vertical-both-10 H-touch-active" style="height: 150px;width: 150px;">
-			<div class="H-text-align-center">
-				<span class="H-icon H-display-block H-horizontal-center" onclick="addPic()"><i id="photo" class="H-iconfont H-icon-thumb H-font-size-28 H-vertical-middle"></i></span>
-				<label class="H-display-block H-font-size-11">美图</label>
+		<div class="ii"></div>
+		<div class="H-n-grid  H-clear-both  H-overflow-auto H-center-all H-theme-font-color-white ">
+			<div onclick="addPic()" class="H-display-table-cell H-border-radius-circle H-float-left H-box-sizing-border-box H-width-avg-2 H-center-all H-theme-background-color-333 H-border-vertical-bottom-after H-padding-vertical-both-10 H-touch-active" style="height: 150px;width: 150px;">
+				<div class="H-text-align-center">
+					<span class="H-icon H-display-block H-horizontal-center" ><i id="photo" class="H-iconfont H-icon-thumb H-font-size-28 H-vertical-middle"></i></span>
+					<label class="H-display-block H-font-size-11">美图</label>
+				</div>
 			</div>
-		</div>
-		<div style="margin: 5px  15px;"></div>
-		<div class="H-display-table-cell H-border-radius-circle H-float-left H-box-sizing-border-box H-width-avg-2 H-center-all H-theme-background-color-333 H-border-horizontal-right-after H-border-vertical-bottom-after H-padding-vertical-both-10 H-touch-active" style="height: 150px; width: 150px;">
-			<div class="H-text-align-center">
-				<span class="H-icon H-display-block H-horizontal-center"><i id="music" class="H-iconfont H-icon-music H-font-size-28 H-vertical-middle"></i></span>
-				<label class="H-display-block H-font-size-11">音乐</label>
+			<div style="margin: 5px  15px;"></div>
+			<div onclick="addMusic()"  class="H-display-table-cell H-border-radius-circle H-float-left H-box-sizing-border-box H-width-avg-2 H-center-all H-theme-background-color-333 H-border-horizontal-right-after H-border-vertical-bottom-after H-padding-vertical-both-10 H-touch-active" style="height: 150px; width: 150px;">
+				<div class="H-text-align-center">
+					<span class="H-icon H-display-block H-horizontal-center"><i id="music" class="H-iconfont H-icon-music H-font-size-28 H-vertical-middle"></i></span>
+					<label class="H-display-block H-font-size-11">音乐</label>
+				</div>
 			</div>
-		</div>
 		</div>
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript" src="../../script/Hui.js"></script>
+	<script type="text/javascript" src="../../script/play.js"></script>
 	<script type="text/javascript">
-	
-	  function addPic(){
-	    api.openWin({
-	         name: 'addpic',
-	        url: 'addpic.html'
-        });
-	    
-	  }
+		function addPic() {
+			
+			getPicture()
+		}
+
+         function addMusic(){
+         
+          api.openWin({
+	          name: 'searsh',
+	          url: '../../html/search.html'
+          });
+         
+         }
+
+		function openPicture(sourceType) {
+			isOnLineStatus(function(is_true, line_type) {
+				var q = 40;
+				if (line_type == 'wifi') {
+					q = 60;
+				} else {
+					q = 30;
+				}
+				//获取一张图片
+				api.getPicture({
+					sourceType : sourceType,
+					encodingType : 'png',
+					mediaValue : 'pic',
+					//返回数据类型，指定返回图片地址或图片经过base64编码后的字符串
+					//base64:指定返回数据为base64编码后内容,url:指定返回数据为选取的图片地址
+					destinationType : 'url',
+					//是否可以选择图片后进行编辑，支持iOS及部分安卓手机
+					allowEdit : false,
+					//图片质量，只针对jpg格式图片（0-100整数）,默认值：50
+					quality : q,
+					//                targetWidth : 100,
+					//                targetHeight : 1280,
+					saveToPhotoAlbum : true
+				}, function(ret, err) {
+					if (ret) {
+						/*
+						 * data:"",                //图片路径
+						 base64Data:"",          //base64数据，destinationType为base64时返回
+						 */
+						var img_url = ret.data;
+						if (img_url != "") {
+							//打开裁剪frame
+							//							openImageClipFrame(img_url);
+							api.openWin({
+								name : 'photo1',
+								url : 'photo/index.html',
+								pageParam : {
+									name : img_url
+								}
+							});
+						}
+					}
+				});
+			});
+		}
+
 		apiready = function() {
-		  
 		};
 	</script>
 </html>
