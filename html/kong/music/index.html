@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/iconfont.css">
+		<style>
+			body {
+			}
+			.pplay {
+				bottom: 10px;
+				margin-left: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="H-width-80-percent  ">
+			<div>
+				<div class="H-padding-vertical-bottom-5"></div>
+				<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box  " onclick="">
+					<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1   H-margin-vertical-bottom-10">
+						<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10" style="right: 6%;bottom: 5px;margin-bottom: 3px;"> <i id="player" data-click="0" onclick="switchplay(this)" class=" pplay iconfont icon-bofang H-theme-font-color-white   " style="font-size: 35px"></i></span>
+						<img id="img1" src="http://p4.music.126.net/XhCBGqLJhgpNGQwqtNdvWg==/2913705813975955.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
+					</div>
+					<div class="H-padding-vertical-bottom-10"></div>
+				</div>
+				<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="">
+					<span id="song">Beautiful Now (feat. Jon Bellion)</span>-<span id="artists">Zedd</span>
+				</div>
+			</div>
+			<div class="H-padding-vertical-bottom-10"></div>
+		</div>
+		<textarea   placeholder="聆听音乐  感悟人生" id="feed_text" style="height:100px;width: 100%;line-height:24px;"></textarea>
+		<!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
+		<button onclick="addmusic()" class="  H-vertical-middle H-button H-font-size-15 H-outline-none H-padding-vertical-both-5 H-padding-horizontal-both-20 H-theme-background-color5 H-theme-font-color-white H-theme-border-color5 H-theme-border-color5-click H-theme-background-yellow-click H-theme-font-color1-click H-border-radius-3" style="min-width: 70px; margin-left: 3px; margin: 2px auto">
+			发布
+		</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../script/api.js"></script>
+	<script type="text/javascript" src="../../../script/H.js"></script>
+	<script type="text/javascript">
+		function switchplay(button) {
+			var mp3 = api.pageParam.mp3
+			var click = button.getAttribute("data-click");
+			if (click == 0) {
+				// 点开
+				var dd = document.getElementsByClassName('icon-zanting');
+				for ( i = 0; i < dd.length; i++) {
+					$api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+				}
+				button.setAttribute("data-click", 1);
+				stop();
+				play(mp3)
+				$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
+			} else {
+				// 关闭
+				button.setAttribute("data-click", 0);
+				pause(mp3);
+				$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+			}
+			//			}
+		}
+
+		apiready = function() {
+			var fengmian = api.pageParam.name
+			var song = api.pageParam.song
+			var artists = api.pageParam.artists
+			$api.attr($api.byId('img1'), 'src', fengmian);
+			$api.text($api.byId('song'), song);
+			$api.text($api.byId('artists'), artists);
+		};
+		function pause() {
+			var netAudio = api.require('audio');
+			netAudio.pause();
+		}
+
+		function addmusic() {
+			var text1 = $api.val($api.byId("feed_text"));
+			var fengmian = api.pageParam.name
+			var song = api.pageParam.song
+			var artists = api.pageParam.artists
+			var mp3 = api.pageParam.mp3
+			 
+			api.getPrefs({
+				key : 'user'
+			}, function(ret, err) {
+				var username = ret.value;
+				alert(username)
+				var url = hostUrl + '/addmusic.php';
+				if (ret) {
+					api.ajax({
+						url : url,
+						method : 'post',
+						dataType : 'text',
+						data : {
+							values : {
+								img : fengmian,
+								song : song,
+								text : text1,
+								artist :artists,
+								mp3:mp3,
+								user:username,
+								type:0
+							},
+						}
+					}, function(ret, err) {
+					 
+						if (ret == 1) {
+							api.toast({
+								msg : '发布成功'
+							});
+							api.closeWin({
+							});
+						} else {
+							api.alert({
+							}, function(ret, err) { msg:'发布失败'
+							});
+							api.closeWin({
+							});
+						}
+					});
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+
+		function play(mp3) {
+			var pdd = $api.byId('playe');
+			var netAudio = api.require('audio');
+			var pdd = $api.byId('playerIcon');
+			netAudio.play({
+				path : mp3
+			}, function(ret, err) {
+				//				H.closeToast();
+				var duration = ret.duration;
+				var tii = duration * 10;
+				var current = ret.current;
+				var percent = (current / duration) * 100;
+				var per = Math.round(percent);
+				var complete = ret.complete;
+				var slider = api.require('slider');
+				//				audioCover(duration, songName, artists, per)
+			});
+		}
+	</script>
+</html>
