@@ -110,12 +110,13 @@
 										user : nameVal,
 									}
 								});
- 
-								var uss = 'login2()'
-								api.execScript({
-									name : 'slidLayout',
-									script : uss
-								});
+                              $api.setStorage('user',nameVal);
+//								var uss = 'login2()'
+//								api.execScript({
+//									name : 'slidLayout',
+//									frameName: 'slidLayout',
+//									script : uss
+//								});
 								api.openWin({
 									name : 'slidLayout'
 								})
