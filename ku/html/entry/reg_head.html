@@ -15,12 +15,9 @@
 	</head>
 	<body class="H-height-100-percent H-box-sizing-border-box">
 		<div class="fix">
-			<div class="H-horizontal-center H-padding-vertical-both-25">
-				<div class="H-text-align-center">
-					<img src="../../image/qq.png" class="H-border-radius-12 H-margin-vertical-top-10" style="width:80px;height:80px;" />
-					<div class="H-font-size-18">
-						酷选音乐
-					</div>
+			<div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box" style="margin-bottom: 50px;">
+				<div class="picture H-margin-vertical-top-5 H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
+					<span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color9-active" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i onclick="changePerson()" class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span><img id="icon" src="../../image/qq.png" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);" />
 				</div>
 			</div>
 			<div class="H-border-vertical-top-after H-margin-vertical-top-20">
@@ -34,11 +31,11 @@
 					<input id="password" value="" type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请输入密码" />
 				</div>
 				<!--<div class="H-flexbox-horizontal H-border-vertical-bottom-after">
-					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span>
-					<input type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请再次输入密码" />
+				<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span>
+				<input type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请再次输入密码" />
 				</div>-->
 				<div  class="H-padding-15 H-margin-vertical-top-10">
-					<button idid="login" class="H-button H-width-100-percent  H-font-size-15 H-outline-none H-padding-vertical-both-15 H-padding-horizontal-both-20 H-theme-background-color9 H-theme-font-color-white H-theme-border-color9 H-theme-border-color9-click H-theme-background-color9-click H-theme-font-color9-click H-border-radius-3">
+					<button id="login" class="H-button H-width-100-percent  H-font-size-15 H-outline-none H-padding-vertical-both-15 H-padding-horizontal-both-20 H-theme-background-color9 H-theme-font-color-white H-theme-border-color9 H-theme-border-color9-click H-theme-background-color9-click H-theme-font-color9-click H-border-radius-3">
 						提交注册
 					</button>
 				</div>
@@ -52,6 +49,49 @@
 		<script src="../../script/H.js" type="text/javascript"></script>
 		<script src="../../script/api.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			var pic = '../../image/qq.png'
+			function changePerson() {
+				api.getPicture({
+					sourceType : 'library',
+					encodingType : 'png',
+					mediaValue : 'pic',
+					destinationType : 'url',
+					allowEdit : true,
+					saveToPhotoAlbum : false
+				}, function(ret, err) {
+					if (ret) {
+						api.showProgress({
+							title : ' 上传中...',
+							text : '先喝杯茶...',
+							modal : false
+						}), api.ajax({
+							timeout : 300,
+							method : 'post',
+							url : hostUrl + 'api/upload.php',
+							data : {
+								files : {
+									upfile : ret.data
+								},
+							},
+							dataType : 'text',
+						}, function(ret, err) {
+							var ttt = hostUrl + 'api/' + ret;
+							api.hideProgress();
+							var person = $api.byId('icon');
+							$api.attr(person, 'src', ttt);
+							api.toast({
+								msg : '上传成功'
+							});
+							$api.setStorage('icon',ttt);
+						});
+					} else {
+						api.alert({
+							msg : err.msg
+						});
+					};
+				});
+			}
+
 			apiready = function() {
 				$api.byId('login').onclick = function() {
 					if ($api.byId('name').value.length == 0) {
@@ -70,8 +110,10 @@
 						//						var nameVal = $api.byId('name').value;
 						var nameVal = $api.val($api.byId('name'));
 						var passwordVal = $api.byId('password').value;
-						 var  regdate=time();
-						 var pic='../../image/qq.png'
+						var regdate = new Date();
+						
+						var pic=$api.getStorage('icon');
+						;
 						api.ajax({
 							url : hostUrl + '/reg.php',
 							method : 'post',
@@ -82,10 +124,9 @@
 								values : {
 									username : nameVal,
 									password : passwordVal,
-									pic:pic,
-									regdate:regdate,
-									nickname:nameVal,
-									
+									pic : pic,
+									regdate : regdate,
+									nickname : nameVal,
 								},
 							}
 						}, function(ret, err) {
