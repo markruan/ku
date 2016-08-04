@@ -67,7 +67,7 @@
 						}), api.ajax({
 							timeout : 300,
 							method : 'post',
-							url : hostUrl + 'api/upload.php',
+							url : hostUrl + '/upload.php',
 							data : {
 								files : {
 									upfile : ret.data
@@ -75,14 +75,14 @@
 							},
 							dataType : 'text',
 						}, function(ret, err) {
-							var ttt = hostUrl + 'api/' + ret;
+							var ttt = hostUrl + '/' + ret;
 							api.hideProgress();
 							var person = $api.byId('icon');
 							$api.attr(person, 'src', ttt);
 							api.toast({
 								msg : '上传成功'
 							});
-							$api.setStorage('icon',ttt);
+							$api.setStorage('icon', ttt);
 						});
 					} else {
 						api.alert({
@@ -109,11 +109,10 @@
 					} else {
 						//						var nameVal = $api.byId('name').value;
 						var nameVal = $api.val($api.byId('name'));
-						var passwordVal = $api.byId('password').value;
-						var regdate = new Date();
-						
-						var pic=$api.getStorage('icon');
-						;
+						var passwordVal = $api.val($api.byId('password'));
+						var regTime = getNowFormatDate();
+						var pic = $api.getStorage('icon');
+						alert(nameVal + password + regTime + pic);
 						api.ajax({
 							url : hostUrl + '/reg.php',
 							method : 'post',
@@ -125,7 +124,7 @@
 									username : nameVal,
 									password : passwordVal,
 									pic : pic,
-									regdate : regdate,
+									regdate : regTime,
 									nickname : nameVal,
 								},
 							}
@@ -145,9 +144,8 @@
 									}
 								});
 								api.openWin({
-									name : 'home',
-									url : 'home.html'
-								});
+									name : 'slidLayout'
+								})
 							} else {
 								alert("用户名已被注册 ");
 							}
@@ -155,6 +153,21 @@
 					}
 				}
 			};
+			function getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var seperator2 = ":";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " + date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
+				return currentdate;
+			}
 		</script>
 	</body>
 </html>
