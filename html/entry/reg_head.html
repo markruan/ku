@@ -1,43 +1,119 @@
 ﻿<!doctype html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>Hui</title>
-    <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        body { background: url(../../image/login_bg.jpg) no-repeat left top; background-size: cover; }
-    </style>
-</head>
-<body class="H-height-100-percent H-box-sizing-border-box">
-    <div class="fix">
-        <div class="H-horizontal-center H-padding-vertical-both-25">
-            <div class="H-text-align-center">
-                <img src="../../image/qq.png" class="H-border-radius-12 H-margin-vertical-top-10" style="width:80px;height:80px;" />
-                <div class="H-font-size-18">Hui</div>
-            </div>
-        </div>
-        <div class="H-border-vertical-top-after H-margin-vertical-top-20">
-            <div class="H-flexbox-horizontal  H-border-vertical-bottom-margin-both-10-after">
-                <span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-phone H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span><input type="text" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请输入手机号码" /><span class="H-vertical-middle H-padding-horizontal-right-10  H-theme-font-color1 H-font-size-14">获取验证码</span>
-            </div>
-            <div class="H-flexbox-horizontal H-border-vertical-bottom-margin-both-10-after">
-                <span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span><input type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请输入密码" />
-            </div>
-            <div class="H-flexbox-horizontal H-border-vertical-bottom-after">
-                <span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span><input type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请再次输入密码" />
-            </div>
-            <div class="H-padding-15 H-margin-vertical-top-10">
-                <button class="H-button H-width-100-percent  H-font-size-15 H-outline-none H-padding-vertical-both-15 H-padding-horizontal-both-20 H-theme-background-color9 H-theme-font-color-white H-theme-border-color9 H-theme-border-color9-click H-theme-background-color9-click H-theme-font-color9-click H-border-radius-3">提交注册</button>
-            </div>
-            <div class="H-margin-horizontal-both-15">
-                <span class="H-theme-font-color1 H-float-left H-font-size-14"><input type="checkbox" class="H-checkbox H-checkbox-null H-vertical-align-middle H-font-size-18 H-theme-font-color1 H-border-radius-circle" checked="checked" style="-webkit-transform: scale(0.6); -webkit-transform-origin: 0 38%;" /><label style="position:relative;left:-10px;">《酷选用户注册协议》</label></span>
-            </div>
-        </div>
-    </div>
-    <script src="../../script/H.js" type="text/javascript"></script>
-    <script type="text/javascript">
-    </script>
-</body>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>Hui</title>
+		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+		<style type="text/css">
+			body {
+				background: url(../../image/login_bg.jpg) no-repeat left top;
+				background-size: cover;
+			}
+		</style>
+	</head>
+	<body class="H-height-100-percent H-box-sizing-border-box">
+		<div class="fix">
+			<div class="H-horizontal-center H-padding-vertical-both-25">
+				<div class="H-text-align-center">
+					<img src="../../image/qq.png" class="H-border-radius-12 H-margin-vertical-top-10" style="width:80px;height:80px;" />
+					<div class="H-font-size-18">
+						酷选音乐
+					</div>
+				</div>
+			</div>
+			<div class="H-border-vertical-top-after H-margin-vertical-top-20">
+				<div class="H-flexbox-horizontal  H-border-vertical-bottom-margin-both-10-after">
+					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-phone H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span>
+					<input type="text" id="name" value="" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="账号" />
+					<!--<span class="H-vertical-middle H-padding-horizontal-right-10  H-theme-font-color1 H-font-size-14">获取验证码</span>-->
+				</div>
+				<div class="H-flexbox-horizontal H-border-vertical-bottom-margin-both-10-after">
+					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span>
+					<input id="password" value="" type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请输入密码" />
+				</div>
+				<!--<div class="H-flexbox-horizontal H-border-vertical-bottom-after">
+					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle H-theme-font-color-999"></i></span>
+					<input type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" placeholder="请再次输入密码" />
+				</div>-->
+				<div  class="H-padding-15 H-margin-vertical-top-10">
+					<button idid="login" class="H-button H-width-100-percent  H-font-size-15 H-outline-none H-padding-vertical-both-15 H-padding-horizontal-both-20 H-theme-background-color9 H-theme-font-color-white H-theme-border-color9 H-theme-border-color9-click H-theme-background-color9-click H-theme-font-color9-click H-border-radius-3">
+						提交注册
+					</button>
+				</div>
+				<div class="H-margin-horizontal-both-15">
+					<span class="H-theme-font-color1 H-float-left H-font-size-14">
+						<input type="checkbox" class="H-checkbox H-checkbox-null H-vertical-align-middle H-font-size-18 H-theme-font-color1 H-border-radius-circle" checked="checked" style="-webkit-transform: scale(0.6); -webkit-transform-origin: 0 38%;" />
+						<label style="position:relative;left:-10px;">《酷选用户注册协议》</label></span>
+				</div>
+			</div>
+		</div>
+		<script src="../../script/H.js" type="text/javascript"></script>
+		<script src="../../script/api.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			apiready = function() {
+				$api.byId('login').onclick = function() {
+					if ($api.byId('name').value.length == 0) {
+						$api.byId('name').focus();
+						api.toast({
+							msg : '用户名不能为空'
+						});
+						return;
+					} else if ($api.byId('password').value.length == 0) {
+						$api.byId('password').focus();
+						api.toast({
+							msg : '密码不能为空！'
+						});
+						return;
+					} else {
+						//						var nameVal = $api.byId('name').value;
+						var nameVal = $api.val($api.byId('name'));
+						var passwordVal = $api.byId('password').value;
+						 var  regdate=time();
+						 var pic='../../image/qq.png'
+						api.ajax({
+							url : hostUrl + '/reg.php',
+							method : 'post',
+							timeout : 30,
+							dataType : 'text',
+							returnAll : false,
+							data : {
+								values : {
+									username : nameVal,
+									password : passwordVal,
+									pic:pic,
+									regdate:regdate,
+									nickname:nameVal,
+									
+								},
+							}
+						}, function(ret, err) {
+							if (ret == 0) {
+								api.toast({
+									msg : '注册成功'
+								});
+								api.setPrefs({
+									key : 'user',
+									value : nameVal
+								});
+								api.sendEvent({
+									name : 'reg_login_successEvent',
+									extra : {
+										user : nameVal,
+									}
+								});
+								api.openWin({
+									name : 'home',
+									url : 'home.html'
+								});
+							} else {
+								alert("用户名已被注册 ");
+							}
+						});
+					}
+				}
+			};
+		</script>
+	</body>
 </html>
