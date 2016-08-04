@@ -37,62 +37,87 @@
 	<script type="text/javascript" src="../../script/play.js"></script>
 	<script type="text/javascript">
 		function addPic() {
-			
 			getPicture()
 		}
 
-         function addMusic(){
-         
-          api.openWin({
-	          name: 'searsh',
-	          url: '../../html/search.html'
-          });
-         
-         }
+		function addMusic() {
+			api.getPrefs({
+				key : 'user' // 用户信息key
+			}, function(ret, err) {
+				var val = ret.value;
+				if (val && val != "") {
+					api.openWin({
+						name : 'searsh',
+						url : '../../html/search.html'
+					});
+				} else {
+					alert("登陆后方可评论");
+					api.openWin({
+						name : 'reg_login_win',
+						url : '../../html/entry/entry_head.html',
+						pageParam : {}
+					});
+				}
+			});
+		}
 
 		function openPicture(sourceType) {
-			isOnLineStatus(function(is_true, line_type) {
-				var q = 40;
-				if (line_type == 'wifi') {
-					q = 60;
-				} else {
-					q = 30;
-				}
-				//获取一张图片
-				api.getPicture({
-					sourceType : sourceType,
-					encodingType : 'png',
-					mediaValue : 'pic',
-					//返回数据类型，指定返回图片地址或图片经过base64编码后的字符串
-					//base64:指定返回数据为base64编码后内容,url:指定返回数据为选取的图片地址
-					destinationType : 'url',
-					//是否可以选择图片后进行编辑，支持iOS及部分安卓手机
-					allowEdit : false,
-					//图片质量，只针对jpg格式图片（0-100整数）,默认值：50
-					quality : q,
-					//                targetWidth : 100,
-					//                targetHeight : 1280,
-					saveToPhotoAlbum : true
-				}, function(ret, err) {
-					if (ret) {
-						/*
-						 * data:"",                //图片路径
-						 base64Data:"",          //base64数据，destinationType为base64时返回
-						 */
-						var img_url = ret.data;
-						if (img_url != "") {
-							//打开裁剪frame
-							//							openImageClipFrame(img_url);
-							api.openWin({
-								name : 'photo1',
-								url : 'photo/index.html',
-								pageParam : {
-									name : img_url
-								}
-							});
+			api.getPrefs({
+				key : 'user' // 用户信息key
+			}, function(ret, err) {
+				var val = ret.value;
+				if (val && val != "") {
+					isOnLineStatus(function(is_true, line_type) {
+						var q = 40;
+						if (line_type == 'wifi') {
+							q = 60;
+						} else {
+							q = 30;
 						}
-					}
-				});
+						//获取一张图片
+						api.getPicture({
+							sourceType : sourceType,
+							encodingType : 'png',
+							mediaValue : 'pic',
+							//返回数据类型，指定返回图片地址或图片经过base64编码后的字符串
+							//base64:指定返回数据为base64编码后内容,url:指定返回数据为选取的图片地址
+							destinationType : 'url',
+							//是否可以选择图片后进行编辑，支持iOS及部分安卓手机
+							allowEdit : false,
+							//图片质量，只针对jpg格式图片（0-100整数）,默认值：50
+							quality : q,
+							//                targetWidth : 100,
+							//                targetHeight : 1280,
+							saveToPhotoAlbum : true
+						}, function(ret, err) {
+							if (ret) {
+								/*
+								 * data:"",                //图片路径
+								 base64Data:"",          //base64数据，destinationType为base64时返回
+								 */
+								var img_url = ret.data;
+								if (img_url != "") {
+									//打开裁剪frame
+									//							openImageClipFrame(img_url);
+									api.openWin({
+										name : 'photo1',
+										url : 'photo/index.html',
+										pageParam : {
+											name : img_url
+										}
+									});
+								}
+							}
+						});
+					});
+				} else {
+					alert("登陆后方可评论");
+					api.openWin({
+						name : 'reg_login_win',
+						url : '../../html/entry/entry_head.html',
+						pageParam : {}
+					});
+				}
 			});
 		}
 
