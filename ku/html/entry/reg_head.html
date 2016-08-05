@@ -111,8 +111,11 @@
 						var nameVal = $api.val($api.byId('name'));
 						var passwordVal = $api.val($api.byId('password'));
 						var regTime = getNowFormatDate();
-						var pic = $api.getStorage('icon');
-						 
+						if ($api.getStorage('icon')) {
+							pic = $api.getStorage('icon')
+						} else {
+							pic = "http://www.v7idc.com/ku/api/upload/1466725535.jpg";
+						}
 						api.ajax({
 							url : hostUrl + '/reg.php',
 							method : 'post',
@@ -130,7 +133,6 @@
 							}
 						}, function(ret, err) {
 							if (ret == 0) {
-							alert(ret)
 								api.toast({
 									msg : '注册成功'
 								});

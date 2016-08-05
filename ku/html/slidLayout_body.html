@@ -13,6 +13,11 @@
 			#bgg {
 				background-image: url(../image/bg.png);
 			}
+			.H-touch-active {
+			}
+			.H-touch-active:active {
+				background: hsla(14, 100%, 57%, 0.74);
+			}
 		</style>
 	</head>
 	<body id="bgg" class="H-theme-background-transparent H-height-100-percent ">
@@ -77,27 +82,6 @@
 						name : 'login',
 						url : 'entry/entry_head.html'
 					});
-					//				api.getPrefs({
-					//					key : 'user'
-					//				}, function(ret, err) {
-					//					var v = ret.value;
-					//					username1 = v
-					//					var val = ret.value;
-					//					if (val && val != "") {
-					//
-					//						api.openWin({
-					//	                        name: 'ucenter',
-					//	                        url: 'ucenter/ucenter_head.html'
-					//                      });
-					//
-					//					} else {
-					//						api.openWin({
-					//							name : 'my_win',
-					//							url : 'login_win.html',
-					//							delay : 200
-					//						});
-					//					}
-					//				});
 				}
 
 				function loginout() {
@@ -115,6 +99,14 @@
 					});
 					str2 = '<div class="shelfinfo01">登陆</div>';
 					$api.byId('uss').innerHTML = str2;
+					$api.rmStorage('icon');
+					$api.rmStorage('user');
+					api.sendEvent({
+						name : 'zhuxiao',
+						extra : {
+							user : 'ss',
+						}
+					});
 				}
 
 				function login2() {
@@ -242,9 +234,6 @@
 						login2()
 					});
 				});
-			 
-					
-			 
 			</script>
 	</body>
 </html>
