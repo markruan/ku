@@ -80,8 +80,8 @@
 						});
 						return;
 					} else {
-//						var nameVal = $api.byId('name').value;
-						var nameVal =  $api.val($api.byId('name'));
+						//						var nameVal = $api.byId('name').value;
+						var nameVal = $api.val($api.byId('name'));
 						var passwordVal = $api.byId('password').value;
 						api.ajax({
 							url : hostUrl + '/login.php',
@@ -110,13 +110,7 @@
 										user : nameVal,
 									}
 								});
-                              $api.setStorage('user',nameVal);
-//								var uss = 'login2()'
-//								api.execScript({
-//									name : 'slidLayout',
-//									frameName: 'slidLayout',
-//									script : uss
-//								});
+								$api.setStorage('user', nameVal);
 								api.openWin({
 									name : 'slidLayout'
 								})
