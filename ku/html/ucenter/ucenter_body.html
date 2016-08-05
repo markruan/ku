@@ -10,9 +10,11 @@
 		</style>
 	</head>
 	<body>
-		<div class="  H-horizontal-center H-theme-background-color-gray  H-overflow-hidden" style="min-height: 180px; background-image: url(../../image/FM.jpg)">
-			<div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box">
-				<div class="picture H-margin-vertical-top-5 H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
+		<div class="  H-horizontal-center H-theme-background-color-transparent H-overflow-hidden"   >
+			 <img id="bg" src="../../image/FM.jpg" / style="height: 200px;width: 100%; -webkit-filter: blur(30px);">
+			<div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box   "style="position: absolute;height: 200px;top:30px; margin-left: 33%; ">
+			 
+				<div class="picture H-margin-vertical-top-2 H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
 					<span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color9-active" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i onclick="changePerson()" class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span><img id="ico" src="../../image/qq.png" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);" />
 				</div>
 				<strong id="name" class="H-display-block H-font-weight-normal H-font-weight-500 H-font-size-18 H-theme-font-color-white H-text-align-center H-margin-vertical-both-8">酷选</strong>
@@ -79,6 +81,7 @@
 						var icon = ret[0].pic
 						var person = $api.byId('ico');
 						$api.attr(person, 'src', icon);
+						$api.attr($api.byId('bg'), 'src', icon);
 					});
 				});
 			}

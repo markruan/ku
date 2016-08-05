@@ -25,12 +25,7 @@
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript">
 		function openMusicList(id) {
-			//			api.closeWin({
-			//				name : 'musiclist',
-			//			});
-			//			api.removePrefs({
-			//				key : 'mimg'
-			//			});
+		 
 			api.openWin({
 				name : 'musiclist',
 				url : '../../html/music/mlist_win.html',
@@ -61,17 +56,7 @@
 				}
 			}, function(ret, err) {
 				if (ret) {
-					//					var objh = $api.byId('main');
-					//					var hh6 = $api.getStorage('list');
-					//
-					//					var len1=ret.length
-					//					var len2=$api.getStorage('lenpage');
-					//
-					//
-					//					if(len1=len2){
-					//					$api.html(objh, hh6);
-					//
-					//					}else{
+					 
 					for ( i = 0; i < ret.length; i++) {
 						var Idd = ret[i].idd;
 						var html = '';

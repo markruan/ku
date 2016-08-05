@@ -13,7 +13,11 @@ function getidd() {
 
 function getInfo(id) {
 
-	H.toastLoading()
+api.showProgress({
+				title : ' 加载中...',
+				text : '请稍等...',
+				modal : false
+			})
 	api.sendEvent({
 		name : 'cancelDownload',
 	});
@@ -106,7 +110,7 @@ function play(mp3) {
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
-		H.closeToast();
+api.hideProgress();
 		var duration = ret.duration;
 		var tii = duration * 10;
 		var current = ret.current;
