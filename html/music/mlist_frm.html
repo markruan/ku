@@ -426,7 +426,7 @@
 					63
 				</div>
 			</div>
-			<div class="userinfocol02 userinfocol br" tapmode="toolhover" onclick="openComm(id)">
+			<div class="userinfocol02 userinfocol br" tapmode="toolhover" onclick="openComm(0)">
 				<div class="info"><img src="./image/musiclist/musiclistcommet.png" alt="">
 				</div>
 				<div class="num" id="CommCount">
@@ -601,10 +601,10 @@
 			}), 3000);
 			var html = '';
 			var Idd = api.pageParam.name
-						api.setPrefs({
-							key : 'mul',
-							value : Idd
-						});
+			api.setPrefs({
+				key : 'mul',
+				value : Idd
+			});
 			api.ajax({
 				url : musicUrl + Idd + houZhui,
 				cache : true,
@@ -616,7 +616,7 @@
 					var coverImgUrl = ret.result.coverImgUrl;
 					var nickname = ret.result.creator.nickname;
 					id = ret.result.id
-					getCommCount(id)
+					getCommCount(id, 0)
 					api.setPrefs({
 						key : 'songid',
 						value : id
@@ -642,7 +642,7 @@
 						var n = i + 1;
 						//						var nType = thisItem.type;
 						html += '<div class="egret-flex-item musiclist-item" > <div class="egret-flex-item-logo">' + n + '</div>';
-						html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + a + ')">';
+						html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + a + ',0)">';
 						html += '<div class="egret-flex-item-shelf01">' + bb + '</div><div class="egret-flex-item-shelf02">';
 						html += '' + artists + '</div></div><div class="egret-flex-item-arrow"><img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg"">';
 						html += '</div></div></div><div class="musiclist-item-tool" >';
@@ -661,41 +661,29 @@
 					api.hideProgress();
 				}
 			});
-			//			});
 		}
 
 		function abc(el) {
 			var Idd = api.pageParam.name;
-			$api.setStorage('name',1);
+			$api.setStorage('name', 1);
 			api.closeWin({
-			name:'nww',
-            });
-  
+				name : 'nww',
+			});
 			api.openWin({
 				name : 'nww',
 				url : './nw.html?ID=' + el,
-//				opaque : true,
-//				vScrollBarEnabled : false,
+				//				opaque : true,
+				//				vScrollBarEnabled : false,
 				pageParam : {
 					name : el
 				}
-				
 			});
-//       api.openFrame({
-//	         name: 'nw',
-//	         url: './nw.html?ID=' + el,
-//	         rect: {
-//		         x:0,
-//		         y:0,
-//		         w: api.frameWidth,
-//		         h:api.frameHeight
-//	         }
-//       });
-
-
-
 		};
-		function openComm(id) {
+		function openComm(type) {
+			var id = api.getPrefs({
+				sync : true,
+				key : 'songid'
+			});
 			api.getPrefs({
 				key : 'user' // 用户信息key
 			}, function(ret, err) {
@@ -706,8 +694,12 @@
 						url : '../../html/music/comm/head.html',
 						opaque : true,
 						vScrollBarEnabled : false,
+						pageParam : {
+							type : type,
+							id : id
+						}
 					});
-					$api.setStorage('typer1', 1);
+					//					$api.setStorage('typer1', 1);
 					api.closeWin({
 						name : 'comm2'
 					});
@@ -722,17 +714,18 @@
 			});
 		}
 
-		function getCommCount(id) {
+		function getCommCount(id, type) {
+			 
 			api.ajax({
 				url : hostUrl + '/comm.php',
-				method : 'post',
+				method : 'get',
 				cache : false,
 				timeout : 30,
 				dataType : 'json',
 				data : {
 					values : {
 						ID : id,
-						type : 0
+						type : type
 					}
 				}
 			}, function(ret, err) {
@@ -740,6 +733,10 @@
 					var cout = ret.length
 					strCont = '<div class="num">' + cout + '</div>';
 					$api.byId('CommCount').innerHTML = strCont;
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
 				}
 			});
 		}
