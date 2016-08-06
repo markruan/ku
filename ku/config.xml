@@ -30,10 +30,10 @@
   <permission name="call"/>  
   <permission name="sms"/>  
   <permission name="contact"/>  
+  <access origin="*"/>  
   <feature name="wx"> 
     <param name="urlScheme" value="wx86865bdfe0f7e7c7"/>  
     <param name="apiKey" value="wx86865bdfe0f7e7c7"/>  
     <param name="apiSecret" value="1d9193fe28da95d3a388cbf5c70c6481"/> 
-  </feature>  
-  <access origin="*"/> 
+  </feature> 
 </widget>
