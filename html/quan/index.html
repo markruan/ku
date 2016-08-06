@@ -25,20 +25,22 @@
 			<div class="H-flex-item H-margin-10">
 			<div class="H-theme-font-color-999 H-font-size-14 H-flexbox-horizontal H-text-horizontal-left H-box-sizing-border-box">
 			<span class="H-display-block H-flex-item H-text-align-left H-font-size-14"><span class="H-theme-font-color1"><%=list[i].nickname %></span></span>
-			<span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times"><button class="H-button H-font-size-14 H-outline-none H-theme-background-color-transparent  H-padding-horizontal-both-10 H-theme-font-color1 H-theme-border-color1 H-theme-border-color1-click H-theme-background-color1-click H-theme-font-color1-click"><span class="H-badge H-display-inline-block"><i class="H-iconfont H-icon-plus H-font-size-14 H-vertical-right"></i></span>关注
+			<span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times"><button class="H-button H-font-size-14 H-outline-none H-theme-background-color-transparent  H-padding-horizontal-both-10 H-theme-font-color1 H-theme-border-color1 H-theme-border-color1-click H-theme-background-color1-click H-theme-font-color1-click"><span class="H-badge H-display-inline-block">
+			<!--<i class="H-iconfont H-icon-plus H-font-size-14 H-vertical-right"></i>-->
+			</span>图片
 			</button></span>
 			</div>
 			<div class="H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12">
-			<%=list[i].signature %>
+			<%=list[i].signature %> 
 			</div>
 			</div>
 			</div>
-			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10" onclick="OpenBbs(1);">
+			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10" onclick=" openPhoto('<%=list[i].cover %>') ">
 			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
 			<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
 			</div>
 			</div>
-			<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="OpenBbs(1);">
+			<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick=" ">
 			<%=list[i].text %>
 			</div>
 			<div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box H-border-vertical-top-margin-both-10-after">
@@ -56,7 +58,9 @@
 			<div class="H-flex-item H-margin-10">
 			<div class="H-theme-font-color-999 H-font-size-14 H-flexbox-horizontal H-text-horizontal-left H-box-sizing-border-box">
 			<span class="H-display-block H-flex-item H-text-align-left H-font-size-14"><span class="H-theme-font-color1"><%=list[i].nickname %></span></span>
-			<span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times"><button class="H-button H-font-size-14 H-outline-none H-theme-background-color-transparent  H-padding-horizontal-both-10 H-theme-font-color1 H-theme-border-color1 H-theme-border-color1-click H-theme-background-color1-click H-theme-font-color1-click"><span class="H-badge H-display-inline-block"><i class="H-iconfont H-icon-plus H-font-size-14 H-vertical-right"></i></span>关注
+			<span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times"><button class="H-button H-font-size-14 H-outline-none H-theme-background-color-transparent  H-padding-horizontal-both-10 H-theme-font-color1 H-theme-border-color1 H-theme-border-color1-click H-theme-background-color1-click H-theme-font-color1-click"><span class="H-badge H-display-inline-block">
+<!--			<i class="H-iconfont H-icon-plus H-font-size-14 H-vertical-right"></i>-->
+			</span>音乐
 			</button></span>
 			</div>
 			<div class="H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12">
@@ -64,8 +68,9 @@
 			</div>
 			</div>
 			</div>
-			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10" onclick="OpenBbs(1);">
+			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10" onclick="">
 			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
+						<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10" style="right: 6%;bottom: 12px;margin-bottom: 3px;"> <i data-click="0"  onclick=" switchplay(this,'<%=list[i].mp3%>') " class=" pplay iconfont icon-bofang H-theme-font-color-white  H-font-size-28"></i></span>
 			<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
 			</div>
 			<!--<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
@@ -98,9 +103,10 @@
 		<script src="../../script/api.js" type="text/javascript"></script>
 		<script type="text/javascript" src="../../script/echo.min.js"></script>
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="../../script/comm.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			H.tppl_flag = ["<%", "%>"];
-			var url = "http://v7idc.com/m/i.php";
+			var url = hostUrl + '/quan.php';
 			function initPage() {
 				api.showProgress({
 					title : ' 加载中...',
@@ -149,62 +155,7 @@
 					api.refreshHeaderLoadDone();
 				});
 			}
-			function switchplay(button, mp3) {
-				var click = button.getAttribute("data-click");
-				if (click == 0) {
-					// 点开
-					var dd = document.getElementsByClassName('icon-zanting');
-					for ( i = 0; i < dd.length; i++) {
-						$api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
-					}
-					button.setAttribute("data-click", 1);
-					stop();
-					play(mp3)
-					H.toastLoading()
-					$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
-					//					api.toast({
-					//						msg : '暂停播放'
-					//					});
-				} else {
-					// 关闭
-					button.setAttribute("data-click", 0);
-					//					stop();
-					pause(mp3);
-					H.closeToast();
-					$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
-					//					api.toast({
-					//						msg : '继续播放'
-					//					});
-				}
-				//			}
-			}
-
-			function play(mp3) {
-				var iii = $api.byId('playI');
-				var netAudio = api.require('audio');
-				netAudio.play({
-					path : mp3
-				}, function(ret, err) {
-					H.closeToast();
-					var duration = ret.duration;
-					var tii = duration * 10;
-					var current = ret.current;
-					var percent = (current / duration) * 100;
-					var per = Math.round(percent);
-					var complete = ret.complete;
-					var slider = api.require('slider');
-					var dur = formatSeconds(duration);
-					var cur = formatSeconds(current);
-					//					api.getPrefs({
-					//						key : 'isPlaying'
-					//					}, function(ret, err) {
-					//						if (ret.value == 1) {
-					//							///锁屏播放
-					//							audioCover(duration, songName, artists, per)
-					//						}
-					//					});
-				});
-			}
+		 
 		</script>
 	</body>
 </html>

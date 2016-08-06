@@ -25,6 +25,12 @@
 	<script type="text/javascript">
 		//		var img1 = 'http://p4.music.126.net/NLIxnlNPSPk3GFacJg01kA==/17814287393396301.jpg';
 		var type = 1;
+		
+		//去除空格
+		function trimStr(str) {
+			return str.replace(/(^\s*)|(\s*$)/g, "");
+		}
+
 		function addpic() {
 			var text1 = $api.val($api.byId("feed_text"));
 			var img1 = api.pageParam.name
@@ -43,7 +49,10 @@
 				},
 				dataType : 'text',
 			}, function(ret, err) {
-				var aa = hostUrl + '/' + ret
+			
+			      
+			
+				var aa = hostUrl + '/' + trimStr(ret)
 				api.hideProgress();
 				api.getPrefs({
 					key : 'user'
