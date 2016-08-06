@@ -1,7 +1,7 @@
-﻿﻿<!doctype html>
+﻿<!doctype html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="utf-8">
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
 		<title>Hello APP</title>
 		<link href="../../../css/Hui.css" rel="stylesheet" type="text/css" />
@@ -25,19 +25,21 @@
 	<script type="text/javascript">
 		apiready = function() {
 			var obj = api.require('inputField');
-			initPage()
-			commm()
+			 type=api.pageParam.type
+			 com_id=api.pageParam.id
+			initPage(type,com_id)
+			commm(com_id,type)
 		}
-		function initPage() {
+		function initPage(type,id) {
 			setTimeout(api.showProgress({
 				title : ' 加载中...',
 				text : '先喝杯茶...',
 				modal : false
 			}), 2000);
-			api.getPrefs({
-				key : 'songid'
-			}, function(ret, err) {
-				var id = ret.value
+//			api.getPrefs({
+//				key : 'songid'
+//			}, function(ret, err) {
+//				var id = ret.value
 				var html = '';
 				var html1 = '';
 				api.ajax({
@@ -49,7 +51,7 @@
 					data : {
 						values : {
 							ID : id,
-							type : 0
+							type : type
 						}
 					}
 				}, function(ret, err) {
@@ -82,10 +84,10 @@
 						api.hideProgress();
 					};
 				});
-			});
+//			});
 		}
 
-		function commm() {
+		function commm(id,type) {
 			//获取用户信息
 			api.getPrefs({
 				key : 'user'
@@ -93,19 +95,13 @@
 				var v = ret.value;
 				username = v
 			});
-			api.getPrefs({
-				key : 'songid'
-			}, function(ret, err) {
-				var songi = ret.value;
-				iid = songi
-			});
-			//			$api.byId('cnn').onload = function() {
+ 
 			var obj = api.require('inputField');
 			obj.open({
-				bgColor : '#D43C33',
-				lineColor : '#D43C33',
+				bgColor : '#4db7ad',
+				lineColor : '#4db7ad',
 				fileBgColor : '#ffffff',
-				borderColor : '#D43C33',
+				borderColor : '#4db7ad',
 				sendImg : 'widget://res/send_bg.png'
 			}, function(ret, err) {
 				var imsg = ret.msg
@@ -120,11 +116,11 @@
 						returnAll : false,
 						data : {
 							values : {
-								iid : iid,
+								iid : id,
 								username : username,
 								content : imsg,
 								time : timer,
-								type : 0
+								type : type
 							},
 						}
 					}, function(ret, err) {
@@ -136,14 +132,14 @@
 					});
 					//						obj.close(function(ret, err) {
 					//						});
-					initPage();
+					initPage(type,id);
 				} else {
 					api.alert({
 						msg : '输入不能为空!!'
 					}, function(ret, err) {
 						//							obj.close(function(ret, err) {
 						//							});
-						initPage();
+						initPage(type,com_id);
 						//coding...
 					});
 				}
