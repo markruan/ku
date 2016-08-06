@@ -210,19 +210,20 @@
 			});
 		}
 
-		function openComm(id) {
+		function openComm(id, type) {
 			api.getPrefs({
 				key : 'user' // 用户信息key
 			}, function(ret, err) {
 				var val = ret.value;
 				if (val && val != "") {
 					api.openWin({
-						name : 'comm2',
-						url : '../../html/music/comm2/head.html',
+						name : 'comm',
+						url : '../../html/music/comm/head.html',
 						opaque : true,
 						vScrollBarEnabled : false,
 						pageParam : {
-							name : 1
+							type : type,
+							id:id
 						}
 					});
 				} else {
@@ -314,10 +315,14 @@
 		}
 
 		apiready = function() {
+			var song_id = api.getPrefs({
+				sync : true,
+				key : 'songid2'
+			});
 			api.parseTapmode();
 			var commn = $api.byId('comm');
 			$api.addEvt(commn, 'click', function() {
-				openComm()
+				openComm(song_id,1)
 			});
 			$api.rmStorage('path');
 			pause1()
