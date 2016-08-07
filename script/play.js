@@ -176,6 +176,7 @@ function play(mp3) {
 }
 
 function next() {
+    api.hideProgress();
 	stop()
 	var i = $api.getStorage('idi');
 	var len = $api.getStorage('lens');
@@ -192,6 +193,7 @@ function next() {
 }
 
 function prev() {
+    api.hideProgress();
 	stop()
 	var i = $api.getStorage('idi');
 	var len = $api.getStorage('lens');
