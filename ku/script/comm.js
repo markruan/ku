@@ -10,6 +10,14 @@ function switchplay(button, mp3) {
 		pauseAll()
 		stop();
 		play(mp3)
+
+		var jsfun = "xunhuan()";
+		api.execScript({
+			name : 'index',
+
+			script : jsfun
+		});
+
 		api.showProgress({
 			title : ' 加载中...',
 			text : '先喝杯茶...',
@@ -26,11 +34,24 @@ function switchplay(button, mp3) {
 		//					pause(this);
 		api.hideProgress();
 		$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+		var jsfun = "xunhuan()1";
+		api.execScript({
+			name : 'index',
+
+			script : jsfun
+		});
+
 		//					api.toast({
 		//						msg : '继续播放'
 		//					});
 	}
 	//			}
+}
+
+function stop() {
+	var audio = api.require('audio');
+	audio.stop();
+
 }
 
 function play(mp3) {
@@ -72,6 +93,7 @@ function pauseAll() {
 		frameName : 'nn',
 		script : mPause
 	});
+	pause()
 }
 
 function openPhoto(url) {
