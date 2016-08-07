@@ -91,7 +91,7 @@ function pause() {
 }
 
 function pauseAll() {
-	var mPause = 'pause()'
+	var mPause = 'stop()'
 	api.execScript({
 		 
 		frameName : 'quan_index',
