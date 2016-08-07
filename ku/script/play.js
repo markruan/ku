@@ -13,11 +13,11 @@ function getidd() {
 
 function getInfo(id) {
 
-api.showProgress({
-				title : ' 加载中...',
-				text : '请稍等...',
-				modal : false
-			})
+	api.showProgress({
+		title : ' 加载中...',
+		text : '请稍等...',
+		modal : false
+	})
 	api.sendEvent({
 		name : 'cancelDownload',
 	});
@@ -106,11 +106,23 @@ function play(mp3) {
 	var pdd = $api.byId('playe');
 	var netAudio = api.require('audio');
 	var pdd = $api.byId('playerIcon');
+	var jsfun = 'stop()'
+
+	api.execScript({
+		name : "index",
+		frameName : 'quan_index',
+		script : jsfun
+	});
+	api.execScript({
+		name : "index",
+		frameName : 'tui_index',
+		script : jsfun
+	});
 
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
-api.hideProgress();
+		api.hideProgress();
 		var duration = ret.duration;
 		var tii = duration * 10;
 		var current = ret.current;
@@ -121,12 +133,12 @@ api.hideProgress();
 
 		var dur = formatSeconds(duration);
 		var cur = formatSeconds(current);
-//		var jsfun1 = 'xunhuan1();';
-//		api.execScript({
-//			name: 'index',
-//   
-//			script : jsfun1
-//		});
+		//		var jsfun1 = 'xunhuan1();';
+		//		api.execScript({
+		//			name: 'index',
+		//
+		//			script : jsfun1
+		//		});
 
 		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span><input id="hua" type="range" class="H-range H-width-80-percent H-position-relative  H-border-radius-1 H-theme-font-color5"  value="' + per + '" > <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
 		$api.byId('slider').innerHTML = strmiao;

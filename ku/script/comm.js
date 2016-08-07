@@ -17,7 +17,12 @@ function switchplay(button, mp3) {
 
 			script : jsfun
 		});
-
+        var jsplay = 'stop()'
+		api.execScript({
+			name : 'nww',
+			frameName : 'player',
+			script : jsplay
+		});
 		api.showProgress({
 			title : ' 加载中...',
 			text : '先喝杯茶...',
@@ -37,7 +42,6 @@ function switchplay(button, mp3) {
 		var jsfun = "xunhuan()1";
 		api.execScript({
 			name : 'index',
-
 			script : jsfun
 		});
 
@@ -89,8 +93,13 @@ function pause() {
 function pauseAll() {
 	var mPause = 'pause()'
 	api.execScript({
-		name : 'nw',
-		frameName : 'nn',
+		 
+		frameName : 'quan_index',
+		script : mPause
+	});
+	api.execScript({
+		 
+		frameName : 'tui_index',
 		script : mPause
 	});
 	pause()
