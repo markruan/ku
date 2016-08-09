@@ -686,7 +686,7 @@ function stopAll() {
 		frameName : 'tui_index',
 		script : mPause
 	});
-	pause()
+	 
 }
 function changP() {
 	var icon = $api.byId('playerIcon');
