@@ -12,7 +12,7 @@ function getidd() {
 }
 
 function getInfo(id) {
-
+    stopAll()
 	api.showProgress({
 		title : ' 加载中...',
 		text : '请稍等...',
@@ -674,7 +674,20 @@ function songCache(mp3) {
 		});
 	});
 }
+function stopAll() {
+	var mPause = 'stop()'
+	api.execScript({
 
+		frameName : 'quan_index',
+		script : mPause
+	});
+	api.execScript({
+
+		frameName : 'tui_index',
+		script : mPause
+	});
+	pause()
+}
 function changP() {
 	var icon = $api.byId('playerIcon');
 	$api.toggleCls(icon, 'icon-play');

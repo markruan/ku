@@ -94,20 +94,7 @@ function pause() {
 	netAudio.pause();
 }
 
-function pauseAll() {
-	var mPause = 'stop()'
-	api.execScript({
 
-		frameName : 'quan_index',
-		script : mPause
-	});
-	api.execScript({
-
-		frameName : 'tui_index',
-		script : mPause
-	});
-	pause()
-}
 
 function openPhoto(url) {
 
