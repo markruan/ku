@@ -3,7 +3,7 @@
 <widget id="A6911302258372" version="0.0.1"> 
   <name>Hui</name>  
   <description/>  
-  <author email="winu@winu.net" href="http://www.apicloud.com">中山赢友网络科技有限公司</author>  
+  <author email=" " href="http://www.apicloud.com">杭州神尼网络科技有限公司</author>  
   <content src="index.html"/>  
   <preference name="pageBounce" value="false"/>  
   <preference name="appBackground" value="rgba(0,0,0,0.0)"/>  

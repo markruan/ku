@@ -7,7 +7,7 @@ function switchplay(button, mp3) {
 			$api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 		}
 		button.setAttribute("data-click", 1);
-		pauseAll()
+		//		pauseAll()
 		stop();
 		play(mp3)
 
@@ -17,7 +17,7 @@ function switchplay(button, mp3) {
 
 			script : jsfun
 		});
-        var jsplay = 'stop()'
+		var jsplay = 'stop()'
 		api.execScript({
 			name : 'nww',
 			frameName : 'player',
@@ -39,7 +39,7 @@ function switchplay(button, mp3) {
 		//					pause(this);
 		api.hideProgress();
 		$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
-		var jsfun = "xunhuan()1";
+		var jsfun = "xunhuan1()";
 		api.execScript({
 			name : 'index',
 			script : jsfun
@@ -59,11 +59,15 @@ function stop() {
 }
 
 function play(mp3) {
+	api.toast({
+		msg : '开始播放'
+	});
 	var iii = $api.byId('playI');
 	var netAudio = api.require('audio');
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
+
 		api.hideProgress();
 		var duration = ret.duration;
 		var tii = duration * 10;
@@ -93,12 +97,12 @@ function pause() {
 function pauseAll() {
 	var mPause = 'stop()'
 	api.execScript({
-		 
+
 		frameName : 'quan_index',
 		script : mPause
 	});
 	api.execScript({
-		 
+
 		frameName : 'tui_index',
 		script : mPause
 	});
