@@ -12,7 +12,7 @@ function getidd() {
 }
 
 function getInfo(id) {
-    stopAll()
+	  stopAll()
 	api.showProgress({
 		title : ' 加载中...',
 		text : '请稍等...',
@@ -176,7 +176,7 @@ function play(mp3) {
 }
 
 function next() {
-    api.hideProgress();
+	api.hideProgress();
 	stop()
 	var i = $api.getStorage('idi');
 	var len = $api.getStorage('lens');
@@ -193,7 +193,7 @@ function next() {
 }
 
 function prev() {
-    api.hideProgress();
+	api.hideProgress();
 	stop()
 	var i = $api.getStorage('idi');
 	var len = $api.getStorage('lens');
@@ -674,6 +674,7 @@ function songCache(mp3) {
 		});
 	});
 }
+
 function stopAll() {
 	var mPause = 'stop()'
 	api.execScript({
@@ -686,8 +687,9 @@ function stopAll() {
 		frameName : 'tui_index',
 		script : mPause
 	});
-	 
+
 }
+
 function changP() {
 	var icon = $api.byId('playerIcon');
 	$api.toggleCls(icon, 'icon-play');

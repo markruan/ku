@@ -223,7 +223,7 @@
 						vScrollBarEnabled : false,
 						pageParam : {
 							type : type,
-							id:id
+							id : id
 						}
 					});
 				} else {
@@ -243,7 +243,6 @@
 				// 点开
 				button.setAttribute("data-click", 1);
 				pause();
-				
 			} else {
 				// 关闭
 				button.setAttribute("data-click", 0);
@@ -323,13 +322,15 @@
 			api.parseTapmode();
 			var commn = $api.byId('comm');
 			$api.addEvt(commn, 'click', function() {
-				openComm(song_id,1)
+				openComm(song_id, 1)
 			});
 			$api.rmStorage('path');
 			pause1()
 			getidd()
 			getInfo(idd)
 			$api.setStorage('PlayAll', 'a')
+ 
+			 
 		}
 	</script>
 </html>
