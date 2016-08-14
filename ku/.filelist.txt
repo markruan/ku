@@ -44,9 +44,9 @@
 /A6915194260483/image/templates-imgs/fz1.jpg
 /A6911302258372/res/send_bg.png
 /A6915194260483/image/bg.png
-/A6911302258372/image/yin/13.png
 /A6911302258372/css/api.css
 /A6915194260483/image/more_icon_90.png
+/A6911302258372/image/yin/13.png
 /A6911302258372/html/music/n.html
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/skin.css
 /A6915194260483/res/sqliteDemo.db
@@ -142,6 +142,7 @@
 /A6915194260483/plugins/swise player/html/skins/vodTransparent/buffer.png
 /A6915194260483/plugins/swise player/html/skins/vodFlowPlayer/skin.css
 /A6911302258372/html/music/image/musiclist/musiclisttool03.png
+/A6911302258372/html/ucenter/index.html
 /A6915194260483/image/more_icon_10.png
 /A6915194260483/html/music/image/musiclist/musiclisttool02.png
 /A6911302258372/image/slider/slider-btn2.png
@@ -164,6 +165,7 @@
 /A6915194260483/plugins/echarts/echarts.simple.min.js
 /A6915194260483/html/page/page_win.html
 /A6915194260483/image/templates-imgs/che.png
+/A6911302258372/html/ucenter/shoucang.html
 /A6915194260483/plugins/swise player/html/skins/vodWhite/skin.html
 /A6915194260483/image/templates/dazhong_tuangou.jpg
 /A6911302258372/image/yin/7.png
@@ -187,8 +189,8 @@
 /A6915194260483/html/music/comm/head.html
 /A6911302258372/image/FM.jpg
 /A6915194260483/image/more_icon_hot.png
-/A6911302258372/image/yin/5.png
 /A6915194260483/image/more_icon_movie.png
+/A6911302258372/image/yin/5.png
 /A6915194260483/image/templates/setting.jpg
 /A6915194260483/image/templates/dazhongdainping_index.jpg
 /A6911302258372/html/music/image/musiclist/musiclistplayarrow.png
@@ -260,6 +262,7 @@
 /A6915194260483/icon/icon150x150.png
 /A6911302258372/script/base64.js
 /A6915194260483/image/logo.png
+/A6911302258372/html/ucenter/me.html
 /A6911302258372/html/music/comm/body.html
 /A6911302258372/html/music/nw.html
 /A6915194260483/image/banner3.jpg
