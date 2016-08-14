@@ -53,30 +53,52 @@
 				}
 			});
 			function shareWx(cha) {
-			
-			  var data=api.pageParam.data
-			  
-				api.imageCache({
-					url : data.img
-				}, function(ret, err) {
-					var url = ret.url;
-					var wx = api.require('wx');
-					wx.shareMusic({
-						apiKey : '',
-						scene : cha,
-						title : data.tilte,
-						description : data.art,
-						thumb : url,
-						contentUrl : data.mp3,
-						musicDataUrl : data.mp3
+				var img = api.pageParam.img
+				var data = api.pageParam.data
+				if (img) {
+					api.imageCache({
+						url : img
 					}, function(ret, err) {
-						if (ret.status) {
-							alert('分享成功');
-						} else {
-							alert('取消分享');
-						}
+						var url = ret.url;
+						var wx = api.require('wx');
+						wx.shareImage({
+							apiKey : '',
+							scene : cha,
+							thumb : url,
+							contentUrl : url
+						}, function(ret, err) {
+							if (ret.status) {
+								alert('分享成功');
+							} else {
+								alert(err.code);
+							}
+						});
 					});
-				});
+				} else {
+					api.imageCache({
+						url : data.img
+					}, function(ret, err) {
+						var url = ret.url;
+						var wx = api.require('wx');
+						wx.shareMusic({
+							apiKey : '',
+							scene : cha,
+							title : data.tilte,
+							description : data.art,
+							thumb : url,
+							contentUrl : data.mp3,
+							musicDataUrl : data.mp3
+						}, function(ret, err) {
+							if (ret.status) {
+								alert('分享成功');
+								closeDropMenu();
+							} else {
+								alert('取消分享');
+								closeDropMenu();
+							}
+						});
+					});
+				}
 			}
 		</script>
 	</body>
