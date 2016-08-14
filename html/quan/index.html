@@ -45,9 +45,9 @@
 			</div>
 			<div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box H-border-vertical-top-margin-both-10-after">
 			<span class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color9 H-border-horizontal-right-after"><i onclick="openComm(<%=list[i].data_id %>,3)" class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle">3</label></span>
-			<span class="H-font-size-14 H-flex-item  H-center-all"><i onclick="share()" class="H-iconfont H-icon-like H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle">收藏</label></span>
+			<span class="H-font-size-14 H-flex-item  H-center-all"><i onclick=" " class="H-iconfont H-icon-like H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle">收藏</label></span>
 			<span class="H-font-size-14 H-flex-item  H-center-all  H-border-horizontal-left-after"><i onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan%></label></span>
-			<span class="H-font-size-14 H-flex-item  H-center-all  H-border-horizontal-left-after"><i class="H-iconfont H-icon-share-to H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"> </label></span>
+			<span onclick="shareImg('<%=list[i].cover %>')" class="H-font-size-14 H-flex-item  H-center-all  H-border-horizontal-left-after"><i class="H-iconfont H-icon-share-to H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"> </label></span>
 			</div>
 			</div>
 			<% }else{%>
@@ -202,13 +202,12 @@
 				});
 			}
 
-			function share(title,art,img,mp3) {
-			
-			var data={}
-			  data.title=title;
-			  data.art=art;
-			  data.img=img;
-			  data.mp3=mp3;
+			function share(title, art, img, mp3) {
+				var data = {}
+				data.title = title;
+				data.art = art;
+				data.img = img;
+				data.mp3 = mp3;
 				api.openFrame({
 					name : 'sing_share',
 					url : '../../html/single_share_body.html',
@@ -220,6 +219,43 @@
 					},
 					pageParam : {
 						data : data
+					},
+				});
+			}
+
+			function share(title, art, img, mp3) {
+				var data = {}
+				data.title = title;
+				data.art = art;
+				data.img = img;
+				data.mp3 = mp3;
+				api.openFrame({
+					name : 'sing_share',
+					url : '../../html/single_share_body.html',
+					rect : {
+						x : 0,
+						y : 0,
+						w : api.winWidth,
+						h : api.winHeight
+					},
+					pageParam : {
+						data : data
+					},
+				});
+			}
+
+			function shareImg(url) {
+				api.openFrame({
+					name : 'sing_share',
+					url : '../../html/single_share_body.html',
+					rect : {
+						x : 0,
+						y : 0,
+						w : api.winWidth,
+						h : api.winHeight
+					},
+					pageParam : {
+						img : url
 					},
 				});
 			}
