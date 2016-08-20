@@ -25,7 +25,6 @@
 	<script type="text/javascript">
 		//		var img1 = 'http://p4.music.126.net/NLIxnlNPSPk3GFacJg01kA==/17814287393396301.jpg';
 		var type = 1;
-		
 		//去除空格
 		function trimStr(str) {
 			return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -49,9 +48,6 @@
 				},
 				dataType : 'text',
 			}, function(ret, err) {
-			
-			      
-			
 				var aa = hostUrl + '/' + trimStr(ret)
 				api.hideProgress();
 				api.getPrefs({
@@ -76,6 +72,11 @@
 							if (ret == 1) {
 								api.toast({
 									msg : '发布成功'
+								});
+								var jsfun1 = 'initPage()';
+								api.execScript({
+									frameName : 'quan_index',
+									script : jsfun1
 								});
 								api.closeWin({
 								});

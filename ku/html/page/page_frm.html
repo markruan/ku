@@ -16,7 +16,7 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body class="H-display-none" id="body">
 		<div class="H-padding-vertical-bottom-10"></div>
 		<div id="main" class="H-padding-horizontal-right-10"></div>
 	</body>
@@ -25,7 +25,6 @@
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript">
 		function openMusicList(id) {
-		 
 			api.openWin({
 				name : 'musiclist',
 				url : '../../html/music/mlist_win.html',
@@ -42,6 +41,11 @@
 
 		function findinfo() {
 			var pageSize = 10;
+			api.showProgress({
+				title : ' 加载中...',
+				text : '先喝杯茶...',
+				modal : false
+			})
 			api.ajax({
 				url : hostUrl + '/ku.php',
 				method : 'post',
@@ -56,7 +60,6 @@
 				}
 			}, function(ret, err) {
 				if (ret) {
-					 
 					for ( i = 0; i < ret.length; i++) {
 						var Idd = ret[i].idd;
 						var html = '';
@@ -73,11 +76,16 @@
 							var nickname = ret.result.creator.nickname;
 							var description = ret.result.description
 							var arr = ret.result.tracks;
-							//							var myobj = eval(arr);
+							api.imageCache({
+								url : coverImgUrl
+							}, function(ret, err) {
+								imgurl = ret.url;
+								//							var myobj = eval(arr);
+								html += '<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + tracksId + ')">';
+								html += '<img  src="../../image/default.jpg"   data-echo="' + imgurl + '" class=" animated fadeIn H-width-100-percent H-display-block H-padding-horizontal-left-10" alt="" title=""   >';
+								html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+							});
 							var obj = $api.byId('main');
-							html += '<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + tracksId + ')">';
-							html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class="  H-width-100-percent H-display-block H-padding-horizontal-left-10" alt="" title=""   >';
-							html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName + '</div></div>';
 							$api.html(obj, html);
 							//							$api.setStorage('list', html);
 							api.hideProgress();
@@ -90,10 +98,10 @@
 								}
 							});
 						});
+						
+//						
 					}
-					//					}
-					//////////////////////////
-					///////////////////////
+					$api.removeCls($api.byId('body'), 'H-display-none');
 				}
 				else {
 					//					api.alert({
@@ -105,15 +113,17 @@
 
 		apiready = function() {
 			findinfo()
-			api.addEventListener({
-				name : 'scrolltobottom',
-				extra : {
-					threshold : 2//设置距离底部多少距离时触发，默认值为0，数字类型
-				}
+			api.setRefreshHeaderInfo({
+				visible : true,
+				bgColor : '#f2f2f2',
+				textColor : '#4d4d4d',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+				showTime : true
 			}, function(ret, err) {
-				api.toast({
-					msg : '没有更多了...'
-				});
+				findinfo()
+				api.hideProgress();
+				api.refreshHeaderLoadDone();
 			});
 		};
 	</script>

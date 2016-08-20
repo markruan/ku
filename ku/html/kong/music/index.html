@@ -72,7 +72,6 @@
 			$api.text($api.byId('song'), song);
 			$api.text($api.byId('artists'), artists);
 		};
-		
 		function pause() {
 			var netAudio = api.require('audio');
 			netAudio.pause();
@@ -84,12 +83,10 @@
 			var song = api.pageParam.song
 			var artists = api.pageParam.artists
 			var mp3 = api.pageParam.mp3
-			 
 			api.getPrefs({
 				key : 'user'
 			}, function(ret, err) {
 				var username = ret.value;
-				 
 				var url = hostUrl + '/addmusic.php';
 				if (ret) {
 					api.ajax({
@@ -101,17 +98,21 @@
 								img : fengmian,
 								song : song,
 								text : text1,
-								artist :artists,
-								mp3:mp3,
-								user:username,
-								type:0
+								artist : artists,
+								mp3 : mp3,
+								user : username,
+								type : 0
 							},
 						}
 					}, function(ret, err) {
-					 
 						if (ret == 1) {
 							api.toast({
 								msg : '发布成功'
+							});
+							var jsfun1 = 'initPage()';
+							api.execScript({
+								frameName : 'quan_index',
+								script : jsfun1
 							});
 							api.closeWin({
 							});
