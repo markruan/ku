@@ -111,14 +111,29 @@
 							});
 							var jsfun1 = 'initPage()';
 							api.execScript({
+								name : 'root',
 								frameName : 'quan_index',
 								script : jsfun1
+							});
+							api.execScript({
+								name : 'root',
+								frameName : 'kong',
+								script : 'openquan()'
+							});
+							api.closeFrame({
+								name : 'kong'
 							});
 							api.closeWin({
 							});
 						} else {
 							api.alert({
 							}, function(ret, err) { msg:'发布失败'
+							});
+							api.execScript({
+								script : 'openquan()'
+							});
+							api.closeFrame({
+								name : 'kong'
 							});
 							api.closeWin({
 							});

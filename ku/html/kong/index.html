@@ -45,6 +45,10 @@
 				var src = evt.target || evt.srcElement;
 				if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
 					closeDropMenu();
+					api.execScript({
+	                    script: 'openquan()'
+                    });
+					
 				}
 			});
 			function addPic() {
@@ -62,7 +66,7 @@
 							url : '../../html/search.html'
 						});
 					} else {
-						alert("登陆后方可评论");
+						alert("登陆后方可操作");
 						api.openWin({
 							name : 'reg_login_win',
 							url : '../../html/entry/entry_head.html',

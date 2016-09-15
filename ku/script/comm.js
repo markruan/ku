@@ -39,7 +39,7 @@ function switchplay(button, mp3) {
 		//					pause(this);
 		api.hideProgress();
 		$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
-		var jsfun = "xunhuan1()";
+		var jsfun = "xunhuan1(this)";
 		api.execScript({
 			name : 'index',
 			script : jsfun
