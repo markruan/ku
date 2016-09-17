@@ -78,9 +78,15 @@
 				}
 
 				function openLogin() {
-					api.openWin({
-						name : 'login',
-						url : 'entry/entry_head.html'
+					api.getPrefs({
+						key : 'user'
+					}, function(ret, err) {
+						if (!ret.value) {
+							api.openWin({
+								name : 'login',
+								url : 'entry/entry_head.html'
+							});
+						}
 					});
 				}
 
@@ -166,43 +172,7 @@
 					});
 				}
 
-				//			function changePerson() {
-				//				api.getPicture({
-				//					sourceType : 'library',
-				//					encodingType : 'png',
-				//					mediaValue : 'pic',
-				//					destinationType : 'url',
-				//					allowEdit : true,
-				//					saveToPhotoAlbum : false
-				//				}, function(ret, err) {
-				//					if (ret) {
-				//						api.showProgress({
-				//							title : ' 上传中...',
-				//							text : '先喝杯茶...',
-				//							modal : false
-				//						}), api.ajax({
-				//							timeout : 300,
-				//							method : 'post',
-				//							url : hostUrl + 'api/upload.php',
-				//							data : {
-				//								files : {
-				//									upfile : ret.data
-				//								},
-				//							},
-				//							dataType : 'text',
-				//						}, function(ret, err) {
-				//							var ttt = hostUrl + 'api/' + ret;
-				//							api.hideProgress();
-				//							var person = $api.byId('imgperson');
-				//							$api.attr(person, 'src', ttt);
-				//						});
-				//					} else {
-				//						api.alert({
-				//							msg : err.msg
-				//						});
-				//					};
-				//				});
-				//			}
+			 
 				function code() {
 					api.prompt({
 						buttons : ['确定', '取消'],

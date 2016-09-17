@@ -98,17 +98,16 @@
 								}
 							});
 						});
-						
-//						
+						//
 					}
-					$api.removeCls($api.byId('body'), 'H-display-none');
-				}
-				else {
+					
+				} else {
 					//					api.alert({
 					//						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
 					//					});
 				};
 			});
+			$api.removeCls($api.byId('body'), 'H-display-none');
 		}
 
 		apiready = function() {
