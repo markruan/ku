@@ -7,10 +7,9 @@
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
 		<style type="text/css">
-		.H-margin-vertical-top-30{
-		margin-top: 185px;
-		
-		}
+			.H-margin-vertical-top-30 {
+				margin-top: 185px;
+			}
 		</style>
 	</head>
 	<script type="text/html" id="tppl">
@@ -27,13 +26,14 @@
 				<div class="picture H-margin-vertical-top-1 H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
 					<span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color9-active" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i onclick="changePerson()" class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span><img id="ico" src="../../image/qq.png" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);" />
 				</div>
-				<div id="name" class="H-display-block H-font-weight-normal H-font-weight-500 H-font-size-18 H-theme-font-color-white H-text-align-center H-margin-vertical-both-8 H-text-show-row-1">酷选</div>
+				<div id="name" class="H-display-block H-font-weight-normal H-font-weight-500 H-font-size-18 H-theme-font-color-white H-text-align-center H-margin-vertical-both-8 H-text-show-row-1">
+					酷选
+				</div>
 				<div class="H-font-size-12 H-theme-font-color-white H-text-show-row-1">
 					聆听音乐，感悟人生
 				</div>
 			</div>
 		</div>
-		 
 		<div class=" H-position-fixed H-margin-vertical-top-30 H-flexbox-horizontal H-theme-background-color-white H-z-index-100" id="tag">
 			<div tapmode="" onclick="setPage(0, 'me.html');" class="H-flex-item H-center-all H-theme-font-color-666 H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16 H-theme-border-color-52ace5 H-theme-font-color-52ace5 H-theme-border-color9 H-theme-font-color9" style="border-width: 0 0 2px  0">
 				我的圈子
@@ -51,7 +51,7 @@
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<script type="text/javascript">
 			H.tppl_flag = ["<%", "%>"];
-			var url = "http://v7idc.com/m/i.php";
+			var url = "http://v7idc.com/m/i1.php";
 			function getIcon() {
 				api.getPrefs({
 					key : 'user'
@@ -169,27 +169,32 @@
 					text : '先喝杯茶...',
 					modal : false
 				})
-				$.ajax({
-					type : "post",
+				var username = api.getPrefs({
+					sync : true,
+					key : 'user'
+				});
+				api.ajax({
 					url : url,
-					dataType : "json",
-					//data : params,
-					success : function(msg) {
-						var playlist = msg
-						var data = {
-							list : msg
-						};
-						var render = H.tppl(H.D("#tppl").innerHTML);
-						H.D(".result").innerHTML = render(data);
-						//						懒加载
-						echo.init({
-							offset : 0,
-							throttle : 350,
-							unload : false,
-							callback : function(element, op) {
-							}
-						});
+					dataType : 'json',
+					data : {
+						values : {
+							username : username,
+						},
 					}
+				}, function(ret, err) {
+					var data = {
+						list : ret
+					};
+					var render = H.tppl(H.D("#tppl").innerHTML);
+					H.D(".result").innerHTML = render(data);
+					//						懒加载
+					echo.init({
+						offset : 0,
+						throttle : 350,
+						unload : false,
+						callback : function(element, op) {
+						}
+					});
 				});
 				api.hideProgress();
 			}
