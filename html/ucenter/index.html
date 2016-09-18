@@ -6,19 +6,40 @@
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
 		<style type="text/css">
 			.H-margin-vertical-top-30 {
 				margin-top: 185px;
 			}
+			.aui-waterfall li {
+				width: 100%;
+				position: relative;
+				display: inline-block;
+				margin-bottom: 1px;
+				-webkit-column-break-inside: avoid;
+			}
 		</style>
 	</head>
-	<script type="text/html" id="tppl">
-		<% for(var i=0; i < list.length; i++){ %>
-		<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
-		<img  data-echo="<%=list[i].cover %>" src="../../image/default.jpg" class="H-width-100-percent H-display-block" alt="" title="">
-		</div>
-		<% } %>
-	</script>
+	<!--<script type="text/html" id="aui-waterfall">
+	<% for(var i=0; i < list.length; i++){ %>
+	<li>
+	<div class="aui-waterfall-header">
+	<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" />
+	</div>
+	<div class="aui-waterfall-body">
+	瀑布流的效果
+	</div>
+	<div class="aui-waterfall-footer">
+	<span class="aui-text-info">
+	流浪男
+	</span>
+	<span class="aui-pull-right">
+	<i class="aui-iconfont aui-icon-likefill aui-text-warning"></i>
+	</span>
+	</div>
+	</li>
+	<% } %>
+	</script>-->
 	<body class="H-flexbox-vertical">
 		<div class="  H-horizontal-center H-theme-background-color-transparent H-overflow-hidden H-position-fixed H-z-index-1000"   >
 			<img   src="../../image/timg.jpg" / style="height: 186px;width: 100%; ">
@@ -44,14 +65,25 @@
 		</div>
 		<!--</header>-->
 		<div class="H-padding-vertical-bottom-2" style="margin-top: 232px"></div>
-		<div id="tppl"  class="result H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5"></div>
+		<div class="aui-content">
+			<ul id="aui-waterfall"  class="  aui-waterfall"   >
+				<li>
+					<div class="aui-waterfall-header"><img data-echo="' + ret[i].cover + '" src="../../image/default.jpg" />
+					</div>
+				</li>
+				<li>
+					<div class="aui-waterfall-header"><img data-echo="' + ret[i].cover + '" src="../../image/default.jpg" />
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--<div id="tppl"  class="result H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5"></div>-->
 		<script type="text/javascript" src="../../script/H.js"></script>
 		<script type="text/javascript" src="../../script/api.js"></script>
 		<script type="text/javascript" src="../../script/echo.min.js"></script>
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script type="text/javascript" src="../../script/aui-waterfall.js"></script>
 		<script type="text/javascript">
 			H.tppl_flag = ["<%", "%>"];
-			var url = "http://v7idc.com/m/i1.php";
 			function getIcon() {
 				api.getPrefs({
 					key : 'user'
@@ -169,32 +201,51 @@
 					text : '先喝杯茶...',
 					modal : false
 				})
-				var username = api.getPrefs({
-					sync : true,
+				var html = ''
+				//				var username = api.getPrefs({
+				//					sync : true,
+				//					key : 'user'
+				//				});
+				api.getPrefs({
 					key : 'user'
-				});
-				api.ajax({
-					url : url,
-					dataType : 'json',
-					data : {
-						values : {
-							username : username,
-						},
-					}
 				}, function(ret, err) {
-					var data = {
-						list : ret
-					};
-					var render = H.tppl(H.D("#tppl").innerHTML);
-					H.D(".result").innerHTML = render(data);
-					//						懒加载
-					echo.init({
-						offset : 0,
-						throttle : 350,
-						unload : false,
-						callback : function(element, op) {
-						}
-					});
+					if (ret.value) {
+						api.ajax({
+							url : hostUrl + '/quann.php',
+							dataType : 'json',
+							method : 'get',
+							data : {
+								values : {
+									username : ret.value
+								}
+							}
+						}, function(ret, err) {
+							var data = {
+								list : ret
+							};
+							for (var i = 0; i < ret.length; i++) {
+								html += '	<li><div class="aui-waterfall-header"><img data-echo="' + ret[i].cover + '" src="../../image/default.jpg" />';
+								html += '	</div>  </li>';
+							}
+							$api.html($api.byId('aui-waterfall'), html);
+							$aui.waterfall($api.byId("aui-waterfall"), {
+								col : 3, //列数
+								padding : 1, //容器内边距
+								space : 2//列间距
+							});
+							//							var render = H.tppl(H.D("#aui-waterfall").innerHTML);
+							//							H.D(".aui-waterfall").innerHTML = render(data);
+							//						懒加载
+							echo.init({
+								offset : 0,
+								throttle : 350,
+								unload : false,
+								callback : function(element, op) {
+								}
+							});
+						});
+					} else {
+					}
 				});
 				api.hideProgress();
 			}

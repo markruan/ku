@@ -112,6 +112,7 @@
 /A6911302258372/html/common_index.html
 /A6911302258372/image/yin/9.png
 /A6915194260483/image/templates/entry_login.jpg
+/A6911302258372/script/aui-waterfall.js
 /A6911302258372/script/comm.js
 /A6911302258372/script/echo.min.js
 /A6911302258372/html/kong/addpic2.html
