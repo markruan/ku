@@ -12,7 +12,7 @@ function getidd() {
 }
 
 function getInfo(id) {
-	  stopAll()
+	stopAll()
 	api.showProgress({
 		title : ' 加载中...',
 		text : '请稍等...',
@@ -43,12 +43,12 @@ function getInfo(id) {
 				$api.setStorage('album', albumpic);
 				//              var controler = $api.byId('controler1');
 				//				$api.attr(controler, 'src', albumpic);
-				//								songCache(bb)
+				songCache(bb)
 
 				//               var controler = $api.byId('controler1');
 				//				$api.attr(controler, 'src', albumpic);
 
-				play(bb)
+				//				play(bb)
 				api.setPrefs({
 					key : 'songid2',
 					value : songsId
@@ -616,7 +616,7 @@ function songCache(mp3) {
 	var cachePath = $api.getStorage('path');
 
 	api.download({
-		savePath : pp,
+		//		savePath : api.cacheDir,
 		url : mp3,
 		report : true,
 		cache : true,
@@ -627,12 +627,13 @@ function songCache(mp3) {
 			var state = ret.state
 			var pers = parseInt(ret.percent)
 			var path = ret.savePath
+
 			$api.setStorage('path', path);
-			setTimeout(api.showProgress({
-				title : '缓存' + pers + '%',
-				text : '先喝杯茶...',
-				modal : false
-			}), 2000);
+			//			setTimeout(api.showProgress({
+			//				title : '缓存' + pers + '%',
+			//				text : '先喝杯茶...',
+			//				modal : false
+			//			}), 2000);
 
 			switch(state) {
 
@@ -643,6 +644,7 @@ function songCache(mp3) {
 					} else {
 						play(mp3);
 						$api.setStorage('play', 0);
+
 						api.toast({
 							msg : '.'
 						});
@@ -651,10 +653,13 @@ function songCache(mp3) {
 					break;
 				default :
 					api.hideProgress();
+
 					var aa = $api.getStorage('play');
+
 					if (aa) {
 
 					} else {
+
 						play(path)
 						api.toast({
 							msg : '缓存播放'
