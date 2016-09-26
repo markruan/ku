@@ -44,9 +44,9 @@
 /A6915194260483/image/templates-imgs/fz1.jpg
 /A6911302258372/res/send_bg.png
 /A6915194260483/image/bg.png
-/A6911302258372/image/yin/13.png
 /A6911302258372/css/api.css
 /A6915194260483/image/more_icon_90.png
+/A6911302258372/image/yin/13.png
 /A6911302258372/html/music/n.html
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/skin.css
 /A6915194260483/res/sqliteDemo.db

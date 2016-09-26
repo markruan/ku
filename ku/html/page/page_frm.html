@@ -16,7 +16,7 @@
 			}
 		</style>
 	</head>
-	<body class="H-display-none" id="body">
+	<body  id="body">
 		<div class="H-padding-vertical-bottom-10"></div>
 		<div id="main" class="H-padding-horizontal-right-10"></div>
 	</body>
@@ -40,7 +40,6 @@
 		}
 
 		function findinfo() {
-			var pageSize = 10;
 			api.showProgress({
 				title : ' 加载中...',
 				text : '先喝杯茶...',
@@ -52,62 +51,58 @@
 				timeout : 30,
 				dataType : 'json',
 				returnAll : false,
-				data : {
-					values : {
-						page : pageSize
-					},
-					//files: {file: 'fs://a.gif'}
-				}
 			}, function(ret, err) {
 				if (ret) {
+				var html = '';
 					for ( i = 0; i < ret.length; i++) {
 						var Idd = ret[i].idd;
-						var html = '';
+						var coverImgUrl = ret[i].imgUrl
+						var tracksName = ret[i].name
+						
 						$api.setStorage('lenpage', ret.length);
-						api.ajax({
-							url : musicUrl + Idd + houZhui,
-							cache : true,
-							dataType : 'json',
-						}, function(ret, err) {
-							var tracksName = ret.result.name;
-							var tracksId = ret.result.id;
-							var avatarUrl = ret.result.creator.avatarUrl;
-							var coverImgUrl = ret.result.coverImgUrl;
-							var nickname = ret.result.creator.nickname;
-							var description = ret.result.description
-							var arr = ret.result.tracks;
-							api.imageCache({
-								url : coverImgUrl
-							}, function(ret, err) {
-								imgurl = ret.url;
-								//							var myobj = eval(arr);
-								html += '<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + tracksId + ')">';
-								html += '<img  src="../../image/default.jpg"   data-echo="' + imgurl + '" class=" animated fadeIn H-width-100-percent H-display-block H-padding-horizontal-left-10" alt="" title=""   >';
-								html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName + '</div></div>';
-							});
-							var obj = $api.byId('main');
-							$api.html(obj, html);
-							//							$api.setStorage('list', html);
-							api.hideProgress();
-							api.refreshHeaderLoadDone();
-							echo.init({
-								offset : 0,
-								throttle : 150,
-								unload : false,
-								callback : function(element, op) {
-								}
-							});
-						});
+						//						api.ajax({
+						//							url : musicUrl + Idd + houZhui,
+						//							cache : true,
+						//							dataType : 'json',
+						//						}, function(ret, err) {
+						//							var tracksName = ret.result.name;
+						//							var tracksId = ret.result.id;
+						//							var avatarUrl = ret.result.creator.avatarUrl;
+						//							var coverImgUrl = ret.result.coverImgUrl;
+						//							var nickname = ret.result.creator.nickname;
+						//							var description = ret.result.description
+						//							var arr = ret.result.tracks;
+						//							api.imageCache({
+						//								url : coverImgUrl
+						//							}, function(ret, err) {
+						//								imgurl = ret.url;
+						//							var myobj = eval(arr);
+						html += '<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + Idd + ')">';
+						html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-padding-horizontal-left-10" alt="" title=""   >';
+						html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+						//							});
+						//							$api.setStorage('list', html);
+						api.hideProgress();
+						api.refreshHeaderLoadDone();
+						//						});
 						//
 					}
-					
+					var obj = $api.byId('main');
+					$api.html(obj, html);
+					echo.init({
+						offset : 0,
+						throttle : 150,
+						unload : false,
+						callback : function(element, op) {
+						}
+					});
+					$api.removeCls($api.byId('body'), 'H-display-none');
 				} else {
 					//					api.alert({
 					//						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
 					//					});
 				};
 			});
-			$api.removeCls($api.byId('body'), 'H-display-none');
 		}
 
 		apiready = function() {
