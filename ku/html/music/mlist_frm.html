@@ -676,7 +676,8 @@
 				//				vScrollBarEnabled : false,
 				pageParam : {
 					name : el
-				}
+				},
+				 delay:500
 			});
 		};
 		function openComm(type) {
@@ -715,7 +716,6 @@
 		}
 
 		function getCommCount(id, type) {
-			 
 			api.ajax({
 				url : hostUrl + '/comm.php',
 				method : 'get',
@@ -734,9 +734,9 @@
 					strCont = '<div class="num">' + cout + '</div>';
 					$api.byId('CommCount').innerHTML = strCont;
 				} else {
-//					api.alert({
-//						msg : JSON.stringify(err)
-//					});
+					//					api.alert({
+					//						msg : JSON.stringify(err)
+					//					});
 				}
 			});
 		}
