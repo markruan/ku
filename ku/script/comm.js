@@ -8,7 +8,8 @@ function switchplay(button, mp3) {
 		}
 		button.setAttribute("data-click", 1);
 		//		pauseAll()
-		stop();
+		var audio = api.require('audioPlayer');
+		audio.stop();
 		play(mp3)
 
 		var jsfun = "xunhuan()";
@@ -35,7 +36,8 @@ function switchplay(button, mp3) {
 	} else {
 		// 关闭
 		button.setAttribute("data-click", 0);
-		stop();
+		var audio = api.require('audioPlayer');
+		audio.stop();
 		//					pause(this);
 		api.hideProgress();
 		$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
@@ -52,8 +54,8 @@ function switchplay(button, mp3) {
 	//			}
 }
 
-function stop() {
-	var audio = api.require('audio');
+function stop1() {
+	var audio = api.require('audioPlayer');
 	audio.stop();
 
 }
@@ -63,8 +65,8 @@ function play(mp3) {
 		msg : '开始播放'
 	});
 	var iii = $api.byId('playI');
-	var netAudio = api.require('audio');
-	netAudio.play({
+	var netAudio = api.require('audioPlayer');
+	netAudio.initPlayer({
 		path : mp3
 	}, function(ret, err) {
 
@@ -90,11 +92,9 @@ function play(mp3) {
 }
 
 function pause() {
-	var netAudio = api.require('audio');
+	var netAudio = api.require('audioPlayer');
 	netAudio.pause();
 }
-
-
 
 function openPhoto(url) {
 

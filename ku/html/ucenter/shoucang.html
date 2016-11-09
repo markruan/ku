@@ -22,7 +22,7 @@
 		<% } %>
 	</script>
 	<body>
-		<div class="result"></div>
+		<div class="result" id="list"></div>
 	</body>
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript" src="../../script/api.js"></script>
@@ -50,11 +50,14 @@
 					},
 				}
 			}, function(ret, err) {
+			
+			 if(ret){
 				var data = {
 					list : ret
 				};
 				var render = H.tppl(H.D("#tppl").innerHTML);
 				H.D(".result").innerHTML = render(data);
+				
 				//						懒加载
 				echo.init({
 					offset : 0,
@@ -63,6 +66,11 @@
 					callback : function(element, op) {
 					}
 				});
+				
+				}else{
+				 var html='暂无信息'
+				$api.html($api.byId("list"), html)
+				}
 			});
 			api.hideProgress();
 		}

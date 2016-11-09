@@ -20,26 +20,6 @@
 			}
 		</style>
 	</head>
-	<!--<script type="text/html" id="aui-waterfall">
-	<% for(var i=0; i < list.length; i++){ %>
-	<li>
-	<div class="aui-waterfall-header">
-	<img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" />
-	</div>
-	<div class="aui-waterfall-body">
-	瀑布流的效果
-	</div>
-	<div class="aui-waterfall-footer">
-	<span class="aui-text-info">
-	流浪男
-	</span>
-	<span class="aui-pull-right">
-	<i class="aui-iconfont aui-icon-likefill aui-text-warning"></i>
-	</span>
-	</div>
-	</li>
-	<% } %>
-	</script>-->
 	<body class="H-flexbox-vertical">
 		<div class="  H-horizontal-center H-theme-background-color-transparent H-overflow-hidden H-position-fixed H-z-index-1000"   >
 			<img   src="../../image/timg.jpg" / style="height: 186px;width: 100%; ">
@@ -67,14 +47,7 @@
 		<div class="H-padding-vertical-bottom-2" style="margin-top: 232px"></div>
 		<div class="aui-content">
 			<ul id="aui-waterfall"  class="  aui-waterfall"   >
-				<li>
-					<div class="aui-waterfall-header"><img data-echo="' + ret[i].cover + '" src="../../image/default.jpg" />
-					</div>
-				</li>
-				<li>
-					<div class="aui-waterfall-header"><img data-echo="' + ret[i].cover + '" src="../../image/default.jpg" />
-					</div>
-				</li>
+				 
 			</ul>
 		</div>
 		<!--<div id="tppl"  class="result H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5"></div>-->
@@ -202,10 +175,6 @@
 					modal : false
 				})
 				var html = ''
-				//				var username = api.getPrefs({
-				//					sync : true,
-				//					key : 'user'
-				//				});
 				api.getPrefs({
 					key : 'user'
 				}, function(ret, err) {
@@ -245,6 +214,8 @@
 							});
 						});
 					} else {
+						var html = '暂无信息'
+						$api.html($api.byId("aui-waterfall"), html)
 					}
 				});
 				api.hideProgress();
