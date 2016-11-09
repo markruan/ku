@@ -12,7 +12,7 @@
 			}
 			.controler-bg {
 				width: 100%;
-				position: absolute;
+				/*position: absolute;*/
 				/*图片模糊*/
 				/*-webkit-filter: blur(30px);
 				 max-height: 300px;*/
@@ -58,12 +58,16 @@
 				appearance: none !important;
 				-webkit-appearance: none !important;
 			}
+			.H-theme-font-color-white{
+				color: #999
+			}
 		</style>
 	</head>
 	<body >
+	    
 		<div class="controler " >
 			<!--<img id="controler1" class="controler-bg H-center-all H-z-index-1" src="../../image/default.jpg" />-->
-			<img id="men" class="controler-bg H-center-all H-z-index-2" src="../../image/xia1.png" />
+			<!--<img id="men" class="controler-bg H-center-all H-z-index-2" src="../../image/xia1.png" />-->
 			<div id="slider" class="H-padding-horizontal-both-0  " >
 				<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem; ">0:00</span>
 				<input id="hua" type="range" class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >
@@ -329,8 +333,6 @@
 			getidd()
 			getInfo(idd)
 			$api.setStorage('PlayAll', 'a')
- 
-			 
 		}
 	</script>
 </html>

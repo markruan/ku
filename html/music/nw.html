@@ -8,24 +8,28 @@
 		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
 		<style>
 			.play-up-bg {
-				width: 100%;
+				margin: 0 auto;
+				padding-top:30px;
+				width: 60%;
 				height: 60%;
-				/*height: 430px;*/
-				position: absolute;
+				/*position: absolute;*/
 				/*图片模糊*/
 				/*-webkit-filter: blur(4px);*/ /* Chrome, Opera */
+			}
+			.H-theme-font-color-white {
+				color: #999
 			}
 		</style>
 	</head>
 	<body>
-		<div ><img id="bg" src="../../image/default.jpg" alt="" class="play-up-bg">
-			<img id="bg" src="../../image/shang.png" alt="" class="play-up-bg">
-		</div>
 		<header class="H-header "  id="header" >
 			<span tapmode="" onclick="goback()" class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="H-iconfont H-icon-arrow-left H-font-size-18 H-vertical-middle"></i><label class="H-display-block H-vertical-middle H-font-size-15">返回</label></span>
-			 
 			<span class="H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-15 H-z-index-100"><i class="iconfont icon-gengduo  H-font-size-18 H-vertical-middle"></i></span>
 		</header>
+		<div >
+			<img id="bg" src="../../image/default.jpg" alt="" class="play-up-bg H-center-all">
+			<!--<img id="bg" src="../../image/shang.png" alt="" class="play-up-bg" >-->
+		</div>
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript">
@@ -43,8 +47,7 @@
 		}
 
 		apiready = function() {
-		 
-		 $api.fixStatusBar($api.byId('header'));
+			$api.fixStatusBar($api.byId('header'));
 			api.addEventListener({
 				name : 'min'
 			}, function(ret, err) {
