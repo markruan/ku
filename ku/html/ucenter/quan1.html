@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../../css/Hui.css"/>
+		<style>
+			html, body {
+			}
+		</style>
+	</head>
+	<script type="text/html" id="tppl">
+		<% for(var i=0; i < list.length; i++){ %>
+		<div class=" H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
+		<div class="H-padding-vertical-both-10"><img data-echo="<%=list[i].cover %>" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10" style="width: 70px; height: 70px;"></div>
+		<div class="H-flex-item H-padding-10">
+		<strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block"><%=list[i].title %>-<%=list[i].artist %></strong>
+		<div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-2">  <%=list[i].signature %></div>
+		</div>
+		</div>
+		<% } %>
+	</script>
+	<body>
+		<div class="result" id="list"></div>
+	</body>
+	<script type="text/javascript" src="../../script/H.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script type="text/javascript">
+		H.tppl_flag = ["<%", "%>"];
+		var url =  hostUrl + '/quann.php';
+		function initPage() {
+			api.showProgress({
+				title : ' 加载中...',
+				text : '先喝杯茶...',
+				modal : false
+			})
+			var username = api.getPrefs({
+				sync : true,
+				key : 'user'
+			});
+			api.ajax({
+				url : url,
+				dataType : 'json',
+				data : {
+					values : {
+						username : username,
+					},
+				}
+			}, function(ret, err) {
+			
+			 if(ret){
+				var data = {
+					list : ret
+				};
+				var render = H.tppl(H.D("#tppl").innerHTML);
+				H.D(".result").innerHTML = render(data);
+				
+				//						懒加载
+				echo.init({
+					offset : 0,
+					throttle : 350,
+					unload : false,
+					callback : function(element, op) {
+					}
+				});
+				
+				}else{
+				 var html='暂无信息'
+				$api.html($api.byId("list"), html)
+				}
+			});
+			api.hideProgress();
+		}
+
+
+		H.ready(function() {
+			initPage()
+		});
+	</script>
+</html>
