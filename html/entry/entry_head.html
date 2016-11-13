@@ -62,6 +62,7 @@
 		</div>
 		<script src="../../script/H.js" type="text/javascript"></script>
 		<script src="../../script/api.js" type="text/javascript"></script>
+		<script src="../../script/play.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			//			var username = $api.val($api.byId('name'), val);
 			//			var psw = $api.val($api.byId('password'), val);
@@ -104,6 +105,7 @@
 									key : 'user',
 									value : nameVal
 								});
+								getIcon(nameVal)
 								api.sendEvent({
 									name : 'reg_login_successEvent',
 									extra : {
@@ -123,6 +125,33 @@
 						});
 					}
 				}
+			}
+			function getIcon(name) {
+				api.ajax({
+					url : hostUrl + '/userinfo.php',
+					dataType : 'json',
+					data : {
+						values : {
+							name : name
+						}
+					}
+				}, function(ret, err) {
+					if (ret) {
+						api.imageCache({
+							url : ret[0].pic,
+						}, function(ret, err) {
+							if (ret) {
+								icon = ret.url;
+								var userinfo = {}
+								userinfo.icon = icon
+								userinfo.name = name
+								console.log(icon)
+								$api.setStorage('userinfo1', userinfo);
+							}
+						});
+					} else {
+					}
+				});
 			}
 		</script>
 	</body>

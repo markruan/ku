@@ -61,6 +61,8 @@
 		<script src="../../script/H.js" type="text/javascript"></script>
 		<script src="../../script/api.js" type="text/javascript"></script>
 		<script type="text/javascript">
+		
+
 			function getIcon() {
 				api.getPrefs({
 					key : 'user'
@@ -81,17 +83,14 @@
 								var icon = ret[0].pic
 								var person = $api.byId('ico');
 								$api.attr(person, 'src', icon);
-								 
 							} else {
 							}
 						});
 					} else {
-					
-					api.openFrame({
-	                    name: 'ucenter',
-	                    reload:'true'
-	                     
-                    });
+						api.openFrame({
+							name : 'ucenter',
+							reload : 'true'
+						});
 					}
 				});
 			}
@@ -148,6 +147,7 @@
 			}
 
 			apiready = function() {
+			    init()
 				getIcon()
 				api.addEventListener({
 					name : 'reg_login_successEvent'
