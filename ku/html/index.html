@@ -73,11 +73,11 @@
 					<strong class="H-font-size-12 H-display-block H-font-weight-normal H-margin-vertical-top-3">推荐</strong>
 				</div>
 			</div>
-			<div   id="kong" class="  H-flex-item H-center-all H-text-align-center H-theme-font-color-color3 H-touch-active swipe-item">
+			<!--<div   id="kong" class="  H-flex-item H-center-all H-text-align-center H-theme-font-color-color3 H-touch-active swipe-item">
 				<div  >
 					<span class=" H-icon H-display-block H-line-height-normal H-center-all H-theme-background-color5 H-border-radius-circle" style="height:44px;width:44px;"><i class="H-iconfont H-icon-add H-font-size-26 H-theme-font-color-white "></i></span>
 				</div>
-			</div>
+			</div>-->
 			<div class="H-flex-item H-center-all H-text-align-center  H-theme-font-color-999 H-touch-active swipe-item">
 				<div>
 					<span class="H-icon H-display-block H-line-height-normal"><i class="H-iconfont H-icon-bbs H-font-size-24"></i></span>
@@ -227,7 +227,7 @@
 				}
 			});
 			function openquan() {
-				intt(3)
+				intt(0)
 			}
 
 			function intt(index) {
@@ -237,19 +237,21 @@
 					header : "#common_header"
 				}, {
 					name : "tui_index",
-					url : "../html/tui/index.html",
-					header : "#tui_header"
-				}, {
-					name : "kong",
 					url : "../html/kong/index.html",
-					header : "#add_header",
-					rect : {
-						x : 0,
-						y : 0,
-						w : api.winWidth,
-						h : api.winHeight
-					}
-				}, {
+					header : "#tui_header"
+				},
+//				 {
+//					name : "kong",
+//					url : "../html/kong/index.html",
+//					header : "#add_header",
+//					rect : {
+//						x : 0,
+//						y : 0,
+//						w : api.winWidth,
+//						h : api.winHeight
+//					}
+//				},
+				 {
 					name : "quan_index",
 					url : "../html/quan/index.html",
 					header : "#about_hui_header"
