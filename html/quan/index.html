@@ -110,16 +110,15 @@
 			H.tppl_flag = ["<%", "%>"];
 			var url = hostUrl + '/quan.php';
 			function initPage() {
-				//				api.showProgress({
-				//					title : ' 加载中...',
-				//					text : '先喝杯茶...',
-				//					modal : false
-				//				})
+				api.showProgress({
+					title : ' 加载中...',
+					text : '先喝杯茶...',
+					modal : false
+				})
 				api.ajax({
 					url : url,
 					dataType : 'json',
 					method : 'get',
-					 
 				}, function(ret, err) {
 					var playlist = ret
 					var data = {
@@ -136,63 +135,61 @@
 						}
 					});
 				});
-				//				api.hideProgress();
-				var uiloading = api.require('UILoading');
-				uiloading.closeKeyFrame();
+				api.hideProgress();
 			}
 
 			apiready = function() {
-				var activity = api.require('UILoading');
-				activity.keyFrame({
-					rect : {
-						w : 80,
-						h : 100
-					},
-					content : [{
-						frame : 'widget://image/yin/1.png'
-					}, {
-						frame : 'widget://image/yin/2.png'
-					}, {
-						frame : 'widget://image/yin/3.png'
-					}, {
-						frame : 'widget://image/yin/4.png'
-					}, {
-						frame : 'widget://image/yin/5.png'
-					}, {
-						frame : 'widget://image/yin/6.png'
-					}, {
-						frame : 'widget://image/yin/7.png'
-					}, {
-						frame : 'widget://image/yin/8.png'
-					}, {
-						frame : 'widget://image/yin/9.png'
-					}, {
-						frame : 'widget://image/yin/10.png'
-					}, {
-						frame : 'widget://image/yin/11.png'
-					}, {
-						frame : 'widget://image/yin/12.png'
-					}, {
-						frame : 'widget://image/yin/13.png'
-					}, {
-						frame : 'widget://image/yin/15.png'
-					}, {
-						frame : 'widget://image/yin/15.png'
-					}, {
-						frame : 'widget://image/yin/16.png'
-					}],
-					styles : {
-						bg : 'rgba(0,0,0,0.5)',
-						corner : 5,
-						interval : 100,
-						frame : {
-							w : 80,
-							h : 80
-						}
-					}
-				}, function(ret) {
-					alert(JSON.stringify(ret));
-				});
+//				var activity = api.require('UILoading');
+//				activity.keyFrame({
+//					rect : {
+//						w : 80,
+//						h : 100
+//					},
+//					content : [{
+//						frame : 'widget://image/yin/1.png'
+//					}, {
+//						frame : 'widget://image/yin/2.png'
+//					}, {
+//						frame : 'widget://image/yin/3.png'
+//					}, {
+//						frame : 'widget://image/yin/4.png'
+//					}, {
+//						frame : 'widget://image/yin/5.png'
+//					}, {
+//						frame : 'widget://image/yin/6.png'
+//					}, {
+//						frame : 'widget://image/yin/7.png'
+//					}, {
+//						frame : 'widget://image/yin/8.png'
+//					}, {
+//						frame : 'widget://image/yin/9.png'
+//					}, {
+//						frame : 'widget://image/yin/10.png'
+//					}, {
+//						frame : 'widget://image/yin/11.png'
+//					}, {
+//						frame : 'widget://image/yin/12.png'
+//					}, {
+//						frame : 'widget://image/yin/13.png'
+//					}, {
+//						frame : 'widget://image/yin/15.png'
+//					}, {
+//						frame : 'widget://image/yin/15.png'
+//					}, {
+//						frame : 'widget://image/yin/16.png'
+//					}],
+//					styles : {
+//						bg : 'rgba(0,0,0,0.5)',
+//						corner : 5,
+//						interval : 100,
+//						frame : {
+//							w : 80,
+//							h : 80
+//						}
+//					}
+//				}, function(ret) {
+//					alert(JSON.stringify(ret));
+//				});
 				initPage()
 				api.setRefreshHeaderInfo({
 					visible : true,

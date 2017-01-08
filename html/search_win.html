@@ -30,11 +30,13 @@
 			this.style.cssText = "display:none;";
 			H.D(".btn").removeAttribute("style");
 			H.D("#ipt").setAttribute("placeholder", "请输入关键字");
+			
 		});
 		H.D(".btn").addEventListener("touchend", function(e) {
 			this.style.cssText = "display:none;";
 			H.D("#ipt").setAttribute("placeholder", "");
 			H.D("#ser").removeAttribute("style");
+			$api.val($api.byId('ipt'), '');
 		});
 		function OnInput(event) {
 			//          alert ( + event.target.value);

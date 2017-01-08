@@ -32,7 +32,7 @@
 
 		function addpic() {
 			var text1 = $api.val($api.byId("feed_text"));
-			var img1 = api.pageParam.name
+			var img1 = $api.attr($api.byId('img1'), 'src');
 			api.showProgress({
 				title : ' 上传中...',
 				text : '先喝杯茶...',
@@ -80,13 +80,11 @@
 									script : jsfun1
 								});
 								api.execScript({
-									name : 'root',
-									frameName : 'kong',
 									script : 'openquan()'
 								});
-								api.closeFrame({
-									name : 'kong'
-								});
+								//								api.closeFrame({
+								//									name : 'kong'
+								//								});
 								api.closeWin({
 								});
 							} else {
@@ -113,123 +111,20 @@
 		}
 
 		apiready = function() {
-			$api.attr($api.byId('img1'), 'src', api.pageParam.name);
+			//			$api.attr($api.byId('img1'), 'src', api.pageParam.name);
+			openImageClipFrame(api.pageParam.name);
+			api.addEventListener({
+				name : 'myEvent'
+			}, function(ret, err) {
+				$api.attr($api.byId('img1'), 'src', ret.value.img_path);
+			});
 		};
-		/**
-		 * 获取头像
-		 * 周枫
-		 * 2016.1.16
-		 */
-		function getPicture() {
-			isOnLineStatus(function(is_true, line_type) {
-				if (is_true) {
-					if (line_type == 'wifi' || line_type == '4g') {
-						api.confirm({
-							title : "提示",
-							msg : "您需要如何选择自己的头像？",
-							buttons : ["现在照", "相册选", "取消"]
-						}, function(ret, err) {
-							//定义图片来源类型
-							var sourceType;
-							if (1 == ret.buttonIndex) {/* 打开相机*/
-								sourceType = "camera";
-								openPicture(sourceType);
-							} else if (2 == ret.buttonIndex) {
-								sourceType = "album";
-								openPicture(sourceType);
-							} else {
-								return;
-							}
-						});
-					} else {
-						api.confirm({
-							title : "提示",
-							msg : "您当前正在使用" + line_type + "网络，建议您在wifi网络下使用，是否继续？",
-							buttons : ["继续", "取消"]
-						}, function(ret, err) {
-							var sourceType;
-							if (1 == ret.buttonIndex) {
-								api.confirm({
-									title : "提示",
-									msg : "您需要如何选择自己的头像？",
-									buttons : ["现在照", "相册选", "取消"]
-								}, function(ret, err) {
-									//定义图片来源类型
-									var sourceType;
-									if (1 == ret.buttonIndex) {/* 打开相机*/
-										sourceType = "camera";
-										openPicture(sourceType);
-									} else if (2 == ret.buttonIndex) {
-										sourceType = "album";
-										openPicture(sourceType);
-									} else {
-										return;
-									}
-								});
-							} else {
-								return;
-							}
-						});
-					}
-				} else {
-					api.toast({
-						msg : '请连接网络后使用当前功能~'
-					});
-				}
-			});
-		}
-
-		/**
-		 * 选取图片
-		 * 周枫
-		 * 2016.1.16
-		 */
-		function openPicture(sourceType) {
-			isOnLineStatus(function(is_true, line_type) {
-				var q = 50;
-				if (line_type == 'wifi') {
-					q = 80;
-				} else {
-					q = 30;
-				}
-				//获取一张图片
-				api.getPicture({
-					sourceType : sourceType,
-					encodingType : 'png',
-					mediaValue : 'pic',
-					//返回数据类型，指定返回图片地址或图片经过base64编码后的字符串
-					//base64:指定返回数据为base64编码后内容,url:指定返回数据为选取的图片地址
-					destinationType : 'url',
-					//是否可以选择图片后进行编辑，支持iOS及部分安卓手机
-					allowEdit : false,
-					//图片质量，只针对jpg格式图片（0-100整数）,默认值：50
-					quality : q,
-					//                targetWidth : 100,
-					//                targetHeight : 1280,
-					saveToPhotoAlbum : true
-				}, function(ret, err) {
-					if (ret) {
-						/*
-						 * data:"",                //图片路径
-						 base64Data:"",          //base64数据，destinationType为base64时返回
-						 */
-						var img_url = ret.data;
-						if (img_url != "") {
-							//打开裁剪frame
-							//							openImageClipFrame(img_url);
-							$api.attr($api.byId('img1'), 'src', img_url);
-						}
-					}
-				});
-			});
-		}
-
 		function openImageClipFrame(img_src) {
 			api.openFrame({
 				name : 'tu',
 				scrollToTop : true,
 				allowEdit : true,
-				url : '../tu.html',
+				url : 'tu.html',
 				rect : {
 					x : 0,
 					y : 0,

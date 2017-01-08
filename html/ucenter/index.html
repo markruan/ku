@@ -258,8 +258,16 @@
 
 			function init() {
 				var userinfo = $api.getStorage('userinfo1');
+				if(!userinfo){
+				
+				var name = '未登录'
+				var icon = 'widget://image/FM.jpg'
+				}else{
 				var name = userinfo.name
 				var icon = userinfo.icon
+				
+				}
+				
 				var personalCenter = api.require('personalCenter');
 				var btnArray = [{
 					'bgImg' : 'widget://res/personalCenter/personal_btn_nor.png',
