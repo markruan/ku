@@ -119,9 +119,6 @@
 						api.ajax({
 							url : hostUrl + '/reg.php',
 							method : 'post',
-							timeout : 30,
-							dataType : 'text',
-							returnAll : false,
 							data : {
 								values : {
 									username : nameVal,
@@ -132,10 +129,12 @@
 								},
 							}
 						}, function(ret, err) {
-							if (ret == 0) {
+							 
+							if (ret.status == 1) {
 								api.toast({
-									msg : '注册成功'
+									msg : ret.msg
 								});
+								$api.setStorage('userinfo', ret.userdata);
 								api.setPrefs({
 									key : 'user',
 									value : nameVal
@@ -150,7 +149,7 @@
 									name : 'slidLayout'
 								})
 							} else {
-								alert("用户名已被注册 ");
+								alert(ret.msg);
 							}
 						});
 					}
