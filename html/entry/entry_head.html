@@ -34,7 +34,7 @@
 				</div>
 				<div class="H-padding-15 H-margin-vertical-top-10" >
 					<button id="login" class="H-button H-width-100-percent  H-font-size-15 H-outline-none H-padding-vertical-both-15 H-padding-horizontal-both-20 H-theme-background-color9 H-theme-font-color-white H-theme-border-color9 H-theme-border-color9-click H-theme-background-color9-click H-theme-font-color9-click H-border-radius-3">
-						登录提交
+						登录
 					</button>
 				</div>
 				<div class="H-margin-horizontal-both-15">
@@ -87,9 +87,6 @@
 						api.ajax({
 							url : hostUrl + '/login.php',
 							method : 'post',
-							timeout : 30,
-							dataType : 'text',
-							returnAll : false,
 							data : {
 								values : {
 									username : nameVal,
@@ -97,15 +94,15 @@
 								},
 							}
 						}, function(ret, err) {
-							if (ret == 1) {
+							if (ret.status == 1) {
 								api.toast({
-									msg : '登陆成功'
+									msg : ret.msg
 								});
+								$api.setStorage('userinfo', ret.userdata);
 								api.setPrefs({
 									key : 'user',
 									value : nameVal
 								});
-								getIcon(nameVal)
 								api.sendEvent({
 									name : 'reg_login_successEvent',
 									extra : {
@@ -120,38 +117,11 @@
 									name : 'my_win'
 								});
 							} else {
-								alert("用户名或密码错误 ");
+								alert(ret.msg);
 							}
 						});
 					}
 				}
-			}
-			function getIcon(name) {
-				api.ajax({
-					url : hostUrl + '/userinfo.php',
-					dataType : 'json',
-					data : {
-						values : {
-							name : name
-						}
-					}
-				}, function(ret, err) {
-					if (ret) {
-						api.imageCache({
-							url : ret[0].pic,
-						}, function(ret, err) {
-							if (ret) {
-								icon = ret.url;
-								var userinfo = {}
-								userinfo.icon = icon
-								userinfo.name = name
-								console.log(icon)
-								$api.setStorage('userinfo1', userinfo);
-							}
-						});
-					} else {
-					}
-				});
 			}
 		</script>
 	</body>

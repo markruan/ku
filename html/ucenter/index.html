@@ -195,12 +195,15 @@
 				api.addEventListener({
 					name : 'reg_login_successEvent'
 				}, function(ret, err) {
-					getIcon()
+					 
+					init()
+					 
 				});
 				api.addEventListener({
 					name : 'zhuxiao'
 				}, function(ret, err) {
-					getIcon()
+				 
+					 init() 
 				});
 			});
 			function initPage() {
@@ -255,16 +258,16 @@
 				});
 				api.hideProgress();
 			}
-
+			
 			function init() {
-				var userinfo = $api.getStorage('userinfo1');
+				var userinfo = $api.getStorage('userinfo');
 				if(!userinfo){
 				
 				var name = '未登录'
 				var icon = 'widget://image/FM.jpg'
 				}else{
-				var name = userinfo.name
-				var icon = userinfo.icon
+				var name = userinfo.nickname
+				var icon = userinfo.pic
 				
 				}
 				
@@ -354,15 +357,16 @@
 					}
 					if(ret.click==0){
 					
-					H.openWin('quan_head', 'quan_head.html')
+					   H.openWin('quan_head', 'quan_head.html')
 					}else{
-					H.openWin('shoucang_head', 'shou_head.html')
+					   H.openWin('shoucang_head', 'shou_head.html')
 					}
 					
 					 
  
 				});
 			}
+			 
 		</script>
 	</body>
 </html>
