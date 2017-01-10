@@ -81,6 +81,7 @@ function getInfo(id) {
 				music.art = artists;
 				music.url = bb;
 				music.pic = albumpic;
+				music.sid=songsId
 				$api.setStorage('kee', music);
 				var aa = $api.byId('title1');
 				var bb = $api.byId('titleName')
@@ -118,7 +119,12 @@ function play(mp3) {
 		frameName : 'tui_index',
 		script : jsfun
 	});
-
+	api.sendEvent({
+		name : 'playing'
+	});
+	api.sendEvent({
+		name : 'stopmusic'
+	});
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
@@ -320,30 +326,24 @@ function kai() {
 }
 
 function quXiaoShouCang() {
-	music = $api.getStorage('kee');
-	var songName = music.name;
+	 
 
-	api.getPrefs({
-		key : 'user'
-	}, function(ret, err) {
-		user = ret.value
-	});
+	 
 	api.getPrefs({
 		key : 'songid2'
 	}, function(ret, err) {
-		sidd = ret.value
+		sid = ret.value
 
 		api.ajax({
-			url : 'http://v7idc.com/m/quxiao.php',
+			url : hostUrl + '/quxiao.php',
 			method : 'post',
 			cache : false,
 			timeout : 30,
 			dataType : 'text',
 			data : {
 				values : {
-					user : user,
-					songName : songName,
-					sid : sidd,
+					 uid:$api.getStorage('userinfo').data_id,
+					 sid : sid,
 
 				}
 			}
@@ -367,16 +367,14 @@ function shouCang() {
 	var artists = music.art;
 	var songName = music.name;
 	var albumpic = music.pic;
+	var sid=music.sid
 
 	api.getPrefs({
 		key : 'user'
 	}, function(ret, err) {
 		user = ret.value
 	});
-	api.getPrefs({
-		key : 'songid2'
-	}, function(ret, err) {
-		var sid = ret.value
+	 
 		api.ajax({
 			url : hostUrl + '/mylist.php',
 			method : 'post',
@@ -386,32 +384,35 @@ function shouCang() {
 			data : {
 				values : {
 					sid : sid,
-					username : user
+//					username : user,
+					uid : $api.getStorage('userinfo').data_id
 				}
 			}
 		}, function(ret, err) {
+		alert(ret)
 			if (ret == 1) {
 
 				api.ajax({
-					url : shouUrl,
+					url : hostUrl + '/addm.php',
 					method : 'post',
 					cache : true,
 					timeout : 30,
 					dataType : 'json',
 					data : {
 						values : {
-							mp3 : bb,
-							artist : artists,
-							title : songName,
-							poster : albumpic,
-							user : user,
-							background : albumpic,
-							cover : albumpic,
-							//							usericon: userIcon
+								mp3 : musicUrl,
+										artist : artists,
+										title : songName,
+										poster : albumpic,
+										user : user,
+										uid : $api.getStorage('userinfo').data_id,
+										background : albumpic,
+										cover : albumpic,
+										sid:sid
 						}
 					}
 				}, function(ret, err) {
-					//coding...
+					 
 				});
 
 				api.toast({
@@ -439,7 +440,7 @@ function shouCang() {
 			//coding...
 		});
 		////////////////
-	});
+	 
 }
 
 /**

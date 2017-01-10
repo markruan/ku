@@ -51,7 +51,8 @@
 					data : {
 						values : {
 							ID : id,
-							type : type
+							type : type,
+							uid:$api.getStorage('userinfo').data_id
 						}
 					}
 				}, function(ret, err) {
@@ -120,7 +121,8 @@
 								username : username,
 								content : imsg,
 								time : timer,
-								type : type
+								type : type,
+								uid:$api.getStorage('userinfo').data_id
 							},
 						}
 					}, function(ret, err) {

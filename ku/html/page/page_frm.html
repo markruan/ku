@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="../../script/echo.min.js"></script>
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript">
+		var page = 0;
 		function openMusicList(id) {
 			api.openWin({
 				name : 'musiclist',
@@ -39,34 +40,40 @@
 			});
 		}
 
-		function findinfo() {
+		function findinfo(page) {
 			api.showProgress({
 				title : ' 加载中...',
 				text : '先喝杯茶...',
 				modal : false
 			})
 			api.ajax({
-				url : hostUrl + '/ku.php',
+				url : hostUrl + '/fen.php',
 				method : 'post',
-				timeout : 30,
-				dataType : 'json',
-				returnAll : false,
+				data : {
+					values : {
+						page : page * 10
+					},
+				}
 			}, function(ret, err) {
 				if (ret) {
 					var html = '';
 					for ( i = 0; i < ret.length; i++) {
 						var Idd = ret[i].idd;
-						var coverImgUrl = ret[i].imgUrl
+						var coverImgUrl =imageCache(ret[i].imgUrl ) 
 						var tracksName = ret[i].name
 						$api.setStorage('lenpage', ret.length);
-						html += '<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + Idd + ')">';
+						html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + Idd + ')">';
 						html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-padding-horizontal-left-10" alt="" title=""   >';
 						html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName + '</div></div>';
 						api.hideProgress();
 						api.refreshHeaderLoadDone();
 					}
 					var obj = $api.byId('main');
-					$api.html(obj, html);
+					if (page == 0) {
+						$api.html(obj, html);
+					} else {
+						$api.after($api.last(obj), html);
+					}
 					echo.init({
 						offset : 0,
 						throttle : 150,
@@ -76,6 +83,11 @@
 					});
 					$api.removeCls($api.byId('body'), 'H-display-none');
 				} else {
+					api.toast({
+						msg : '没有更多了'
+					});
+					api.hideProgress();
+						api.refreshHeaderLoadDone();
 					//					api.alert({
 					//						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
 					//					});
@@ -84,7 +96,7 @@
 		}
 
 		apiready = function() {
-			findinfo()
+			findinfo(page)
 			api.setRefreshHeaderInfo({
 				visible : true,
 				bgColor : '#f2f2f2',
@@ -93,9 +105,18 @@
 				textUp : '松开刷新...',
 				showTime : true
 			}, function(ret, err) {
-				findinfo()
+				findinfo(page)
 				api.hideProgress();
 				api.refreshHeaderLoadDone();
+			});
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 150 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				page++
+				findinfo(page)
 			});
 		};
 	</script>

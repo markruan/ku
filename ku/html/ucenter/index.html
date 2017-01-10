@@ -21,8 +21,8 @@
 		</style>
 	</head>
 	<body class="H-flexbox-vertical">
-		<!--<div class="  H-horizontal-center H-theme-background-color-transparent H-overflow-hidden H-position-fixed H-z-index-1000"   >
-		<img   src="../../image/timg.jpg" / style="height: 186px;width: 100%; ">
+		 <div class="  H-horizontal-center H-theme-background-color-transparent H-overflow-hidden H-position-fixed H-z-index-1000"   >
+		<img   src="../../image/timg.jpg" / style="height: 221px;width: 100%; ">
 		<div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box   "style="position: absolute;top:20px; margin-left: 33%; ">
 		<div class="picture H-margin-vertical-top-1 H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
 		<span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color9-active" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i onclick="changePerson()" class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span><img id="ico" src="../../image/qq.png" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);" />
@@ -35,15 +35,8 @@
 		</div>
 		</div>
 		</div>
-		<div class=" H-position-fixed H-margin-vertical-top-30 H-flexbox-horizontal H-theme-background-color-white H-z-index-100" id="tag">
-		<div tapmode="" onclick="setPage(0, 'me.html');" class="H-flex-item H-center-all H-theme-font-color-666 H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16 H-theme-border-color-52ace5 H-theme-font-color-52ace5 H-theme-border-color9 H-theme-font-color9" style="border-width: 0 0 2px  0">
-		我的圈子
-		</div>
-		<div tapmode="" onclick="H.openWin('shoucang_head', 'shou_head.html');" class="H-flex-item H-center-all H-theme-font-color-666 H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16" style="border-width: 0 0 2px  0">
-		我的收藏
-		</div>
-		</div>-->
-		<!--</header>-->
+		 
+		 </header> 
 		<div class="H-padding-vertical-bottom-2" style="margin-top: 221px"></div>
 		<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
 			<span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-profile H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
@@ -108,9 +101,7 @@
 						}, function(ret, err) {
 							if (ret) {
 								var icon = ret[0].pic
-								//								init(icon,name)
-								//								var person = $api.byId('ico');
-								//								$api.attr(person, 'src', icon);
+						 	 $api.attr(person, 'src', icon);
 							} else {
 							}
 						});
@@ -123,55 +114,7 @@
 				});
 			}
 
-			function changePerson() {
-				api.getPicture({
-					sourceType : 'library',
-					encodingType : 'png',
-					mediaValue : 'pic',
-					destinationType : 'url',
-					allowEdit : true,
-					saveToPhotoAlbum : false
-				}, function(ret, err) {
-					if (ret.data != '') {
-						api.showProgress({
-							title : ' 上传中...',
-							text : '先喝杯茶...',
-							modal : false
-						}), api.ajax({
-							timeout : 300,
-							method : 'post',
-							url : hostUrl + '/upload.php',
-							data : {
-								files : {
-									upfile : ret.data
-								},
-							},
-							dataType : 'text',
-						}, function(ret, err) {
-							var ttt = hostUrl + '/' + ret;
-							api.hideProgress();
-							var person = $api.byId('ico');
-							$api.attr(person, 'src', ttt);
-							api.ajax({
-								url : hostUrl + '/updateicon.php',
-								data : {
-									values : {
-										name : $api.getStorage('user'),
-										pic : ttt,
-									},
-								},
-							}, function(ret, err) {
-								api.toast({
-									msg : '更新成功'
-								});
-							});
-						});
-					} else {
-						return
-					};
-				});
-			}
-
+	 
 			function setStyle(index) {
 				var that = H.D("#tag div:nth-child(" + (index + 1) + ")");
 				H.addClass(that, "H-theme-border-color9 H-theme-font-color9");
@@ -192,6 +135,7 @@
 				init()
 				//				getIcon()
 				//				initPage()
+				var personalCenter = api.require('personalCenter');
 				api.addEventListener({
 					name : 'reg_login_successEvent'
 				}, function(ret, err) {
@@ -199,6 +143,55 @@
 					init()
 					 
 				});
+				 api.addEventListener({
+			name : 'iconupdata'
+		}, function(ret, err) {
+			var uid = $api.getStorage('userinfo').data_id
+		
+			api.ajax({
+				timeout : 300,
+				method : 'post',
+				url : hostUrl + '/upload.php',
+				data : {
+					files : {
+						upfile : ret.value.img_path
+					},
+				},
+				dataType : 'text',
+			}, function(ret, err) {
+			alert(ret)
+				var img_path = hostUrl + '/' + trimStr(ret)
+				api.ajax({
+					url : hostUrl + '/updateicon.php',
+					dataType : 'json',
+					method : 'post',
+					data : {
+						values : {
+							uid : uid,
+							pic : img_path
+						}
+					}
+				}, function(ret, err) {
+					if (ret.status == 1) {
+						api.toast({
+							msg : ret.msg
+						});
+						personalCenter.updateValue({
+							imgPath : img_path,
+						});
+						var userinfo= $api.getStorage('userinfo');
+						userinfo.pic=img_path
+						$api.setStorage('userinfo',userinfo);
+					} else {
+						api.toast({
+							msg : ret.msg
+						});
+					}
+				});
+				 
+			});
+		});
+				
 				api.addEventListener({
 					name : 'zhuxiao'
 				}, function(ret, err) {
@@ -285,13 +278,7 @@
 					'title' : '收藏',
 					'count' : '240'
 				},
-//				 {
-//					'bgImg' : 'widget://res/personalCenter/personal_btn_nor.png',
-//					'selectedImg' : 'widget://res/personalCenter/personal_btn_sele.png',
-//					'lightImg' : 'widget://res/personalCenter/personal_btn_light.png',
-//					'title' : '主题',
-//					'count' : '27'
-//				}
+ 
 				];
 				var count = 382;
 				var y = 0;
@@ -333,10 +320,10 @@
 								mediaValue : 'pic'
 							}, function(ret, err) {
 								if (ret) {
-									personalCenter.updateValue({
-										imgPath : ret.data,
-										count : count
-									});
+//									
+									openImageClipFrame(ret.data)
+									
+									
 								}
 							});
 						});
@@ -366,7 +353,35 @@
  
 				});
 			}
-			 
+		function openImageClipFrame(img_src) {
+			api.openFrame({
+				name : 'tu1',
+				scrollToTop : true,
+				allowEdit : true,
+				url : 'tu.html',
+				rect : {
+					x : 0,
+					y : 0,
+					w : api.winWidth,
+					h : api.winHeight,
+				},
+				animation : {
+					type : "reveal", //动画类型（详见动画类型常量）
+					subType : "from_right", //动画子类型（详见动画子类型常量）
+					duration : 300
+				},
+				pageParam : {
+					img_src : img_src
+				},
+				vScrollBarEnabled : false,
+				hScrollBarEnabled : false,
+				//页面是否弹动 为了下拉刷新使用
+				bounces : false
+			});
+		}
+	 	function trimStr(str) {
+			return str.replace(/(^\s*)|(\s*$)/g, "");
+		}
 		</script>
 	</body>
 </html>

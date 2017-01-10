@@ -44,9 +44,9 @@
 /A6915194260483/image/templates-imgs/fz1.jpg
 /A6911302258372/res/send_bg.png
 /A6915194260483/image/bg.png
-/A6911302258372/image/yin/13.png
 /A6911302258372/css/api.css
 /A6915194260483/image/more_icon_90.png
+/A6911302258372/image/yin/13.png
 /A6911302258372/html/music/n.html
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/skin.css
 /A6915194260483/res/sqliteDemo.db
@@ -188,9 +188,9 @@
 /A6915194260483/image/templates-imgs/xiejia.png
 /A6911302258372/image/default.jpg
 /A6915194260483/html/launch/launch_head.html
-/A6915194260483/image/templates-imgs/meijia3.png
 /A6911302258372/image/bg.png
 /A6911302258372/html/music/image/musiclist/musiclistcommet.png
+/A6915194260483/image/templates-imgs/meijia3.png
 /A6915194260483/html/music/comm/head.html
 /A6911302258372/image/FM.jpg
 /A6915194260483/image/more_icon_hot.png
@@ -242,6 +242,7 @@
 /A6911302258372/html/kong/music/index.html
 /A6911302258372/error/error.html
 /A6915194260483/image/more_icon_60.png
+/A6911302258372/html/kong/photo/tu.html
 /A6915194260483/plugins/swise player/css/sewiseplayer.css
 /A6915194260483/image/login_bg.jpg
 /A6915194260483/html/music/n.html
