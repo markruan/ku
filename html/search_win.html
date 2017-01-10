@@ -26,11 +26,11 @@
 	<script type="text/javascript" src="../script/api.js"></script>
 	<script src="../script/H.js" type="text/javascript"></script>
 	<script type="text/javascript">
+		var songs
 		H.D("#ser").addEventListener("touchend", function(e) {
 			this.style.cssText = "display:none;";
 			H.D(".btn").removeAttribute("style");
 			H.D("#ipt").setAttribute("placeholder", "请输入关键字");
-			
 		});
 		H.D(".btn").addEventListener("touchend", function(e) {
 			this.style.cssText = "display:none;";
@@ -62,11 +62,11 @@
 						var position = myobj[i].no;
 						var artists = myobj[i].artists[0].name
 						var mp3Url = myobj[i].audio
-						var id = arr[i].id
+						var sid = arr[i].id
 						var picc = myobj[i].album.picUrl
 						var pic = JSON.stringify(picc)
 						//				  html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="open(\''+ picc+'\')"  >';
-						html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="openww(\''+picc+'\',\''+mp3Url+'\',\''+bb+'\',\''+artists+'\')"  >';
+						html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="openww(' + sid + ',\'' + picc + '\',\'' + mp3Url + '\',\'' + bb + '\',\'' + artists + '\')"  >';
 						html += '<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">' + bb + '--' + artists + '</div></div>';
 						$api.setStorage('ii', i);
 					}
@@ -80,43 +80,17 @@
 		apiready = function() {
 			var audio = api.require('audio');
 		};
-		function openww(img,mp3,song,artists) {
-		 
+		function openww(sid, img, mp3, song, artists) {
 			api.openWin({
 				name : 'addmusic',
 				url : '../html/kong/music/index.html',
 				pageParam : {
 					name : img,
-					mp3:mp3,
-					song:song,
-					artists:artists
+					mp3 : mp3,
+					song : song,
+					artists : artists,
+					sid : sid
 				}
-			});
-		}
-
-		function abc(id) {
-		alert(id)
-			api.closeFrame({
-				name : 'frm_miniplayer'
-			});
-			var y = api.winHeight - 55;
-			var i = $api.getStorage('i');
-			api.openFrame({
-				name : 'frm_miniplayer',
-				url : 'frm_miniplayer.html?ID=',
-				bounces : false,
-				//				pageParam : {
-				//					name : i
-				//				},
-				rect : {
-					x : 0,
-					y : y,
-					w : 'auto',
-					h : 55
-				},
-				pageParam : {
-					name : id
-				},
 			});
 		}
 	</script>

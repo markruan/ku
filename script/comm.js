@@ -10,6 +10,9 @@ function switchplay(button, mp3) {
 		//		pauseAll()
 
 		play_1(mp3)
+		api.sendEvent({
+	        name:'playing'
+        });
 
 		var jsfun = "xunhuan()";
 		api.execScript({
@@ -35,7 +38,9 @@ function switchplay(button, mp3) {
 	} else {
 		// 关闭
 		button.setAttribute("data-click", 0);
-
+		api.sendEvent({
+			name : 'stopmusic'
+		});
 		stop1(this);
 		api.hideProgress();
 		$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
@@ -55,6 +60,15 @@ function switchplay(button, mp3) {
 function stop1() {
 	var audio = api.require('audioPlayer');
 	audio.stop();
+
+}
+
+function play() {
+	var audio = api.require('audioPlayer');
+	audio.play();
+	api.sendEvent({
+		name : 'playing'
+	});
 
 }
 

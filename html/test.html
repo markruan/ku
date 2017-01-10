@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body></body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		api.addEventListener({
+			name : 'iconupdata'
+		}, function(ret, err) {
+			var uid = $api.getStorage('userinfo').data_id
+			api.ajax({
+				timeout : 300,
+				method : 'post',
+				url : hostUrl + '/upload.php',
+				data : {
+					files : {
+						upfile : ret.value.img_path
+					},
+				},
+				dataType : 'text',
+			}, function(ret, err) {
+				var img_path = hostUrl + '/' + trimStr(ret)
+				api.ajax({
+					url : hostUrl + '/updateicon.php',
+					dataType : 'json',
+					method : 'post',
+					data : {
+						values : {
+							uid : uid,
+							pic : img_path
+						}
+					}
+				}, function(ret, err) {
+					if (ret.status == 1) {
+						api.toast({
+							msg : ret.msg
+						});
+						personalCenter.updateValue({
+							imgPath : ret.value.img_path,
+						});
+					} else {
+						api.toast({
+							msg : ret.msg
+						});
+					}
+				});
+				personalCenter.updateValue({
+					imgPath : ret.value.img_path,
+				});
+			});
+		});
+	</script>
+</html>
