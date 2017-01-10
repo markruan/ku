@@ -37,16 +37,14 @@
 				text : '先喝杯茶...',
 				modal : false
 			})
-			var username = api.getPrefs({
-				sync : true,
-				key : 'user'
-			});
+			 
 			api.ajax({
 				url : url,
 				dataType : 'json',
+				method : 'post',
 				data : {
 					values : {
-						username : username,
+						uid : $api.getStorage('userinfo').data_id,
 					},
 				}
 			}, function(ret, err) {
