@@ -389,7 +389,7 @@ function shouCang() {
 				}
 			}
 		}, function(ret, err) {
-		alert(ret)
+		 
 			if (ret == 1) {
 
 				api.ajax({
@@ -646,9 +646,9 @@ function songCache(mp3) {
 						play(mp3);
 						$api.setStorage('play', 0);
 
-						api.toast({
-							msg : '.'
-						});
+//						api.toast({
+//							msg : '.'
+//						});
 					}
 
 					break;
