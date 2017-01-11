@@ -81,7 +81,7 @@ function getInfo(id) {
 				music.art = artists;
 				music.url = bb;
 				music.pic = albumpic;
-				music.sid=songsId
+				music.sid = songsId
 				$api.setStorage('kee', music);
 				var aa = $api.byId('title1');
 				var bb = $api.byId('titleName')
@@ -326,9 +326,7 @@ function kai() {
 }
 
 function quXiaoShouCang() {
-	 
 
-	 
 	api.getPrefs({
 		key : 'songid2'
 	}, function(ret, err) {
@@ -342,8 +340,8 @@ function quXiaoShouCang() {
 			dataType : 'text',
 			data : {
 				values : {
-					 uid:$api.getStorage('userinfo').data_id,
-					 sid : sid,
+					uid : $api.getStorage('userinfo').data_id,
+					sid : sid,
 
 				}
 			}
@@ -359,7 +357,12 @@ function quXiaoShouCang() {
 }
 
 function shouCang() {
-
+	if (!$api.getStorage('userinfo')) {
+		api.toast({
+			msg : '先登陆'
+		});
+		return
+	}
 	music = $api.getStorage('kee');
 	var userIcon = $api.getStorage('usericon');
 
@@ -367,80 +370,80 @@ function shouCang() {
 	var artists = music.art;
 	var songName = music.name;
 	var albumpic = music.pic;
-	var sid=music.sid
+	var sid = music.sid
 
 	api.getPrefs({
 		key : 'user'
 	}, function(ret, err) {
 		user = ret.value
 	});
-	 
-		api.ajax({
-			url : hostUrl + '/mylist.php',
-			method : 'post',
-			cache : false,
-			timeout : 30,
-			dataType : 'text',
-			data : {
-				values : {
-					sid : sid,
-//					username : user,
-					uid : $api.getStorage('userinfo').data_id
+
+	api.ajax({
+		url : hostUrl + '/mylist.php',
+		method : 'post',
+		cache : false,
+		timeout : 30,
+		dataType : 'text',
+		data : {
+			values : {
+				sid : sid,
+				//					username : user,
+				uid : $api.getStorage('userinfo').data_id
+			}
+		}
+	}, function(ret, err) {
+
+		if (ret == 1) {
+
+			api.ajax({
+				url : hostUrl + '/addm.php',
+				method : 'post',
+				cache : true,
+				timeout : 30,
+				dataType : 'json',
+				data : {
+					values : {
+						mp3 : musicUrl,
+						artist : artists,
+						title : songName,
+						poster : albumpic,
+						user : user,
+						uid : $api.getStorage('userinfo').data_id,
+						background : albumpic,
+						cover : albumpic,
+						sid : sid
+					}
 				}
-			}
-		}, function(ret, err) {
-		 
-			if (ret == 1) {
+			}, function(ret, err) {
 
-				api.ajax({
-					url : hostUrl + '/addm.php',
-					method : 'post',
-					cache : true,
-					timeout : 30,
-					dataType : 'json',
-					data : {
-						values : {
-								mp3 : musicUrl,
-										artist : artists,
-										title : songName,
-										poster : albumpic,
-										user : user,
-										uid : $api.getStorage('userinfo').data_id,
-										background : albumpic,
-										cover : albumpic,
-										sid:sid
-						}
-					}
-				}, function(ret, err) {
-					 
-				});
+			});
 
-				api.toast({
-					msg : '收藏成功'
-				});
-			} else if (ret == 2) {
+			api.toast({
+				msg : '收藏成功'
+			});
+		} else if (ret == 2) {
 
-				api.confirm({
-					title : '取消收藏',
-					msg : '亲，要取消吗？',
-					buttons : ['确定', '取消']
-				}, function(ret, err) {
-					if (ret.buttonIndex == 1) {
-						quXiaoShouCang()
-					} else {
+			api.confirm({
+				title : '取消收藏',
+				msg : '亲，要取消吗？',
+				buttons : ['确定', '取消']
+			}, function(ret, err) {
+				if (ret.buttonIndex == 1) {
+					quXiaoShouCang()
+				} else {
 
-					}
-				});
+				}
+			});
 
-			} else {
-				api.toast({
-					msg : '收藏失败'
-				});
-			}
-			//coding...
-		});
-		////////////////
-	 
+		} else {
+			api.toast({
+				msg : '收藏失败'
+			});
+		}
+		//coding...
+	});
+	////////////////
+
 }
 
 /**
@@ -646,9 +649,9 @@ function songCache(mp3) {
 						play(mp3);
 						$api.setStorage('play', 0);
 
-//						api.toast({
-//							msg : '.'
-//						});
+						//						api.toast({
+						//							msg : '.'
+						//						});
 					}
 
 					break;

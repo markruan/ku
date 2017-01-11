@@ -474,9 +474,9 @@
 			if (click == 0) {
 				// 点开
 				clicktoolitem.setAttribute("data-click", 1);
-				toolbarlist.src = "./image/cm2_list_detail_icn_faved.png";
+				toolbarlist.src = "./image/musiclist/musiclisttool01.png";
 				api.toast({
-					msg : '加入收藏',
+					msg : '开发中...',
 					duration : 1000,
 					location : 'bottom'
 				});
@@ -485,7 +485,7 @@
 				clicktoolitem.setAttribute("data-click", 0);
 				toolbarlist.src = "./image/musiclist/musiclistcollect.png";
 				api.toast({
-					msg : '取消收藏',
+					msg : '开发中...',
 					duration : 1000,
 					location : 'bottom'
 				});
@@ -705,7 +705,9 @@
 						name : 'comm2'
 					});
 				} else {
-					alert("登陆后方可评论");
+					api.toast({
+	                    msg:'请您先登陆'
+                    });
 					api.openWin({
 						name : 'reg_login_win',
 						url : '../../html/entry/entry_head.html',

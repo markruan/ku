@@ -211,11 +211,8 @@
 						});
 						//					$api.setStorage('typer1', 1);
 					} else {
-						alert("登陆后方可评论");
-						api.openWin({
-							name : 'reg_login_win',
-							url : '../../html/entry/entry_head.html',
-							pageParam : {}
+						api.toast({
+							msg : '请先登陆'
 						});
 					}
 				});
@@ -302,6 +299,13 @@
 			}
 
 			function shouCang(sid, user, musicUrl, artists, songName, albumpic) {
+				if (!$api.getStorage('userinfo')) {
+					api.toast({
+						msg : '先登陆'
+					});
+					return
+				}
+				
 				api.ajax({
 					url : hostUrl + '/mylist.php',
 					method : 'post',
