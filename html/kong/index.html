@@ -56,6 +56,7 @@
 			}
 
 			function addMusic() {
+			    
 				api.getPrefs({
 					key : 'user' // 用户信息key
 				}, function(ret, err) {
@@ -66,12 +67,15 @@
 							url : '../../html/search.html'
 						});
 					} else {
-						alert("登陆后方可操作");
-						api.openWin({
-							name : 'reg_login_win',
-							url : '../../html/entry/entry_head.html',
-							pageParam : {}
-						});
+					   api.toast({
+	                       msg:'请先登陆'
+                       });
+//						alert("登陆后方可操作");
+//						api.openWin({
+//							name : 'reg_login_win',
+//							url : '../../html/entry/entry_head.html',
+//							pageParam : {}
+//						});
 					}
 				});
 			}
@@ -126,12 +130,15 @@
 							});
 						});
 					} else {
-						alert("登陆后方可评论");
-						api.openWin({
-							name : 'reg_login_win',
-							url : '../../html/entry/entry_head.html',
-							pageParam : {}
-						});
+					   api.toast({
+	                       msg:'请先登陆'
+                       });
+//						alert("登陆后方可评论");
+//						api.openWin({
+//							name : 'reg_login_win',
+//							url : '../../html/entry/entry_head.html',
+//							pageParam : {}
+//						});
 					}
 				});
 			}
