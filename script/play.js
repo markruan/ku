@@ -108,17 +108,17 @@ function play(mp3) {
 	var netAudio = api.require('audio');
 	var pdd = $api.byId('playerIcon');
 	var jsfun = 'stop()'
-
-	api.execScript({
-		name : "index",
-		frameName : 'quan_index',
-		script : jsfun
-	});
-	api.execScript({
-		name : "index",
-		frameName : 'tui_index',
-		script : jsfun
-	});
+//
+//	api.execScript({
+//		name : "index",
+//		frameName : 'quan_index',
+//		script : jsfun
+//	});
+//	api.execScript({
+//		name : "index",
+//		frameName : 'tui_index',
+//		script : jsfun
+//	});
 	api.sendEvent({
 		name : 'playing'
 	});

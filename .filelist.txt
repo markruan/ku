@@ -229,6 +229,7 @@
 /A6915194260483/image/templates-imgs/meijia2.png
 /A6915194260483/image/templates/dazhong_faxian.jpg
 /A6911302258372/script/api.js
+/A6911302258372/image/zan.png
 /A6915194260483/image/title_arrow_down_normal.png
 /A6915194260483/image/templates-imgs/tb1.jpg
 /A6915194260483/image/templates-imgs/yang.png
@@ -253,6 +254,7 @@
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/controlbar.png
 /A6915194260483/plugins/sortable/Sortable.min.js
 /A6911302258372/html/music/image/musiclist/musiclistdown.png
+/A6911302258372/image/bo.png
 /A6911302258372/html/music/image/musiclist/FM.jpg
 /A6915194260483/image/templates-imgs/baojie.png
 /A6915194260483/image/main_index_home_normal.png
