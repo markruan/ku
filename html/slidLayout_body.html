@@ -91,9 +91,6 @@
 				}
 
 				function loginout() {
-					api.removePrefs({
-						key : 'songs'
-					});
 					$api.rmStorage('userinfo1');
 					$api.rmStorage('userinfo');
 					api.removePrefs({
@@ -111,8 +108,6 @@
 					$api.rmStorage('user');
 					api.sendEvent({
 						name : 'zhuxiao',
-						extra : {
-						}
 					});
 				}
 
@@ -198,6 +193,13 @@
 						H.D("#cacheSize").innerText = (ret.size / 1000 / 1000).toFixed(2) + "M";
 					});
 					login2()
+					api.addEventListener({
+						name : 'updateuserinfo'
+					}, function(ret, err) {
+						var nickname=$api.getStorage('userinfo').nickname;
+						$api.text($api.byId('uss'), nickname);
+						
+					});
 					api.addEventListener({
 						name : 'reg_login_successEvent'
 					}, function(ret, err) {

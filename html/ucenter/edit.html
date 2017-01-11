@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../../css/Hui.css"/>
+		<style>
+			.H-button {
+				min-width: 100px;
+			}
+			.H-theme-background-color-zhuti {
+				background-color: #ff6606;
+			}
+			hr {
+				border-color: #e6e6e6;
+				border: 1;
+				border-top: 1px;
+			}
+			.H-theme-border-color8 {
+				border: 1px solid #ff6606;
+			}
+		</style>
+	</head>
+	<body>
+		<div class=" form   ">
+			<div class="H-flexbox-horizontal H-border-vertical-bottom-margin-left-10-after">
+				<span   class="H-vertical-middle H-padding-horizontal-left-10 H-theme-background-color-white H-theme-font-color-hhh  H-font-size-16">新昵称：</span>
+				<input id="nickname" value="" type="text" class="H-textbox H-vertical-align-middle H-theme-font-color-hhh  H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="请输入新昵称">
+				<span class="H-icon H-vertical-middle H-padding-horizontal-right-10 H-theme-background-color-white">
+			</div>
+			<div class="H-flexbox-horizontal H-border-vertical-bottom-margin-left-10-after">
+				<span   class="H-vertical-middle H-padding-horizontal-left-10 H-theme-background-color-white H-theme-font-color-hhh  H-font-size-16">新签名：</span>
+				<input id="signature" value="" type="text" class="H-textbox H-vertical-align-middle H-theme-font-color-hhh  H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="请输入新昵称">
+				<span class="H-icon H-vertical-middle H-padding-horizontal-right-10 H-theme-background-color-white">
+			</div>
+			<div class="H-header-title  H-border-vertical-bottom-margin-left-10-after H-theme-background-color-white H-center-all">
+				<span onclick="update()" class="  H-theme-background-color-white H-font-size-20 H-padding-12 H-theme-font-color-hhh  " style="font-weight: 900">确定</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/H.js"></script>
+	<script type="text/javascript">
+		var userinfo = $api.getStorage('userinfo');
+		var uid = userinfo.data_id;
+		var nickname = userinfo.nickname;
+		var signature = userinfo.signature;
+		apiready = function() {
+			$api.attr($api.byId('nickname'), 'placeholder', nickname);
+			$api.attr($api.byId('signature'), 'placeholder', signature);
+		};
+		function update() {
+			var nickname1 = $api.val($api.byId('nickname'));
+			var signature1 = $api.val($api.byId('signature'));
+			var userinfo = $api.getStorage('userinfo');
+			if (nickname1) {
+				nickname = nickname1
+			}
+			if (signature1) {
+				signature = signature1
+			}
+			if (!nickname1 && !signature1) {
+				alert('输入都为空？？')
+				return
+			}
+			api.ajax({
+				url : hostUrl + '/updata.php',
+				method : 'post',
+				data : {
+					values : {
+						uid : userinfo.data_id,
+						nickname : nickname,
+						signature : signature
+					}
+				}
+			}, function(ret, err) {
+				if (ret.status == 1) {
+					userinfo.nickname = nickname;
+					userinfo.signature = signature;
+					$api.setStorage('userinfo', userinfo);
+					api.sendEvent({
+						name : 'updateuserinfo'
+					});
+					api.toast({
+						msg : ret.msg
+					});
+					setTimeout(api.closeWin(), 100)
+				} else {
+					alert(ret.msg)
+				}
+			});
+		}
+
+		// 注册，初始化
+	</script>
+</html>
