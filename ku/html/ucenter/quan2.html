@@ -45,7 +45,7 @@
 			</div>
 			<div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box H-border-vertical-top-margin-both-10-after">
 			<span onclick="openComm(<%=list[i].data_id %>,3)" class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color9 H-border-horizontal-right-after"><i  class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle">评论</label></span>
-			<span class="H-font-size-14 H-flex-item  H-center-all"><i onclick=" " class="H-iconfont H-icon-like H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle">收藏</label></span>
+			<!--<span class="H-font-size-14 H-flex-item  H-center-all"><i onclick=" " class="H-iconfont H-icon-like H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle">收藏</label></span>-->
 			<span class="H-font-size-14 H-flex-item  H-center-all  H-border-horizontal-left-after"><i onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan%></label></span>
 			<span onclick="shareImg('<%=list[i].cover %>')" class="H-font-size-14 H-flex-item  H-center-all  H-border-horizontal-left-after"><i class="H-iconfont H-icon-share-to H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"> </label></span>
 			</div>
@@ -109,7 +109,6 @@
 		<script type="text/javascript">
 			H.tppl_flag = ["<%", "%>"];
 			var url = hostUrl + '/quan123.php';
-			
 			var page = 1;
 			function initPage(page) {
 				api.showProgress({
@@ -123,7 +122,7 @@
 					data : {
 						values : {
 							page : page,
-							uid:$api.getStorage('userinfo').data_id
+							uid : $api.getStorage('userinfo').data_id
 						},
 					}
 				}, function(ret, err) {
@@ -245,27 +244,26 @@
 				});
 			}
 
-			function share(title, art, img, mp3) {
-				var data = {}
-				data.title = title;
-				data.art = art;
-				data.img = img;
-				data.mp3 = mp3;
-				api.openFrame({
-					name : 'sing_share',
-					url : '../../html/single_share_body.html',
-					rect : {
-						x : 0,
-						y : 0,
-						w : api.winWidth,
-						h : api.winHeight
-					},
-					pageParam : {
-						data : data
-					},
-				});
-			}
-
+			//			function share(title, art, img, mp3) {
+			//				var data = {}
+			//				data.title = title;
+			//				data.art = art;
+			//				data.img = img;
+			//				data.mp3 = mp3;
+			//				api.openFrame({
+			//					name : 'sing_share',
+			//					url : '../../html/single_share_body.html',
+			//					rect : {
+			//						x : 0,
+			//						y : 0,
+			//						w : api.winWidth,
+			//						h : api.winHeight
+			//					},
+			//					pageParam : {
+			//						data : data
+			//					},
+			//				});
+			//			}
 			function share(title, art, img, mp3) {
 				var data = {}
 				data.title = title;
@@ -303,97 +301,90 @@
 				});
 			}
 
-			function shouCang(sid,user,musicUrl,artists,songName,albumpic) {
-				 
-			 
-					api.ajax({
-						url : hostUrl + '/mylist.php',
-						method : 'post',
-						cache : false,
-						timeout : 30,
-						dataType : 'text',
-						data : {
-							values : {
-								sid : sid,
-								 uid : $api.getStorage('userinfo').data_id
+			function shouCang(sid, user, musicUrl, artists, songName, albumpic) {
+				api.ajax({
+					url : hostUrl + '/mylist.php',
+					method : 'post',
+					cache : false,
+					timeout : 30,
+					dataType : 'text',
+					data : {
+						values : {
+							sid : sid,
+							uid : $api.getStorage('userinfo').data_id
+						}
+					}
+				}, function(ret, err) {
+					if (ret == 1) {
+						api.ajax({
+							url : hostUrl + '/addm.php',
+							method : 'post',
+							cache : true,
+							timeout : 30,
+							dataType : 'json',
+							data : {
+								values : {
+									mp3 : musicUrl,
+									artist : artists,
+									title : songName,
+									poster : albumpic,
+									user : user,
+									uid : $api.getStorage('userinfo').data_id,
+									background : albumpic,
+									cover : albumpic,
+									sid : sid
+									//							usericon: userIcon
+								}
 							}
-						}
-					}, function(ret, err) {
-						if (ret == 1) {
-							api.ajax({
-								url : hostUrl + '/addm.php',
-								method : 'post',
-								cache : true,
-								timeout : 30,
-								dataType : 'json',
-								data : {
-									values : {
-										mp3 : musicUrl,
-										artist : artists,
-										title : songName,
-										poster : albumpic,
-										user : user,
-										uid : $api.getStorage('userinfo').data_id,
-										background : albumpic,
-										cover : albumpic,
-										sid:sid
-										//							usericon: userIcon
-									}
-								}
-							}, function(ret, err) {
-								//coding...
-							});
-							api.toast({
-								msg : '收藏成功'
-							});
-						} else if (ret == 2) {
-							api.confirm({
-								title : '取消收藏',
-								msg : '亲，要取消吗？',
-								buttons : ['确定', '取消']
-							}, function(ret, err) {
-								if (ret.buttonIndex == 1) {
-									quXiaoShouCang(sid)
-								} else {
-								}
-							});
-						} else {
-							api.toast({
-								msg : '收藏失败'
-							});
-						}
-						//coding...
-					});
-					////////////////
-				 
+						}, function(ret, err) {
+							//coding...
+						});
+						api.toast({
+							msg : '收藏成功'
+						});
+					} else if (ret == 2) {
+						api.confirm({
+							title : '取消收藏',
+							msg : '亲，要取消吗？',
+							buttons : ['确定', '取消']
+						}, function(ret, err) {
+							if (ret.buttonIndex == 1) {
+								quXiaoShouCang(sid)
+							} else {
+							}
+						});
+					} else {
+						api.toast({
+							msg : '收藏失败'
+						});
+					}
+					//coding...
+				});
+				////////////////
 			}
-			
+
 			function quXiaoShouCang(sid) {
- 
-       var  uid =$api.getStorage('userinfo').data_id
-		api.ajax({
-			url : hostUrl + '/quxiao.php',
-			method : 'post',
-			cache : false,
-			timeout : 30,
-			dataType : 'text',
-			data : {
-				values : {
-					 uid:uid,
-					 sid : sid,
-
-				}
+				var uid = $api.getStorage('userinfo').data_id
+				api.ajax({
+					url : hostUrl + '/quxiao.php',
+					method : 'post',
+					cache : false,
+					timeout : 30,
+					dataType : 'text',
+					data : {
+						values : {
+							uid : uid,
+							sid : sid,
+						}
+					}
+				}, function(ret, err) {
+					if (ret == 1) {
+						alert('成功')
+					} else {
+						alert('失败')
+					}
+				});
 			}
-		}, function(ret, err) {
-			if (ret == 1) {
-				alert('成功')
-
-			} else {
-				alert('失败')
-			}
-		});
-	 
-}
 		</script>
 	</body>
 </html>
