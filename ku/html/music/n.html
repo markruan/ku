@@ -327,6 +327,11 @@
 				sync : true,
 				key : 'songid2'
 			});
+			api.addEventListener({
+	            name:'stopmusic'
+            },function(ret,err){
+            	pause();
+            });
 			api.parseTapmode();
 			var commn = $api.byId('comm');
 			$api.addEvt(commn, 'click', function() {
