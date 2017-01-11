@@ -96,11 +96,14 @@
 					api.removePrefs({
 						key : "user"
 					}, function(ret, err) {
-						alert("用户已退出登录");
-						api.openWin({
-							name : 'login',
-							url : 'entry/entry_head.html'
-						});
+//						alert("用户已退出登录");
+						api.toast({
+	                       msg:'用户已退出登录'
+                       });
+//						api.openWin({
+//							name : 'login',
+//							url : 'entry/entry_head.html'
+//						});
 					});
 					str2 = '<div class="shelfinfo01">登陆</div>';
 					$api.byId('uss').innerHTML = str2;
