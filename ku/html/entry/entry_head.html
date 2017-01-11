@@ -110,12 +110,15 @@
 									}
 								});
 								$api.setStorage('user', nameVal);
-								api.openWin({
-									name : 'slidLayout'
-								})
-								api.closeWin({
-									name : 'my_win'
-								});
+//								api.openWin({
+//									name : 'slidLayout'
+//								})
+								api.closeToWin({
+	                                name: 'slidLayout'
+                                });
+//								api.closeWin({
+//									name : 'my_win'
+//								});
 							} else {
 								alert(ret.msg);
 							}
