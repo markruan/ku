@@ -181,6 +181,7 @@
 /A6911302258372/html/about_win.html
 /A6911302258372/css/aui_iconfont.ttf
 /A6915194260483/image/templates-imgs/liren3.png
+/A6911302258372/html/test.html
 /A6915194260483/image/templates-imgs/zhongchou.jpg
 /A6911302258372/css/iconfont.css
 /A6915194260483/plugins/swise player/html/skins/liveWhite/skin.html
@@ -188,8 +189,8 @@
 /A6915194260483/image/templates-imgs/xiejia.png
 /A6911302258372/image/default.jpg
 /A6915194260483/html/launch/launch_head.html
-/A6911302258372/image/bg.png
 /A6911302258372/html/music/image/musiclist/musiclistcommet.png
+/A6911302258372/image/bg.png
 /A6915194260483/image/templates-imgs/meijia3.png
 /A6915194260483/html/music/comm/head.html
 /A6911302258372/image/FM.jpg
@@ -235,6 +236,7 @@
 /A6915194260483/plugins/swise player/html/skins/vodRadio/logo.png
 /A6911302258372/image/yin/14.png
 /A6915194260483/image/winu.png
+/A6911302258372/html/ucenter/tu.html
 /A6915194260483/plugins/swise player/html/skins/vodTransparent/big_play_btn.png
 /A6915194260483/image/templates/dotdot_index.jpg
 /A6915194260483/image/templates/zhongchou.jpg
