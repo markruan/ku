@@ -233,7 +233,9 @@
 						}
 					});
 				} else {
-					alert("登陆后方可评论");
+					api.toast({
+	                    msg:'请先登陆'
+                    });
 					api.openWin({
 						name : 'reg_login_win',
 						url : '../../html/entry/entry_head.html',
