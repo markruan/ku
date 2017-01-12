@@ -108,23 +108,23 @@ function play(mp3) {
 	var netAudio = api.require('audio');
 	var pdd = $api.byId('playerIcon');
 	var jsfun = 'stop()'
-//
-//	api.execScript({
-//		name : "index",
-//		frameName : 'quan_index',
-//		script : jsfun
-//	});
-//	api.execScript({
-//		name : "index",
-//		frameName : 'tui_index',
-//		script : jsfun
-//	});
+	//
+	//	api.execScript({
+	//		name : "index",
+	//		frameName : 'quan_index',
+	//		script : jsfun
+	//	});
+	//	api.execScript({
+	//		name : "index",
+	//		frameName : 'tui_index',
+	//		script : jsfun
+	//	});
 	api.sendEvent({
 		name : 'playing'
 	});
-//	api.sendEvent({
-//		name : 'stopmusic'
-//	});
+	//	api.sendEvent({
+	//		name : 'stopmusic'
+	//	});
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
@@ -135,10 +135,17 @@ function play(mp3) {
 		var percent = (current / duration) * 100;
 		var per = Math.round(percent);
 		var complete = ret.complete;
-		var slider = api.require('slider');
 
 		var dur = formatSeconds(duration);
 		var cur = formatSeconds(current);
+		var uislider = api.require('UISlider');
+		uislider.setValue({
+			id : 1,
+			value : {
+
+				value : percent
+			}
+		});
 		//		var jsfun1 = 'xunhuan1();';
 		//		api.execScript({
 		//			name: 'index',
@@ -146,7 +153,7 @@ function play(mp3) {
 		//			script : jsfun1
 		//		});
 
-		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span><input id="hua" type="range" class="H-range H-width-80-percent H-position-relative  H-border-radius-1 H-theme-font-color5"  value="' + per + '" > <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
+		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
 		$api.byId('slider').innerHTML = strmiao;
 		///锁屏播放
 
@@ -364,7 +371,7 @@ function shouCang() {
 		return
 	}
 	music = $api.getStorage('kee');
-	var userIcon = $api.getStorage('usericon');
+	//	var userIcon = $api.getStorage('usericon');
 
 	var bb = music.url;
 	var artists = music.art;
@@ -403,7 +410,7 @@ function shouCang() {
 				dataType : 'json',
 				data : {
 					values : {
-						mp3 : musicUrl,
+						mp3 : bb,
 						artist : artists,
 						title : songName,
 						poster : albumpic,

@@ -144,16 +144,18 @@
 			function init() {
 				var userinfo = $api.getStorage('userinfo');
 				if (!userinfo) {
-					var name = '未登录'
+					var name = '酷选'
 					var icon = '../../image/qq.png'
+					var signature='聆听音乐 感悟人生'
 				} else {
 					var name = userinfo.nickname
 					var icon = userinfo.pic
+					var signature=userinfo.signature
 				}
-				//				$api.attr($api.byId('beijing'), 'src', icon);
+//				 alert(JSON.stringify(userinfo))
 				$api.attr($api.byId('icon'), 'src', icon);
-				$api.text($api.byId('name'), userinfo.nickname);
-				$api.text($api.byId('signature'), userinfo.signature);
+				$api.text($api.byId('name'), name);
+				$api.text($api.byId('signature'), signature);
 			}
 
 			function open_img() {
