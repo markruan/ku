@@ -71,9 +71,9 @@
 			<!--<img id="controler1" class="controler-bg H-center-all H-z-index-1" src="../../image/default.jpg" />-->
 			<!--<img id="men" class="controler-bg H-center-all H-z-index-2" src="../../image/xia1.png" />-->
 			<div id="slider" class="H-padding-horizontal-both-0  " >
-				<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem; ">0:00</span>
-				<input id="hua" type="range" class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >
-				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000"style="font-size: 1.1rem">03:25</span>
+				<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">00:00</span>
+				<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
+				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000"style="font-size: 1.1rem ; " >03:25</span>
 			</div>
 			<br />
 			<span id="title1" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent"  style="height:50px; "> </span>
@@ -157,6 +157,7 @@
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript" src="../../script/play.js"></script>
 	<script type="text/javascript" src="../../script/H.js"></script>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 	<!--<script type="text/javascript" src="../../script/zepto.min.js"></script>-->
 	<script type="text/javascript">
 		function pause1() {
@@ -234,8 +235,8 @@
 					});
 				} else {
 					api.toast({
-	                    msg:'请先登陆'
-                    });
+						msg : '请先登陆'
+					});
 					api.openWin({
 						name : 'reg_login_win',
 						url : '../../html/entry/entry_head.html',
@@ -327,11 +328,14 @@
 				sync : true,
 				key : 'songid2'
 			});
+			var offset = $api.offset($api.byId('huakuai'));
+			var width = offset.w;
+			var top = offset.t;
 			api.addEventListener({
-	            name:'stopmusic'
-            },function(ret,err){
-            	pause();
-            });
+				name : 'stopmusic'
+			}, function(ret, err) {
+				pause();
+			});
 			api.parseTapmode();
 			var commn = $api.byId('comm');
 			$api.addEvt(commn, 'click', function() {
@@ -339,9 +343,54 @@
 			});
 			$api.rmStorage('path');
 			pause1()
+			test(width, top)
 			getidd()
 			getInfo(idd)
 			$api.setStorage('PlayAll', 'a')
+		}
+		function test(width, top) {
+			var uislider = api.require('UISlider');
+			uislider.open({
+				animation : true,
+				orientation : 'horizontal',
+				rect : {
+					x : width,
+					y : 14,
+					size : api.winWidth - width * 2
+				},
+				bubble : {
+					direction : 'top',
+				},
+				handler : {
+					w : 10,
+					h : 8,
+					bg : 'widget://image/slider/slider-btn.png'
+				},
+				bar : {
+					h : 4,
+					bg : 'widget://image/slider/slider-bg.png',
+					active : 'widget://image/slider/slider-btn2.png'
+				},
+				value : {
+					min : 0, //数字类型；滑动控件的最小值
+					max : 100, //数字类型；滑动控件的最大值
+					step : 1, //数字类型；滑动时的步幅
+					init : 0,
+				},
+				fixedOn : api.frameName,
+				fixed : false
+			}, function(ret, err) {
+				//			alert(JSON.stringify(ret));
+				if (ret.eventType == 'end') {
+					var audio = api.require('audio');
+					audio.setProgress({
+						progress : ret.value
+					});
+					//					alert(JSON.stringify(ret));
+				} else {
+					//					alert(JSON.stringify(err));
+				}
+			});
 		}
 	</script>
 </html>
