@@ -122,9 +122,9 @@ function play(mp3) {
 	api.sendEvent({
 		name : 'playing'
 	});
-	api.sendEvent({
-		name : 'stopmusic'
-	});
+//	api.sendEvent({
+//		name : 'stopmusic'
+//	});
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
