@@ -104,6 +104,7 @@
 /A6915194260483/image/api_1.png
 /A6915194260483/html/music/image/musiclist/musiclistcollect.png
 /A6911302258372/html/frm_miniplayer.html
+/A6911302258372/res/g35.png
 /A6911302258372/image/yin/1.png
 /A6915194260483/html/music/mlist_frm.html
 /A6911302258372/html/ucenter/quan2.html

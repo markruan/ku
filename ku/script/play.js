@@ -191,6 +191,9 @@ function play(mp3) {
 function next() {
 	api.hideProgress();
 	stop()
+	api.sendEvent({
+		name : 'stopmusic'
+	});
 	var i = $api.getStorage('idi');
 	var len = $api.getStorage('lens');
 	var nId = Number(i) + Number(1);

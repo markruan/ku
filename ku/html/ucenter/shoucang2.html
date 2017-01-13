@@ -36,6 +36,7 @@
 	<script type="text/javascript">
 		H.tppl_flag = ["<%", "%>"];
 		var url = hostUrl + '/song.php';
+		var el
 		function play(button, mp3) {
 			//			alert($api.attr(button, 'mp3url'))
 			var audioPlayer = api.require('audioPlayer');
@@ -43,7 +44,7 @@
 			var el = $api.last($api.eq(button, 2));
 			var ceshi = $api.next(button);
 			if (click == 0) {
-				playmp3(mp3)
+				playmp3(mp3, button)
 				var listel = $api.domAll('.zanting');
 				for ( i = 0; i < listel.length; i++) {
 					$api.attr(listel[i], 'style', 'display: none ');
@@ -100,6 +101,34 @@
 
 
 		H.ready(function() {
+			var audioPlayer = api.require('audioPlayer');
+			var el = $api.getStorage('el');
+		 
+			audioPlayer.addEventListener({
+				name : "playing"
+			}, function(ret) {
+				alert(ret.state);
+			});
+			audioPlayer.addEventListener({
+				name : "playing"
+			}, function(ret) {
+				alert(JSON.stringify(ret))
+				if (ret.state == 'finished') {
+					var next = $api.next(el);
+					var nextUrl = $api.attr(next, 'mp3url');
+					if (!next) {
+						return
+					}
+					var listel = $api.domAll('.zanting');
+					for ( i = 0; i < listel.length; i++) {
+						$api.attr(listel[i], 'style', 'display: none ');
+					}
+					$api.attr(next, 'style', '');
+					next.setAttribute("data-click", 0);
+					playmp3(nextUrl, next)
+				} else {
+				}
+			});
 			initPage()
 			api.setRefreshHeaderInfo({
 				visible : true,
@@ -112,14 +141,17 @@
 				initPage()
 			});
 		});
-		function playmp3(mp3) {
+		function playmp3(mp3, button) {
 			api.showProgress({
 			});
+			$api.setStorage('el', button);
 			var audioPlayer = api.require('audioPlayer');
 			audioPlayer.initPlayer({
 				path : mp3
 			}, function(ret, err) {
 				if (ret.status) {
+					audioPlayer.pause();
+					audioPlayer.play();
 					api.sendEvent({
 						name : 'stopmusic'
 					});
