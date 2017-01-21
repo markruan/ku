@@ -163,13 +163,19 @@
 	<!--<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>-->
 	<!--<script type="text/javascript" src="../../script/zepto.min.js"></script>-->
 	<script type="text/javascript">
-		function pause1() {
-			var mPause = 'pause()'
-			api.execScript({
-				name : 'slider',
-				frameName : 'new',
-				script : mPause
-			});
+		function pause() {
+			var audioPlayer = api.require('audioPlayer');
+			audioPlayer.pause();
+		}
+
+		function play() {
+			var audioPlayer = api.require('audioPlayer');
+			audioPlayer.play();
+		}
+
+		function stop() {
+			var audioPlayer = api.require('audioPlayer');
+			audioPlayer.stop();
 		}
 
 		function shareWx(cha) {
@@ -439,6 +445,7 @@
 				},
 				bubble : {
 					direction : 'top',
+					state:'hide'
 				},
 				handler : {
 					w : 10,
@@ -466,8 +473,9 @@
 						progress : ret.value
 					});
 					var audioPlayer = api.require('audioPlayer');
+					var duration=$api.getStorage('duration');
 					audioPlayer.setCurrent({
-						current : ret.value
+						current : ret.value/100*duration
 					});
 					//					alert(JSON.stringify(ret));
 				} else {
