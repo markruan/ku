@@ -89,7 +89,7 @@ function play_1(mp3) {
 		var percent = (current / duration) * 100;
 		var per = Math.round(percent);
 		var complete = ret.complete;
-		var slider = api.require('slider');
+//		var slider = api.require('slider');
 		var dur = formatSeconds(duration);
 		var cur = formatSeconds(current);
 		//					api.getPrefs({

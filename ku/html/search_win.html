@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<!--<div class="H-padding-vertical-bottom-10"></div>-->
-		<div class="H-padding-10 H-theme-background-color-white" onclick="" >
+		<div id='searchBar' class="H-padding-10 H-theme-background-color-white" onclick="" >
 			<div class="H-search H-flexbox-horizontal H-box-sizing-border-box H-overflow-hidden H-position-relative">
 				<div class="H-position-absolute H-z-index-100 H-width-100-percent H-height-100-percent H-vertical-middle H-text-align-center H-theme-font-color-999 H-border-radius-15" id="ser">
 					<span class="H-display-block H-width-100-percent H-font-size-14"><i class="H-iconfont H-icon-search H-font-size-14"></i> 搜索关键字</span>
@@ -51,26 +51,96 @@
 				url : url,
 				dataType : 'json'
 			}, function(ret, err) {
-				if (ret) {
+			console.log(JSON.stringify(ret))
+				if (ret.result) {
 					var arr = ret.result.songs;
-					var myobj = eval(arr);
-					var len = myobj.length;
-					var obj = $api.byId('list');
-					for (var i = 0; i < myobj.length; i++) {
-						var len = myobj.length;
-						var bb = arr[i].name;
-						var position = myobj[i].no;
-						var artists = myobj[i].artists[0].name
-						var mp3Url = myobj[i].audio
-						var sid = arr[i].id
-						var picc = myobj[i].album.picUrl
-						var pic = JSON.stringify(picc)
-						//				  html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="open(\''+ picc+'\')"  >';
-						html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="openww(' + sid + ',\'' + picc + '\',\'' + mp3Url + '\',\'' + bb + '\',\'' + artists + '\')"  >';
-						html += '<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">' + bb + '--' + artists + '</div></div>';
-						$api.setStorage('ii', i);
+					//					var myobj = eval(arr);
+					//					var len = myobj.length;
+					//					var obj = $api.byId('list');
+					for (var i = 0; i < arr.length; i++) {
+						arr[i].imgPath = arr[i].album.picUrl;
+						arr[i].title = arr[i].name;
+						arr[i].subTitle = arr[i].artists[0].name;
+						//						var len = myobj.length;
+						//						var bb = arr[i].name;
+						//						var position = myobj[i].no;
+						//						var artists = myobj[i].artists[0].name
+						//						var mp3Url = myobj[i].audio
+						//						var sid = arr[i].id
+						//						var picc = myobj[i].album.picUrl
+						//						var pic = JSON.stringify(picc)
+						//						//				  html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="open(\''+ picc+'\')"  >';
+						//						html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="openww(' + sid + ',\'' + picc + '\',\'' + mp3Url + '\',\'' + bb + '\',\'' + artists + '\')"  >';
+						//						html += '<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">' + bb + '--' + artists + '</div></div>';
+						//						$api.setStorage('ii', i);
 					}
-					$api.html(obj, html);
+					//					$api.html(obj, html);
+					var UIListView = api.require('UIListView');
+					var searchBar = $api.offset($api.byId('searchBar'))
+					UIListView.open({
+						rect : {
+							x : 0,
+							y : searchBar.h,
+							w : api.winWidth,
+//							 h :api.winHeight-searchBar.h
+						},
+						data : arr,
+						rightBtns : [{
+							bgColor : '#388e8e',
+							activeBgColor : '',
+							width : 70,
+							title : '按钮',
+							titleSize : 12,
+							titleColor : '#fff',
+							icon : '',
+							iconWidth : 20
+						}],
+						rightBtns : [{
+							bgColor : '#388e8e',
+							activeBgColor : '',
+							width : 70,
+							title : '按钮',
+							titleSize : 12,
+							titleColor : '#fff',
+							icon : '',
+							iconWidth : 20
+						}],
+						styles : {
+							borderColor : 'rgba(153, 153, 153, 0.47)',
+							item : {
+								bgColor : 'rgba(0,0,0,0.0)',
+								activeBgColor : '#F5F5F5',
+								height : 55.0,
+								imgWidth : 40,
+								imgHeight : 40,
+								imgCorner : 0,
+								placeholderImg : '',
+								titleSize : 12.0,
+								titleColor : '#999',
+								subTitleSize : 12.0,
+								subTitleColor : '#999',
+								remarkColor : '#999',
+								remarkSize : 16,
+								remarkIconWidth : 30
+							}
+						},
+						fixedOn : api.frameName
+					}, function(ret, err) {
+						if (ret) {
+							console.log(JSON.stringify(ret))
+							if (ret.eventType == 'clickContent') {
+								var index = ret.index
+								var data = arr[index]
+								openww(data.id, data.imgPath, data.audio, data.title, data.subTitle)
+								//							alert(JSON.stringify(ret));
+							} else {
+								//								alert(JSON.stringify(err));
+							}
+							//					alert(JSON.stringify(ret));
+						} else {
+							//							alert(JSON.stringify(err));
+						}
+					});
 					api.refreshHeaderLoadDone();
 				} else {
 				}
@@ -78,7 +148,6 @@
 		}
 
 		apiready = function() {
-			var audio = api.require('audio');
 		};
 		function openww(sid, img, mp3, song, artists) {
 			api.openWin({

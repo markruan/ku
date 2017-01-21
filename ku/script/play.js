@@ -12,6 +12,12 @@ function getidd() {
 }
 
 function getInfo(id) {
+	if (id) {
+
+	} else {
+
+		var id = $api.getStorage('idi');
+	}
 	stopAll()
 	api.showProgress({
 		title : ' 加载中...',
@@ -33,20 +39,22 @@ function getInfo(id) {
 			dataType : 'json',
 		}, function(ret, err) {
 			if (ret) {
-				var arr = ret.result.tracks;
-				var myobj = eval(arr);
-				bb = myobj[id].mp3Url;
-				songName = myobj[id].name;
-				artists = myobj[id].artists[0].name;
-				albumpic = myobj[id].album.picUrl;
-				songsId = myobj[id].id
-				$api.setStorage('album', albumpic);
-				//              var controler = $api.byId('controler1');
-				//				$api.attr(controler, 'src', albumpic);
-				songCache(bb)
+				console.log(JSON.stringify(ret))
 
-				//               var controler = $api.byId('controler1');
-				//				$api.attr(controler, 'src', albumpic);
+				var arr = ret.result.tracks;
+
+				console.log(JSON.stringify(arr[id]))
+				var songinfo = arr[id]
+				console.log(JSON.stringify(songinfo))
+				//				var myobj = eval(arr);
+				bb = songinfo.mp3Url;
+				songName = songinfo.name;
+				artists = songinfo.artists[0].name;
+				albumpic = songinfo.album.picUrl;
+				songsId = songinfo.id
+				$api.setStorage('album', albumpic);
+
+				songCache(bb)
 
 				//				play(bb)
 				api.setPrefs({
@@ -65,15 +73,7 @@ function getInfo(id) {
 						songName : bb
 					}
 				});
-				///////////////////////////////
 
-				//////////////////
-
-				//				var jia = 'jiaTitle()'
-				//				api.execScript({
-				//					name : 'slider',
-				//					script : jia
-				//				});
 				$api.setStorage('idi', id);
 
 				var music = {};
@@ -83,6 +83,7 @@ function getInfo(id) {
 				music.pic = albumpic;
 				music.sid = songsId
 				$api.setStorage('kee', music);
+				$api.attr($api.byId('bg'), 'src', albumpic);
 				var aa = $api.byId('title1');
 				var bb = $api.byId('titleName')
 				$api.text(aa, songName);
@@ -103,28 +104,16 @@ function getInfo(id) {
 	});
 }
 
-function play(mp3) {
+function play(mp3, cover, songName, artists) {
 	var pdd = $api.byId('playe');
 	var netAudio = api.require('audio');
 	var pdd = $api.byId('playerIcon');
 	var jsfun = 'stop()'
-	//
-	//	api.execScript({
-	//		name : "index",
-	//		frameName : 'quan_index',
-	//		script : jsfun
-	//	});
-	//	api.execScript({
-	//		name : "index",
-	//		frameName : 'tui_index',
-	//		script : jsfun
-	//	});
+
 	api.sendEvent({
 		name : 'playing'
 	});
-	//	api.sendEvent({
-	//		name : 'stopmusic'
-	//	});
+
 	netAudio.play({
 		path : mp3
 	}, function(ret, err) {
@@ -146,18 +135,12 @@ function play(mp3) {
 				value : percent
 			}
 		});
-		//		var jsfun1 = 'xunhuan1();';
-		//		api.execScript({
-		//			name: 'index',
-		//
-		//			script : jsfun1
-		//		});
 
 		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
 		$api.byId('slider').innerHTML = strmiao;
 		///锁屏播放
 
-		audioCover(duration, songName, artists, per)
+		audioCover(cover, duration, songName, artists, per)
 		//			}
 		//		});
 		$api.setStorage('bofang', 1);
@@ -186,6 +169,70 @@ function play(mp3) {
 	});
 	$api.removeCls(pdd, 'icon-bofang');
 	$api.addCls(pdd, 'icon-zanting');
+}
+
+function play_c(mp3, cover, songName, artists, current) {
+	var pdd = $api.byId('playerIcon');
+    
+	api.sendEvent({
+		name : 'playing'
+	});
+	var audioPlayer = api.require('audioPlayer');
+	audioPlayer.stop();
+	audioPlayer.initPlayer({
+		path : mp3
+	}, function(ret) {
+		if (ret.status) {
+//			console.log(JSON.stringify(ret))
+			var duration = ret.duration;
+			audioPlayer.addEventListener({
+				name : "state"
+			}, function(ret) {
+				if (ret.state == 'finished') {
+				 playNext_b() 
+                 api.toast({
+	                 msg:'播放完毕'
+                 });
+				} else {
+
+				}
+			});
+			audioPlayer.addEventListener({
+				name : "playing"
+			}, function(ret) {
+				//				console.log(JSON.stringify(ret));
+				current = ret.current
+				var tii = duration * 10;
+//				console.log(JSON.stringify(current))
+				var percent = (current / duration) * 100;
+				var per = Math.round(percent);
+				var dur = formatSeconds(duration);
+				var cur = formatSeconds(current);
+				var uislider = api.require('UISlider');
+				uislider.setValue({
+					id : 1,
+					value : {
+
+						value : percent
+					}
+				});
+
+				strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
+				$api.byId('slider').innerHTML = strmiao;
+			});
+
+		}
+	});
+
+}
+
+function getCurrent() {
+	var audioPlayer = api.require('audioPlayer');
+	audioPlayer.getCurrent(function(ret) {
+		var current = ret.current
+
+		return current
+	});
 }
 
 function next() {
@@ -596,12 +643,13 @@ function isOnLineStatus(callback) {
 	}
 }
 
-function audioCover(duration, songName, artists, per) {
+function audioCover(cover, duration, songName, artists, per) {
 	var objj = api.require('audioCover');
-	var uul = $api.getStorage('uulr');
+	//	var uul = $api.getStorage('uulr');
+
 	var msg = {
 		totalTime : duration,
-		cover : uul,
+		cover : cover,
 		progress : per,
 		audio : songName,
 		author : artists,

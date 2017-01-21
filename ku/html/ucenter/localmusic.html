@@ -16,7 +16,7 @@
 	</head>
 	<script type="text/html" id="tppl">
 		<% for(var i=0; i < list.length; i++){ %>
-		<div onclick="play(this,'<%=list[i].mp3 %>')" data-click="0" mp3url= "<%=list[i].mp3 %>" title="<%=list[i].title %>" class="list H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
+		<div onclick="play(this,'<%=list[i].mp3 %>')" data-click="0" mp3url= "<%=list[i].url %>" title="<%=list[i].title %>" class="list H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
 		<div class="H-padding-vertical-both-10"><img data-echo="<%=imageCache(list[i].cover) %>" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10" style="width: 70px; height: 70px;"></div>
 		<div class="H-padding-vertical-both-10"><img id="icon" src="../../image/zan.png" alt="" title="" class="H-display-block H-margin-horizontal-left-10 zanting" style="display: none"></div>
 		<div class="H-flex-item H-padding-10">
@@ -58,89 +58,80 @@
 		}
 
 		function initPage() {
-			api.showProgress({
-				title : ' 加载中...',
-				text : '先喝杯茶...',
-				modal : false
-			})
-			api.ajax({
-				url : url,
-				dataType : 'json',
-				method : 'post',
-				data : {
-					values : {
-						uid : $api.getStorage('userinfo').data_id,
-					},
-				}
-			}, function(ret, err) {
-				if (ret) {
-					var data = {
-						list : ret
-					};
-					var render = H.tppl(H.D("#tppl").innerHTML);
-					H.D(".result").innerHTML = render(data);
-					//						懒加载
-					echo.init({
-						offset : 0,
-						throttle : 350,
-						unload : false,
-						callback : function(element, op) {
-						}
-					});
-					api.hideProgress();
-				} else {
-					api.toast({
-						msg : '暂无信息'
-					});
-					api.hideProgress();
-				}
-			});
-			api.refreshHeaderLoadDone();
+			//			api.showProgress({
+			//				title : ' 加载中...',
+			//				text : '先喝杯茶...',
+			//				modal : false
+			//			})
+			//			var audioPlayer = api.require('audioPlayer');
+			//			audioPlayer.scanAudioLibrary(function(ret) {
+			//				console.log(JSON.stringify(ret));
+			//				var data = {
+			//					list : ret.audios
+			//				};
+			//				var render = H.tppl(H.D("#tppl").innerHTML);
+			//				H.D(".result").innerHTML = render(data);
+			//				//						懒加载
+			//				echo.init({
+			//					offset : 0,
+			//					throttle : 350,
+			//					unload : false,
+			//					callback : function(element, op) {
+			//					}
+			//				});
+			//				api.hideProgress();
+			//			});
+			//			api.refreshHeaderLoadDone();
 		}
 
 
 		H.ready(function() {
 			var audioPlayer = api.require('audioPlayer');
-			//		 console.log(JSON.stringify(audioPlayer));
-			var el = $api.getStorage('el');
-			audioPlayer.addEventListener({
-				name : "playing"
-			}, function(ret) {
-				//				alert(JSON.stringify(el))
-				//
+			//			var el = $api.getStorage('el');
+			//			var audioPlayer = api.require('audioPlayer');
+			console.log(JSON.stringify(audioPlayer))
+			
+			audioPlayer.scanAudioLibrary(function(ret) {
+				api.alert({
+					msg : JSON.stringify(ret)
+				});
 			});
-			audioPlayer.addEventListener({
-				name : "state"
-			}, function(ret) {
-				//				alert(JSON.stringify(ret))
-				if (ret.state == 'finished') {
-					var next = $api.next(el);
-					var nextUrl = $api.attr(next, 'mp3url');
-					if (!next) {
-						return
-					}
-					var listel = $api.domAll('.zanting');
-					for ( i = 0; i < listel.length; i++) {
-						$api.attr(listel[i], 'style', 'display: none ');
-					}
-					$api.attr(next, 'style', '');
-					next.setAttribute("data-click", 0);
-					playmp3(nextUrl, next)
-				} else {
-				}
-			});
-			initPage()
-			api.setRefreshHeaderInfo({
-				visible : true,
-				bgColor : '#f2f2f2',
-				textColor : '#4d4d4d',
-				textDown : '下拉刷新...',
-				textUp : '松开刷新...',
-				showTime : true
-			}, function(ret, err) {
-				alert(JSON.stringify(el))
-				initPage()
-			});
+			//			audioPlayer.addEventListener({
+			//				name : "playing"
+			//			}, function(ret) {
+			//				alert(JSON.stringify(ret))
+			//			});
+			//			audioPlayer.addEventListener({
+			//				name : "state"
+			//			}, function(ret) {
+			//				alert(JSON.stringify(ret))
+			//				if (ret.state == 'finished') {
+			//					var next = $api.next(el);
+			//					var nextUrl = $api.attr(next, 'mp3url');
+			//					if (!next) {
+			//						return
+			//					}
+			//					var listel = $api.domAll('.zanting');
+			//					for ( i = 0; i < listel.length; i++) {
+			//						$api.attr(listel[i], 'style', 'display: none ');
+			//					}
+			//					$api.attr(next, 'style', '');
+			//					next.setAttribute("data-click", 0);
+			//					playmp3(nextUrl, next)
+			//				} else {
+			//				}
+			//			});
+			//			initPage()
+			//			api.setRefreshHeaderInfo({
+			//				visible : true,
+			//				bgColor : '#f2f2f2',
+			//				textColor : '#4d4d4d',
+			//				textDown : '下拉刷新...',
+			//				textUp : '松开刷新...',
+			//				showTime : true
+			//			}, function(ret, err) {
+			//				initPage()
+			//			});
 		});
 		function playmp3(mp3, button) {
 			api.showProgress({
@@ -150,7 +141,6 @@
 			audioPlayer.initPlayer({
 				path : mp3
 			}, function(ret, err) {
-				console.log(JSON.stringify(ret));
 				if (ret.status) {
 					//					audioPlayer.pause();
 					//					audioPlayer.play();

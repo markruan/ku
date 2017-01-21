@@ -72,6 +72,7 @@
 /A6915194260483/plugins/photoswipe/photoswipe-ui-default.min.js
 /A6911302258372/html/music/image/musiclist/musiclistshare.png
 /A6915194260483/image/templates-imgs/zu.png
+/A6911302258372/html/music/bo_head.html
 /A6911302258372/launch/launch1080x1920.png
 /A6911302258372/image/plus.png
 /A6915194260483/config.xml
@@ -95,6 +96,7 @@
 /A6911302258372/tppl/head.html
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/buffer.png
 /A6911302258372/html/entry/reg_head.html
+/A6911302258372/html/ucenter/localmusic.html
 /A6915194260483/html/fabu/index.html
 /A6915194260483/plugins/swise player/html/skins/vodMobileTransparent/skin.html
 /A6915194260483/image/more_icon_30.png
@@ -154,6 +156,7 @@
 /A6915194260483/image/templates-imgs/liren1.png
 /A6915194260483/html/search_win.html
 /A6915194260483/plugins/swise player/html/skins/vodTransparent/logo.png
+/A6911302258372/html/music/bo.html
 /A6915194260483/plugins/swise player/html/skins/vodWhite/skin.html.js
 /A6915194260483/image/xsd.png
 /A6915194260483/html/common_index.html
@@ -187,8 +190,8 @@
 /A6911302258372/html/test.html
 /A6915194260483/image/templates-imgs/zhongchou.jpg
 /A6911302258372/css/iconfont.css
-/A6915194260483/plugins/swise player/html/skins/liveWhite/skin.html
 /A6915194260483/image/launch.png
+/A6915194260483/plugins/swise player/html/skins/liveWhite/skin.html
 /A6915194260483/image/templates-imgs/xiejia.png
 /A6911302258372/image/default.jpg
 /A6915194260483/html/launch/launch_head.html

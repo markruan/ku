@@ -27,6 +27,11 @@
 		var page = 0;
 		function openMusicList(id) {
 			api.openWin({
+				name : 'nww',
+				url : '../../html/music/bo_head.html',
+				delay : 500
+			});
+			api.openWin({
 				name : 'musiclist',
 				url : '../../html/music/mlist_win.html',
 				delay : 200,
@@ -59,7 +64,7 @@
 					var html = '';
 					for ( i = 0; i < ret.length; i++) {
 						var Idd = ret[i].idd;
-						var coverImgUrl =imageCache(ret[i].imgUrl ) 
+						var coverImgUrl = imageCache(ret[i].imgUrl)
 						var tracksName = ret[i].name
 						$api.setStorage('lenpage', ret.length);
 						html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + Idd + ')">';
@@ -87,7 +92,7 @@
 						msg : '没有更多了'
 					});
 					api.hideProgress();
-						api.refreshHeaderLoadDone();
+					api.refreshHeaderLoadDone();
 					//					api.alert({
 					//						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
 					//					});

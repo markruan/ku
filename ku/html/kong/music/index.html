@@ -83,7 +83,7 @@
 			var song = api.pageParam.song
 			var artists = api.pageParam.artists
 			var mp3 = api.pageParam.mp3
-			var sid=api.pageParam.sid
+			var sid = api.pageParam.sid
 			api.getPrefs({
 				key : 'user'
 			}, function(ret, err) {
@@ -102,9 +102,9 @@
 								artist : artists,
 								mp3 : mp3,
 								user : username,
-								sid:sid,
+								sid : sid,
 								type : 0,
-								uid:$api.getStorage('userinfo').data_id
+								uid : $api.getStorage('userinfo').data_id
 							},
 						}
 					}, function(ret, err) {
@@ -164,7 +164,6 @@
 				var percent = (current / duration) * 100;
 				var per = Math.round(percent);
 				var complete = ret.complete;
-				var slider = api.require('slider');
 				//				audioCover(duration, songName, artists, per)
 			});
 		}
