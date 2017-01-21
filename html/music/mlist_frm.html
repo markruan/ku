@@ -403,15 +403,15 @@
 		<!-- 1 用户登录 -->
 		<div  id='ava' class="egret-flex-item musiclistprofile">
 			<div class="egret-flex-item-logo">
-				<img src="./image/musiclist/FM.jpg" alt="" class="">
+				<img src="../../image/default.jpg" alt="" class="">
 			</div>
 			<div class="egret-flex-item-shelf">
 				<div   class="egret-flex-item-shelf01">
-					trackss
+					加载中...
 				</div>
 				<span  class="egret-flex-item-shelf02"> <img src="./image/musiclist/musiclistcreater.jpg" alt="" class="createrlogo">
 					<div class="creatername">
-						马克先生
+						新感官
 					</div>
 					<div class="egret-flex-item-arrow">
 						<img src="./image/musiclist/cm2_list_icn_arr.png" alt="" class="">
@@ -582,6 +582,52 @@
 
 		apiready = function() {
 			initPage();
+			//			console.log(JSON.stringify(arr))
+			api.addEventListener({
+				name : 'playNext'
+			}, function(ret, err) {
+				var arr = $api.getStorage('listm');
+				var index_m = Number(ret.value.index) + 1
+				if (index_m == arr.length) {
+				 api.sendEvent({
+	                   name:'lastsong'
+                   });
+					 
+					return
+				}
+				var sid = arr[index_m].id
+				var audioPlayer = api.require('audioPlayer');
+				audioPlayer.stop();
+				api.sendEvent({
+					name : 'songid',
+					extra : {
+						sid : sid,
+						index : index_m
+					}
+				});
+			});
+			api.addEventListener({
+				name : 'prev_b'
+			}, function(ret, err) {
+				var index_m = Number(ret.value.index) - 1
+				if (index_m < 0) {
+				   api.sendEvent({
+	                   name:'firstsong'
+                   });
+					
+					return
+				}
+				var sid = arr[index_m].id
+				var audioPlayer = api.require('audioPlayer');
+				audioPlayer.stop();
+				api.sendEvent({
+					name : 'songid',
+					extra : {
+						sid : sid,
+						index : index_m
+					}
+				});
+			});
 			api.setRefreshHeaderInfo({
 				visible : true,
 				bgColor : '#f2f2f2',
@@ -610,10 +656,11 @@
 				cache : true,
 				dataType : 'json'
 			}, function(ret, err) {
+				console.log(musicUrl + Idd + houZhui)
 				if (ret) {
 					var tracksName = ret.result.name;
 					var avatarUrl = ret.result.creator.avatarUrl;
-					var coverImgUrl = ret.result.coverImgUrl;
+					var coverImgUrl = imageCache(ret.result.coverImgUrl);
 					var nickname = ret.result.creator.nickname;
 					id = ret.result.id
 					getCommCount(id, 0)
@@ -625,7 +672,8 @@
 					$api.setStorage('trackThumb', coverImgUrl);
 					str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img src="' + coverImgUrl + '" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01">' + tracksName.substr(0, 11) + '</div><span  class="egret-flex-item-shelf02"><img src="../../image/qq.png" alt="" class="createrlogo"><div class="creatername">新感官</div><div class="egret-flex-item-arrow"><img src="./image/musiclist/cm2_list_icn_arr.png" alt="" class=""></div> </span></div></div>';
 					$api.byId('ava').innerHTML = str1;
-					var arr = ret.result.tracks;
+					arr = ret.result.tracks;
+					$api.setStorage('listm', arr);
 					var myobj = eval(arr);
 					var len = myobj.length;
 					$api.setStorage('lens', len);
@@ -637,12 +685,13 @@
 					for (var i = 0; i < myobj.length; i++) {
 						var bb = myobj[i].name;
 						var position = myobj[i].no;
+						var sid = myobj[i].id;
 						var artists = myobj[i].artists[0].name
 						var a = i;
 						var n = i + 1;
 						//						var nType = thisItem.type;
 						html += '<div class="egret-flex-item musiclist-item" > <div class="egret-flex-item-logo">' + n + '</div>';
-						html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + a + ',0)">';
+						html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + sid + ',' + i + ')">';
 						html += '<div class="egret-flex-item-shelf01">' + bb + '</div><div class="egret-flex-item-shelf02">';
 						html += '' + artists + '</div></div><div class="egret-flex-item-arrow"><img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg"">';
 						html += '</div></div></div><div class="musiclist-item-tool" >';
@@ -663,21 +712,50 @@
 			});
 		}
 
-		function abc(el) {
+		function playNext_f() {
+			api.addEventListener({
+				name : 'playNext'
+			}, function(ret, err) {
+				index_m = ret.value.index
+				var arr = $api.getStorage('listm');
+				var sid = arr[index_m + 1].id
+				api.sendEvent({
+					name : 'songid',
+					extra : {
+						sid : sid,
+						index : index_m + 1
+					}
+				});
+			});
+		}
+
+		function abc(el, i) {
 			var Idd = api.pageParam.name;
 			$api.setStorage('name', 1);
-			api.closeWin({
-				name : 'nww',
-			});
+			$api.setStorage('idi', i);
+			//			api.closeWin({
+			//				name : 'nww',
+			//			});
+			//			api.openWin({
+			//				name : 'nww',
+			//				url : './bo_head.html',
+			//				slidBackEnabled : false,
+			//				pageParam : {
+			//					name : el
+			//				},
+			//				delay : 500
+			//			});
 			api.openWin({
 				name : 'nww',
-				url : './nw.html?ID=' + el,
-				//				opaque : true,
-				//				vScrollBarEnabled : false,
-				pageParam : {
-					name : el
-				},
-				 delay:500
+			});
+			setTimeout(function() {
+				api.sendEvent({
+					name : 'songid',
+					extra : {
+						sid : el,
+						index : i
+					}
+				}), 600
 			});
 		};
 		function openComm(type) {
@@ -706,8 +784,8 @@
 					});
 				} else {
 					api.toast({
-	                    msg:'请您先登陆'
-                    });
+						msg : '请您先登陆'
+					});
 					api.openWin({
 						name : 'reg_login_win',
 						url : '../../html/entry/entry_head.html',
@@ -733,8 +811,9 @@
 			}, function(ret, err) {
 				if (ret) {
 					var cout = ret.length
-					strCont = '<div class="num">' + cout + '</div>';
-					$api.byId('CommCount').innerHTML = strCont;
+					//					strCont = '<div class="num">' + cout + '</div>';
+					//					$api.byId('CommCount').innerHTML = strCont;
+					$api.text($api.byId('CommCount'), cout);
 				} else {
 					//					api.alert({
 					//						msg : JSON.stringify(err)

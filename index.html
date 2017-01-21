@@ -11,25 +11,25 @@
 		<script type="text/javascript">
 			H.ready(function() {
 				if (H.isAPICloud()) {
-					H.openSlidLayout(null, {
-						name : "slidLayout",
-						url : "./html/slidLayout_body.html",
-						bgColor : "transparent",
-						bounces : false
-					}, {
-						name : "index",
-						url : "./html/index.html",
-						bounces : false
-					}, {
-						leftEdge : 100
-					});
+					openIndex()
 				} else {
 					window.location = "html/index.html";
 				}
 			});
-		
-			
-			
+			function openIndex() {
+				H.openSlidLayout(null, {
+					name : "slidLayout",
+					url : "./html/slidLayout_body.html",
+					bgColor : "transparent",
+					bounces : false
+				}, {
+					name : "index",
+					url : "./html/index.html",
+					bounces : false
+				}, {
+					leftEdge : 100
+				});
+			}
 		</script>
 	</body>
 </html>

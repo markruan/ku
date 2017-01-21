@@ -2,6 +2,17 @@
  * APICloud JavaScript Library
  * Copyright (c) 2014 apicloud.com
  */
+function imageCache(url) {//图片缓存方法
+	var path = url;
+	api.imageCache({
+		url : url,
+	}, function(ret, err) {
+		if (ret) {
+			path = ret.url;
+		}
+	});
+	return path;
+}
 (function(window) {
 	hostUrl = 'http://www.v7idc.com/ku/api';
 	musicUrl = 'http://music.163.com/api/playlist/detail?id=';
@@ -612,18 +623,7 @@
 
 })(window);
 
-function imageCache(url) {//图片缓存方法
-	var path = url;
-	api.imageCache({
-		url : url,
-	}, function(ret, err) {
-		if (ret) {
-			path = ret.url;
-		}
-	});
-	return path;
-}
-
+ 
 function panduan() {
 	if (!$api.getStorage('userinfo')) {
 		api.toast({
@@ -643,3 +643,5 @@ function kaifa() {
 	});
 
 }
+
+
