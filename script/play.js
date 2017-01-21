@@ -1,198 +1,200 @@
-function getidd() {
-	var url = location.search;
-	var theRequest = new Object();
-	if (url.indexOf("?") != -1) {
-		var str = url.substr(1);
-		strs = str.split("=");
-		for (var i = 0; i < strs.length; i++) {
-			theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[2]);
-		}
-	}
-	idd = strs[1].split("=")[0];
-}
-
-function getInfo(id) {
-	if (id) {
-
-	} else {
-
-		var id = $api.getStorage('idi');
-	}
-	stopAll()
-	api.showProgress({
-		title : ' 加载中...',
-		text : '请稍等...',
-		modal : false
-	})
-	api.sendEvent({
-		name : 'cancelDownload',
-	});
-	$api.rmStorage('play');
-
-	api.getPrefs({
-		key : 'mul'
-	}, function(ret, err) {
-		var Idd = ret.value
-		api.ajax({
-			url : musicUrl + Idd + houZhui,
-			cache : true,
-			dataType : 'json',
-		}, function(ret, err) {
-			if (ret) {
-				console.log(JSON.stringify(ret))
-
-				var arr = ret.result.tracks;
-
-				console.log(JSON.stringify(arr[id]))
-				var songinfo = arr[id]
-				console.log(JSON.stringify(songinfo))
-				//				var myobj = eval(arr);
-				bb = songinfo.mp3Url;
-				songName = songinfo.name;
-				artists = songinfo.artists[0].name;
-				albumpic = songinfo.album.picUrl;
-				songsId = songinfo.id
-				$api.setStorage('album', albumpic);
-
-				songCache(bb)
-
-				//				play(bb)
-				api.setPrefs({
-					key : 'songid2',
-					value : songsId
-				});
-				getCache(albumpic)
-				//给mini播放器数据
-				api.sendEvent({
-					name : 'min',
-					extra : {
-						artists : artists,
-						name : songName,
-						sid : songsId,
-						apic : albumpic,
-						songName : bb
-					}
-				});
-
-				$api.setStorage('idi', id);
-
-				var music = {};
-				music.name = songName;
-				music.art = artists;
-				music.url = bb;
-				music.pic = albumpic;
-				music.sid = songsId
-				$api.setStorage('kee', music);
-				$api.attr($api.byId('bg'), 'src', albumpic);
-				var aa = $api.byId('title1');
-				var bb = $api.byId('titleName')
-				$api.text(aa, songName);
-				$api.text(bb, artists);
-				api.setPrefs({
-					key : 'urll',
-					value : bb
-				});
-				var uul = ''
-				//播放模块
-				//
-			} else {
-				api.alert({
-					msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
-				});
-			};
-		});
-	});
-}
-
-function play(mp3, cover, songName, artists) {
-	var pdd = $api.byId('playe');
-	var netAudio = api.require('audio');
-	var pdd = $api.byId('playerIcon');
-	var jsfun = 'stop()'
-
-	api.sendEvent({
-		name : 'playing'
-	});
-
-	netAudio.play({
-		path : mp3
-	}, function(ret, err) {
-		api.hideProgress();
-		var duration = ret.duration;
-		var tii = duration * 10;
-		var current = ret.current;
-		var percent = (current / duration) * 100;
-		var per = Math.round(percent);
-		var complete = ret.complete;
-
-		var dur = formatSeconds(duration);
-		var cur = formatSeconds(current);
-		var uislider = api.require('UISlider');
-		uislider.setValue({
-			id : 1,
-			value : {
-
-				value : percent
-			}
-		});
-
-		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
-		$api.byId('slider').innerHTML = strmiao;
-		///锁屏播放
-
-		audioCover(cover, duration, songName, artists, per)
-		//			}
-		//		});
-		$api.setStorage('bofang', 1);
-		api.setPrefs({
-			key : 'per',
-			value : per
-		});
-		if (complete) {
-			var PP = $api.getStorage('PlayAll');
-			if (PP == 'a') {
-				next();
-				api.removePrefs({
-					key : 'per'
-				});
-				//							$api.rmStorage('PlayAll')
-			} else {
-				var mp34 = $api.getStorage('path');
-				play(mp34);
-				api.removePrefs({
-					key : 'per'
-				});
-				//							$api.rmStorage('PlayAll')
-			}
-		} else {
-		}
-	});
-	$api.removeCls(pdd, 'icon-bofang');
-	$api.addCls(pdd, 'icon-zanting');
-}
+//function getidd() {
+//	var url = location.search;
+//	var theRequest = new Object();
+//	if (url.indexOf("?") != -1) {
+//		var str = url.substr(1);
+//		strs = str.split("=");
+//		for (var i = 0; i < strs.length; i++) {
+//			theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[2]);
+//		}
+//	}
+//	idd = strs[1].split("=")[0];
+//}
+//
+//function getInfo(id) {
+//	if (id) {
+//
+//	} else {
+//
+//		var id = $api.getStorage('idi');
+//	}
+//	stopAll()
+//	api.showProgress({
+//		title : ' 加载中...',
+//		text : '请稍等...',
+//		modal : false
+//	})
+//	api.sendEvent({
+//		name : 'cancelDownload',
+//	});
+//	$api.rmStorage('play');
+//
+//	api.getPrefs({
+//		key : 'mul'
+//	}, function(ret, err) {
+//		var Idd = ret.value
+//		api.ajax({
+//			url : musicUrl + Idd + houZhui,
+//			cache : true,
+//			dataType : 'json',
+//		}, function(ret, err) {
+//			if (ret) {
+//				console.log(JSON.stringify(ret))
+//
+//				var arr = ret.result.tracks;
+//
+//				console.log(JSON.stringify(arr[id]))
+//				var songinfo = arr[id]
+//				console.log(JSON.stringify(songinfo))
+//				//				var myobj = eval(arr);
+//				bb = songinfo.mp3Url;
+//				songName = songinfo.name;
+//				artists = songinfo.artists[0].name;
+//				albumpic = songinfo.album.picUrl;
+//				songsId = songinfo.id
+//				$api.setStorage('album', albumpic);
+//
+//				songCache(bb)
+//
+//				//				play(bb)
+//				api.setPrefs({
+//					key : 'songid2',
+//					value : songsId
+//				});
+//				getCache(albumpic)
+//				//给mini播放器数据
+//				api.sendEvent({
+//					name : 'min',
+//					extra : {
+//						artists : artists,
+//						name : songName,
+//						sid : songsId,
+//						apic : albumpic,
+//						songName : bb
+//					}
+//				});
+//
+//				$api.setStorage('idi', id);
+//
+//				var music = {};
+//				music.name = songName;
+//				music.art = artists;
+//				music.url = bb;
+//				music.pic = albumpic;
+//				music.sid = songsId
+//				$api.setStorage('kee', music);
+//				$api.attr($api.byId('bg'), 'src', albumpic);
+//				var aa = $api.byId('title1');
+//				var bb = $api.byId('titleName')
+//				$api.text(aa, songName);
+//				$api.text(bb, artists);
+//				api.setPrefs({
+//					key : 'urll',
+//					value : bb
+//				});
+//				var uul = ''
+//				//播放模块
+//				//
+//			} else {
+//				api.alert({
+//					msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
+//				});
+//			};
+//		});
+//	});
+//}
+//
+//function play(mp3, cover, songName, artists) {
+//	var pdd = $api.byId('playe');
+//	var netAudio = api.require('audio');
+//	var pdd = $api.byId('playerIcon');
+//	var jsfun = 'stop()'
+//
+//	api.sendEvent({
+//		name : 'playing'
+//	});
+//
+//	netAudio.play({
+//		path : mp3
+//	}, function(ret, err) {
+//		api.hideProgress();
+//		var duration = ret.duration;
+//		var tii = duration * 10;
+//		var current = ret.current;
+//		var percent = (current / duration) * 100;
+//		var per = Math.round(percent);
+//		var complete = ret.complete;
+//
+//		var dur = formatSeconds(duration);
+//		var cur = formatSeconds(current);
+//		var uislider = api.require('UISlider');
+//		uislider.setValue({
+//			id : 1,
+//			value : {
+//
+//				value : percent
+//			}
+//		});
+//
+//		strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
+//		$api.byId('slider').innerHTML = strmiao;
+//		///锁屏播放
+//
+//		audioCover(cover, duration, songName, artists, per)
+//		//			}
+//		//		});
+//		$api.setStorage('bofang', 1);
+//		api.setPrefs({
+//			key : 'per',
+//			value : per
+//		});
+//		if (complete) {
+//			var PP = $api.getStorage('PlayAll');
+//			if (PP == 'a') {
+//				next();
+//				api.removePrefs({
+//					key : 'per'
+//				});
+//				//							$api.rmStorage('PlayAll')
+//			} else {
+//				var mp34 = $api.getStorage('path');
+//				play(mp34);
+//				api.removePrefs({
+//					key : 'per'
+//				});
+//				//							$api.rmStorage('PlayAll')
+//			}
+//		} else {
+//		}
+//	});
+//	$api.removeCls(pdd, 'icon-bofang');
+//	$api.addCls(pdd, 'icon-zanting');
+//}
 
 function play_c(mp3, cover, songName, artists, current) {
 	var pdd = $api.byId('playerIcon');
-    
+
 	api.sendEvent({
 		name : 'playing'
 	});
+
 	var audioPlayer = api.require('audioPlayer');
 	audioPlayer.stop();
 	audioPlayer.initPlayer({
 		path : mp3
 	}, function(ret) {
 		if (ret.status) {
-//			console.log(JSON.stringify(ret))
+			//			console.log(JSON.stringify(ret))
 			var duration = ret.duration;
+			$api.setStorage('duration',duration);
 			audioPlayer.addEventListener({
 				name : "state"
 			}, function(ret) {
 				if (ret.state == 'finished') {
-				 playNext_b() 
-                 api.toast({
-	                 msg:'播放完毕'
-                 });
+					playNext_b()
+					api.toast({
+						msg : '播放完毕'
+					});
 				} else {
 
 				}
@@ -203,11 +205,12 @@ function play_c(mp3, cover, songName, artists, current) {
 				//				console.log(JSON.stringify(ret));
 				current = ret.current
 				var tii = duration * 10;
-//				console.log(JSON.stringify(current))
+				//				console.log(JSON.stringify(current))
 				var percent = (current / duration) * 100;
 				var per = Math.round(percent);
 				var dur = formatSeconds(duration);
 				var cur = formatSeconds(current);
+				audioCover(cover, duration, songName, artists, per)
 				var uislider = api.require('UISlider');
 				uislider.setValue({
 					id : 1,
@@ -660,10 +663,10 @@ function audioCover(cover, duration, songName, artists, per) {
 			play();
 		} else if (ret.eventType == 'next') {
 			stop();
-			next()
+			playNext_b()
 		} else if (ret.eventType == 'previous') {
 			stop();
-			prev()
+			prev_b()
 		} else if (ret.eventType == 'play') {
 			//			play()
 			pause();
