@@ -93,7 +93,7 @@
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-0" style="min-height: 80px;">
 						<div>
-							<span   class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" onclick="switchmusic(this);" tapmode=" iconfont  icon-focus " id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white"style="  font-size:70px;"></i></span>
+							<span   class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" data-url="" onclick="switchmusic(this);" tapmode=" iconfont  icon-focus " id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white"style="  font-size:70px;"></i></span>
 						</div>
 					</div>
 					<div  class=" rightN H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 80px;">
@@ -140,7 +140,7 @@
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent     H-padding-vertical-both-10" style="min-height: 50px;">
 						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i id="rep" data-click="0" onclick="switchi(this);" tapmode=" iconfont  icon-focus " class="iconfont icon-xunhuan   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+							<span class="H-icon H-display-block H-horizontal-center"><i id="rep" data-click="0" onclick="switchi(this);"  tapmode=" iconfont  icon-focus " class="iconfont icon-xunhuan   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
 						</div>
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
@@ -179,17 +179,19 @@
 		}
 
 		function shareWx(cha) {
-			music = $api.getStorage('kee');
-			var uul = $api.getStorage('uulr');
+			var thumb = $api.attr($api.byId('bg'), 'src');
+			var title = $api.text($api.byId('title1'));
+			var description = $api.text($api.byId('titleName'));
+			var mp3url=$api.attr($api.byId('playerIcon'),'data-url')
 			var wx = api.require('wx');
 			wx.shareMusic({
 				apiKey : '',
 				scene : cha,
-				title : music.name,
-				description : music.art,
-				thumb : uul,
+				title : title,
+				description : description,
+				thumb : thumb,
 				contentUrl : 'http://www.iqimeng.com/%e9%9f%b3%e4%b9%90/ ',
-				musicDataUrl : music.url
+				musicDataUrl :mp3url
 			}, function(ret, err) {
 				if (ret.status) {
 					alert('分享成功');
@@ -202,29 +204,24 @@
 			});
 		}
 
-		function switchVoice(button) {
-			var click = button.getAttribute("data-click");
-			if (click == 0) {
-				// 点开
-				button.setAttribute("data-click", 1);
-				voiceController();
-				var slider = api.require('slider');
-				slider.show({
-					id : -1
-				});
-			} else {
-				// 关闭
-				button.setAttribute("data-click", 0);
-				hideS()
-			}
-		}
+//		function switchVoice(button) {
+//			var click = button.getAttribute("data-click");
+//			if (click == 0) {
+//				// 点开
+//				button.setAttribute("data-click", 1);
+//				voiceController();
+//				var slider = api.require('slider');
+//				slider.show({
+//					id : -1
+//				});
+//			} else {
+//				// 关闭
+//				button.setAttribute("data-click", 0);
+//				hideS()
+//			}
+//		}
 
-		function hideS() {
-			var slider = api.require('slider');
-			slider.hide({
-				id : -1
-			});
-		}
+		 
 
 		function openComm(id, type) {
 			api.getPrefs({
@@ -262,6 +259,9 @@
 				// 点开
 				button.setAttribute("data-click", 1);
 				//				pause();
+				api.toast({
+					msg : '暂停'
+				});
 				audioPlayer.pause();
 				$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 			} else {
@@ -270,6 +270,9 @@
 				$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
 				//				play()
 				audioPlayer.play();
+				api.toast({
+					msg : '播放'
+				});
 			}
 		}
 
@@ -322,45 +325,44 @@
 			}
 		}
 
-		function download() {
-			api.getPrefs({
-				key : 'urll'
-			}, function(ret, err) {
-				var v = ret.value;
-				api.download({
-					url : v,
-					report : true,
-					cache : true,
-					allowResume : true
-				}, function(ret, err) {
-					if (ret) {
-						var path = ret.savePath
-						var a = ret.state
-						var pers = parseInt(ret.percent)
-						var path = ret.savePath
-						setTimeout(api.showProgress({
-							title : '下载' + pers + '%',
-							text : '先喝杯茶...',
-							modal : false
-						}), 2000);
-						if (a == 1) {
-							api.hideProgress();
-							api.alert({
-								msg : "下载成功!下载地址：" + path
-							}, function(ret, err) {
-							});
-						} else {
-						}
-					} else {
-						var value = err.msg;
-					}
-				});
-			});
-			api.removePrefs({
-				key : 'urll'
-			});
-		}
-
+		//		function download() {
+		//			api.getPrefs({
+		//				key : 'urll'
+		//			}, function(ret, err) {
+		//				var v = ret.value;
+		//				api.download({
+		//					url : v,
+		//					report : true,
+		//					cache : true,
+		//					allowResume : true
+		//				}, function(ret, err) {
+		//					if (ret) {
+		//						var path = ret.savePath
+		//						var a = ret.state
+		//						var pers = parseInt(ret.percent)
+		//						var path = ret.savePath
+		//						setTimeout(api.showProgress({
+		//							title : '下载' + pers + '%',
+		//							text : '先喝杯茶...',
+		//							modal : false
+		//						}), 2000);
+		//						if (a == 1) {
+		//							api.hideProgress();
+		//							api.alert({
+		//								msg : "下载成功!下载地址：" + path
+		//							}, function(ret, err) {
+		//							});
+		//						} else {
+		//						}
+		//					} else {
+		//						var value = err.msg;
+		//					}
+		//				});
+		//			});
+		//			api.removePrefs({
+		//				key : 'urll'
+		//			});
+		//		}
 		function getinfo(sid) {
 			api.ajax({
 				url : 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
@@ -375,6 +377,8 @@
 					$api.attr($api.byId('bg'), 'src', cover);
 					$api.text($api.byId('title1'), songdata.name);
 					$api.text($api.byId('titleName'), songdata.artists[0].name);
+					$api.attr($api.byId('playerIcon'), 'data-url', songdata.mp3Url);
+					
 					play_c(songdata.mp3Url, cover, songdata.name, songdata.artists[0].name)
 				});
 			});
@@ -445,7 +449,7 @@
 				},
 				bubble : {
 					direction : 'top',
-					state:'hide'
+					state : 'hide'
 				},
 				handler : {
 					w : 10,
@@ -473,9 +477,9 @@
 						progress : ret.value
 					});
 					var audioPlayer = api.require('audioPlayer');
-					var duration=$api.getStorage('duration');
+					var duration = $api.getStorage('duration');
 					audioPlayer.setCurrent({
-						current : ret.value/100*duration
+						current : ret.value / 100 * duration
 					});
 					//					alert(JSON.stringify(ret));
 				} else {

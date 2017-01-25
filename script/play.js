@@ -177,6 +177,13 @@ function play_c(mp3, cover, songName, artists, current) {
 	api.sendEvent({
 		name : 'playing'
 	});
+	api.showProgress({
+		style : 'default',
+		animationType : 'fade',
+		title : '努力加载中...',
+		//  text: '先喝杯茶...',
+		modal : false
+	});
 
 	var audioPlayer = api.require('audioPlayer');
 	audioPlayer.stop();
@@ -184,9 +191,10 @@ function play_c(mp3, cover, songName, artists, current) {
 		path : mp3
 	}, function(ret) {
 		if (ret.status) {
+		api.hideProgress();
 			//			console.log(JSON.stringify(ret))
 			var duration = ret.duration;
-			$api.setStorage('duration',duration);
+			$api.setStorage('duration', duration);
 			audioPlayer.addEventListener({
 				name : "state"
 			}, function(ret) {
