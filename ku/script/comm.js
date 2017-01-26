@@ -1,4 +1,4 @@
-function switchplay(button, mp3) {
+function switchplay(button, mp3,sid) {
 	var click = button.getAttribute("data-click");
 	if (click == 0) {
 		// 点开
@@ -9,7 +9,14 @@ function switchplay(button, mp3) {
 		button.setAttribute("data-click", 1);
 		//		pauseAll()
 
-		play_1(mp3)
+//		play_1(mp3)
+        api.sendEvent({
+					name : 'songid',
+					extra : {
+						sid : sid,
+						index : 0
+					}
+				})
 		api.sendEvent({
 	        name:'playing'
         });
