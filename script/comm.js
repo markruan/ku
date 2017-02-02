@@ -1,4 +1,5 @@
-function switchplay(button, mp3,sid) {
+function switchplay(button,mp3,sid) {
+	console.log(sid)
 	var click = button.getAttribute("data-click");
 	if (click == 0) {
 		// 点开

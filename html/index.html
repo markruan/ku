@@ -138,16 +138,17 @@
 			}
 			//初始化
 			console.log(JSON.stringify(imageArray))
-			index = 0;
+			 index = 0;
 			function xunhuan() {
+			   
 				if (index == 16) {
 					imageCanvas = document.getElementsByClassName('xunhuan');
-					for ( i = 0; i <4; i++) {
+					for ( i = 0; i < 4; i++) {
 						imageCanvas[i].src = imageArray[i].src;
 					}
 				} else {
 					imageCanvas = $api.domAll(".xunhuan");
-//					console.log(JSON.stringify(imageCanvas))
+					//					console.log(JSON.stringify(imageCanvas))
 					for ( i = 0; i < 4; i++) {
 						$api.attr(imageCanvas[i], 'src', imageArray[index].src);
 					}
@@ -156,29 +157,29 @@
 					} else {
 						index++;
 					}
-										window.setTimeout(xunhuan, 110);
+					window.setTimeout(xunhuan, 160);
 				}
 			}
 
 			function xunhuan1(button) {
-				var click = button.getAttribute("data-click");
-				if (click == 0) {
-					// 点开
-					button.setAttribute("data-click", 1);
-					index = 16
-					api.sendEvent({
-						name : 'stopmusic'
-					});
-					return
-				} else {
-					// 关闭
-					button.setAttribute("data-click", 0);
-					index = 0
-					//					xunhuan()
-					api.sendEvent({
-						name : 'playingquan'
-					});
-				}
+				//				var click = button.getAttribute("data-click");
+				//				if (click == 0) {
+				//					// 点开
+				//					button.setAttribute("data-click", 1);
+				//					index = 16
+				//					api.sendEvent({
+				//						name : 'stopmusic'
+				//					});
+				//					return
+				//				} else {
+				//					// 关闭
+				//					button.setAttribute("data-click", 0);
+				//					index = 0
+				//					//					xunhuan()
+				//					api.sendEvent({
+				//						name : 'playingquan'
+				//					});
+				//				}
 			}
 
 			function showDropMenu() {
@@ -245,9 +246,9 @@
 				}, function(ret, err) {
 					if (ret) {
 						index = 16
+						xunhuan()
 					}
 				});
-				 
 				api.addEventListener({
 					name : 'playing'
 				}, function(ret, err) {
