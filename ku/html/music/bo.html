@@ -88,17 +88,17 @@
 				<div  class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-center-all">
 					<div class=" leftB  H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 80px;">
 						<div>
-							<span  class="H-icon H-display-block H-horizontal-center"><i onclick="prev_b()" id="prev_b" data-sid="" data-index=""  tapmode=" iconfont  icon-focus " class="iconfont icon-mediaprevious  H-font-size-32 H-vertical-middle H-theme-font-color-white"style="  font-size:30px;"></i></span>
+							<span  class="H-icon H-display-block H-horizontal-center"><i onclick="prev_b()" id="prev_b" data-sid="" data-index=""  tapmode=" iconfont  icon-focus " class="iconfont icon-mediaprevious  H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
 						</div>
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-0" style="min-height: 80px;">
 						<div>
-							<span   class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" data-url="" onclick="switchmusic(this);" tapmode=" iconfont  icon-focus " id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white"style="  font-size:70px;"></i></span>
+							<span   class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" data-url="" onclick="switchmusic(this);" tapmode=" iconfont  icon-focus " id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white H-theme-font-color9-click "style="  font-size:70px;"></i></span>
 						</div>
 					</div>
 					<div  class=" rightN H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 80px;">
 						<div>
-							<span id="next"   class="H-icon H-display-block H-horizontal-center"><i onclick="playNext_b() "  id="playNext_b" data-sid="" data-index=""  tapmode=" iconfont  icon-focus " class="iconfont icon-medianext   H-font-size-32 H-vertical-middle H-theme-font-color-white"style="  font-size:30px;"></i></span>
+							<span id="next"   class="H-icon H-display-block H-horizontal-center"><i onclick="playNext_b() "  id="playNext_b" data-sid="" data-index=""  tapmode=" iconfont  icon-focus " class="iconfont icon-medianext   H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
 						</div>
 					</div>
 				</div>
@@ -364,6 +364,7 @@
 		//			});
 		//		}
 		function getinfo(sid) {
+	
 			api.ajax({
 				url : 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
 			}, function(ret, err) {
