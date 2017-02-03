@@ -95,6 +95,7 @@
 		<script src="../script/api.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			var bofangye
+			var xunhuan
 			function ceshi() {
 				api.bringFrameToFront({
 					from : 'order_mobile_body',
@@ -138,17 +139,10 @@
 			}
 			//初始化
 			console.log(JSON.stringify(imageArray))
-			 index = 0;
-			function xunhuan() {
-			   
-				if (index == 16) {
+			index = 0;
+			function xuhuan() {
+				setxunhuan = setInterval(function() {
 					imageCanvas = document.getElementsByClassName('xunhuan');
-					for ( i = 0; i < 4; i++) {
-						imageCanvas[i].src = imageArray[i].src;
-					}
-				} else {
-					imageCanvas = $api.domAll(".xunhuan");
-					//					console.log(JSON.stringify(imageCanvas))
 					for ( i = 0; i < 4; i++) {
 						$api.attr(imageCanvas[i], 'src', imageArray[index].src);
 					}
@@ -157,29 +151,12 @@
 					} else {
 						index++;
 					}
-					window.setTimeout(xunhuan, 160);
-				}
+				}, 115)
 			}
 
-			function xunhuan1(button) {
-				//				var click = button.getAttribute("data-click");
-				//				if (click == 0) {
-				//					// 点开
-				//					button.setAttribute("data-click", 1);
-				//					index = 16
-				//					api.sendEvent({
-				//						name : 'stopmusic'
-				//					});
-				//					return
-				//				} else {
-				//					// 关闭
-				//					button.setAttribute("data-click", 0);
-				//					index = 0
-				//					//					xunhuan()
-				//					api.sendEvent({
-				//						name : 'playingquan'
-				//					});
-				//				}
+			function stopxunhuan() {
+				console.log(setxunhuan)
+				clearInterval(setxunhuan)
 			}
 
 			function showDropMenu() {
@@ -245,16 +222,15 @@
 					name : 'stopmusic'
 				}, function(ret, err) {
 					if (ret) {
-						index = 16
-						xunhuan()
+						stopxunhuan()
 					}
 				});
 				api.addEventListener({
 					name : 'playing'
 				}, function(ret, err) {
 					if (ret) {
-						index = 0
-						xunhuan()
+						index = 0;
+						xuhuan()
 					}
 				});
 				//				api.addEventListener({

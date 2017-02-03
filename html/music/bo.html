@@ -263,6 +263,9 @@
 					msg : '暂停'
 				});
 				audioPlayer.pause();
+				api.sendEvent({
+	                name:'stopmusic'
+                });
 				$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 			} else {
 				// 关闭
@@ -273,6 +276,9 @@
 				api.toast({
 					msg : '播放'
 				});
+				api.sendEvent({
+	                name:'playing'
+                });
 			}
 		}
 
@@ -325,56 +331,19 @@
 			}
 		}
 
-		//		function download() {
-		//			api.getPrefs({
-		//				key : 'urll'
-		//			}, function(ret, err) {
-		//				var v = ret.value;
-		//				api.download({
-		//					url : v,
-		//					report : true,
-		//					cache : true,
-		//					allowResume : true
-		//				}, function(ret, err) {
-		//					if (ret) {
-		//						var path = ret.savePath
-		//						var a = ret.state
-		//						var pers = parseInt(ret.percent)
-		//						var path = ret.savePath
-		//						setTimeout(api.showProgress({
-		//							title : '下载' + pers + '%',
-		//							text : '先喝杯茶...',
-		//							modal : false
-		//						}), 2000);
-		//						if (a == 1) {
-		//							api.hideProgress();
-		//							api.alert({
-		//								msg : "下载成功!下载地址：" + path
-		//							}, function(ret, err) {
-		//							});
-		//						} else {
-		//						}
-		//					} else {
-		//						var value = err.msg;
-		//					}
-		//				});
-		//			});
-		//			api.removePrefs({
-		//				key : 'urll'
-		//			});
-		//		}
+ 
 		function getinfo(sid) {
 	
 			api.ajax({
 				url : 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
 			}, function(ret, err) {
-				console.log(JSON.stringify(ret))
+//				console.log(JSON.stringify(ret))
 				var songdata = ret.songs[0]
 				api.imageCache({
 					url : songdata.album.picUrl
 				}, function(ret, err) {
 					cover = ret.url
-					console.log(cover)
+					
 					$api.attr($api.byId('bg'), 'src', cover);
 					$api.text($api.byId('title1'), songdata.name);
 					$api.text($api.byId('titleName'), songdata.artists[0].name);
@@ -407,6 +376,7 @@
 				name : 'stopmusic'
 			}, function(ret, err) {
 				pause();
+				 
 			});
 			api.parseTapmode();
 			var commn = $api.byId('comm');
