@@ -209,27 +209,13 @@ function quXiaoShouCang() {
 	});
 }
 
-function shouCang() {
+function shouCang(sid, user, musicUrl, artists, songName, albumpic) {
 	if (!$api.getStorage('userinfo')) {
 		api.toast({
 			msg : '先登陆'
 		});
 		return
 	}
-	music = $api.getStorage('kee');
-	//	var userIcon = $api.getStorage('usericon');
-
-	var bb = music.url;
-	var artists = music.art;
-	var songName = music.name;
-	var albumpic = music.pic;
-	var sid = music.sid
-
-	api.getPrefs({
-		key : 'user'
-	}, function(ret, err) {
-		user = ret.value
-	});
 
 	api.ajax({
 		url : hostUrl + '/mylist.php',
@@ -240,14 +226,11 @@ function shouCang() {
 		data : {
 			values : {
 				sid : sid,
-				//					username : user,
 				uid : $api.getStorage('userinfo').data_id
 			}
 		}
 	}, function(ret, err) {
-
 		if (ret == 1) {
-
 			api.ajax({
 				url : hostUrl + '/addm.php',
 				method : 'post',
@@ -256,7 +239,7 @@ function shouCang() {
 				dataType : 'json',
 				data : {
 					values : {
-						mp3 : bb,
+						mp3 : musicUrl,
 						artist : artists,
 						title : songName,
 						poster : albumpic,
@@ -265,29 +248,26 @@ function shouCang() {
 						background : albumpic,
 						cover : albumpic,
 						sid : sid
+						//							usericon: userIcon
 					}
 				}
 			}, function(ret, err) {
-
+				//coding...
 			});
-
 			api.toast({
 				msg : '收藏成功'
 			});
 		} else if (ret == 2) {
-
 			api.confirm({
 				title : '取消收藏',
 				msg : '亲，要取消吗？',
 				buttons : ['确定', '取消']
 			}, function(ret, err) {
 				if (ret.buttonIndex == 1) {
-					quXiaoShouCang()
+					quXiaoShouCang(sid)
 				} else {
-
 				}
 			});
-
 		} else {
 			api.toast({
 				msg : '收藏失败'
@@ -296,7 +276,29 @@ function shouCang() {
 		//coding...
 	});
 	////////////////
+}
 
+function quXiaoShouCang(sid) {
+	var uid = $api.getStorage('userinfo').data_id
+	api.ajax({
+		url : hostUrl + '/quxiao.php',
+		method : 'post',
+		cache : false,
+		timeout : 30,
+		dataType : 'text',
+		data : {
+			values : {
+				uid : uid,
+				sid : sid,
+			}
+		}
+	}, function(ret, err) {
+		if (ret == 1) {
+			alert('成功')
+		} else {
+			alert('失败')
+		}
+	});
 }
 
 /**
@@ -309,8 +311,8 @@ function getPicture() {
 		if (is_true) {
 			if (line_type == 'wifi' || line_type == '4g') {
 				api.confirm({
-					title : "提示",
-					msg : "您需要如何选择自己的头像？",
+					//					title : "分享美图",
+					msg : "选取美图赶紧分享吧！",
 					buttons : ["现在照", "相册选", "取消"]
 				}, function(ret, err) {
 					//定义图片来源类型
@@ -498,4 +500,23 @@ function imageCache(url) {//图片缓存方法
 		}
 	});
 	return path;
+}
+
+function openComm(sid, type) {
+	if (!$api.getStorage('userinfo')) {
+		api.toast({
+			msg : '请先登陆'
+		});
+		return
+	}
+	api.openWin({
+		name : 'comm',
+		url : '../../html/music/comm/head.html',
+		opaque : true,
+		vScrollBarEnabled : false,
+		pageParam : {
+			type : type,
+			sid : sid
+		}
+	});
 }

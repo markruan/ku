@@ -200,30 +200,7 @@
 					}
 				});
 			}
-			function openComm(id, type) {
-				api.getPrefs({
-					key : 'user' // 用户信息key
-				}, function(ret, err) {
-					var val = ret.value;
-					if (val && val != "") {
-						api.openWin({
-							name : 'comm',
-							url : '../../html/music/comm/head.html',
-							opaque : true,
-							vScrollBarEnabled : false,
-							pageParam : {
-								type : type,
-								id : id
-							}
-						});
-						//					$api.setStorage('typer1', 1);
-					} else {
-						api.toast({
-							msg : '请先登陆'
-						});
-					}
-				});
-			}
+			 
 
 			function dianzan(id, button, zan) {
 				api.ajax({
@@ -305,97 +282,9 @@
 				});
 			}
 
-			function shouCang(sid, user, musicUrl, artists, songName, albumpic) {
-				if (!$api.getStorage('userinfo')) {
-					api.toast({
-						msg : '先登陆'
-					});
-					return
-				}
-				
-				api.ajax({
-					url : hostUrl + '/mylist.php',
-					method : 'post',
-					cache : false,
-					timeout : 30,
-					dataType : 'text',
-					data : {
-						values : {
-							sid : sid,
-							uid : $api.getStorage('userinfo').data_id
-						}
-					}
-				}, function(ret, err) {
-					if (ret == 1) {
-						api.ajax({
-							url : hostUrl + '/addm.php',
-							method : 'post',
-							cache : true,
-							timeout : 30,
-							dataType : 'json',
-							data : {
-								values : {
-									mp3 : musicUrl,
-									artist : artists,
-									title : songName,
-									poster : albumpic,
-									user : user,
-									uid : $api.getStorage('userinfo').data_id,
-									background : albumpic,
-									cover : albumpic,
-									sid : sid
-									//							usericon: userIcon
-								}
-							}
-						}, function(ret, err) {
-							//coding...
-						});
-						api.toast({
-							msg : '收藏成功'
-						});
-					} else if (ret == 2) {
-						api.confirm({
-							title : '取消收藏',
-							msg : '亲，要取消吗？',
-							buttons : ['确定', '取消']
-						}, function(ret, err) {
-							if (ret.buttonIndex == 1) {
-								quXiaoShouCang(sid)
-							} else {
-							}
-						});
-					} else {
-						api.toast({
-							msg : '收藏失败'
-						});
-					}
-					//coding...
-				});
-				////////////////
-			}
+			
 
-			function quXiaoShouCang(sid) {
-				var uid = $api.getStorage('userinfo').data_id
-				api.ajax({
-					url : hostUrl + '/quxiao.php',
-					method : 'post',
-					cache : false,
-					timeout : 30,
-					dataType : 'text',
-					data : {
-						values : {
-							uid : uid,
-							sid : sid,
-						}
-					}
-				}, function(ret, err) {
-					if (ret == 1) {
-						alert('成功')
-					} else {
-						alert('失败')
-					}
-				});
-			}
+			
 		</script>
 	</body>
 </html>
