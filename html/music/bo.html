@@ -66,14 +66,17 @@
 			}
 		</style>
 	</head>
+	<script type="text/html" id="tppl">
+		<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" onclick="shouCang(<%=list.id %>,null,'<%=list.mp3Url %>','<%=list.artists[0].name %>','<%=list.name %>','<%=list.album.picUrl %>')" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+	</script>
+	<script type="text/html" id="tppl2">
+		<span class="H-icon H-display-block H-horizontal-center"><i onclick="openComm(<%=list.id %>, 1)" tapmode=" iconfont  icon-focus "  class="iconfont icon-pinglun   H-vertical-middle H-theme-font-color-white"style="    font-size:25px; "></i></span>
+	</script>
 	<body >
 		<div  class=""   >
 			<img id="bg" src="../../image/default.jpg" alt="" class="play-up-bg H-center-all">
-			<!--<img id="bg" src="../../image/shang.png" alt="" class="play-up-bg" >-->
 		</div>
 		<div class="  "  style="position: fixed;bottom: 0px;width: 100%;"  >
-			<!--<img id="controler1" class="controler-bg H-center-all H-z-index-1" src="../../image/default.jpg" />-->
-			<!--<img id="men" class="controler-bg H-center-all H-z-index-2" src="../../image/xia1.png" />-->
 			<div id="slider" class="H-padding-horizontal-both-0  " >
 				<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">00:00</span>
 				<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
@@ -127,16 +130,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
+				<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style=" min-height: 50px; ">
 						<div>
 							<span class="H-icon H-display-block H-horizontal-center"><i class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
 						</div>
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
-						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" onclick="shouCang()" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
-						</div>
+						<div class="result"></div>
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent     H-padding-vertical-both-10" style="min-height: 50px;">
 						<div>
@@ -149,9 +150,7 @@
 						</div>
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 50px;">
-						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i id="comm" tapmode=" iconfont  icon-focus "  class="iconfont icon-pinglun   H-vertical-middle H-theme-font-color-white"style="    font-size:25px; "></i></span>
-						</div>
+						<div class="result2"></div>
 					</div>
 				</div>
 			</div>
@@ -160,9 +159,8 @@
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript" src="../../script/play.js"></script>
 	<script type="text/javascript" src="../../script/H.js"></script>
-	<!--<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>-->
-	<!--<script type="text/javascript" src="../../script/zepto.min.js"></script>-->
 	<script type="text/javascript">
+		H.tppl_flag = ["<%", "%>"];
 		function pause() {
 			var audioPlayer = api.require('audioPlayer');
 			audioPlayer.pause();
@@ -182,7 +180,7 @@
 			var thumb = $api.attr($api.byId('bg'), 'src');
 			var title = $api.text($api.byId('title1'));
 			var description = $api.text($api.byId('titleName'));
-			var mp3url=$api.attr($api.byId('playerIcon'),'data-url')
+			var mp3url = $api.attr($api.byId('playerIcon'), 'data-url')
 			var wx = api.require('wx');
 			wx.shareMusic({
 				apiKey : '',
@@ -191,7 +189,7 @@
 				description : description,
 				thumb : thumb,
 				contentUrl : 'http://www.iqimeng.com/%e9%9f%b3%e4%b9%90/ ',
-				musicDataUrl :mp3url
+				musicDataUrl : mp3url
 			}, function(ret, err) {
 				if (ret.status) {
 					alert('分享成功');
@@ -200,54 +198,6 @@
 				} else {
 					H.swiperShare('.single-menu', '.share-menu', 'space');
 					alert('取消分享');
-				}
-			});
-		}
-
-//		function switchVoice(button) {
-//			var click = button.getAttribute("data-click");
-//			if (click == 0) {
-//				// 点开
-//				button.setAttribute("data-click", 1);
-//				voiceController();
-//				var slider = api.require('slider');
-//				slider.show({
-//					id : -1
-//				});
-//			} else {
-//				// 关闭
-//				button.setAttribute("data-click", 0);
-//				hideS()
-//			}
-//		}
-
-		 
-
-		function openComm(id, type) {
-			api.getPrefs({
-				key : 'user' // 用户信息key
-			}, function(ret, err) {
-				var val = ret.value;
-				if (val && val != "") {
-					api.openWin({
-						name : 'comm',
-						url : '../../html/music/comm/head.html',
-						opaque : true,
-						vScrollBarEnabled : false,
-						pageParam : {
-							type : type,
-							id : id
-						}
-					});
-				} else {
-					api.toast({
-						msg : '请先登陆'
-					});
-					api.openWin({
-						name : 'reg_login_win',
-						url : '../../html/entry/entry_head.html',
-						pageParam : {}
-					});
 				}
 			});
 		}
@@ -264,8 +214,8 @@
 				});
 				audioPlayer.pause();
 				api.sendEvent({
-	                name:'stopmusic'
-                });
+					name : 'stopmusic'
+				});
 				$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 			} else {
 				// 关闭
@@ -277,14 +227,20 @@
 					msg : '播放'
 				});
 				api.sendEvent({
-	                name:'playing'
-                });
+					name : 'playing'
+				});
 			}
 		}
 
 		function playNext_b() {
 			var sid = $api.attr($api.byId('playNext_b'), 'data-sid');
 			var index_m = $api.attr($api.byId('playNext_b'), 'data-index');
+			if ($api.getStorage('PlayAll') == 1) {
+				play();
+				return
+			}
+			api.showProgress({
+			});
 			api.sendEvent({
 				name : 'playNext',
 				extra : {
@@ -297,6 +253,8 @@
 		function prev_b() {
 			var sid = $api.attr($api.byId('prev_b'), 'data-sid');
 			var index_m = $api.attr($api.byId('prev_b'), 'data-index');
+			api.showProgress({
+			});
 			api.sendEvent({
 				name : 'prev_b',
 				extra : {
@@ -315,7 +273,7 @@
 				$api.removeCls(rep, 'icon-xunhuan');
 				$api.addCls(rep, 'icon-danquxunhuan');
 				//				$api.addCls(rep, 'icon-xunhuan');
-				$api.setStorage('PlayAll', 'b');
+				$api.setStorage('PlayAll', 1);
 				api.toast({
 					msg : '单曲播放'
 				});
@@ -324,31 +282,34 @@
 				button.setAttribute("data-click", 0);
 				$api.removeCls(rep, 'icon-danquxunhuan');
 				$api.addCls(rep, 'icon-xunhuan');
-				$api.setStorage('PlayAll', 'a');
+				$api.setStorage('PlayAll', 0);
 				api.toast({
 					msg : '顺序播放'
 				});
 			}
 		}
 
- 
 		function getinfo(sid) {
-	
 			api.ajax({
 				url : 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
 			}, function(ret, err) {
-//				console.log(JSON.stringify(ret))
 				var songdata = ret.songs[0]
+				console.log(JSON.stringify(songdata))
+				var data = {
+					list : songdata
+				};
+				var render = H.tppl(H.D("#tppl").innerHTML);
+				H.D(".result").innerHTML = render(data);
+				var render = H.tppl(H.D("#tppl2").innerHTML);
+				H.D(".result2").innerHTML = render(data);
 				api.imageCache({
 					url : songdata.album.picUrl
 				}, function(ret, err) {
 					cover = ret.url
-					
 					$api.attr($api.byId('bg'), 'src', cover);
 					$api.text($api.byId('title1'), songdata.name);
 					$api.text($api.byId('titleName'), songdata.artists[0].name);
 					$api.attr($api.byId('playerIcon'), 'data-url', songdata.mp3Url);
-					
 					play_c(songdata.mp3Url, cover, songdata.name, songdata.artists[0].name)
 				});
 			});
@@ -371,23 +332,12 @@
 					$api.attr($api.byId('prev_b'), 'data-index', index_m);
 				}
 			});
-			//			alert(sid)
 			api.addEventListener({
 				name : 'stopmusic'
 			}, function(ret, err) {
 				pause();
-				 
 			});
 			api.parseTapmode();
-			var commn = $api.byId('comm');
-			$api.addEvt(commn, 'click', function() {
-				openComm(idd, 1)
-			});
-			//			pause1()
-			var offset = $api.offset($api.byId('huakuai'));
-			var width = offset.w;
-			var top = offset.t;
-			test(width, top)
 			$api.setStorage('PlayAll', 'a')
 			api.addEventListener({
 				name : 'firstsong'
@@ -396,6 +346,7 @@
 					api.toast({
 						msg : '第一首了，亲'
 					});
+					api.hideProgress();
 				}
 			});
 			api.addEventListener({
@@ -405,8 +356,13 @@
 					api.toast({
 						msg : '最后一首了，亲'
 					});
+					api.hideProgress();
 				}
 			});
+			var offset = $api.offset(H.D(".s"));
+			var width = offset.w;
+			var top = offset.t
+			test(width, top)
 		}
 		function test(width, top) {
 			var uislider = api.require('UISlider');

@@ -16,10 +16,7 @@ function switchplay(button, mp3, sid) {
 				index : 0
 			}
 		})
-//		api.sendEvent({
-//			name : 'playing'
-//		});
-        
+
 		api.showProgress({
 			title : ' 加载中...',
 			text : '先喝杯茶...',

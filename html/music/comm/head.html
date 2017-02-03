@@ -23,13 +23,10 @@
 			var header2 = $api.offset(header1).h;
 			var body_h = $api.offset($api.dom('body')).h;
 			H.ready(function() {
-				//          H.openFrameNavOrFoot("body", "body.html", "#header");
-				var type = api.pageParam.type
-				var id = api.pageParam.id
 				$api.fixStatusBar(header);
 				var header1 = $api.byId('header');
-			var header2 = $api.offset(header1).h;
-			var body_h = $api.offset($api.dom('body')).h;
+				var header2 = $api.offset(header1).h;
+				var body_h = $api.offset($api.dom('body')).h;
 				api.openFrame({
 					name : 'body',
 					url : 'body.html',
@@ -37,11 +34,11 @@
 						x : 0,
 						y : header2,
 						w : api.frameWidth,
-						h : api.frameHeight - header2-25
+						h : api.frameHeight - header2 - 25
 					},
 					pageParam : {
-						type : type,
-						id : id
+						type : api.pageParam.type,
+						sid : api.pageParam.sid
 					}
 				});
 			});
