@@ -326,6 +326,9 @@
 					sid = ret.value.sid
 					index_m = ret.value.index
 					getinfo(sid)
+					playerIcon
+					$api.attr($api.byId('playerIcon'), 'class', 'iconfont  icon-zanting H-theme-font-color-white');
+					$api.attr($api.byId('playerIcon'), 'data-click', 0);
 					$api.attr($api.byId('playNext_b'), 'data-sid', sid);
 					$api.attr($api.byId('playNext_b'), 'data-index', index_m);
 					$api.attr($api.byId('prev_b'), 'data-sid', sid);
