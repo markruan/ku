@@ -71,7 +71,7 @@
 			</div>
 			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10" onclick="">
 			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
-			<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10" style="right: 6%;bottom: 12px;margin-bottom: 3px;"> <i data-click="0"  onclick=" switchplay(this,'<%=list[i].mp3%>') " class=" pplay iconfont icon-bofang H-theme-font-color-white  H-font-size-28"></i></span>
+			<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10" style="right: 6%;bottom: 12px;margin-bottom: 3px;"> <i data-click="0"  onclick=" switchplay(this,'<%=list[i].mp3%>','<%=list[i].sid%>') " class=" pplay iconfont icon-bofang H-theme-font-color-white  H-font-size-28"></i></span>
 			<img data-echo="<%=imageCache(list[i].cover) %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
 			</div>
 			<!--<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-10">
@@ -131,6 +131,7 @@
 						var data = {
 							list : ret
 						};
+						console.log(JSON.stringify(ret))
 						var render = H.tppl(H.D("#tppl").innerHTML);
 						if (page == 1) {
 							H.D(".result").innerHTML = render(data);
@@ -167,10 +168,11 @@
 					initPage(page)
 				});
 				api.addEventListener({
-					name : 'playingquan'
+					name : 'playing'
 				}, function(ret, err) {
 					if (ret) {
-						play()
+//						play()
+						api.hideProgress();
 					}
 				});
 				initPage(page)
@@ -244,26 +246,7 @@
 				});
 			}
 
-			//			function share(title, art, img, mp3) {
-			//				var data = {}
-			//				data.title = title;
-			//				data.art = art;
-			//				data.img = img;
-			//				data.mp3 = mp3;
-			//				api.openFrame({
-			//					name : 'sing_share',
-			//					url : '../../html/single_share_body.html',
-			//					rect : {
-			//						x : 0,
-			//						y : 0,
-			//						w : api.winWidth,
-			//						h : api.winHeight
-			//					},
-			//					pageParam : {
-			//						data : data
-			//					},
-			//				});
-			//			}
+		 
 			function share(title, art, img, mp3) {
 				var data = {}
 				data.title = title;
