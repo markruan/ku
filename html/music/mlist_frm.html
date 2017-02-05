@@ -538,16 +538,20 @@
 						title : tracksName,
 						description : '聆听音乐 感悟人生',
 						thumb : thumbb,
-						contentUrl : 'http://www.iqimeng.com/%e9%9f%b3%e4%b9%90/'
+						contentUrl : 'http://bbs.xggsj.com/'
 					}, function(ret, err) {
 						if (ret.status) {
-							alert('分享成功');
+							api.toast({
+	                    msg:'分享成功'
+                    });
 						} else {
-							alert(err.code);
+							api.toast({
+	                    msg:'取消分享'
+                    });
 						}
 					});
 				} else {
-					alert(JSON.stringify(err));
+					 
 				}
 			});
 			$api.rmStorage('trackTitle');
