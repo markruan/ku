@@ -5,7 +5,10 @@ function switchplay(button, mp3, sid) {
 		api.openWin({
 			name : 'nww',
 			url : '../../html/music/bo_head.html',
-//			delay : 500
+           pageParam : {
+						sid : sid,
+						index : 0
+					}
 		});
 	}
 	if (click == 0) {

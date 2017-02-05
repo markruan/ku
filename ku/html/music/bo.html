@@ -188,16 +188,21 @@
 				title : title,
 				description : description,
 				thumb : thumb,
-				contentUrl : 'http://www.iqimeng.com/%e9%9f%b3%e4%b9%90/ ',
+				contentUrl : 'http://bbs.xggsj.com/ ',
 				musicDataUrl : mp3url
 			}, function(ret, err) {
 				if (ret.status) {
-					alert('分享成功');
+					api.toast({
+	                    msg:'分享成功'
+                    });
 					H.swiperShare('.single-menu', '.share-menu', 'space');
 					$api.rmStorage('alb');
 				} else {
 					H.swiperShare('.single-menu', '.share-menu', 'space');
-					alert('取消分享');
+					 
+					api.toast({
+	                    msg:'取消分享'
+                    });
 				}
 			});
 		}
