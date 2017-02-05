@@ -59,7 +59,7 @@
 					allowEdit : true,
 					saveToPhotoAlbum : false
 				}, function(ret, err) {
-					if (ret) {
+					if (ret.data) {
 						api.showProgress({
 							title : ' 上传中...',
 							text : '先喝杯茶...',
@@ -85,9 +85,12 @@
 							$api.setStorage('icon', ttt);
 						});
 					} else {
-						api.alert({
-							msg : err.msg
-						});
+//						api.alert({
+//							msg : err.msg
+//						});
+                      api.toast({
+	                      msg:'更新失败'
+                      });
 					};
 				});
 			}

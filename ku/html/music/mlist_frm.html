@@ -468,6 +468,7 @@
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript" src="../../script/mm.js"></script>
 	<script type="text/javascript">
+		var isopen
 		function collectmusic(clicktoolitem) {
 			var toolbarlist = document.getElementsByClassName('collectmusic')[0];
 			var click = clicktoolitem.getAttribute("data-click");
@@ -553,29 +554,31 @@
 		}
 
 		function downloadAll() {
-			api.confirm({
-				title : '下载',
-				msg : '下载本歌单全部音乐？',
-				buttons : ["确定", "取消"]
-			}, function(ret, err) {
-				if (ret.buttonIndex == 1) {
-				} else {
-				}
+			api.toast({
+				msg : '因版权问题暂无法提供下载'
 			});
+			//			api.confirm({
+			//				title : '下载',
+			//				msg : '下载本歌单全部音乐？',
+			//				buttons : ["确定", "取消"]
+			//			}, function(ret, err) {
+			//				if (ret.buttonIndex == 1) {
+			//				} else {
+			//				}
+			//			});
 		}
 
-		function downloadMusic() {
-			api.confirm({
-				title : '下载',
-				msg : '下载本首歌？',
-				buttons : ["确定", "取消"]
-			}, function(ret, err) {
-				if (ret.buttonIndex == 1) {
-				} else {
-				}
-			});
-		}
-
+		//		function downloadMusic() {
+		//			api.confirm({
+		//				title : '下载',
+		//				msg : '下载本首歌？',
+		//				buttons : ["确定", "取消"]
+		//			}, function(ret, err) {
+		//				if (ret.buttonIndex == 1) {
+		//				} else {
+		//				}
+		//			});
+		//		}
 		function expandlist(index, clickitem) {
 			var toolbarlist = document.getElementsByClassName('musiclist-item-tool');
 			var toolbarimg = document.getElementsByClassName('toobarimg');
@@ -602,6 +605,7 @@
 
 		apiready = function() {
 			initPage();
+			var isopen = $api.getStorage('isopen');
 			//			console.log(JSON.stringify(arr))
 			api.addEventListener({
 				name : 'playNext'
@@ -751,18 +755,37 @@
 			var Idd = api.pageParam.name;
 			$api.setStorage('name', 1);
 			$api.setStorage('idi', i);
-			api.openWin({
-				name : 'nww',
-			});
-			setTimeout(function() {
+			if (!isopen) {
+				api.openWin({
+					name : 'nww',
+					url : '../../html/music/bo_head.html',
+					delay : 300,
+					pageParam : {
+						sid : el,
+						index : i
+					}
+				});
+				setTimeout(function() {
+					api.sendEvent({
+						name : 'songid',
+						extra : {
+							sid : el,
+							index : i
+						}
+					}), 1600
+				});
+			} else {
+				api.openWin({
+					name : 'nww',
+				});
 				api.sendEvent({
 					name : 'songid',
 					extra : {
 						sid : el,
 						index : i
 					}
-				}), 600
-			});
+				})
+			}
 		};
 		function getCommCount(id, type) {
 			api.ajax({

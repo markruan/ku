@@ -315,17 +315,8 @@
 			});
 		}
 
-		apiready = function() {
-			var sid, index_m
-			var cover
-			var idd = api.pageParam.name
-			api.addEventListener({
-				name : 'songid'
-			}, function(ret, err) {
-				if (ret) {
-					sid = ret.value.sid
-					index_m = ret.value.index
-					getinfo(sid)
+     function intt(sid,index_m){
+               getinfo(sid)
 					playerIcon
 					$api.attr($api.byId('playerIcon'), 'class', 'iconfont  icon-zanting H-theme-font-color-white');
 					$api.attr($api.byId('playerIcon'), 'data-click', 0);
@@ -333,6 +324,23 @@
 					$api.attr($api.byId('playNext_b'), 'data-index', index_m);
 					$api.attr($api.byId('prev_b'), 'data-sid', sid);
 					$api.attr($api.byId('prev_b'), 'data-index', index_m);
+     
+     
+     }
+		apiready = function() {
+			var sid, index_m
+			var cover
+			var sid = api.pageParam.sid
+			var index_m=api.pageParam.index
+			intt(sid,index_m)
+			api.addEventListener({
+				name : 'songid'
+			}, function(ret, err) {
+				if (ret) {
+				 
+					sid = ret.value.sid
+					index_m = ret.value.index
+					intt(sid,index_m)
 				}
 			});
 			api.addEventListener({
@@ -366,6 +374,7 @@
 			var width = offset.w;
 			var top = offset.t
 			test(width, top)
+			$api.setStorage('isopen',1);
 		}
 		function test(width, top) {
 			var uislider = api.require('UISlider');

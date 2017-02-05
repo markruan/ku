@@ -1,6 +1,13 @@
 function switchplay(button, mp3, sid) {
 
 	var click = button.getAttribute("data-click");
+	if (!$api.getStorage('isopen')) {
+		api.openWin({
+			name : 'nww',
+			url : '../../html/music/bo_head.html',
+//			delay : 500
+		});
+	}
 	if (click == 0) {
 		// 点开
 		var dd = document.getElementsByClassName('icon-zanting');

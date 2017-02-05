@@ -32,12 +32,13 @@
 				api.setStatusBarStyle({
 					style : 'dark'
 				});
-				var idd = api.pageParam.name
+				 
+				
 				var title = ''
 				var id = 'bo'
 				$api.text($api.byId('title'), title);
 				H.openFrameNavOrFoot(id, id + '.html', "#header", {
-					name : idd
+					sid : api.pageParam.sid,index:api.pageParam.index
 				}, null, {
 					bounces : false
 				});
