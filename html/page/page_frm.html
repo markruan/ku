@@ -34,15 +34,13 @@
 			api.openWin({
 				name : 'musiclist',
 				url : '../../html/music/mlist_win.html',
-				delay : 200,
+				delay :100,
 				reload : true,
 				pageParam : {
 					name : id
 				}
 			});
-			api.removePrefs({
-				key : 'play'
-			});
+			
 		}
 
 		function findinfo(page) {

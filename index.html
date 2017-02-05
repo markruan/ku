@@ -21,11 +21,7 @@
 				}
 			});
 			function openIndex() {
-				api.openWin({
-					name : 'nww',
-					url : 'html/music/bo_head.html',
-					//				delay : 500
-				});
+				$api.rmStorage('isopen');
 				H.openSlidLayout(null, {
 					name : "slidLayout",
 					url : "./html/slidLayout_body.html",
