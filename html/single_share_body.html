@@ -94,10 +94,14 @@
 							musicDataUrl : data.mp3
 						}, function(ret, err) {
 							if (ret.status) {
-								alert('分享成功');
+								api.toast({
+									msg : '分享成功'
+								});
 								closeDropMenu();
 							} else {
-								alert('取消分享');
+								api.toast({
+									msg : '取消分享'
+								});
 								closeDropMenu();
 							}
 						});
