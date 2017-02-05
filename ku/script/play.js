@@ -1,6 +1,6 @@
 function play_c(mp3, cover, songName, artists, current) {
 	var pdd = $api.byId('playerIcon');
-
+    
 	api.sendEvent({
 		name : 'playing'
 	});

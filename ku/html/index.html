@@ -124,10 +124,13 @@
 
 			//循环播放实现
 			function openPlayer() {
-				//				if (bofangye == 1) {
+				if($api.getStorage('isopen')){
 				api.openWin({
 					name : 'nww',
 				});
+				
+				}
+				
 				//				}
 			}
 

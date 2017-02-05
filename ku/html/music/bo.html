@@ -240,10 +240,13 @@
 		function playNext_b() {
 			var sid = $api.attr($api.byId('playNext_b'), 'data-sid');
 			var index_m = $api.attr($api.byId('playNext_b'), 'data-index');
+			var audioPlayer = api.require('audioPlayer');
+	
 			if ($api.getStorage('PlayAll') == 1) {
 				play();
 				return
 			}
+			audioPlayer.stop();
 			api.showProgress({
 			});
 			api.sendEvent({
@@ -258,8 +261,11 @@
 		function prev_b() {
 			var sid = $api.attr($api.byId('prev_b'), 'data-sid');
 			var index_m = $api.attr($api.byId('prev_b'), 'data-index');
+			var audioPlayer = api.require('audioPlayer');
+	
 			api.showProgress({
 			});
+			audioPlayer.stop();
 			api.sendEvent({
 				name : 'prev_b',
 				extra : {
