@@ -19,7 +19,7 @@ function imageCache(url) {//图片缓存方法
 	houZhui = '&updateTime=-1'
 
 	sUrl = 'http://s.music.163.com/search/get/?src=lofter&type=1&filterDj=true&s='
-	sEnd = '&limit=50&offset=0&callback'
+	sEnd = '&limit=150&offset=0&callback'
 
 	aUrl = 'http://music.163.com/api/song/detail/?id='
 	shouUrl = 'http://v7idc.com/m/addm.php'
