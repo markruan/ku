@@ -188,6 +188,7 @@
 					textUp : '松开刷新...',
 					showTime : true
 				}, function(ret, err) {
+				    var page=1
 					initPage(page);
 					api.hideProgress();
 					api.refreshHeaderLoadDone();
