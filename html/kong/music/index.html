@@ -35,7 +35,7 @@
 		<textarea  class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 "  placeholder="聆听音乐  感悟人生" id="feed_text" style="margin: 0 auto;width: 100%;" ></textarea>
 		<!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
 		<button onclick="addmusic()" class="  H-vertical-middle H-button H-font-size-15 H-outline-none H-padding-vertical-both-5 H-padding-horizontal-both-20 H-theme-background-color5 H-theme-font-color-white H-theme-border-color5 H-theme-border-color5-click H-theme-background-yellow-click H-theme-font-color1-click H-border-radius-3" style="min-width: 70px; margin-left: 3px; margin: 2px auto">
-			发布 
+			发布
 		</button>
 		</div>
 	</body>
@@ -75,6 +75,9 @@
 		function pause() {
 			var netAudio = api.require('audioPlayer');
 			netAudio.pause();
+			api.toast({
+						msg : '暂停'
+					});
 		}
 
 		function addmusic() {
@@ -129,7 +132,6 @@
 							api.closeWin({
 							});
 						} else {
-							 
 							api.toast({
 								msg : '发布失败'
 							});
@@ -155,15 +157,15 @@
 			var pdd = $api.byId('playe');
 			var audioPlayer = api.require('audioPlayer');
 			var pdd = $api.byId('playerIcon');
-			 audioPlayer.initPlayer({
-    path:  mp3
-}, function(ret) {
-    if (ret.status) {
-       api.toast({
-	       msg:'播放'
-       });
-    }
-});
+			audioPlayer.initPlayer({
+				path : mp3
+			}, function(ret) {
+				if (ret.status) {
+					api.toast({
+						msg : '播放'
+					});
+				}
+			});
 		}
 	</script>
 </html>
