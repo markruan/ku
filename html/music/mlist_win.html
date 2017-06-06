@@ -1,142 +1,117 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="copyright" content="www.apicloud.com" />
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>正在播放</title>
-		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
-		<!--<link rel="stylesheet" type="text/css" href="../../css/egret.css" />-->
-		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
-			<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
-		<style>
-			.egret-header-title {
-				position: absolute;
-				width: 100%;
-				text-align: center;
-				line-height: 20px;
-				color: #fff;
-				font-size: 20px;
-				padding-top: 5px;
-			}
-			.egret-header-title .musicname {
-				color: #fff;
-				font-size: 18px;
-			}
-			.egret-header-title .musicsinger {
-				color: #fff;
-				font-size: 12px;
-			}
-			/*	.aui-bar-primary {
-			 background: #D43C33
-			 }
-			 .aui-btn-primary {
-			 background: #D43C33
-			 }*/
-			.aui-bar-primary, .aui-btn-primary {
-				background-color: white;
-			}
-			.aui-bar .aui-btn .aui-iconfont {
-				background-color: white;
-				color: #625454;
-			}
-			.egret-header-title {
-				color: #625454;
-			}
-			hr{
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="copyright" content="www.apicloud.com" />
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<title>正在播放</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+	<style>
+		.bgg {
+			background-image: url(../../image/hd2.jpg);
+			background-position: right bottom, left top;
+		}
+
+		.egret-header-title {
+			position: absolute;
 			width: 100%;
-			background-color:gray;
+			text-align: center;
+			line-height: 20px;
+			color: #fff;
+			font-size: 20px;
+			padding-top: 5px;
+		}
+
+		.egret-header-title .musicname {
+			color: #fff;
+			font-size: 18px;
+		}
+
+		.egret-header-title .musicsinger {
+			color: #fff;
+			font-size: 12px;
+		}
+
+		.aui-bar-primary,
+		.aui-btn-primary {
+			background-color: white;
+		}
+
+		.aui-bar .aui-btn .aui-iconfont {
+			background-color: white;
+			color: #625454;
+		}
+
+		.egret-header-title {
+			color: #625454;
+		}
+
+		hr {
+			width: 100%;
+			background-color: gray;
 			height: 1px;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="H-header bgg H-padding-vertical-top-20 " id="header">
+		<span tapmode="" onclick="goback1() " class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="H-iconfont H-icon-target-back H-font-size-18 H-vertical-middle"></i></span>
+		<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
+			歌单
+		</div>
+	</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/Hui.js"></script>
+<script type="text/javascript">
+	function goback1() {
+		api.openWin({
+			name: 'slidLayout',
+			animation: {
+				type: "push", //动画类型（详见动画类型常量）
+				subType: "from_left", //动画子类型（详见动画子类型常量）
+				duration: 200 //动画过渡时间，默认300毫秒
+			},
+		})
+	}
+	var lid
+	apiready = function() {
+		// api.parseTapmode();
+		lid = api.pageParam.lid
+		var header = $api.byId('header');
+		$api.fixStatusBar(header);
+		var headerPos = $api.offset(header);
+		var body_h = $api.offset($api.dom('body')).h;
+
+		open_list_frame(lid, headerPos)
+		api.addEventListener({
+			name: 'keyback'
+		}, function(ret, err) {
+			goback1()
+		});
+	}
+
+	function open_list_frame(ijj, headerPos) {
+		api.openFrame({
+			name: 'musiclist-fm',
+			url: 'mlist_frm.html',
+			bounces: false,
+			// opaque : false,
+			reload: true,
+			pageParam: {
+				lid: lid
+			},
+			rect: {
+				x: 0,
+				y: headerPos.h,
+				w: 'auto',
+				h: 'auto',
 			}
-		</style>
-	</head>
-	<body>
-		<!-- 第二头部 -->
-		<header class="aui-bar aui-bar-nav H-theme-background-color5  " id="aui-header">
-			<div class="egret-header topbar">
-				<div class="egret-header-title">
-					<div class="egret-header-title " style="color: white">
-						歌单
-					</div>
-				</div>
-				<a class="aui-btn   aui-pull-left "style="background-color: #4db7ad"   tapmode onclick="goback1()"> <span class="aui-iconfont aui-icon-left" style="color:white;background-color:#4db7ad  "></span> </a>
-				<a class="aui-btn H-theme-background-color5  aui-pull-right" tapmode onclick="openPlayer() "> <span id="bob" ></span> </a>
-			</div>
-			</div>
-		</header>
-		<hr />
-	</body>
-	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/Hui.js"></script>
-	<script type="text/javascript">
-		function goback1() {
-					api.openWin({
-				name : 'slidLayout'
-			})
-			 
-		}
+		});
+	}
+</script>
 
-		function openPlayer(pid) {
-			api.getPrefs({
-				key : 'play'
-			}, function(ret, err) {
-				var yi = ret.value
-				if (yi == 1) {
-					api.openWin({
-						name : 'nw',
-					});
-					api.bringFrameToFront({
-						to : 'nn'
-					});
-				} else {
-					alert('还没学会怎么初始化隐藏')
-				}
-			});
-			//
-		}
-
-		var jsfun = 'bob(),'
-		function bob() {
-			api.getPrefs({
-				key : 'play'
-			}, function(ret, err) {
-				var yi = ret.value
-				if (yi == 1) {
-					str1 = '<span  class="aui-iconfont aui-icon-notification"></span>';
-					$api.byId('bob').innerHTML = str1;
-				} else {
-				}
-			});
-		}
-
-		apiready = function() {
-			api.parseTapmode();
-			var header = $api.byId('aui-header');
-			$api.fixStatusBar(header);
-			var headerPos = $api.offset(header);
-			var body_h = $api.offset($api.dom('body')).h;
-			var ijj = api.pageParam.name
-			api.openFrame({
-				name : 'musiclist-fm',
-				url : 'mlist_frm.html',
-				bounces : false,
-				opaque : false,
-				reload : true,
-				pageParam : {
-					name : ijj
-				},
-				rect : {
-					x : 0,
-					y : headerPos.h,
-					w : 'auto',
-					h : body_h - headerPos.h
-				}
-			});
-			api.addEventListener({
-				name : 'keyback'
-			}, function(ret, err) {
-				goback1()
-			});
-		}
-	</script>
 </html>

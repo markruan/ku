@@ -1,14 +1,22 @@
 function switchplay(button, mp3, sid) {
 
 	var click = button.getAttribute("data-click");
-	if (!$api.getStorage('isopen')) {
+	if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
+		$api.setStorage('listopen', 2);
+
 		api.openWin({
 			name : 'nww',
 			url : '../../html/music/bo_head.html',
-           pageParam : {
-						sid : sid,
-						index : 0
-					}
+			slidBackEnabled : false,
+			animation : {
+				type : "movein", //动画类型（详见动画类型常量）
+				subType : "from_bottom", //动画子类型（详见动画子类型常量）
+				duration : 500 //动画过渡时间，默认300毫秒
+			},
+			pageParam : {
+				sid : sid,
+				index : 0,
+			}
 		});
 	}
 	if (click == 0) {
@@ -26,12 +34,8 @@ function switchplay(button, mp3, sid) {
 				index : 0
 			}
 		})
+		uiloading()
 
-		api.showProgress({
-			title : ' 加载中...',
-			text : '先喝杯茶...',
-			modal : false
-		})
 		$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
 
 	} else {
@@ -42,7 +46,7 @@ function switchplay(button, mp3, sid) {
 		});
 
 		pause()
-		api.hideProgress();
+		stoploading();
 		$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 
 	}
@@ -73,14 +77,14 @@ function pause() {
 
 }
 
-function openPhoto(url) {
+function openPhoto(data, i) {
 
-	var img = new Array()
-	img[0] = url
-
+	var dd = data.split(',')
 	var imageBrowser = api.require('imageBrowser');
 	imageBrowser.openImages({
-		imageUrls : img
+		imageUrls : dd,
+		showList : false,
+		activeIndex : i
 	});
 
 }

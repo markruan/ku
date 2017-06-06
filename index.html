@@ -1,40 +1,51 @@
 ﻿<!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>Hui</title>
-	</head>
-	<body>
-		<script src="script/H.js" type="text/javascript"></script>
-		<script src="script/api.js" type="text/javascript"></script>
-		<script type="text/javascript">
-			H.ready(function() {
-				api.setStatusBarStyle({
-					style : 'dark'
-				});
-				if (H.isAPICloud()) {
-					openIndex()
-				} else {
-					window.location = "html/index.html";
-				}
-			});
-			function openIndex() {
-				$api.rmStorage('isopen');
-				H.openSlidLayout(null, {
-					name : "slidLayout",
-					url : "./html/slidLayout_body.html",
-					bgColor : "transparent",
-					bounces : false
-				}, {
-					name : "index",
-					url : "./html/index.html",
-					bounces : false
-				}, {
-					leftEdge : 100
-				});
-			}
-		</script>
-	</body>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hui</title>
+</head>
+
+<body>
+    <script src="script/H.js" type="text/javascript"></script>
+    <script src="script/api.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    H.ready(function() {
+    //  $api.rmStorage('firsttime4');
+        api.setStatusBarStyle({
+            style: 'dark'
+        });
+
+        if ($api.getStorage('firsttime4')) {
+            openIndex()
+        } else {
+            // 打开引导页
+            api.openWin({
+                name: 'launch',
+                url: './html/qidong/launch_head.html'
+            });
+            $api.setStorage('firsttime4', true);
+        }
+    });
+    // 打开首页
+    function openIndex() {
+        $api.rmStorage('isopen');
+        H.openSlidLayout(null, {
+            name: "slidLayout",
+            url: "./html/slidLayout_body.html",
+            bgColor: "transparent",
+            bounces: false
+        }, {
+            name: "index",
+            url: "./html/index/index_head.html",
+            bounces: false
+        }, {
+            leftEdge: 100
+        });
+    }
+    </script>
+</body>
+
 </html>

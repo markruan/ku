@@ -20,6 +20,7 @@
 			</div>
 		</div>
 		<div id="list">
+
 			<!--<ul class="aui-list-view" ></ul>-->
 		</div>
 	</body>
@@ -27,6 +28,7 @@
 	<script src="../script/H.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		var songs
+		var searchlist = []
 		H.D("#ser").addEventListener("touchend", function(e) {
 			this.style.cssText = "display:none;";
 			H.D(".btn").removeAttribute("style");
@@ -43,104 +45,40 @@
 			s = event.target.value;
 			search(s)
 		}
-
+    
 		function search(s) {
 			var html = '';
+			var aa = searchlist.push(s)
+			$api.setStorage('search_h', aa);
 			var url = sUrl + s + sEnd
 			api.ajax({
 				url : url,
 				dataType : 'json'
 			}, function(ret, err) {
-			console.log(JSON.stringify(ret))
+				console.log(JSON.stringify(ret))
 				if (ret.result) {
 					var arr = ret.result.songs;
-										var myobj = eval(arr);
-										var len = myobj.length;
-										var obj = $api.byId('list');
+					var myobj = eval(arr);
+					var len = myobj.length;
+					var obj = $api.byId('list');
 					for (var i = 0; i < arr.length; i++) {
 						arr[i].imgPath = arr[i].album.picUrl;
 						arr[i].title = arr[i].name;
 						arr[i].subTitle = arr[i].artists[0].name;
-												var len = myobj.length;
-												var bb = arr[i].name;
-												var position = myobj[i].no;
-												var artists = myobj[i].artists[0].name
-												var mp3Url = myobj[i].audio
-												var sid = arr[i].id
-												var picc = myobj[i].album.picUrl
-												var pic = JSON.stringify(picc)
-												//				  html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="open(\''+ picc+'\')"  >';
-												html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="openww(' + sid + ',\'' + picc + '\',\'' + mp3Url + '\',\'' + bb + '\',\'' + artists + '\')"  >';
-												html += '<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">' + bb + '--' + artists + '</div></div>';
-												$api.setStorage('ii', i);
+						var len = myobj.length;
+						var bb = arr[i].name;
+						var position = myobj[i].no;
+						var artists = myobj[i].artists[0].name
+						var mp3Url = myobj[i].audio
+						var sid = arr[i].id
+						var picc = myobj[i].album.picUrl
+						var pic = JSON.stringify(picc)
+						//				  html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="open(\''+ picc+'\')"  >';
+						html += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active"  onclick="openww(' + sid + ',\'' + picc + '\',\'' + mp3Url + '\',\'' + bb + '\',\'' + artists + '\')"  >';
+						html += '<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">' + bb + '--' + artists + '</div></div>';
+						$api.setStorage('ii', i);
 					}
-										$api.html(obj, html);
-//					var UIListView = api.require('UIListView');
-//					var searchBar = $api.offset($api.byId('searchBar'))
-//					UIListView.open({
-//						rect : {
-//							x : 0,
-//							y : searchBar.h,
-//							w : api.winWidth,
-////							 h :api.winHeight-searchBar.h
-//						},
-//						data : arr,
-//						rightBtns : [{
-//							bgColor : '#388e8e',
-//							activeBgColor : '',
-//							width : 70,
-//							title : '按钮',
-//							titleSize : 12,
-//							titleColor : '#fff',
-//							icon : '',
-//							iconWidth : 20
-//						}],
-//						rightBtns : [{
-//							bgColor : '#388e8e',
-//							activeBgColor : '',
-//							width : 70,
-//							title : '按钮',
-//							titleSize : 12,
-//							titleColor : '#fff',
-//							icon : '',
-//							iconWidth : 20
-//						}],
-//						styles : {
-//							borderColor : 'rgba(153, 153, 153, 0.47)',
-//							item : {
-//								bgColor : 'rgba(0,0,0,0.0)',
-//								activeBgColor : '#F5F5F5',
-//								height : 55.0,
-//								imgWidth : 40,
-//								imgHeight : 40,
-//								imgCorner : 0,
-//								placeholderImg : '',
-//								titleSize : 12.0,
-//								titleColor : '#999',
-//								subTitleSize : 12.0,
-//								subTitleColor : '#999',
-//								remarkColor : '#999',
-//								remarkSize : 16,
-//								remarkIconWidth : 30
-//							}
-//						},
-//						fixedOn : api.frameName
-//					}, function(ret, err) {
-//						if (ret) {
-//							console.log(JSON.stringify(ret))
-//							if (ret.eventType == 'clickContent') {
-//								var index = ret.index
-//								var data = arr[index]
-//								openww(data.id, data.imgPath, data.audio, data.title, data.subTitle)
-//								//							alert(JSON.stringify(ret));
-//							} else {
-//								//								alert(JSON.stringify(err));
-//							}
-//							//					alert(JSON.stringify(ret));
-//						} else {
-//							//							alert(JSON.stringify(err));
-//						}
-//					});
+					$api.html(obj, html);
 					api.refreshHeaderLoadDone();
 				} else {
 				}
@@ -148,15 +86,19 @@
 		}
 
 		apiready = function() {
+			var html2
+
+
 		};
+
+
 		function openww(sid, img, mp3, song, artists) {
 			api.openWin({
 				name : 'addmusic',
 				url : '../html/kong/music/index.html',
 				pageParam : {
 					name : img,
-					mp3 : mp3,
-					song : song,
+					mp3 : mp3,·					song : song,
 					artists : artists,
 					sid : sid
 				}

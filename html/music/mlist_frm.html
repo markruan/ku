@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="copyright" content="www.apicloud.com" />
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 		<title>歌单</title>
 		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
 		<style>
@@ -77,7 +77,7 @@
 			.col .listcoverbar {
 				position: absolute;
 				top: 0;
-				background-color: rgba(0,0,0,0.4);
+				background-color: rgba(0, 0, 0, 0.4);
 				width: 100%;
 				height: 1.2em;
 			}
@@ -162,7 +162,8 @@
 			.egret-flex-item {
 				display: -webkit-box;
 				-webkit-box-align: center;
-				height: 3em;/*background-color: #fff;*/
+				height: 3em;
+				/*background-color: #fff;*/
 			}
 			/* 左部logo */
 			.egret-flex-item-logo {
@@ -177,7 +178,8 @@
 				height: 2em;
 				width: 2em;
 				-webkit-box-align: center;
-				vertical-align: top;/*否则图片不会居中，底部仍然是会有空白*/
+				vertical-align: top;
+				/*否则图片不会居中，底部仍然是会有空白*/
 			}
 			/* 中间文本信息 */
 			.egret-flex-item-shelf {
@@ -301,9 +303,11 @@
 			}
 			.userinfo {
 				display: -webkit-box;
-				background-color: #fff;/*padding: 10px 0;*/
+				background-color: #fff;
+				/*padding: 10px 0;*/
 			}
-			.userinfo .userinfocol {/*-webkit-box-flex:1;*/
+			.userinfo .userinfocol {
+				/*-webkit-box-flex:1;*/
 				padding: 10px 0;
 				text-align: center;
 				width: 25%;
@@ -401,15 +405,15 @@
 	</head>
 	<body>
 		<!-- 1 用户登录 -->
-		<div  id='ava' class="egret-flex-item musiclistprofile">
+		<div id='ava' class="egret-flex-item musiclistprofile">
 			<div class="egret-flex-item-logo">
 				<img src="../../image/default.jpg" alt="" class="">
 			</div>
 			<div class="egret-flex-item-shelf">
-				<div   class="egret-flex-item-shelf01">
+				<div class="egret-flex-item-shelf01" style="font-size: 1em">
 					加载中...
 				</div>
-				<span  class="egret-flex-item-shelf02"> <img src="./image/musiclist/musiclistcreater.jpg" alt="" class="createrlogo">
+				<span class="egret-flex-item-shelf02"> <img src="./image/musiclist/musiclistcreater.jpg" alt="" class="createrlogo">
 					<div class="creatername">
 						新感官
 					</div>
@@ -462,7 +466,7 @@
 				<img src="./image/musiclist/musiclistplayarrow.png" alt="" class="">
 			</div>
 		</div>
-		<div  id="list"></div>
+		<div id="list"></div>
 		</div>
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
@@ -525,7 +529,7 @@
 			var wx = api.require('wx');
 			var tracksName = $api.getStorage('trackTitle');
 			var thumb = $api.getStorage('trackThumb');
-			//			获取专辑封面缓存
+			//          获取专辑封面缓存
 			api.imageCache({
 				url : thumb
 			}, function(ret, err) {
@@ -542,16 +546,15 @@
 					}, function(ret, err) {
 						if (ret.status) {
 							api.toast({
-	                    msg:'分享成功'
-                    });
+								msg : '分享成功'
+							});
 						} else {
 							api.toast({
-	                    msg:'取消分享'
-                    });
+								msg : '取消分享'
+							});
 						}
 					});
 				} else {
-					 
 				}
 			});
 			$api.rmStorage('trackTitle');
@@ -561,28 +564,28 @@
 			api.toast({
 				msg : '因版权问题暂无法提供下载'
 			});
-			//			api.confirm({
-			//				title : '下载',
-			//				msg : '下载本歌单全部音乐？',
-			//				buttons : ["确定", "取消"]
-			//			}, function(ret, err) {
-			//				if (ret.buttonIndex == 1) {
-			//				} else {
-			//				}
-			//			});
+			//          api.confirm({
+			//              title : '下载',
+			//              msg : '下载本歌单全部音乐？',
+			//              buttons : ["确定", "取消"]
+			//          }, function(ret, err) {
+			//              if (ret.buttonIndex == 1) {
+			//              } else {
+			//              }
+			//          });
 		}
 
-		//		function downloadMusic() {
-		//			api.confirm({
-		//				title : '下载',
-		//				msg : '下载本首歌？',
-		//				buttons : ["确定", "取消"]
-		//			}, function(ret, err) {
-		//				if (ret.buttonIndex == 1) {
-		//				} else {
-		//				}
-		//			});
-		//		}
+		//      function downloadMusic() {
+		//          api.confirm({
+		//              title : '下载',
+		//              msg : '下载本首歌？',
+		//              buttons : ["确定", "取消"]
+		//          }, function(ret, err) {
+		//              if (ret.buttonIndex == 1) {
+		//              } else {
+		//              }
+		//          });
+		//      }
 		function expandlist(index, clickitem) {
 			var toolbarlist = document.getElementsByClassName('musiclist-item-tool');
 			var toolbarimg = document.getElementsByClassName('toobarimg');
@@ -610,15 +613,22 @@
 		apiready = function() {
 			initPage();
 			var isopen = $api.getStorage('isopen');
-			//			console.log(JSON.stringify(arr))
 			api.addEventListener({
 				name : 'playNext'
 			}, function(ret, err) {
 				var arr = $api.getStorage('listm');
 				var index_m = Number(ret.value.index) + 1
 				if (index_m == arr.length) {
+					var sid = arr[0].id
+					//					api.sendEvent({
+					//						name : 'lastsong'
+					//					});
 					api.sendEvent({
-						name : 'lastsong'
+						name : 'songid',
+						extra : {
+							sid : sid,
+							index : 0
+						}
 					});
 					return
 				}
@@ -655,6 +665,7 @@
 				});
 			});
 			api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
 				visible : true,
 				bgColor : '#f2f2f2',
 				textColor : '#4d4d4d',
@@ -666,23 +677,19 @@
 			});
 		};
 		function initPage() {
-			setTimeout(api.showProgress({
-				title : ' 加载中...',
-				text : '先喝杯茶...',
-				modal : false
-			}), 3000);
+			uiloading()
 			var html = '';
-			var Idd = api.pageParam.name
+			var lid = api.pageParam.lid
 			api.setPrefs({
 				key : 'mul',
-				value : Idd
+				value : lid
 			});
 			api.ajax({
-				url : musicUrl + Idd + houZhui,
+				url : musicUrl + lid + houZhui,
 				cache : true,
 				dataType : 'json'
 			}, function(ret, err) {
-				console.log(musicUrl + Idd + houZhui)
+				//              console.log(musicUrl + Idd + houZhui)
 				if (ret) {
 					var tracksName = ret.result.name;
 					var avatarUrl = ret.result.creator.avatarUrl;
@@ -690,13 +697,13 @@
 					var nickname = ret.result.creator.nickname;
 					id = ret.result.id
 					getCommCount(id, 0)
-					api.setPrefs({
-						key : 'songid',
-						value : id
-					});
-					$api.setStorage('trackTitle', tracksName);
-					$api.setStorage('trackThumb', coverImgUrl);
-					str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img src="' + coverImgUrl + '" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01">' + tracksName.substr(0, 11) + '</div><span  class="egret-flex-item-shelf02"><img src="../../image/qq.png" alt="" class="createrlogo"><div class="creatername">新感官</div><div class="egret-flex-item-arrow"><img src="./image/musiclist/cm2_list_icn_arr.png" alt="" class=""></div> </span></div></div>';
+					//                  api.setPrefs({
+					//                      key : 'songid',
+					//                      value : id
+					//                  });
+					//                  $api.setStorage('trackTitle', tracksName);
+					//                  $api.setStorage('trackThumb', coverImgUrl);
+					str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img src="' + coverImgUrl + '?param=140y140" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em">' + tracksName.substr(0, 17) + '</div><span  class="egret-flex-item-shelf02"><img src="../../image/qq.png" alt="" class="createrlogo"><div class="creatername">新感官</div><div class="egret-flex-item-arrow"><img src="./image/musiclist/cm2_list_icn_arr.png" alt="" class=""></div> </span></div></div>';
 					$api.byId('ava').innerHTML = str1;
 					arr = ret.result.tracks;
 					$api.setStorage('listm', arr);
@@ -707,7 +714,7 @@
 					$api.byId('Num').innerHTML = str4;
 					//
 					var obj = $api.byId('list');
-					//					for (var i = 0; i < myobj.length; i++) {
+					//                  for (var i = 0; i < myobj.length; i++) {
 					for (var i = 0; i < myobj.length; i++) {
 						var bb = myobj[i].name;
 						var position = myobj[i].no;
@@ -715,7 +722,7 @@
 						var artists = myobj[i].artists[0].name
 						var a = i;
 						var n = i + 1;
-						//						var nType = thisItem.type;
+						//                      var nType = thisItem.type;
 						html += '<div class="egret-flex-item musiclist-item" > <div class="egret-flex-item-logo">' + n + '</div>';
 						html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + sid + ',' + i + ')">';
 						html += '<div class="egret-flex-item-shelf01">' + bb + '</div><div class="egret-flex-item-shelf02">';
@@ -730,10 +737,12 @@
 						html += '</div><div class="num">歌手</div></div><div class="userinfocol" tapmode="toolhover" onclick=""><div class="info"><img src="./image/musiclist/musiclisttool05.png" alt=""></div><div class="num">专辑</div></div></div>';
 					}
 					$api.html(obj, html);
-					api.hideProgress();
+					//                  api.hideProgress();
+					stoploading();
 					api.refreshHeaderLoadDone();
 				} else {
-					api.hideProgress();
+					//                  api.hideProgress();
+					stoploading();
 				}
 			});
 		}
@@ -756,17 +765,24 @@
 		}
 
 		function abc(el, i) {
-			var Idd = api.pageParam.name;
+			// var Idd = api.pageParam.name;
 			$api.setStorage('name', 1);
 			$api.setStorage('idi', i);
+			$api.setStorage('listopen', 1);
 			if (!isopen) {
 				api.openWin({
 					name : 'nww',
 					url : '../../html/music/bo_head.html',
 					delay : 300,
+					slidBackEnabled : false,
+					animation : {
+						type : "movein", //动画类型（详见动画类型常量）
+						subType : "from_bottom", //动画子类型（详见动画子类型常量）
+						duration : 500 //动画过渡时间，默认300毫秒
+					},
 					pageParam : {
 						sid : el,
-						index : i
+						index : i,
 					}
 				});
 				setTimeout(function() {
@@ -776,7 +792,7 @@
 							sid : el,
 							index : i
 						}
-					}), 1600
+					}), 600
 				});
 			} else {
 				api.openWin({
@@ -800,7 +816,7 @@
 				dataType : 'json',
 				data : {
 					values : {
-						ID : api.pageParam.name,
+						ID : api.pageParam.lid,
 						type : type
 					}
 				}

@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 		<title>title</title>
-		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
 		<style>
 			body {
 			}
@@ -12,12 +12,14 @@
 	</head>
 	<body>
 		<div class="H-width-80-percent  ">
-			<img id="img1"   src=""/ style="width: 100%; max-height: 600px;">
+			<img id="img1" src="" / style="width: 100%; max-height: 600px;">
 			<textarea placeholder="聆听音乐  感悟人生" id="feed_text" style="height:100px;width: 100%;line-height:24px;"></textarea>
 			<!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
-			<button onclick="addpic()" class="  H-vertical-middle H-button H-font-size-15 H-outline-none H-padding-vertical-both-5 H-padding-horizontal-both-20 H-theme-background-color5 H-theme-font-color-white H-theme-border-color5 H-theme-border-color5-click H-theme-background-yellow-click H-theme-font-color1-click H-border-radius-3" style="min-width: 70px; margin-left: 3px; margin: 2px auto">
-				发布
-			</button>
+			<div class="H-center-all">
+				<button tapmode onclick="addpic()" class="H-button    H-font-size-15 H-outline-none H-padding-vertical-both-12 H-padding-horizontal-both-20 H-theme-background-color2 H-theme-font-color-white H-theme-border-color2 H-theme-border-color2-click H-theme-background-color2-click H-theme-font-color2-click H-border-radius-3" style="width: 80%; min-width: 220px  ">
+					发布
+				</button>
+			</div>
 		</div>
 	</body>
 	<script type="text/javascript" src="../../../script/api.js"></script>
@@ -33,11 +35,8 @@
 		function addpic() {
 			var text1 = $api.val($api.byId("feed_text"));
 			var img1 = $api.attr($api.byId('img1'), 'src');
-			api.showProgress({
-				title : ' 上传中...',
-				text : '先喝杯茶...',
-				modal : false
-			}), api.ajax({
+			uiloading();
+			api.ajax({
 				timeout : 300,
 				method : 'post',
 				url : hostUrl + '/upload.php',
@@ -49,7 +48,6 @@
 				dataType : 'text',
 			}, function(ret, err) {
 				var aa = hostUrl + '/' + trimStr(ret)
-				api.hideProgress();
 				api.getPrefs({
 					key : 'user'
 				}, function(ret, err) {
@@ -71,6 +69,7 @@
 							}
 						}, function(ret, err) {
 							if (ret == 1) {
+								stoploading();
 								api.toast({
 									msg : '发布成功'
 								});
@@ -80,17 +79,9 @@
 									frameName : 'quan_index',
 									script : jsfun1
 								});
-								api.execScript({
-									script : 'openquan()'
-								});
-								//								api.closeFrame({
-								//									name : 'kong'
-								//								});
-								api.closeWin({
-								});
+								api.closeWin({});
 							} else {
-								api.alert({
-								}, function(ret, err) { msg:'发布失败'
+								api.alert({}, function(ret, err) { msg:'发布失败'
 								});
 								api.execScript({
 									script : 'openquan()'
@@ -98,8 +89,7 @@
 								api.closeFrame({
 									name : 'kong'
 								});
-								api.closeWin({
-								});
+								api.closeWin({});
 							}
 						});
 					} else {
@@ -113,6 +103,9 @@
 
 		apiready = function() {
 			//			$api.attr($api.byId('img1'), 'src', api.pageParam.name);
+			api.setWinAttr({
+				bounces : false
+			});
 			openImageClipFrame(api.pageParam.name);
 			api.addEventListener({
 				name : 'myEvent'
@@ -147,17 +140,6 @@
 			});
 		}
 
-		function isOnLineStatus(callback) {
-			var s = api.connectionType;
-			s = s.toLowerCase();
-			if (s == 'wifi' || s == '3g' || s == '4g' || s == '2g') {
-				callback(true, s);
-			} else {
-				callback(false, s);
-			}
-		}
-
-		function upload(file) {
-		}
+		
 	</script>
 </html>

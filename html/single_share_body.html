@@ -8,7 +8,7 @@
 		<link href="../css/Hui.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
 			html, body {
-				background: rgba(0,0,0,0.1);
+				background: rgba(255, 255, 255, 0);
 			}
 		</style>
 	</head>
@@ -36,24 +36,35 @@
 			<!--<div tapmode="" onclick="closeDropMenu();" class="H-theme-background-color-eee H-padding-12 H-font-size-16 H-center-all">取消分享</div>-->
 		</div>
 		<script src="../script/H.js" type="text/javascript"></script>
+		<script src="../script/api.js" type="text/javascript"></script>
 		<script type="text/javascript">
+
+	apiready = function() {
+		console.log(api.pageParam.data.img)
+	}
+
 			function closeDropMenu() {
 				H.addClass(H.D(".share-menu"), "H-animate-scale-small");
 				setTimeout(function() {
-					H.closeFrame();
+					//					H.closeFrame();
+					api.setFrameAttr({
+						name : api.frameName,
+						hidden : true
+					});
 				}, 200);
 			}
 
 
-			document.body.addEventListener('touchstart', function(e) {
-				var evt = event || window.event;
-				var src = evt.target || evt.srcElement;
-				if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
-					closeDropMenu();
-				}
-			});
+			// document.body.addEventListener('touchstart', function(e) {
+			// 	var evt = event || window.event;
+			// 	var src = evt.target || evt.srcElement;
+			// 	if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
+			// 		closeDropMenu();
+			// 	}
+			// });
 			function shareWx(cha) {
 				var img = api.pageParam.img
+
 				var data = api.pageParam.data
 				if (img) {
 					api.imageCache({
@@ -87,7 +98,7 @@
 						wx.shareMusic({
 							apiKey : '',
 							scene : cha,
-							title : data.tilte,
+							title : data.title,
 							description : data.art,
 							thumb : url,
 							contentUrl : data.mp3,

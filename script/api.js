@@ -2,6 +2,216 @@
  * APICloud JavaScript Library
  * Copyright (c) 2014 apicloud.com
  */
+function share(title, art, img, mp3) {
+	var data = {}
+	data.title = title;
+	data.art = art;
+	data.img = img;
+	data.mp3 = mp3;
+	api.openFrame({
+		name : 'sing_share',
+		url : '../../html/single_share_body.html',
+		bgColor:'rgba(0,0,0,0.1)',
+		rect : {
+			x : 0,
+			y : 0,
+			w : api.winWidth,
+			h : api.winHeight
+		},
+		pageParam : {
+			data : data
+		},
+	});
+}
+
+function login_winxin() {
+	var wx = api.require('wx');
+	var regTime = getNowFormatDate();
+	uiloading();
+	wx.isInstalled(function(ret, err) {
+		if (ret.installed) {
+			wx.auth({
+				apiKey : ''
+			}, function(ret, err) {
+				if (ret.status) {
+					console.log(JSON.stringify(ret));
+					var code = ret.code
+					wx.getToken({
+						apiKey : '',
+						apiSecret : '',
+						code : code
+					}, function(ret, err) {
+						if (ret.status) {
+							var accessToken = ret.accessToken;
+							var openId = ret.openId
+							wx.getUserInfo({
+								accessToken : accessToken,
+								openId : openId
+							}, function(ret, err) {
+								if (ret.status) {
+									var openid = ret.openid;
+									var nickname = ret.nickname;
+									var sex = ret.sex;
+									var headimgurl = ret.headimgurl;
+									api.ajax({
+										url : hostUrl + '/weilog.php',
+										method : 'post',
+										data : {
+											values : {
+												openid : openid,
+												nickname : nickname,
+												headimgurl : headimgurl,
+												regdate : regTime,
+											},
+										}
+									}, function(ret, err) {
+
+										stoploading();
+										if (ret.status == 0) {
+
+											api.toast({
+												msg : ret.msg
+											});
+											$api.setStorage('userinfo', ret.userdata);
+
+											api.sendEvent({
+												name : 'updateuserinfo'
+											});
+
+											api.sendEvent({
+												name : 'reg_login_successEvent',
+
+											});
+											api.closeWin({
+												name : api.winName
+											});
+
+										} else if (ret.status == 1) {
+											api.sendEvent({
+												name : 'reg_login_successEvent',
+												extra : {
+													user : nickname,
+												}
+											});
+											var userdata = ret.userdata
+											api.toast({
+												msg : ret.msg
+											});
+											$api.setStorage('userinfo', userdata);
+											api.setPrefs({
+												key : 'user',
+												value : nickname
+											});
+											api.sendEvent({
+												name : 'updateuserinfo'
+											});
+
+											api.closeWin({
+												name : api.winName
+											});
+										} else {
+											api.toast({
+												msg : ret.msg
+											});
+
+										}
+									});
+								} else {
+									alert(err.code);
+								}
+							});
+						} else {
+							alert(err.code);
+						}
+					});
+				} else {
+					alert(err.code);
+				}
+			});
+		} else {
+			alert('当前设备未安装微信客户端');
+		}
+	});
+}
+
+function isOnLineStatus(callback) {
+	var s = api.connectionType;
+	s = s.toLowerCase();
+	if (s == 'wifi' || s == '3g' || s == '4g' || s == '2g') {
+		callback(true, s);
+	} else {
+		callback(false, s);
+	}
+}
+
+function uiloading() {
+	var activity = api.require('UILoading');
+	activity.keyFrame({
+		rect : {
+			w : 70,
+			h : 70
+		},
+		styles : {
+			bg : 'rgba(14, 14, 14, 0.2)',
+			corner : 5,
+			interval : 90,
+			frame : {
+				w : 68,
+				h : 68
+			}
+		},
+		content : [{
+			frame : 'widget://image/yin/1.png'
+		}, {
+			frame : 'widget://image/yin/2.png'
+		}, {
+			frame : 'widget://image/yin/3.png'
+		}, {
+			frame : 'widget://image/yin/4.png'
+		}, {
+			frame : 'widget://image/yin/5.png'
+		}, {
+			frame : 'widget://image/yin/6.png'
+		}, {
+			frame : 'widget://image/yin/7.png'
+		}, {
+			frame : 'widget://image/yin/8.png'
+		}, {
+			frame : 'widget://image/yin/9.png'
+		}, {
+			frame : 'widget://image/yin/10.png'
+		}, {
+			frame : 'widget://image/yin/11.png'
+		}, {
+			frame : 'widget://image/yin/12.png'
+		}, {
+			frame : 'widget://image/yin/13.png'
+		}, {
+			frame : 'widget://image/yin/14.png'
+		}, {
+			frame : 'widget://image/yin/15.png'
+		}, {
+			frame : 'widget://image/yin/16.png'
+		}],
+	}, function(ret) {
+		//		alert(JSON.stringify(ret));
+	});
+
+	setTimeout(function() {
+		stoploading();
+		//		api.toast({
+		//	        msg:'数据错误请重试'
+		//      });
+	}, 8000);
+
+}
+
+function stoploading() {
+	var uiloading = api.require('UILoading');
+	uiloading.closeKeyFrame();
+
+}
+
 function imageCache(url) {//图片缓存方法
 	var path = url;
 	api.imageCache({
@@ -13,13 +223,14 @@ function imageCache(url) {//图片缓存方法
 	});
 	return path;
 }
+
 (function(window) {
 	hostUrl = 'http://www.v7idc.com/ku/api';
 	musicUrl = 'http://music.163.com/api/playlist/detail?id=';
 	houZhui = '&updateTime=-1'
 
 	sUrl = 'http://s.music.163.com/search/get/?src=lofter&type=1&filterDj=true&s='
-	sEnd = '&limit=150&offset=0&callback'
+	sEnd = '&limit=100&offset=0&callback'
 
 	aUrl = 'http://music.163.com/api/song/detail/?id='
 	shouUrl = 'http://v7idc.com/m/addm.php'
@@ -623,7 +834,6 @@ function imageCache(url) {//图片缓存方法
 
 })(window);
 
- 
 function panduan() {
 	if (!$api.getStorage('userinfo')) {
 		api.toast({
@@ -644,4 +854,15 @@ function kaifa() {
 
 }
 
+function closeT() {
+	api.openWin({
+		name : 'slidLayout',
+		animation : {
+			type : "movein", //动画类型（详见动画类型常量）
+			subType : "from_left", //动画子类型（详见动画子类型常量）
+			duration : 400 //动画过渡时间，默认300毫秒
+		},
+	})
+	api.closeSlidPane();
 
+}

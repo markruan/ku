@@ -1,145 +1,330 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>Hui</title>
-		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
-		<style type="text/css">
-			html, body {
-				background: rgba(18, 18, 19, 0.21);
-			}
-		</style>
-	</head>
-	<body class="H-flexbox-vertical">
-		<div class="space H-flex-item"></div>
-		<div class="share-menu H-animate-scale-big animated bounceInUp">
-			<div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-transparent H-padding-vertical-both-10">
-				<div class="H-flex-item" onclick="addPic()">
-					<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height: 100px; width: 100px; "><i class="H-iconfont H-icon-thumb H-font-size-48 H-theme-font-color-white"></i></span>
-					<label class="H-display-block H-font-size-18 H-margin-vertical-top-5 H-theme-font-color-white">分享美图</label>
-				</div>
-				<div class="H-flex-item"  onclick="addMusic()">
-					<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height: 100px; width: 100px;"><i class="H-iconfont H-icon-music H-font-size-48 H-theme-font-color-white"></i></span>
-					<label class="H-display-block H-font-size-18 H-margin-vertical-top-5 H-theme-font-color-white">分享音乐</label>
-				</div>
-			</div>
-			<!--<div tapmode="" onclick="closeDropMenu();" class="H-theme-background-color-eee H-padding-12 H-font-size-16 H-center-all">取消分享</div>-->
-		</div>
-		<div class="space H-flex-item" style="height: 60px;"></div>
-		<script src="../../script/H.js" type="text/javascript"></script>
-		<script type="text/javascript" src="../../script/api.js"></script>
-		<script type="text/javascript" src="../../script/play.js"></script>
-		<script type="text/javascript">
-			function closeDropMenu() {
-				H.addClass(H.D(".share-menu"), "H-animate-scale-small");
-				setTimeout(function() {
-					//					H.closeFrame();
-					api.setFrameAttr({
-						name : api.frameName,
-						hidden : true
-					});
-				}, 200);
-			}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hui</title>
+    <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    html,
+    body {
+        background: rgba(23, 22, 22, 0);
+    }
+    
+    .H-border-radius-circle {
+        border-radius: 10%;
+        -webkit-border-radius: 10%;
+    }
+    </style>
+</head>
+
+<body class="H-flexbox-vertical">
+    <!--<div class="space H-flex-item"></div>-->
+    <div class="share-menu H-animate-scale-big  H-theme-background-color-white">
+        <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-transparent H-padding-vertical-both-10">
+            <div class="H-flex-item" onclick="tu_xuanze()">
+                <span class="H-icon H-center-all H-theme-background-color-white H-border-radius-circle   H-margin-horizontal-auto H-theme-border-color2" style="height: 50px; width: 50px; "> <!--<i class="H-iconfont H-icon-thumb H-font-size-24 H-theme-font-color-red"></i>--> <img src="../../image/tu-18.png" alt="" / style="height: 28px;"> </span>
+                <label class="H-display-block H-font-size-14 H-margin-vertical-top-5 H-theme-font-color-red">图片</label>
+            </div>
+            <div class="H-flex-item" onclick="addMusic()">
+                <span class="H-icon H-center-all H-theme-background-color-white H-border-radius-circle H-margin-horizontal-auto H-theme-border-color2" style="height: 50px; width: 50px;"> <!--<i class="H-iconfont H-icon-music H-font-size-24 H-theme-font-color-red"></i>--> <img src="../../image/tu-21.png" alt="" / style="height: 35px;"> </span>
+                <label class="H-display-block H-font-size-14 H-margin-vertical-top-5 H-theme-font-color-red">音乐</label>
+            </div>
+            <div class="H-flex-item" onclick="addText()">
+                <span class="H-icon H-center-all H-theme-background-color-white H-border-radius-circle H-margin-horizontal-auto H-theme-border-color2" style="height: 50px; width: 50px;"> <!--<i class="H-iconfont H-icon-pen H-font-size-24 H-theme-font-color-red"></i>--> <img src="../../image/tu-23.png" alt="" / style="height: 32px;"> </span>
+                <label class="H-display-block H-font-size-14 H-margin-vertical-top-5 H-theme-font-color-red">文字</label>
+            </div>
+        </div>
+    </div>
+    <div class="space H-flex-item" style="height: 60px;"></div>
+    <script src="../../script/H.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/play.js"></script>
+    <script type="text/javascript">
+    function closeDropMenu() {
+        H.addClass(H.D(".share-menu"), "H-animate-scale-small");
+        setTimeout(function() {
+
+            api.setFrameAttr({
+                name: api.frameName,
+                hidden: true
+            });
+        }, 200);
+    }
 
 
-			document.body.addEventListener('touchstart', function(e) {
-				var evt = event || window.event;
-				var src = evt.target || evt.srcElement;
-				if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
-					closeDropMenu();
-					api.execScript({
-						script : 'openquan()'
-					});
-				}
-			});
-			function addPic() {
-				if (!$api.getStorage('userinfo')) {
-					api.toast({
-						msg : '先登陆'
-					});
-					return
-				}
-				getPicture()
-			}
+    document.body.addEventListener('touchstart', function(e) {
+        var evt = event || window.event;
+        var src = evt.target || evt.srcElement;
+        if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
+            closeDropMenu();
+        }
+    });
 
-			function addMusic() {
-				api.getPrefs({
-					key : 'user' // 用户信息key
-				}, function(ret, err) {
-					var val = ret.value;
-					if (val && val != "") {
-						api.openWin({
-							name : 'searsh',
-							url : '../../html/search.html'
-						});
-					} else {
-						api.toast({
-							msg : '先登陆'
-						});
-						 
-					}
-				});
-			}
+    function addPic() {
+        if (!$api.getStorage('userinfo')) {
+            api.toast({
+                msg: '先登陆'
+            });
+            return
+        }
+        getPicture()
+    }
 
-			function openPicture(sourceType) {
-				api.getPrefs({
-					key : 'user' // 用户信息key
-				}, function(ret, err) {
-					var val = ret.value;
-					if (val && val != "") {
-						isOnLineStatus(function(is_true, line_type) {
-							var q = 40;
-							if (line_type == 'wifi') {
-								q = 60;
-							} else {
-								q = 30;
-							}
-							//获取一张图片
-							api.getPicture({
-								sourceType : sourceType,
-								encodingType : 'png',
-								mediaValue : 'pic',
-								//返回数据类型，指定返回图片地址或图片经过base64编码后的字符串
-								//base64:指定返回数据为base64编码后内容,url:指定返回数据为选取的图片地址
-								destinationType : 'url',
-								//是否可以选择图片后进行编辑，支持iOS及部分安卓手机
-								allowEdit : false,
-								//图片质量，只针对jpg格式图片（0-100整数）,默认值：50
-								quality : q,
-								//                targetWidth : 100,
-								//                targetHeight : 1280,
-								saveToPhotoAlbum : true
-							}, function(ret, err) {
-								if (ret.data) {
-									/*
-									 * data:"",                //图片路径
-									 base64Data:"",          //base64数据，destinationType为base64时返回
-									 */
-									var img_url = ret.data;
-									if (img_url != "") {
-										//打开裁剪frame
-										//							openImageClipFrame(img_url);
-										api.openWin({
-											name : 'photo1',
-											url : 'photo/index.html',
-											pageParam : {
-												name : img_url
-											}
-										});
-									}
-								}
-							});
-						});
-					} else {
-						api.toast({
-							msg : '请先登陆'
-						});
-					 
-					}
-				});
-			}
-		</script>
-	</body>
+    function addText() {
+        if (!$api.getStorage('userinfo')) {
+            api.toast({
+                msg: '先登陆'
+            });
+            return
+        }
+        api.openWin({
+            name: 'text',
+            url: '../../html/kong/text/head.html'
+        });
+    }
+
+    function addMusic() {
+        if (!$api.getStorage('userinfo')) {
+            api.toast({
+                msg: '先登陆'
+            });
+            return
+        }
+        api.openWin({
+            name: 'searsh',
+            url: '../../html/search.html'
+        });
+    }
+
+    function openPicture(sourceType) {
+        var val = $api.getStorage('userinfo');
+        if (val && val != "") {
+            isOnLineStatus(function(is_true, line_type) {
+                var q = 40;
+                if (line_type == 'wifi') {
+                    q = 60;
+                } else {
+                    q = 30;
+                }
+                //获取一张图片
+                api.getPicture({
+                    sourceType: sourceType,
+                    encodingType: 'png',
+                    mediaValue: 'pic',
+                    //返回数据类型，指定返回图片地址或图片经过base64编码后的字符串
+                    //base64:指定返回数据为base64编码后内容,url:指定返回数据为选取的图片地址
+                    destinationType: 'url',
+                    //是否可以选择图片后进行编辑，支持iOS及部分安卓手机
+                    allowEdit: false,
+                    //图片质量，只针对jpg格式图片（0-100整数）,默认值：50
+                    quality: q,
+                    //                targetWidth : 100,
+                    //                targetHeight : 1280,
+                    saveToPhotoAlbum: true
+                }, function(ret, err) {
+                    if (ret.data) {
+                        /*
+                         * data:"",                //图片路径
+                         base64Data:"",          //base64数据，destinationType为base64时返回
+                         */
+                        var img_url = ret.data;
+                        if (img_url != "") {
+                            //打开裁剪frame
+                            //                          openImageClipFrame(img_url);
+                            api.openWin({
+                                name: 'photo1',
+                                url: 'photo/index.html',
+                                pageParam: {
+                                    name: img_url
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        } else {
+            api.toast({
+                msg: '请先登陆'
+            });
+        }
+    }
+
+    function tu_xuanze() {
+        isOnLineStatus(function(is_true, line_type) {
+            if (is_true) {
+                if (line_type == 'wifi' || line_type == '4g') {
+                    api.actionSheet({
+                        //                  title : "您需要如何选择自己的头像？",
+                        buttons: ["现在照", "相册选"]
+                    }, function(ret, err) {
+                        //定义图片来源类型
+                        var sourceType;
+                        if (1 == ret.buttonIndex) { /* 打开相机*/
+                            sourceType = "camera";
+                            openPicture(sourceType);
+                        } else if (2 == ret.buttonIndex) {
+                            duotu()
+                        } else {
+                            return;
+                        }
+                    });
+                } else {
+                    api.confirm({
+                        title: "提示",
+                        msg: "您当前正在使用" + line_type + "网络，建议您在wifi网络下使用，是否继续？",
+                        buttons: ["继续", "取消"]
+                    }, function(ret, err) {
+                        var sourceType;
+                        if (1 == ret.buttonIndex) {
+                            api.actionSheet({
+                                // title: "您需要如何选择自己的头像？",
+                                //                          msg : "您需要如何选择自己的头像？",
+                                buttons: ["现在照", "相册选"]
+                            }, function(ret, err) {
+                                //定义图片来源类型
+                                var sourceType;
+                                if (1 == ret.buttonIndex) { /* 打开相机*/
+                                    sourceType = "camera";
+                                    openPicture(sourceType);
+                                } else if (2 == ret.buttonIndex) {
+                                    duotu()
+                                } else {
+                                    return;
+                                }
+                            });
+                        } else {
+                            return;
+                        }
+                    });
+                }
+            } else {
+                api.toast({
+                    msg: '请连接网络后使用当前功能~'
+                });
+            }
+        });
+    }
+   // 添加多个图片
+    function duotu() {
+        var UIMediaScanner = api.require('UIMediaScanner');
+        UIMediaScanner.open({
+            type: 'picture',
+            column: 4,
+            classify: true,
+            max: 6,
+            sort: {
+                key: 'time',
+                order: 'desc'
+            },
+            texts: {
+                stateText: '已选择*项',
+                cancelText: '取消',
+                finishText: '完成'
+            },
+            styles: {
+                bg: '#fff',
+                mark: {
+                    icon: '',
+                    position: 'bottom_left',
+                    size: 20
+                },
+                nav: {
+                    bg: '#eee',
+                    stateColor: '#000',
+                    stateSize: 18,
+                    cancelBg: 'rgba(0,0,0,0)',
+                    cancelColor: '#000',
+                    cancelSize: 18,
+                    finishBg: 'rgba(0,0,0,0)',
+                    finishColor: '#000',
+                    finishSize: 18
+                }
+            },
+            scrollToBottom: {
+                intervalTime: 3,
+                anim: true
+            },
+            exchange: true,
+            rotation: true
+        }, function(ret) {
+            if (ret) {
+                if (api.systemType == 'ios') {
+                    var imglist = [];
+                    var thumblist = [];
+                    for (var i = 0; i < ret.list.length; i++) {
+                        UIMediaScanner.transPath({
+                            path: ret.list[i].path
+                        }, function(ret, err) {
+                            if (ret) {
+                                // imglist[i] = ret.path;
+                                imglist.push(ret.path)
+
+
+                            } else {
+                                alert(JSON.stringify(err));
+                            }
+                        });
+                        // console.log($api.jsonToStr(imglist))
+                        thumblist[i] = ret.list[i].thumbPath
+                    }
+                    tupian(imglist, thumblist)
+
+                } else {
+                    var imglist = [];
+                    var thumblist = [];
+                    for (var i = 0; i < ret.list.length; i++) {
+                        imglist[i] = ret.list[i].path
+                        thumblist[i] = ret.list[i].thumbPath
+                    }
+                    tupian(imglist, thumblist)
+                }
+
+                console.log($api.jsonToStr(imglist))
+
+
+
+            }
+        });
+    }
+
+    // 图片处理
+    function tupian(imglist, thumblist) {
+        var url = hostUrl + '/duotu1.php';
+        var compactPicture = api.require('compactPicture');
+        compactPicture.HittingPic({
+            picpatharray: imglist,
+            size: 6
+        }, function(ret) {
+            imglist1 = ret.states;
+            api.ajax({
+                url: url,
+                method: 'post',
+                timeout: 60,
+                // report: true,
+                data: {
+                    values: {
+                        user: $api.getStorage('userinfo').nickname,
+                        type: 1,
+                        uid: $api.getStorage('userinfo').data_id,
+                        //                                  text : '测试',
+                    },
+                    files: {
+                        'myfile[]': imglist1,
+                        'mythumb[]': thumblist
+                    }
+                }
+            }, function(ret, err) {
+                console.log($api.jsonToStr(ret))
+                api.toast({
+                    msg: ret.msg
+                });
+            });
+        });
+    }
+    </script>
+</body>
+
 </html>

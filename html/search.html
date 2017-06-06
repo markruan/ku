@@ -1,58 +1,129 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>title</title>
-		<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
-		<style>
-			/*.aui-bar-primary {
-			background: #D43C33
-			}
-			.aui-btn-primary {
-			background: #D43C33
-			}*/
-			/*qiushi-bottom end*/
-			#main{
-			height: 100%;
-		</style>
-	</head>
-	<body>
-		<header class="aui-bar aui-bar-nav aui-bar-primary    " id="aui-header">
-			<a class="aui-btn aui-btn-primary aui-pull-left" tapmode onclick="closeWin()"> <span class="aui-iconfont aui-icon-left"></span> </a>
-			<div class="aui-title">
-				搜索页面
-			</div>
-			<!--<a class="aui-iconfont aui-icon-sitting aui-pull-right"><span class="aui-iconfont aui-icon-search"></span></a>-->
-		</header>
-	</body>
-	<script type="text/javascript" src="../script/api.js"></script>
-	<script type="text/javascript">
-		function closeWin() {
-			api.closeWin();
-			//      $api.rmStorage(key);
-			var audioCover = api.require('audioCover');
-			audioCover.cancel(function(ret, err) {
-			});
-		}
 
-		apiready = function() {
-			api.parseTapmode();
-			var header = $api.byId('aui-header');
-			$api.fixStatusBar(header);
-			var headerPos = $api.offset(header);
-			var body_h = $api.offset($api.dom('body')).h;
-			api.openFrame({
-				name : 'my_frm',
-				url : 'search_win.html',
-				bounces : false,
-				rect : {
-					x : 0,
-					y : headerPos.h,
-					w : headerPos.w,
-					h : body_h - headerPos.h,
-				}
-			})
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../css/Hui.css" />
+	<style>
+		.bgg {
+			background-image: url(../image/hd2.jpg);
+			background-position: right bottom, left top;
 		};
-	</script>
+		#main {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="H-header  bgg" id="header">
+		<span tapmode="" onclick="H.closeWin();" class="H-icon H-position-relative H-display-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-10 H-z-index-1000"><i class="H-iconfont H-icon-arrow-left  H-font-size-18 H-vertical-middle"></i></span>
+		<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
+			<div class="H-search H-flexbox-horizontal H-box-sizing-border-box  H-theme-background-color-transparent H-border-radius-3 H-overflow-hidden" style="width: 70%; height: 35px">
+				<div name="keyword" id="search" placeholder="Search...." class="H-border-none H-theme-background-color-transparent H-flex-item H-font-size-16 H-padding-horizontal-both-10 H-padding-vertical-both-2 H-vertical-align-middle H-theme-border-color-ccc H-theme-font-color-white"
+								style="border-width: 0 0 1px  0; "></div>
+			</div>
+		</div>
+		<span tapmode onclick="cleanText()" class="H-z-index-100 H-icon H-position-absolute  H-display-block H-padding-horizontal-both-10 H-vertical-middle" style="right: 10px;"><i class="H-iconfont  H-icon-close H-font-size-18 H-theme-font-color-white"></i></span>
+	</header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/H.js"></script>
+<script type="text/javascript">
+	var listdata = []
+
+	function closeWin() {
+		api.closeWin();
+		$api.rmStorage('h_list');
+		var audioCover = api.require('audioCover');
+		audioCover.cancel(function(ret, err) {});
+	}
+
+	function cleanText() {
+		var UIInput = api.require('UIInput');
+		UIInput.value({
+			msg: ''
+		});
+	}
+
+	apiready = function() {
+		//		  $api.rmStorage('h_list');
+		api.parseTapmode();
+		searchbar()
+		var header = $api.byId('header');
+		$api.fixStatusBar(header);
+		var headerPos = $api.offset(header);
+		var body_h = $api.offset($api.dom('body')).h;
+
+		api.openFrame({
+			name: 'my_frm',
+			url: 'search_body.html',
+			bounces: false,
+			rect: {
+				x: 0,
+				y: headerPos.h,
+				w: headerPos.w,
+				h: 'auto'
+			}
+
+		});
+	};
+
+	function searchbar() {
+		var UIInput = api.require('UIInput');
+		var searcht = $api.offset($api.byId('search')).t
+		UIInput.open({
+			rect: {
+				x: (api.winWidth - (api.winWidth - 100)) / 2,
+				y: searcht + 30,
+				w: api.winWidth - 100,
+				h: 30
+			},
+			styles: {
+				bgColor: 'rgba(255,255,255,.15)',
+				size: 14,
+				color: '#fff',
+				placeholder: {
+					color: '#fff'
+				}
+			},
+			autoFocus: true,
+			maxRows: 1,
+			placeholder: 'Search...',
+			keyboardType: 'search',
+			fixedOn: api.frameName
+		}, function(ret, err) {
+			if (ret.eventType == 'search') {
+				UIInput.value(function(ret, err) {
+					if (ret.msg != '') {
+						if ($api.getStorage('h_list') !== [] && $api.getStorage('h_list')) {
+							var listdata = $api.getStorage('h_list')
+							listdata.push(ret.msg)
+							$api.setStorage('h_list', listdata);
+						} else {
+							var listdata = []
+							listdata.push(ret.msg)
+							$api.setStorage('h_list', listdata);
+						}
+						api.sendEvent({
+							name: 'smsg',
+							extra: {
+								msg: ret.msg
+							}
+						});
+					} else {
+						api.toast({
+							msg: '输入不能为空'
+						});
+					}
+				});
+			} else {
+				//					alert(JSON.stringify(err));
+			}
+		});
+	}
+</script>
+
 </html>

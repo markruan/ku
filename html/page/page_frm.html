@@ -1,126 +1,242 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>title</title>
-		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
-		<style>
-			.fresh {
-				height: 35px;
-				width: 100%;
-				background-image: url('../../image/loading_more.gif');
-				background-position: center center;
-				background-repeat: no-repeat;
-				background-size: 15px 15px;
-			}
-		</style>
-	</head>
-	<body  id="body">
-		<div class="H-padding-vertical-bottom-10"></div>
-		<div id="main" class="H-padding-horizontal-right-10"></div>
-	</body>
-	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/echo.min.js"></script>
-	<script type="text/javascript" src="../../script/H.js"></script>
-	<script type="text/javascript">
-		var page = 0;
-		function openMusicList(id) {
-//			api.openWin({
-//				name : 'nww',
-//				url : '../../html/music/bo_head.html',
-//				delay : 500
-//			});
-			api.openWin({
-				name : 'musiclist',
-				url : '../../html/music/mlist_win.html',
-				delay :100,
-				reload : true,
-				pageParam : {
-					name : id
-				}
-			});
-			
-		}
 
-		function findinfo(page) {
-			api.showProgress({
-				title : ' 加载中...',
-				text : '先喝杯茶...',
-				modal : false
-			})
-			api.ajax({
-				url : hostUrl + '/fen.php',
-				method : 'post',
-				data : {
-					values : {
-						page : page * 10
-					},
-				}
-			}, function(ret, err) {
-				if (ret) {
-					var html = '';
-					for ( i = 0; i < ret.length; i++) {
-						var Idd = ret[i].idd;
-						var coverImgUrl = imageCache(ret[i].imgUrl)
-						var tracksName = ret[i].name
-						$api.setStorage('lenpage', ret.length);
-						html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(' + Idd + ')">';
-						html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-padding-horizontal-left-10" alt="" title=""   >';
-						html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName + '</div></div>';
-						api.hideProgress();
-						api.refreshHeaderLoadDone();
-					}
-					var obj = $api.byId('main');
-					if (page == 0) {
-						$api.html(obj, html);
-					} else {
-						$api.after($api.last(obj), html);
-					}
-					echo.init({
-						offset : 0,
-						throttle : 150,
-						unload : false,
-						callback : function(element, op) {
-						}
-					});
-					$api.removeCls($api.byId('body'), 'H-display-none');
-				} else {
-					api.toast({
-						msg : '没有更多了'
-					});
-					api.hideProgress();
-					api.refreshHeaderLoadDone();
-					//					api.alert({
-					//						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '网络状态码：' + err.statusCode)
-					//					});
-				};
-			});
-		}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+    <style>
+    .fresh {
+        height: 35px;
+        width: 100%;
+        background-image: url('../../image/loading_more.gif');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 15px 15px;
+    }
 
-		apiready = function() {
-			findinfo(page)
-			api.setRefreshHeaderInfo({
-				visible : true,
-				bgColor : '#f2f2f2',
-				textColor : '#4d4d4d',
-				textDown : '下拉刷新...',
-				textUp : '松开刷新...',
-				showTime : true
-			}, function(ret, err) {
-				findinfo(page)
-				api.hideProgress();
-				api.refreshHeaderLoadDone();
-			});
-			api.addEventListener({
-				name : 'scrolltobottom',
-				extra : {
-					threshold : 150 //设置距离底部多少距离时触发，默认值为0，数字类型
-				}
-			}, function(ret, err) {
-				page++
-				findinfo(page)
-			});
-		};
-	</script>
+    .H-font-size-10 {
+        font-size: 8px;
+    }
+
+    .H-flexbox-horizontal1 {
+        display: box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-flex-flow: row;
+        flex-flow: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+    </style>
+</head>
+
+<body id="body">
+    <div style="height: 200px"></div>
+    <div id='toppp' class=" H-border-vertical-bottom-margin-both-10-after  "></div>
+    <div class="H-margin-vertical-top-10 H-flexbox-horizontal1 H-padding-horizontal-both-10 H-border-vertical-bottom-margin-both-10-after H-margin-horizontal-both-10 H-theme-background-color-white H-touch-active ">
+        <div class="H-flex-item H-text-show-row-1 H-padding-vertical-both-10 H-font-size-12 H-font-weight-bold H-theme-font-color7">
+            推荐
+        </div>
+        <span class="H-vertical-middle H-theme-font-color-ccc"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
+    </div>
+    <div id="tui" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+    <div class="H-flexbox-horizontal1 H-padding-horizontal-both-10 H-border-vertical-bottom-margin-both-10-after H-margin-horizontal-both-10 H-theme-background-color-white H-touch-active">
+        <div class="H-flex-item H-text-show-row-1 H-padding-vertical-both-10 H-font-size-12 H-font-weight-bold H-theme-font-color7">
+            酷选
+        </div>
+        <span class="H-vertical-middle H-theme-font-color-ccc"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
+    </div>
+    <div id="main" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/echo.min.js"></script>
+<script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript">
+var page = 0;
+var datalist;
+var tuilist;
+// 打开歌曲列表
+function openMusicList(lid) {
+    api.openWin({
+        name: 'musiclist',
+        url: '../../html/music/mlist_win.html',
+        //				delay : 700,
+        reload: true,
+        animation: {
+            type: "movein", //动画类型（详见动画类型常量）
+            subType: "from_right", //动画子类型（详见动画子类型常量）
+//          duration: 300 //动画过渡时间，默认300毫秒
+        },
+        pageParam: {
+            lid: lid
+        }
+    });
+}
+
+// 热门推荐初始化
+function tui() {
+    api.ajax({
+        url: hostUrl + '/tui.php',
+        cache: true,
+        data: {
+            values: {
+                page: 0
+            },
+        }
+    }, function(ret, err) {
+        if (ret) {
+            var html = '';
+            for (i = 0; i < 2; i++) {
+                var lid = ret[i].idd;
+                var coverImgUrl = imageCache(ret[i].fenpic)
+                var tracksName = ret[i].name
+                html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" onclick="openMusicList(' + lid + ')">';
+                html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
+                html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+            }
+            var tui = $api.byId('tui');
+            $api.html(tui, html);
+            echo.init({
+                offset: 0,
+                throttle: 150,
+                unload: false,
+                callback: function(element, op) {}
+            });
+            findinfo(page)
+        } else {};
+    });
+}
+
+function findinfo(page) {
+    uiloading()
+    setTimeout(function() {
+        stoploading();
+    }, 8000);
+    var ye = page * 20
+    api.ajax({
+        url: hostUrl + '/fen.php?page=' + ye,
+        cache: true,
+    }, function(ret, err) {
+        if (ret) {
+            var html = '';
+            var paths = [];
+            var captions = [];
+            for (var i = 0; i < 3; i++) {
+                paths[i] = imageCache(ret[i].fenpic)
+                captions[i] = ret[i].name
+            }
+            datalist = {
+                paths: paths,
+                //						captions : captions
+            }
+            huandeng(datalist)
+            tuilist = ret
+            for (i = 0; i < ret.length; i++) {
+                var Idd = ret[i].idd;
+                var coverImgUrl = imageCache(ret[i].imgUrl)
+                var tracksName = ret[i].name
+                $api.setStorage('lenpage', ret.length);
+                html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+                html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+
+                html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+
+                stoploading()
+                api.refreshHeaderLoadDone();
+            }
+            var obj = $api.byId('main');
+            if (page == 0) {
+                $api.html(obj, html);
+            } else {
+                $api.after($api.last(obj), html);
+            }
+            echo.init({
+                offset: 0,
+                throttle: 100,
+                unload: false,
+                callback: function(element, op) {}
+            });
+            $api.removeCls($api.byId('body'), 'H-display-none');
+        } else {
+            api.toast({
+                msg: '没有更多了'
+            });
+            stoploading();
+            api.refreshHeaderLoadDone();
+        };
+    });
+}
+
+apiready = function() {
+    tui()
+    api.setRefreshHeaderInfo({
+        loadingImg: 'widget://image/refresh.png',
+        visible: true,
+        bgColor: '#f2f2f2',
+        textColor: '#4d4d4d',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function(ret, err) {
+        findinfo(page)
+        api.hideProgress();
+        api.refreshHeaderLoadDone();
+    });
+    api.addEventListener({
+        name: 'scrolltobottom',
+        extra: {
+            threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
+        }
+    }, function(ret, err) {
+        page++
+        findinfo(page)
+    });
+};
+// 首页幻灯
+function huandeng(datalist) {
+    var UIScrollPicture = api.require('UIScrollPicture');
+    UIScrollPicture.open({
+        rect: {
+            x: 10,
+            y: 2,
+            w: api.winWidth - 20,
+            h: 200
+        },
+        data: datalist,
+        styles: {
+            caption: {
+                height: 35,
+                color: '#E0FFFF',
+                size: 13,
+                bgColor: '#696969',
+                position: 'bottom'
+            },
+            indicator: {
+                align: 'center',
+                color: '#FFFFFF',
+                activeColor: '#DA70D6'
+            }
+        },
+        placeholderImg: 'http://p4.music.126.net/QoYmefgv--Zo9Ru5dJQnSA==/109951162864239811.jpg',
+        contentMode: 'scaleToFill',
+        interval: 3,
+        fixedOn: api.frameName,
+        loop: true,
+        fixed: false
+    }, function(ret, err) {
+        if (ret) {
+            //							alert(JSON.stringify(ret));
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+</script>
+
 </html>

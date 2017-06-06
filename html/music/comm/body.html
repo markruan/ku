@@ -1,140 +1,139 @@
 ﻿<!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>Hello APP</title>
-		<link href="../../../css/Hui.css" rel="stylesheet" type="text/css" />
-		<style>
-		</style>
-	</head>
-	<body>
-		<div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
-			<div class="H-channel-line H-theme-background-color-black H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
-			<div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">
-				评论列表
-			</div>
-		</div>
-		<div id="comm"></div>
-		<div class="H-padding-vertical-bottom-25"></div>
-		<div class="H-padding-vertical-bottom-25"></div>
-	</body>
-	<script type="text/javascript" src="../../../script/api.js"></script>
-	<script type="text/javascript" src="../../../script/common.js"></script>
-	<script type="text/javascript" src="../../../script/play.js"></script>
-	<script type="text/javascript">
-		apiready = function() {
-			var obj = api.require('inputField');
-			var type = api.pageParam.type
-			var sid = api.pageParam.sid
-			initPage(type, sid)
-			commm(sid, type)
-		}
-		function initPage(type, sid) {
-			setTimeout(api.showProgress({
-				title : ' 加载中...',
-				text : '先喝杯茶...',
-				modal : false
-			}), 2000);
-			var html = '';
-			var html1 = '';
-			api.ajax({
-				url : hostUrl + '/comm.php',
-				method : 'get',
-				cache : false,
-				timeout : 30,
-				dataType : 'json',
-				data : {
-					values : {
-						ID : sid,
-						type : type,
-						uid : $api.getStorage('userinfo').data_id
-					}
-				}
-			}, function(ret, err) {
-				if (ret) {
-					var objc1 = $api.byId('comm');
-					for (var i = 0, len = ret.length; i < len; i++) {
-						var thisItem = ret[i];
-						var nType = thisItem.type;
-						var coo = thisItem.content;
-						var time = thisItem.time;
-						var pic = thisItem.pic;
-						var lou = i + 1
-						//解码
-						// html += '<li  class="aui-user-view-cell aui-img"><h6>' + thisItem.username + '</h6><div>' + coo + '</div><hr />';
-						html += '<div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">';
-						html += ' <div class="H-padding-vertical-both-5"><img id="face" src="' + pic + '" alt="" title="" class="imgCache H-display-block H-margin-horizontal-left-10 H-border-radius-circle" style="width: 30px; height: 30px;" /></div>';
-						html += '<div class="H-flex-item H-margin-vertical-both-8 H-margin-10">';
-						html += ' <div class="H-theme-font-color-999 H-font-size-14 H-flexbox-horizontal H-text-horizontal-left H-box-sizing-border-box">';
-						html += '<span class="H-display-block H-flex-item H-text-align-left H-font-size-14 H-theme-font-color1">' + thisItem.user + '</span>';
-						html += ' <span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times">' + lou + '楼</span></div>';
-						html += '<div class="H-font-size-12 H-text-show-row-2 H-margin-vertical-top-2 H-font-size-12"id="address">' + coo + '</div>';
-						html += '<div class="H-font-size-10 H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12" id="address">' + time + '</div></div></div>';
-					}
-					$api.html(objc1, html);
-					api.hideProgress();
-					api.refreshHeaderLoadDone();
-				} else {
-					str1 = '<div class="H-background-white H-padding10"><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">沙发空余，快来抢占</p><div class="H-padding-vertical-bottom-10"></div></div>';
-					$api.byId('comm').innerHTML = str1;
-					api.hideProgress();
-				};
-			});
-		}
 
-		function commm(sid, type) {
-			//获取用户信息
-			var obj = api.require('inputField');
-			obj.open({
-				bgColor : '#4db7ad',
-				lineColor : '#4db7ad',
-				fileBgColor : '#ffffff',
-				borderColor : '#4db7ad',
-				sendImg : 'widget://res/send_bg.png'
-			}, function(ret, err) {
-				var imsg = ret.msg
-				var timer = getNowFormatDate()
-				if (imsg) {
-					api.ajax({
-						url : hostUrl + '/addcom.php',
-						method : 'post',
-						dataType : 'json',
-						data : {
-							values : {
-								sid : sid,
-								uid : $api.getStorage('userinfo').data_id,
-								content : imsg,
-								time : timer,
-								type : type,
-							},
-						}
-					}, function(ret, err) {
-						if (ret.status == 0) {
-						initPage(type, sid);
-							api.toast({
-								msg : ret.msg,
-								duration : 2000,
-								location : 'middle'
-							});
-						} else {
-						initPage(type, sid);
-							api.toast({
-								msg : ret.msg,
-								duration : 2000,
-								location : 'middle'
-							});
-						}
-					});
-					
-				} else {
-					api.alert({
-						msg : '输入不能为空!!'
-					}, function(ret, err) {
-						initPage(type, sid);
-					});
-				}
-			});
-		}
-	</script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>Hello APP</title>
+    <link href="../../../css/Hui.css" rel="stylesheet" type="text/css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
+        <div class="H-channel-line H-theme-background-color-black H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+        <div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">
+            评论列表
+        </div>
+    </div>
+    <div id="comm"></div>
+    <div class="H-padding-vertical-bottom-25"></div>
+    <div class="H-padding-vertical-bottom-25"></div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/common.js"></script>
+<script type="text/javascript" src="../../../script/play.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    var obj = api.require('inputField');
+    var type = api.pageParam.type
+    var sid = api.pageParam.sid
+    initPage(type, sid)
+    commm(sid, type)
+}
+
+function initPage(type, sid) {
+    setTimeout(uiloading(), 2000);
+    var html = '';
+    var html1 = '';
+    api.ajax({
+        url: hostUrl + '/comm.php',
+        method: 'get',
+        cache: false,
+        timeout: 30,
+        dataType: 'json',
+        data: {
+            values: {
+                ID: sid,
+                type: type,
+                uid: $api.getStorage('userinfo').data_id
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            var objc1 = $api.byId('comm');
+            for (var i = 0, len = ret.length; i < len; i++) {
+                var thisItem = ret[i];
+                var nType = thisItem.type;
+                var coo = thisItem.content;
+                var time = thisItem.time;
+                var pic = thisItem.pic;
+                var lou = i + 1
+
+                html += '<div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">';
+                html += ' <div class="H-padding-vertical-both-5"><img id="face" src="' + pic + '" alt="" title="" class="imgCache H-display-block H-margin-horizontal-left-10 H-border-radius-circle" style="width: 30px; height: 30px;" /></div>';
+                html += '<div class="H-flex-item H-margin-vertical-both-8 H-margin-10">';
+                html += ' <div class="H-theme-font-color-999 H-font-size-14 H-flexbox-horizontal H-text-horizontal-left H-box-sizing-border-box">';
+                html += '<span class="H-display-block H-flex-item H-text-align-left H-font-size-14 H-theme-font-color1">' + thisItem.nickname + '</span>';
+                html += ' <span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times">' + lou + '楼</span></div>';
+                html += '<div class="H-font-size-12 H-text-show-row-2 H-margin-vertical-top-2 H-font-size-12"id="address">' + coo + '</div>';
+                html += '<div class="H-font-size-10 H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12" id="address">' + time + '</div></div></div>';
+            }
+            $api.html(objc1, html);
+            stoploading();
+            api.refreshHeaderLoadDone();
+        } else {
+            str1 = '<div class="H-background-white H-padding10"><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">沙发空余，快来抢占</p><div class="H-padding-vertical-bottom-10"></div></div>';
+            $api.byId('comm').innerHTML = str1;
+            stoploading();
+        };
+    });
+}
+
+function commm(sid, type) {
+    //获取用户信息
+    var obj = api.require('inputField');
+    obj.open({
+        bgColor: 'rgba(228, 149, 97, 0.75)',
+        lineColor: 'rgba(228, 149, 97, 0.75)',
+        fileBgColor: '#ffffff',
+        borderColor: 'rgba(228, 149, 97, 0.75)',
+        sendImg: 'widget://res/send_bg.png'
+    }, function(ret, err) {
+        var imsg = ret.msg
+        var timer = getNowFormatDate()
+        if (imsg) {
+            api.ajax({
+                url: hostUrl + '/addcom.php',
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    values: {
+                        sid: sid,
+                        uid: $api.getStorage('userinfo').data_id,
+                        content: imsg,
+                        time: timer,
+                        type: type,
+                    },
+                }
+            }, function(ret, err) {
+                if (ret.status == 0) {
+                    initPage(type, sid);
+                    api.toast({
+                        msg: ret.msg,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                } else {
+                    initPage(type, sid);
+                    api.toast({
+                        msg: ret.msg,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                }
+            });
+        } else {
+            api.alert({
+                msg: '输入不能为空!!'
+            }, function(ret, err) {
+                initPage(type, sid);
+            });
+        }
+    });
+}
+</script>
+
 </html>

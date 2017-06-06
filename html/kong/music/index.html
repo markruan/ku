@@ -34,9 +34,11 @@
 		</div>
 		<textarea  class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 "  placeholder="聆听音乐  感悟人生" id="feed_text" style="margin: 0 auto;width: 100%;" ></textarea>
 		<!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
-		<button onclick="addmusic()" class="  H-vertical-middle H-button H-font-size-15 H-outline-none H-padding-vertical-both-5 H-padding-horizontal-both-20 H-theme-background-color5 H-theme-font-color-white H-theme-border-color5 H-theme-border-color5-click H-theme-background-yellow-click H-theme-font-color1-click H-border-radius-3" style="min-width: 70px; margin-left: 3px; margin: 2px auto">
-			发布
-		</button>
+		<div class="H-center-all">
+			<button tapmode onclick="addmusic()"class="H-button    H-font-size-15 H-outline-none H-padding-vertical-both-12 H-padding-horizontal-both-20 H-theme-background-color2 H-theme-font-color-white H-theme-border-color2 H-theme-border-color2-click H-theme-background-color2-click H-theme-font-color2-click H-border-radius-3" style="width: 80%; min-width: 220px  ">
+				发布
+			</button>
+		</div>
 		</div>
 	</body>
 	<script type="text/javascript" src="../../../script/api.js"></script>
@@ -65,6 +67,7 @@
 		}
 
 		apiready = function() {
+			
 			var fengmian = api.pageParam.name
 			var song = api.pageParam.song
 			var artists = api.pageParam.artists
@@ -76,8 +79,8 @@
 			var netAudio = api.require('audioPlayer');
 			netAudio.stop();
 			api.toast({
-						msg : '暂停'
-					});
+				msg : '暂停'
+			});
 		}
 
 		function addmusic() {
@@ -93,6 +96,7 @@
 				var username = ret.value;
 				var url = hostUrl + '/addmusic.php';
 				if (ret) {
+					uiloading();
 					api.ajax({
 						url : url,
 						method : 'post',
@@ -112,19 +116,9 @@
 						}
 					}, function(ret, err) {
 						if (ret == 1) {
+							stoploading();
 							api.toast({
 								msg : '发布成功'
-							});
-							var jsfun1 = 'initPage()';
-							api.execScript({
-								name : 'root',
-								frameName : 'quan_index',
-								script : jsfun1
-							});
-							api.execScript({
-								name : 'root',
-								frameName : 'kong',
-								script : 'openquan()'
 							});
 							api.closeFrame({
 								name : 'kong'
@@ -132,11 +126,9 @@
 							api.closeWin({
 							});
 						} else {
+							stoploading();
 							api.toast({
 								msg : '发布失败'
-							});
-							api.execScript({
-								script : 'openquan()'
 							});
 							api.closeFrame({
 								name : 'kong'

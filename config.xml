@@ -2,8 +2,8 @@
 
 <widget id="A6911302258372" version="0.0.1"> 
   <name>Hui</name>  
-  <description/>  
-  <author email=" " href="http://www.apicloud.com">杭州神尼网络科技有限公司</author>  
+  <description>Example For APICloud.</description>  
+  <author email="developer@apicloud.com" href="http://www.apicloud.com">Developer</author>  
   <content src="index.html"/>  
   <preference name="pageBounce" value="false"/>  
   <preference name="appBackground" value="rgba(0,0,0,0.0)"/>  
@@ -14,12 +14,13 @@
   <preference name="autoLaunch" value="true"/>  
   <preference name="fullScreen" value="false"/>  
   <preference name="autoUpdate" value="true"/>  
-  <preference name="smartUpdate" value="true"/>  
+  <preference name="smartUpdate" value="false"/>  
   <preference name="debug" value="false"/>  
+  <preference name="iOS7StatusBarAppearance" value="true"/>  
   <preference name="statusBarAppearance" value="true"/>  
-  <preference name="softInputMode" value="resize"/>  
-  <preference name="backgroundMode" value="audio"/>  
   <permission name="readPhoneState"/>  
+  <permission name="call"/>  
+  <permission name="sms"/>  
   <permission name="camera"/>  
   <permission name="record"/>  
   <permission name="location"/>  
@@ -27,13 +28,11 @@
   <permission name="internet"/>  
   <permission name="bootCompleted"/>  
   <permission name="hardware"/>  
-  <permission name="call"/>  
-  <permission name="sms"/>  
   <permission name="contact"/>  
   <access origin="*"/>  
   <feature name="wx"> 
-    <param name="urlScheme" value="wx86865bdfe0f7e7c7"/>  
-    <param name="apiKey" value="wx86865bdfe0f7e7c7"/>  
-    <param name="apiSecret" value="1d9193fe28da95d3a388cbf5c70c6481"/> 
+    <param name="urlScheme" value="wx1da1cc85d2210c0f"/>  
+    <param name="apiKey" value="wx1da1cc85d2210c0f"/>  
+    <param name="apiSecret" value="d0170de08adeb18419d334473e7d7dd0"/> 
   </feature> 
 </widget>

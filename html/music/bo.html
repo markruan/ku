@@ -1,382 +1,416 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>title</title>
-		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
-		<style>
-			.play-up-bg {
-				margin: 0 auto;
-				padding-top: 30px;
-				width: 60%;
-				/*height: 60%;*/
-				/*position: absolute;*/
-				/*图片模糊*/
-				/*-webkit-filter: blur(4px);*/ /* Chrome, Opera */
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>title</title>
+	<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
+	<style>
+	.play-up-bg {
+			margin: 0 auto;
+			width: 60%;
+			/*height: 60%;*/
+			border-radius: 60%;
+		}
+
+		.xuanzhuan {
+			-webkit-animation: circle 20s infinite linear;
+			/*匀速 循环*/
+		}
+
+		@-webkit-keyframes circle {
+			0% {
+				transform: rotate(0deg);
 			}
-			.controler {
-				height: 300px;
+			100% {
+				transform: rotate(-360deg);
 			}
-			.controler-bg {
-				width: 100%;
-				/*position: absolute;*/
-				/*图片模糊*/
-				/*-webkit-filter: blur(30px);
+		}
+	}
+	.controler {
+		height: 300px;
+	}
+	.controler-bg {
+		width: 100%;
+		/*position: absolute;*/
+		/*图片模糊*/
+		/*-webkit-filter: blur(30px);
 				 max-height: 300px;*/
-			}
-			.e {
-				left: 10px;
-				text-align: right;
-				/*padding-left: 100px;*/
-			}
-			.s {
-				right: 100px;
-				text-align: left;
-				padding-right: 5px;
-			}
-			.icon-pause:before {
-				content: "\e603";
-				margin-top: 2px;
-			}
-			.share-menu {
-				background-color: rgba(151, 118, 118, 0);
-			}
-			#men {
-				height: 300px;
-			}
-			.icon-focus {
-				color: rgba(205, 198, 198, 0.2);
-			}
-			.kongZhi {
-				margin-top: 12px;
-				width: 80%;
-				margin: 0 auto;
-			}
-			.H-width-80-percent {
-				width: 80%;
-			}
-			.H-theme-font-color-white {
-				color: #999
-			}
-			.H-theme-font-color-white1 {
-				color: white;
-			}
-		</style>
-	</head>
-	<script type="text/html" id="tppl">
-		<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" onclick="shouCang(<%=list.id %>,null,'<%=list.mp3Url %>','<%=list.artists[0].name %>','<%=list.name %>','<%=list.album.picUrl %>')" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
-	</script>
-	<script type="text/html" id="tppl2">
-		<span class="H-icon H-display-block H-horizontal-center"><i onclick="openComm(<%=list.id %>, 1)" tapmode=" iconfont  icon-focus "  class="iconfont icon-pinglun   H-vertical-middle H-theme-font-color-white"style="    font-size:25px; "></i></span>
-	</script>
-	<body >
-		<div  class=""   >
-			<img id="bg" src="../../image/default.jpg" alt="" class="play-up-bg H-center-all">
+	}
+	.e {
+		left: 10px;
+		text-align: right;
+		/*padding-left: 100px;*/
+	}
+	.s {
+		right: 100px;
+		text-align: left;
+		padding-right: 5px;
+	}
+	.icon-pause:before {
+		content: "\e603";
+		margin-top: 2px;
+	}
+	.share-menu {
+		background-color: rgba(151, 118, 118, 0);
+	}
+	#men {
+		height: 300px;
+	}
+	.icon-focus {
+		color: rgba(205, 198, 198, 0.2);
+	}
+	.kongZhi {
+		margin-top: 12px;
+		width: 80%;
+		margin: 0 auto;
+	}
+	.H-width-80-percent {
+		width: 80%;
+	}
+	.H-theme-font-color-white {
+		color: #999;
+	}
+	.H-theme-font-color-white1 {
+		color: white;
+	}
+	</style>
+</head>
+<script type="text/html" id="tppl">
+	<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" onclick="shouCang(<%=list.id %>,null,'<%=list.mp3Url %>','<%=list.artists[0].name %>','<%=list.name %>','<%=list.album.picUrl %>')" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+</script>
+<script type="text/html" id="tppl2">
+	<span class="H-icon H-display-block H-horizontal-center"><i onclick="openComm(<%=list.id %>, 1)" tapmode=" iconfont  icon-focus "  class="iconfont icon-pinglun   H-vertical-middle H-theme-font-color-white"style="    font-size:25px; "></i></span>
+</script>
+
+<body>
+	<div class="" style="padding-top: 30px;">
+		<img id="bg" data-img="" src="../../image/default.jpg" alt="" class="play-up-bg H-center-all ">
+	</div>
+	<div class="  " style="position: fixed;bottom: 0px;width: 100%;">
+		<div id="slider" class="H-padding-horizontal-both-0  ">
+			<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">00:00</span>
+			<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
+			<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem ; ">03:25</span>
 		</div>
-		<div class="  "  style="position: fixed;bottom: 0px;width: 100%;"  >
-			<div id="slider" class="H-padding-horizontal-both-0  " >
-				<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">00:00</span>
-				<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
-				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000"style="font-size: 1.1rem ; " >03:25</span>
-			</div>
-			<span id="title1" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white   H-width-100-percent"  style="height:50px; "> </span>
-			<!--<br />-->
-			<span id="titleName" class="H-header-title H-center-all H-font-size-12 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent"  style="height:50px;"> </span>
-			<br />
-			<!--<span class="   H-theme-font-color-white  H-width-100-percent " > <i class="iconfont icon-play H-center-all H-margin-vertical-top-10 "style="font-size:60px;color: white;top: 12px;"> </i> </span>-->
-			<div  class="H-n-grid kongZhi H-clear-both  H-overflow-auto H-margin-vertical-top-12">
-				<div  class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-center-all">
-					<div class=" leftB  H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 80px;">
-						<div>
-							<span  class="H-icon H-display-block H-horizontal-center"><i onclick="prev_b()" id="prev_b" data-sid="" data-index=""  tapmode=" iconfont  icon-focus " class="iconfont icon-mediaprevious  H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
-						</div>
-					</div>
-					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-0" style="min-height: 80px;">
-						<div>
-							<span   class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" data-url="" onclick="switchmusic(this);" tapmode=" iconfont  icon-focus " id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white H-theme-font-color9-click "style="  font-size:70px;"></i></span>
-						</div>
-					</div>
-					<div  class=" rightN H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 80px;">
-						<div>
-							<span id="next"   class="H-icon H-display-block H-horizontal-center"><i onclick="playNext_b() "  id="playNext_b" data-sid="" data-index=""  tapmode=" iconfont  icon-focus " class="iconfont icon-medianext   H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
-						</div>
+		<span id="title1" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white   H-width-100-percent" style="height:50px; "> </span>
+		<!--<br />-->
+		<span id="titleName" class="H-header-title H-center-all H-font-size-12 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent" style="height:50px;"> </span>
+		<br />
+		<!--<span class="   H-theme-font-color-white  H-width-100-percent " > <i class="iconfont icon-play H-center-all H-margin-vertical-top-10 "style="font-size:60px;color: white;top: 12px;"> </i> </span>-->
+		<div class="H-n-grid kongZhi H-clear-both  H-overflow-auto H-margin-vertical-top-12">
+			<div class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-center-all">
+				<div class=" leftB  H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 80px;">
+					<div>
+						<span class="H-icon H-display-block H-horizontal-center"><i onclick="prev_b()" id="prev_b" data-sid="" data-index=""  tapmode  class="iconfont icon-mediaprevious  H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
 					</div>
 				</div>
-			</div>
-			<div id="palyB" class="H-n-grid  H-clear-both H-center-all H-overflow-auto">
-				<div class="single-menu H-background-color-white H-flexbox-vertical H-display-none-important  H-vertical-top-0 H-horizontal-left-0 H-horizontal-right-0 H-vertical-bottom-0 H-height-100-percent H-width-100-percent H-z-index-1000000">
-					<!--<div class="space H-flex-item"></div>-->
-					<div class="share-menu H-z-index-1000000"  >
-						<div class="H-flexbox-horizontal H-text-align-center H-padding-vertical-both-10">
-							<div class="H-flex-item" onclick="shareWx('session')">
-								<span class="H-icon H-center-all H-theme-background-color1 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white1"></i></span>
-								<!--<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">分享好友</label>-->
-							</div>
-							<div class="H-flex-item"  onclick="shareWx('favorite')">
-								<span class="H-icon H-center-all H-theme-background-color2 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white1"></i></span>
-								<!--<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">收藏</label>-->
-							</div>
-							<div class="H-flex-item" onclick="shareWx('timeline')">
-								<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-friends H-font-size-22 H-theme-font-color-white1"></i></span>
-								<!--<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">朋友圈</label>-->
-							</div>
-							<div class="H-flex-item" onclick="H.swiperShare('.single-menu', '.share-menu', 'space');">
-								<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height:40px; width: 40px;"><i class="H-iconfont H-icon-close H-font-size-22 H-theme-font-color-white1"></i></span>
-								<!--<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">取消</label>-->
-							</div>
-						</div>
+				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-0" style="min-height: 80px;">
+					<div>
+						<span class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" data-url="" onclick="switchmusic(this);" tapmode id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white H-theme-font-color9-click "style="  font-size:70px;"></i></span>
 					</div>
 				</div>
-				<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
-					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style=" min-height: 50px; ">
-						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
-						</div>
-					</div>
-					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
-						<div class="result"></div>
-					</div>
-					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent     H-padding-vertical-both-10" style="min-height: 50px;">
-						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i id="rep" data-click="0" onclick="switchi(this);"  tapmode=" iconfont  icon-focus " class="iconfont icon-xunhuan   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
-						</div>
-					</div>
-					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
-						<div>
-							<span  class="H-icon H-display-block H-horizontal-center"><i data-click="0" onclick="H.swiperShare('.single-menu', '.share-menu', 'space');" tapmode=" iconfont  icon-focus " class="iconfont icon-share   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
-						</div>
-					</div>
-					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 50px;">
-						<div class="result2"></div>
+				<div class=" rightN H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 80px;">
+					<div>
+						<span id="next" class="H-icon H-display-block H-horizontal-center"><i onclick="playNext_b() "  id="playNext_b" data-sid="" data-index=""  tapmode  class="iconfont icon-medianext   H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
 					</div>
 				</div>
 			</div>
 		</div>
-	</body>
-	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/play.js"></script>
-	<script type="text/javascript" src="../../script/H.js"></script>
-	<script type="text/javascript">
-		H.tppl_flag = ["<%", "%>"];
-		function pause() {
-			var audioPlayer = api.require('audioPlayer');
+		<div id="palyB" class="H-n-grid  H-clear-both H-center-all H-overflow-auto">
+			<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
+				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style=" min-height: 50px; ">
+					<div>
+						<span class="H-icon H-display-block H-horizontal-center"><i class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
+					</div>
+				</div>
+				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
+					<div class="result"></div>
+				</div>
+				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent     H-padding-vertical-both-10" style="min-height: 50px;">
+					<div>
+						<span class="H-icon H-display-block H-horizontal-center"><i id="rep" data-click="0" onclick="switchi(this);"  tapmode class="iconfont icon-xunhuan   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+					</div>
+				</div>
+				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
+					<div>
+						<span class="H-icon H-display-block H-horizontal-center"><i  onclick="shareWx()" tapmode  class="iconfont icon-share   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+					</div>
+				</div>
+				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 50px;">
+					<div class="result2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/play.js"></script>
+<script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript">
+	H.tppl_flag = ["<%", "%>"];
+	var title2
+
+	function pause() {
+		var audioPlayer = api.require('audioPlayer');
+		audioPlayer.pause();
+	}
+
+	function play() {
+		var audioPlayer = api.require('audioPlayer');
+		audioPlayer.play();
+	}
+
+	function stop() {
+		var audioPlayer = api.require('audioPlayer');
+		audioPlayer.stop();
+	}
+
+	function shareWx() {
+		var thumb = $api.attr($api.byId('bg'), 'data-img');
+		var title = $api.text($api.byId('title1'));
+		var description = $api.text($api.byId('titleName'));
+		var mp3url = $api.attr($api.byId('playerIcon'), 'data-url')
+		var data = {}
+		data.title = title;
+		data.art = description;
+		data.img = thumb;
+		data.mp3 = mp3url;
+		api.openFrame({
+			name: 'sing_share',
+			url: '../../html/single_share_body.html',
+			bgColor: 'rgba(0,0,0,0.1)',
+			rect: {
+				x: 0,
+				y: 0,
+				w: api.winWidth,
+				h: api.winHeight
+			},
+			animation: {
+				type: "fade", //动画类型（详见动画类型常量）
+				subType: "from_right", //动画子类型（详见动画子类型常量）
+				duration: 300 //动画过渡时间，默认300毫秒
+
+			},
+			pageParam: {
+				data: data
+			},
+		});
+	}
+
+	// 播放样式
+	function switchmusic(button) {
+		var bg = $api.byId('bg');
+		var click = button.getAttribute("data-click");
+		var audioPlayer = api.require('audioPlayer');
+		if (click == 0) {
+			// 点开
+			$api.removeCls(bg, 'xuanzhuan');
+			button.setAttribute("data-click", 1);
+			//				pause();
+			api.toast({
+				msg: '暂停'
+			});
 			audioPlayer.pause();
-		}
-
-		function play() {
-			var audioPlayer = api.require('audioPlayer');
+			api.sendEvent({
+				name: 'stopmusic'
+			});
+			$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+		} else {
+			// 关闭
+			$api.addCls(bg, 'xuanzhuan');
+			button.setAttribute("data-click", 0);
+			$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
+			//				play()
 			audioPlayer.play();
+			api.toast({
+				msg: '播放'
+			});
+			api.sendEvent({
+				name: 'playing'
+			});
 		}
+	}
 
-		function stop() {
-			var audioPlayer = api.require('audioPlayer');
-			audioPlayer.stop();
+	// 下一曲
+	function playNext_b() {
+		var sid = $api.attr($api.byId('playNext_b'), 'data-sid');
+		var index_m = $api.attr($api.byId('playNext_b'), 'data-index');
+		var audioPlayer = api.require('audioPlayer');
+		audioPlayer.stop();
+
+
+		uiloading()
+		api.sendEvent({
+			name: 'playNext',
+			extra: {
+				sid: sid,
+				index: index_m
+			}
+		});
+	}
+
+	// 上一曲
+	function prev_b() {
+		var sid = $api.attr($api.byId('prev_b'), 'data-sid');
+		var index_m = $api.attr($api.byId('prev_b'), 'data-index');
+		var audioPlayer = api.require('audioPlayer');
+		uiloading()
+		audioPlayer.stop();
+		api.sendEvent({
+			name: 'prev_b',
+			extra: {
+				sid: sid,
+				index: index_m
+			}
+		});
+	}
+
+	// 设置播放模式
+	function switchi(button) {
+		var rep = $api.byId('rep');
+		var click = button.getAttribute("data-click");
+		if (click == 0) {
+			// 点开
+			button.setAttribute("data-click", 1);
+			$api.removeCls(rep, 'icon-xunhuan');
+			$api.addCls(rep, 'icon-danquxunhuan');
+			//				$api.addCls(rep, 'icon-xunhuan');
+			$api.setStorage('PlayAll', 1);
+			api.toast({
+				msg: '单曲播放'
+			});
+		} else {
+			// 关闭
+			button.setAttribute("data-click", 0);
+			$api.removeCls(rep, 'icon-danquxunhuan');
+			$api.addCls(rep, 'icon-xunhuan');
+			$api.setStorage('PlayAll', 0);
+			api.toast({
+				msg: '顺序播放'
+			});
 		}
+	}
 
-		function shareWx(cha) {
-			var thumb = $api.attr($api.byId('bg'), 'src');
-			var title = $api.text($api.byId('title1'));
-			var description = $api.text($api.byId('titleName'));
-			var mp3url = $api.attr($api.byId('playerIcon'), 'data-url')
-			var wx = api.require('wx');
-			wx.shareMusic({
-				apiKey : '',
-				scene : cha,
-				title : title,
-				description : description,
-				thumb : thumb,
-				contentUrl : 'http://bbs.xggsj.com/ ',
-				musicDataUrl : mp3url
+	// 获取歌曲信息
+	function getinfo(sid) {
+		var songid, mp3Url
+		api.ajax({
+			url: 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
+		}, function(ret, err) {
+			var songdata = ret.songs[0]
+
+			var data = {
+				list: songdata
+			};
+			var render = H.tppl(H.D("#tppl").innerHTML);
+			H.D(".result").innerHTML = render(data);
+			var render = H.tppl(H.D("#tppl2").innerHTML);
+			H.D(".result2").innerHTML = render(data);
+			api.imageCache({
+				url: songdata.album.picUrl
 			}, function(ret, err) {
-				if (ret.status) {
-					api.toast({
-	                    msg:'分享成功'
-                    });
-					H.swiperShare('.single-menu', '.share-menu', 'space');
-					$api.rmStorage('alb');
-				} else {
-					H.swiperShare('.single-menu', '.share-menu', 'space');
-					 
-					api.toast({
-	                    msg:'取消分享'
-                    });
-				}
+				cover = ret.url
+				var title2 = songdata.name
+				$api.attr($api.byId('bg'), 'data-img', cover);
+				$api.attr($api.byId('bg'), 'src', cover + '?param=250y250');
+				$api.text($api.byId('title1'), title2);
+				$api.text($api.byId('titleName'), songdata.artists[0].name);
 			});
-		}
-
-		function switchmusic(button) {
-			var click = button.getAttribute("data-click");
-			var audioPlayer = api.require('audioPlayer');
-			if (click == 0) {
-				// 点开
-				button.setAttribute("data-click", 1);
-				//				pause();
-				api.toast({
-					msg : '暂停'
-				});
-				audioPlayer.pause();
-				api.sendEvent({
-					name : 'stopmusic'
-				});
-				$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
-			} else {
-				// 关闭
-				button.setAttribute("data-click", 0);
-				$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
-				//				play()
-				audioPlayer.play();
-				api.toast({
-					msg : '播放'
-				});
-				api.sendEvent({
-					name : 'playing'
-				});
-			}
-		}
-
-		function playNext_b() {
-			var sid = $api.attr($api.byId('playNext_b'), 'data-sid');
-			var index_m = $api.attr($api.byId('playNext_b'), 'data-index');
-			var audioPlayer = api.require('audioPlayer');
-	
-			if ($api.getStorage('PlayAll') == 1) {
-				play();
-				return
-			}
-			audioPlayer.stop();
-			api.showProgress({
-			});
-			api.sendEvent({
-				name : 'playNext',
-				extra : {
-					sid : sid,
-					index : index_m
-				}
-			});
-		}
-
-		function prev_b() {
-			var sid = $api.attr($api.byId('prev_b'), 'data-sid');
-			var index_m = $api.attr($api.byId('prev_b'), 'data-index');
-			var audioPlayer = api.require('audioPlayer');
-	
-			api.showProgress({
-			});
-			audioPlayer.stop();
-			api.sendEvent({
-				name : 'prev_b',
-				extra : {
-					sid : sid,
-					index : index_m
-				}
-			});
-		}
-
-		function switchi(button) {
-			var rep = $api.byId('rep');
-			var click = button.getAttribute("data-click");
-			if (click == 0) {
-				// 点开
-				button.setAttribute("data-click", 1);
-				$api.removeCls(rep, 'icon-xunhuan');
-				$api.addCls(rep, 'icon-danquxunhuan');
-				//				$api.addCls(rep, 'icon-xunhuan');
-				$api.setStorage('PlayAll', 1);
-				api.toast({
-					msg : '单曲播放'
-				});
-			} else {
-				// 关闭
-				button.setAttribute("data-click", 0);
-				$api.removeCls(rep, 'icon-danquxunhuan');
-				$api.addCls(rep, 'icon-xunhuan');
-				$api.setStorage('PlayAll', 0);
-				api.toast({
-					msg : '顺序播放'
-				});
-			}
-		}
-
-		function getinfo(sid) {
 			api.ajax({
-				url : 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
+				url: 'https://api.imjad.cn/cloudmusic/?id=' + songdata.id
 			}, function(ret, err) {
-				var songdata = ret.songs[0]
-				console.log(JSON.stringify(songdata))
-				var data = {
-					list : songdata
-				};
-				var render = H.tppl(H.D("#tppl").innerHTML);
-				H.D(".result").innerHTML = render(data);
-				var render = H.tppl(H.D("#tppl2").innerHTML);
-				H.D(".result2").innerHTML = render(data);
-				api.imageCache({
-					url : songdata.album.picUrl
-				}, function(ret, err) {
-					cover = ret.url
-					$api.attr($api.byId('bg'), 'src', cover);
-					$api.text($api.byId('title1'), songdata.name);
-					$api.text($api.byId('titleName'), songdata.artists[0].name);
-					$api.attr($api.byId('playerIcon'), 'data-url', songdata.mp3Url);
-					play_c(songdata.mp3Url, cover, songdata.name, songdata.artists[0].name)
-				});
-			});
-		}
+				if (ret.data[0].url != null) {
+					var mp3Url = ret.data[0].url.replace(/https/, 'http')
+						// 去除安全限制
+						// mp3Url1.replace(/https/,'http')
 
-     function intt(sid,index_m){
-               getinfo(sid)
-					playerIcon
-					$api.attr($api.byId('playerIcon'), 'class', 'iconfont  icon-zanting H-theme-font-color-white');
-					$api.attr($api.byId('playerIcon'), 'data-click', 0);
-					$api.attr($api.byId('playNext_b'), 'data-sid', sid);
-					$api.attr($api.byId('playNext_b'), 'data-index', index_m);
-					$api.attr($api.byId('prev_b'), 'data-sid', sid);
-					$api.attr($api.byId('prev_b'), 'data-index', index_m);
-     
-     
-     }
-		apiready = function() {
+					// console.log(JSON.stringify(mp3Url))
+					$api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
+					play_c(mp3Url, cover, songdata.name, songdata.artists[0].name)
+				} else {
+					playNext_b()
+					api.toast({
+						msg: '版权问题，自动播放下一曲'
+					});
+				}
+			});
+		});
+	}
+
+	function intt(sid, index_m) {
+		var bg = $api.byId('bg');
+		var bgw = $api.offset(bg).w / 2;
+		$api.attr(bg, 'style', 'border: 4px solid rgba(41, 38, 38, 0.15)');
+		getinfo(sid)
+		$api.attr($api.byId('playerIcon'), 'class', 'iconfont  icon-zanting H-theme-font-color-white');
+		$api.attr($api.byId('playerIcon'), 'data-click', 0);
+		$api.attr($api.byId('playNext_b'), 'data-sid', sid);
+		$api.attr($api.byId('playNext_b'), 'data-index', index_m);
+		$api.attr($api.byId('prev_b'), 'data-sid', sid);
+		$api.attr($api.byId('prev_b'), 'data-index', index_m);
+	}
+
+	apiready = function() {
 			var sid, index_m
 			var cover
 			var sid = api.pageParam.sid
-			var index_m=api.pageParam.index
-			intt(sid,index_m)
+			var index_m = api.pageParam.index
+
+			uiloading();
+			intt(sid, index_m)
 			api.addEventListener({
-				name : 'songid'
+				name: 'nextsong'
+			}, function(ret, err) {
+				playNext_b()
+			});
+			api.addEventListener({
+				name: 'replaying'
+			}, function(ret, err) {
+				$api.addCls(bg, 'xuanzhuan');
+				play()
+			});
+			api.addEventListener({
+				name: 'startplaying'
+			}, function(ret, err) {
+				$api.addCls(bg, 'xuanzhuan');
+			});
+			api.addEventListener({
+				name: 'songid'
 			}, function(ret, err) {
 				if (ret) {
-				 
 					sid = ret.value.sid
 					index_m = ret.value.index
-					intt(sid,index_m)
+					intt(sid, index_m)
 				}
 			});
 			api.addEventListener({
-				name : 'stopmusic'
+				name: 'stopmusic'
 			}, function(ret, err) {
 				pause();
+				$api.removeCls(bg, 'xuanzhuan');
 			});
 			api.parseTapmode();
 			$api.setStorage('PlayAll', 'a')
 			api.addEventListener({
-				name : 'firstsong'
+				name: 'firstsong'
 			}, function(ret, err) {
 				if (ret) {
 					api.toast({
-						msg : '第一首了，亲'
+						msg: '第一首了，亲'
 					});
 					api.hideProgress();
 				}
 			});
 			api.addEventListener({
-				name : 'lastsong'
+				name: 'lastsong'
 			}, function(ret, err) {
 				if (ret) {
 					api.toast({
-						msg : '最后一首了，亲'
+						msg: '最后一首了，亲'
 					});
 					api.hideProgress();
 				}
@@ -385,58 +419,56 @@
 			var width = offset.w;
 			var top = offset.t
 			test(width, top)
-			$api.setStorage('isopen',1);
+			$api.setStorage('isopen', 1);
 		}
-		function test(width, top) {
-			var uislider = api.require('UISlider');
-			uislider.open({
-				animation : true,
-				orientation : 'horizontal',
-				rect : {
-					x : width,
-					y : top + 14,
-					size : api.winWidth - width * 2
-				},
-				bubble : {
-					direction : 'top',
-					state : 'hide'
-				},
-				handler : {
-					w : 10,
-					h : 8,
-					bg : 'widget://image/slider/slider-btn.png'
-				},
-				bar : {
-					h : 4,
-					bg : 'widget://image/slider/slider-bg.png',
-					active : 'widget://image/slider/slider-btn2.png'
-				},
-				value : {
-					min : 0, //数字类型；滑动控件的最小值
-					max : 100, //数字类型；滑动控件的最大值
-					step : 1, //数字类型；滑动时的步幅
-					init : 0,
-				},
-				fixedOn : api.frameName,
-				fixed : false
-			}, function(ret, err) {
-				//			alert(JSON.stringify(ret));
-				if (ret.eventType == 'end') {
-					var audio = api.require('audio');
-					audio.setProgress({
-						progress : ret.value
-					});
-					var audioPlayer = api.require('audioPlayer');
-					var duration = $api.getStorage('duration');
-					audioPlayer.setCurrent({
-						current : ret.value / 100 * duration
-					});
-					//					alert(JSON.stringify(ret));
-				} else {
-					//					alert(JSON.stringify(err));
-				}
-			});
-		}
-	</script>
-	</body>
+		// 进度条
+	function test(width, top) {
+		var uislider = api.require('UISlider');
+		uislider.open({
+			animation: true,
+			orientation: 'horizontal',
+			rect: {
+				x: width,
+				y: top + 16,
+				size: api.winWidth - width * 2
+			},
+			bubble: {
+				direction: 'top',
+				state: 'hide'
+			},
+			handler: {
+				w: 6,
+				h: 6,
+				bg: 'widget://image/slider/slider-btn.png'
+			},
+			bar: {
+				h: 3,
+				bg: 'widget://image/slider/slider-bg.png',
+				active: 'widget://image/slider/slider-btn2.png'
+			},
+			value: {
+				min: 0, //数字类型；滑动控件的最小值
+				max: 100, //数字类型；滑动控件的最大值
+				step: 1, //数字类型；滑动时的步幅
+				init: 0,
+			},
+			fixedOn: api.frameName,
+			fixed: false
+		}, function(ret, err) {
+			//			alert(JSON.stringify(ret));
+			if (ret.eventType == 'end') {
+				var audioPlayer = api.require('audioPlayer');
+				var duration = $api.getStorage('duration');
+				audioPlayer.setCurrent({
+					current: ret.value / 100 * duration
+				});
+				//					alert(JSON.stringify(ret));
+			} else {
+				//					alert(JSON.stringify(err));
+			}
+		});
+	}
+</script>
+</body>
+
 </html>
