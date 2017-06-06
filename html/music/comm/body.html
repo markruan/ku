@@ -52,6 +52,9 @@ function initPage(type, sid) {
             }
         }
     }, function(ret, err) {
+
+
+      console.log( $api.jsonToStr(ret)+sid);
         if (ret) {
             var objc1 = $api.byId('comm');
             for (var i = 0, len = ret.length; i < len; i++) {

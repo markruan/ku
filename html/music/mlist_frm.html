@@ -512,7 +512,7 @@
 				});
 				return
 			}
-			var sid = api.pageParam.name
+			var sid = api.pageParam.lid
 			api.openWin({
 				name : 'comm',
 				url : '../../html/music/comm/head.html',
@@ -689,14 +689,15 @@
 				cache : true,
 				dataType : 'json'
 			}, function(ret, err) {
-				//              console.log(musicUrl + Idd + houZhui)
+				              console.log(musicUrl + lid + houZhui)
 				if (ret) {
 					var tracksName = ret.result.name;
 					var avatarUrl = ret.result.creator.avatarUrl;
 					var coverImgUrl = imageCache(ret.result.coverImgUrl);
 					var nickname = ret.result.creator.nickname;
 					id = ret.result.id
-					getCommCount(id, 0)
+
+					getCommCount(lid, 0)
 					//                  api.setPrefs({
 					//                      key : 'songid',
 					//                      value : id
@@ -808,6 +809,7 @@
 			}
 		};
 		function getCommCount(id, type) {
+
 			api.ajax({
 				url : hostUrl + '/comm.php',
 				method : 'get',
@@ -816,15 +818,18 @@
 				dataType : 'json',
 				data : {
 					values : {
-						ID : api.pageParam.lid,
+						ID : id,
 						type : type
 					}
 				}
 			}, function(ret, err) {
 				if (ret) {
-					var cout = ret.length
+				  var cout = ret.length
+
 					$api.text($api.byId('CommCount'), cout);
-				} else {
+				}else {
+
+
 				}
 			});
 		}
