@@ -66,12 +66,12 @@ function openMusicList(lid) {
     api.openWin({
         name: 'musiclist',
         url: '../../html/music/mlist_win.html',
-        //				delay : 700,
+
         reload: true,
         animation: {
-            type: "movein", //动画类型（详见动画类型常量）
+            type: "reveal", //动画类型（详见动画类型常量）
             subType: "from_right", //动画子类型（详见动画子类型常量）
-//          duration: 300 //动画过渡时间，默认300毫秒
+         duration: 400 //动画过渡时间，默认300毫秒
         },
         pageParam: {
             lid: lid
