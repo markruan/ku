@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../../css/Hui.css"/>
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body>
+		<div class="H-width-80-percent  ">
+			<div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
+				<div class="H-channel-line H-theme-background-color-black H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+				<div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">
+					昵称：
+				</div>
+			</div>
+			<div class="H-padding-vertical-bottom-10"></div>
+			<div class="H-flexbox-horizontal H-border-vertical-bottom-margin-left-10-after">
+				<input  id="username" type="text" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="您的大名...">
+			</div>
+			<div class="H-padding-vertical-bottom-10"></div>
+			<div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
+				<div class="H-channel-line H-theme-background-color-black H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+				<div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">
+					问题描述：
+				</div>
+			</div>
+			<div class="H-padding-vertical-bottom-10"></div>
+			<div class="H-flexbox-horizontal H-margin-vertical-bottom-10">
+				<textarea id="content"  class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="您对APP 的意见，别憋着，尽管提.."></textarea>
+			</div>
+			<!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
+			<div class="H-center-all">
+				<button tapmode onclick="sent() "  class="H-button    H-font-size-15 H-outline-none H-padding-vertical-both-12 H-padding-horizontal-both-20 H-theme-background-color2 H-theme-font-color-white H-theme-border-color2 H-theme-border-color2-click H-theme-background-color2-click H-theme-font-color2-click H-border-radius-3" style="width: 80%; min-width: 220px  ">
+					提交反馈
+				</button>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript">
+		function sent() {
+			var content = $api.val($api.byId('content'));
+			var username = $api.val($api.byId('username'));
+			if (content && username) {
+				uiloading();
+				api.ajax({
+					url : hostUrl + '/addyijian.php',
+					data : {
+						values : {
+							username : username,
+							content : content
+						}
+					}
+				}, function(ret, err) {
+					if (ret.status == 0) {
+						api.toast({
+							msg : ret.msg
+						});
+						setTimeout(function() {
+							api.closeWin({
+							});
+						}, 800)
+					} else {
+						api.toast({
+							msg : err.msg
+						});
+					}
+					stoploading();
+				});
+			} else {
+				alert('数据填写不完整')
+			}
+		}
+	</script>
+</html>
