@@ -12,7 +12,7 @@
     body {
         background: rgba(23, 22, 22, 0);
     }
-    
+
     .H-border-radius-circle {
         border-radius: 10%;
         -webkit-border-radius: 10%;
@@ -153,6 +153,12 @@
     }
 
     function tu_xuanze() {
+      if (!$api.getStorage('userinfo')) {
+          api.toast({
+              msg: '先登陆'
+          });
+          return
+      }
         isOnLineStatus(function(is_true, line_type) {
             if (is_true) {
                 if (line_type == 'wifi' || line_type == '4g') {
