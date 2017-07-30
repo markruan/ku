@@ -28,6 +28,7 @@
 	</script>
 	<body>
 		<div class="result" id="list"></div>
+		<button type="button" name="button" onclick="initPage() ">按钮</button>
 	</body>
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript" src="../../script/api.js"></script>
@@ -86,45 +87,48 @@
 
 
 		H.ready(function() {
-			 api.toast({
-	             msg:'测试中'
-             });
-			//			audioPlayer.addEventListener({
-			//				name : "playing"
-			//			}, function(ret) {
-			//				alert(JSON.stringify(ret))
-			//			});
-			//			audioPlayer.addEventListener({
-			//				name : "state"
-			//			}, function(ret) {
-			//				alert(JSON.stringify(ret))
-			//				if (ret.state == 'finished') {
-			//					var next = $api.next(el);
-			//					var nextUrl = $api.attr(next, 'mp3url');
-			//					if (!next) {
-			//						return
-			//					}
-			//					var listel = $api.domAll('.zanting');
-			//					for ( i = 0; i < listel.length; i++) {
-			//						$api.attr(listel[i], 'style', 'display: none ');
-			//					}
-			//					$api.attr(next, 'style', '');
-			//					next.setAttribute("data-click", 0);
-			//					playmp3(nextUrl, next)
-			//				} else {
-			//				}
-			//			});
-			//			initPage()
-			//			api.setRefreshHeaderInfo({
-			//				visible : true,
-			//				bgColor : '#f2f2f2',
-			//				textColor : '#4d4d4d',
-			//				textDown : '下拉刷新...',
-			//				textUp : '松开刷新...',
-			//				showTime : true
-			//			}, function(ret, err) {
-			//				initPage()
-			//			});
+			var audioPlayer = api.require('audioPlayer');
+			   console.log(JSON.stringify(audioPlayer))
+			audioPlayer.scanAudioLibrary(function(ret) {
+			    api.alert({ msg: JSON.stringify(ret) });
+			});
+						// var audioPlayer = api.require('audioPlayer');
+						// audioPlayer.addEventListener({
+						// 	name : "playing"
+						// }, function(ret) {
+						// 	alert(JSON.stringify(ret))
+						// });
+						// audioPlayer.addEventListener({
+						// 	name : "state"
+						// }, function(ret) {
+						// 	alert(JSON.stringify(ret))
+						// 	if (ret.state == 'finished') {
+						// 		var next = $api.next(el);
+						// 		var nextUrl = $api.attr(next, 'mp3url');
+						// 		if (!next) {
+						// 			return
+						// 		}
+						// 		var listel = $api.domAll('.zanting');
+						// 		for ( i = 0; i < listel.length; i++) {
+						// 			$api.attr(listel[i], 'style', 'display: none ');
+						// 		}
+						// 		$api.attr(next, 'style', '');
+						// 		next.setAttribute("data-click", 0);
+						// 		playmp3(nextUrl, next)
+						// 	} else {
+						// 	}
+						// });
+						// initPage()
+						// api.setRefreshHeaderInfo({
+						// 	visible : true,
+						// 	bgColor : '#f2f2f2',
+						// 	textColor : '#4d4d4d',
+						// 	textDown : '下拉刷新...',
+						// 	textUp : '松开刷新...',
+						// 	showTime : true
+						// }, function(ret, err) {
+						// 	initPage()
+						// });
 		});
 		function playmp3(mp3, button) {
 			api.showProgress({
