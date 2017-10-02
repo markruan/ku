@@ -28,7 +28,7 @@
 	</script>
 	<body>
 		<div class="result" id="list"></div>
-		<button type="button" name="button" onclick="initPage() ">按钮</button>
+
 	</body>
 	<script type="text/javascript" src="../../script/H.js"></script>
 	<script type="text/javascript" src="../../script/api.js"></script>
@@ -88,7 +88,7 @@
 
 		H.ready(function() {
 			var audioPlayer = api.require('audioPlayer');
-			   console.log(JSON.stringify(audioPlayer))
+     initPage()
 			audioPlayer.scanAudioLibrary(function(ret) {
 			    api.alert({ msg: JSON.stringify(ret) });
 			});

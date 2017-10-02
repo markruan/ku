@@ -14,7 +14,7 @@
 			width: 60%;
 			/*height: 60%;*/
 			border-radius: 60%;
-			
+
 		}
 
 		.xuanzhuan {
@@ -215,7 +215,9 @@
 			api.toast({
 				msg: '暂停'
 			});
-			audioPlayer.pause();
+	   audioPlayer.pause();
+		 console.log(JSON.stringify(audioPlayer))
+
 			api.sendEvent({
 				name: 'stopmusic'
 			});
