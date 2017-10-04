@@ -368,9 +368,11 @@
 			var juli = $api.offset(menubtn).l
 
 			$api.attr($api.byId('slider'), 'style', 'width' + juli);
-   	audioPlayer.addEventListener({
+			audioPlayer.addEventListener({
 				name: "state"
 			}, function(ret) {
+				 
+
 				if (ret.state == "playing") {
 					$api.addCls(bg, 'xuanzhuan');
 				} else {
