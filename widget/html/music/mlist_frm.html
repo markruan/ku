@@ -776,38 +776,51 @@
 			if (ret.status) {
 				mdata = $api.strToJson(ret.data);
 				initlist(mdata, lid)
+				getlistdata()
 
 			} else {
-				api.ajax({
-					url: musicUrl + lid + houZhui,
-					cache: true,
-					dataType: 'json'
+        getlistdata()
+			}
+		}); //ss
+
+	}
+
+	//  初始化数据
+	function getlistdata() {
+		var lid = api.pageParam.lid
+		api.ajax({
+			url: musicUrl + lid + houZhui,
+			cache: true,
+			dataType: 'json'
+		}, function(ret, err) {
+			if (ret) {
+				mdata = ret.result
+				initlist(mdata, lid)
+				api.writeFile({
+					path: api.cacheDir + '/mlist/' + lid + '.json',
+					data: mdata
 				}, function(ret, err) {
-					if (ret) {
-						mdata = ret.result
-						initlist(mdata, lid)
-						api.writeFile({
-							path: api.cacheDir + '/mlist/' + lid + '.json',
-							data: mdata
-						}, function(ret, err) {
-
-						});
-					} else {
-						api.toast({
-							msg: '网络错误',
-							duration: 2000,
-							location: 'bottom'
-						});
-
-						stoploading();
-					}
+              // api.toast({
+              //     msg: ret,
+              //     duration: 2000,
+              //     location: 'bottom'
+              // });
 
 				});
+			} else {
+				// api.toast({
+				// 	msg: '网络错误',
+				// 	duration: 2000,
+				// 	location: 'bottom'
+				// });
 
+				stoploading();
 			}
+
 		});
 
 	}
+
 	// 初始化页面
 	function initlist(mdata, lid) {
 		var html = ''

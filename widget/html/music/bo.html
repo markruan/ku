@@ -11,10 +11,12 @@
 	<style>
 	.play-up-bg {
 			margin: 0 auto;
-			width: 60%;
+			width: 70%;
 			/*height: 60%;*/
 			border-radius: 60%;
-
+			border-style: solid;
+			border-width: 5px;
+			border-color: #e64e4e
 		}
 
 		.xuanzhuan {
@@ -92,11 +94,7 @@
 		<img id="bg" data-img="" src="../../image/default.jpg" alt="" class="play-up-bg H-center-all ">
 	</div>
 	<div class="  " style="position: fixed;bottom: 0px;width: 100%;">
-		<div id="slider" class="H-padding-horizontal-both-0  ">
-			<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">00:00</span>
-			<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
-			<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem ; ">03:25</span>
-		</div>
+
 		<span id="title1" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white   H-width-100-percent" style="height:50px; "> </span>
 		<!--<br />-->
 		<span id="titleName" class="H-header-title H-center-all H-font-size-12 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent" style="height:50px;"> </span>
@@ -121,11 +119,16 @@
 				</div>
 			</div>
 		</div>
+		<div id="slider" class="H-padding-horizontal-both-0  ">
+			<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">00:00</span>
+			<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
+			<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem ; ">03:25</span>
+		</div>
 		<div id="palyB" class="H-n-grid  H-clear-both H-center-all H-overflow-auto">
 			<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style=" min-height: 50px; ">
 					<div>
-						<span class="H-icon H-display-block H-horizontal-center"><i class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
+						<span class="H-icon H-display-block H-horizontal-center"><i id="menubtn" class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
 					</div>
 				</div>
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
@@ -215,9 +218,7 @@
 			api.toast({
 				msg: '暂停'
 			});
-	   audioPlayer.pause();
-		 console.log(JSON.stringify(audioPlayer))
-
+			audioPlayer.pause();
 			api.sendEvent({
 				name: 'stopmusic'
 			});
@@ -300,7 +301,7 @@
 
 	// 获取歌曲信息
 	function getinfo(sid) {
-		var songid, mp3Url
+		var songid, mp3Url, cover
 		api.ajax({
 			url: 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
 		}, function(ret, err) {
@@ -362,6 +363,21 @@
 			var cover
 			var sid = api.pageParam.sid
 			var index_m = api.pageParam.index
+			var audioPlayer = api.require('audioPlayer');
+			var menubtn = $api.byId("menubtn")
+			var juli = $api.offset(menubtn).l
+
+			$api.attr($api.byId('slider'), 'style', 'width' + juli);
+   	audioPlayer.addEventListener({
+				name: "state"
+			}, function(ret) {
+				if (ret.state == "playing") {
+					$api.addCls(bg, 'xuanzhuan');
+				} else {
+					$api.removeCls(bg, 'xuanzhuan');
+
+				}
+			});
 
 			uiloading();
 			intt(sid, index_m)
