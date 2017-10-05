@@ -1,4 +1,5 @@
-﻿<!doctype html>
+
+<!doctype html>
 <html>
 
 <head>
@@ -9,13 +10,13 @@
     <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
     <style type="text/css">
-    .iconfont {
-        font-size: 39px;
-    }
+        .iconfont {
+            font-size: 39px;
+        }
 
-    .H-button {
-        min-width: 0;
-    }
+        .H-button {
+            min-width: 0;
+        }
     </style>
     <script type="text/html" id="tppl">
         <% for(var i=0; i < list.length; i++){ if(list[i].type==1){%>
@@ -148,127 +149,127 @@
     <!--<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>-->
     <script src="../../script/comm.js" type="text/javascript"></script>
     <script type="text/javascript">
-    H.tppl_flag = ["<%", "%>"];
-    var page = 0;
+        H.tppl_flag = ["<%", "%>"];
+        var page = 0;
 
-    function initPage(page) {
-        uiloading();
-        var ye = page * 10
-        api.ajax({
-            url: hostUrl + '/quan123.php?page=' + ye,
-            cache: true,
-        }, function(ret, err) {
-            if (ret) {
-                var playlist = ret
-                var data = {
-                    list: ret
-                };
-                var render = H.tppl(H.D("#tppl").innerHTML);
-                if (page == 0) {
-                    H.D(".result").innerHTML = render(data);
+        function initPage(page) {
+            uiloading();
+            var ye = page * 10
+            api.ajax({
+                url: hostUrl + '/quan123.php?page=' + ye,
+                cache: true,
+            }, function(ret, err) {
+                if (ret) {
+                    var playlist = ret
+                    var data = {
+                        list: ret
+                    };
+                    var render = H.tppl(H.D("#tppl").innerHTML);
+                    if (page == 0) {
+                        H.D(".result").innerHTML = render(data);
+                    } else {
+                        $api.after($api.last(H.D(".result")), render(data))
+                    }
+                    echo.init({
+                        offset: 10,
+                        throttle: 200,
+                        unload: false,
+                        callback: function(element, op) {}
+                    });
+                    stoploading();
                 } else {
-                    $api.after($api.last(H.D(".result")), render(data))
+                    api.toast({
+                        msg: '没有更多了'
+                    });
+                    stoploading();
                 }
-                echo.init({
-                    offset: 10,
-                    throttle: 200,
-                    unload: false,
-                    callback: function(element, op) {}
-                });
-                stoploading();
-            } else {
-                api.toast({
-                    msg: '没有更多了'
-                });
-                stoploading();
-            }
-        });
-    }
+            });
+        }
 
-    apiready = function() {
-        api.addEventListener({
-            name: 'scrolltobottom',
-            extra: {
-                threshold: 180 //设置距离底部多少距离时触发，默认值为0，数字类型
-            }
-        }, function(ret, err) {
-            page++
+        apiready = function() {
+            api.addEventListener({
+                name: 'scrolltobottom',
+                extra: {
+                    threshold: 180 //设置距离底部多少距离时触发，默认值为0，数字类型
+                }
+            }, function(ret, err) {
+                page++
+                initPage(page)
+            });
+            api.addEventListener({
+                name: 'playingquan'
+            }, function(ret, err) {
+                if (ret) {
+                    play()
+                }
+            });
+            api.addEventListener({
+                name: 'playing'
+            }, function(ret, err) {
+                if (ret) {
+                    stoploading();
+                }
+            });
             initPage(page)
-        });
-        api.addEventListener({
-            name: 'playingquan'
-        }, function(ret, err) {
-            if (ret) {
-                play()
-            }
-        });
-        api.addEventListener({
-            name: 'playing'
-        }, function(ret, err) {
-            if (ret) {
-                stoploading();
-            }
-        });
-        initPage(page)
-        api.setRefreshHeaderInfo({
-            loadingImg: 'widget://image/refresh.png',
-            visible: true,
-            bgColor: '#f2f2f2',
-            textColor: '#4d4d4d',
-            textDown: '下拉刷新...',
-            textUp: '松开刷新...',
-            showTime: true
-        }, function(ret, err) {
-            var page = 0
-            initPage(page);
-            api.refreshHeaderLoadDone();
-        });
-        api.addEventListener({
-            name: 'stopmusic'
-        }, function(ret, err) {
-            if (ret) {
-                pause()
-            }
-        });
-    }
+            api.setRefreshHeaderInfo({
+                loadingImg: 'widget://image/refresh.png',
+                visible: true,
+                bgColor: '#f2f2f2',
+                textColor: '#4d4d4d',
+                textDown: '下拉刷新...',
+                textUp: '松开刷新...',
+                showTime: true
+            }, function(ret, err) {
+                var page = 0
+                initPage(page);
+                api.refreshHeaderLoadDone();
+            });
+            api.addEventListener({
+                name: 'stopmusic'
+            }, function(ret, err) {
+                if (ret) {
+                    pause()
+                }
+            });
+        }
 
-    function dianzan(id, button, zan) {
-        api.ajax({
-            url: hostUrl + '/quanZ.php',
-            method: 'post',
-            timeout: 30,
-            dataType: 'text',
-            returnAll: false,
-            data: {
-                values: {
-                    id: id,
+        function dianzan(id, button, zan) {
+            api.ajax({
+                url: hostUrl + '/quanZ.php',
+                method: 'post',
+                timeout: 30,
+                dataType: 'text',
+                returnAll: false,
+                data: {
+                    values: {
+                        id: id,
+                    },
+                }
+            }, function(ret, err) {
+                if (ret == 1) {
+                    $api.attr(button, 'class', 'H-iconfont H-icon-ding-null H-theme-font-color-red H-font-size-18 H-margin-horizontal-right-5 animated bounceIn');
+                    var zan = button.nextSibling
+                    $api.text(zan, eval($api.text(zan)) + 1);
+                    $api.attr(zan, 'style', 'color: #ff003c');
+                }
+            });
+        }
+
+        function shareImg(url) {
+            api.openFrame({
+                name: 'sing_share',
+                url: '../../html/single_share_body.html',
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: api.winWidth,
+                    h: api.winHeight
                 },
-            }
-        }, function(ret, err) {
-            if (ret == 1) {
-                $api.attr(button, 'class', 'H-iconfont H-icon-ding-null H-theme-font-color-red H-font-size-18 H-margin-horizontal-right-5 animated bounceIn');
-                var zan = button.nextSibling
-                $api.text(zan, eval($api.text(zan)) + 1);
-                $api.attr(zan, 'style', 'color: #ff003c');
-            }
-        });
-    }
-
-    function shareImg(url) {
-        api.openFrame({
-            name: 'sing_share',
-            url: '../../html/single_share_body.html',
-            rect: {
-                x: 0,
-                y: 0,
-                w: api.winWidth,
-                h: api.winHeight
-            },
-            pageParam: {
-                img: url
-            },
-        });
-    }
+                pageParam: {
+                    img: url
+                },
+            });
+        }
     </script>
 </body>
 

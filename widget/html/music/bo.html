@@ -14,9 +14,7 @@
 			width: 70%;
 			/*height: 60%;*/
 			border-radius: 60%;
-			border-style: solid;
-			border-width: 5px;
-			border-color: #e64e4e
+			border: 4px solid rgba(235, 103, 136, 0.48);
 		}
 
 		.xuanzhuan {
@@ -57,7 +55,7 @@
 		content: "\e603";
 		margin-top: 2px;
 	}
-	.share-menu {
+	.<header class="aui-bar aui-bar-nav">顶部导航栏</header>-menu {
 		background-color: rgba(151, 118, 118, 0);
 	}
 	#men {
@@ -215,24 +213,24 @@
 			$api.removeCls(bg, 'xuanzhuan');
 			button.setAttribute("data-click", 1);
 			//				pause();
-			api.toast({
-				msg: '暂停'
-			});
+			// api.toast({
+			// 	msg: '暂停'
+			// });
 			audioPlayer.pause();
 			api.sendEvent({
 				name: 'stopmusic'
 			});
-			$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+			$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white animated bounceIn');
 		} else {
 			// 关闭
 			$api.addCls(bg, 'xuanzhuan');
 			button.setAttribute("data-click", 0);
-			$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
+			$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white animated bounceIn');
 			//				play()
 			audioPlayer.play();
-			api.toast({
-				msg: '播放'
-			});
+			// api.toast({
+			// 	msg: '播放'
+			// });
 			api.sendEvent({
 				name: 'playing'
 			});
@@ -284,18 +282,18 @@
 			$api.addCls(rep, 'icon-danquxunhuan');
 			//				$api.addCls(rep, 'icon-xunhuan');
 			$api.setStorage('PlayAll', 1);
-			api.toast({
-				msg: '单曲播放'
-			});
+			// api.toast({
+			// 	msg: '单曲播放'
+			// });
 		} else {
 			// 关闭
 			button.setAttribute("data-click", 0);
 			$api.removeCls(rep, 'icon-danquxunhuan');
 			$api.addCls(rep, 'icon-xunhuan');
 			$api.setStorage('PlayAll', 0);
-			api.toast({
-				msg: '顺序播放'
-			});
+			// api.toast({
+			// 	msg: '顺序播放'
+			// });
 		}
 	}
 
@@ -348,7 +346,7 @@
 	function intt(sid, index_m) {
 		var bg = $api.byId('bg');
 		var bgw = $api.offset(bg).w / 2;
-		$api.attr(bg, 'style', 'border: 4px solid rgba(41, 38, 38, 0.15)');
+		// $api.attr(bg, 'style', 'border: 4px solid rgba(235, 103, 136, 0.48)');
 		getinfo(sid)
 		$api.attr($api.byId('playerIcon'), 'class', 'iconfont  icon-zanting H-theme-font-color-white');
 		$api.attr($api.byId('playerIcon'), 'data-click', 0);
@@ -371,7 +369,7 @@
 			audioPlayer.addEventListener({
 				name: "state"
 			}, function(ret) {
-				 
+
 
 				if (ret.state == "playing") {
 					$api.addCls(bg, 'xuanzhuan');

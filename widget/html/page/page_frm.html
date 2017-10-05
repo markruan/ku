@@ -7,33 +7,32 @@
     <title>title</title>
     <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
     <style>
-    .fresh {
-        height: 35px;
-        width: 100%;
-        background-image: url('../../image/loading_more.gif');
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
+        .fresh {
+            height: 35px;
+            width: 100%;
+            background-image: url('../../image/loading_more.gif');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 15px 15px;
+        }
 
-    }
+        .H-font-size-10 {
+            font-size: 8px;
+        }
 
-    .H-font-size-10 {
-        font-size: 8px;
-    }
-
-    .H-flexbox-horizontal1 {
-        display: box;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-orient: horizontal;
-        -webkit-flex-flow: row;
-        flex-flow: row;
-        -webkit-flex-direction: row;
-        flex-direction: row;
-        box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-    }
+        .H-flexbox-horizontal1 {
+            display: box;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-flex-flow: row;
+            flex-flow: row;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
     </style>
 </head>
 
@@ -51,79 +50,87 @@
         <div class="H-flex-item H-text-show-row-1 H-padding-vertical-both-10 H-font-size-12 H-font-weight-bold H-theme-font-color7">
             酷选
         </div>
-        <span class="H-vertical-middle H-theme-font-color-ccc"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
+        <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
     </div>
+    <!-- <div class="H-channel-title H-flexbox-horizontal H-margin-horizontal-both-10 H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
+        <div class="H-channel-line H-theme-background-color-black H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+        <div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">酷选</div>
+        <span class="H-vertical-middle H-theme-font-color-ccc"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
+    </div> -->
     <div id="main" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+    <div class="H-flexbox-horizontal1 H-padding-horizontal-both-10 H-border-vertical-bottom-margin-both-10-after H-margin-horizontal-both-10 H-theme-background-color-white H-touch-active">
+        <div class="H-flex-item H-text-show-row-1 H-padding-vertical-both-10 H-font-size-12 H-font-weight-bold H-theme-font-color7">
+            MV
+        </div>
+        <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
+    </div>
+    <div id="mvlist" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/H.js"></script>
 <script type="text/javascript">
-var page = 0;
-var datalist;
-var tuilist;
-// 打开歌曲列表
-function openMusicList(lid) {
-    api.openWin({
-        name: 'musiclist',
-        url: '../../html/music/mlist_win.html',
+    var page = 0;
+    var datalist;
+    var tuilist;
+    var initdata
 
-        reload: true,
-        animation: {
-            type: "reveal", //动画类型（详见动画类型常量）
-            subType: "from_right", //动画子类型（详见动画子类型常量）
-         duration: 400 //动画过渡时间，默认300毫秒
-        },
-        pageParam: {
-            lid: lid
-        }
-    });
-}
 
-// 热门推荐初始化
-function tui() {
-    api.ajax({
-        url: hostUrl + '/tui.php',
-        cache: true,
-        data: {
-            values: {
-                page: 0
+    // 打开歌曲列表
+    function openMusicList(lid) {
+        api.openWin({
+            name: 'musiclist',
+            url: '../../html/music/mlist_win.html',
+
+            reload: true,
+            animation: {
+                type: "reveal", //动画类型（详见动画类型常量）
+                subType: "from_right", //动画子类型（详见动画子类型常量）
+                duration: 400 //动画过渡时间，默认300毫秒
             },
-        }
-    }, function(ret, err) {
-        if (ret) {
-            var html = '';
-            for (i = 0; i < 2; i++) {
-                var lid = ret[i].idd;
-                var coverImgUrl = imageCache(ret[i].fenpic)
-                var tracksName = ret[i].name
-                html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" onclick="openMusicList(' + lid + ')">';
-                html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
-                html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+            pageParam: {
+                lid: lid
             }
-            var tui = $api.byId('tui');
-            $api.html(tui, html);
-            echo.init({
-                offset: 0,
-                throttle: 150,
-                unload: false,
-                callback: function(element, op) {}
-            });
-            findinfo(page)
-        } else {};
-    });
-}
+        });
+    }
 
-function findinfo(page) {
-    uiloading()
-    setTimeout(function() {
-        stoploading();
-    }, 8000);
-    var ye = page * 20
-    api.ajax({
-        url: hostUrl + '/fen.php?page=' + ye,
-        cache: true,
-    }, function(ret, err) {
+    // 热门推荐初始化
+    function tui() {
+        api.ajax({
+            url: 'http://v7idc.com/ku/admin.php?r=home/api/getindex&type=1',
+            cache: true,
+        }, function(ret, err) {
+            if (ret) {
+                initdata = ret
+                var html = '';
+                for (i = 0; i < 2; i++) {
+                    var lid = initdata.huandenglist[i].idd;
+                    var coverImgUrl = imageCache(initdata.huandenglist[i].fenpic)
+                    var tracksName = initdata.huandenglist[i].name
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" onclick="openMusicList(' + lid + ')">';
+                    html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
+                    html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+                }
+                var tui = $api.byId('tui');
+                $api.html(tui, html);
+                echo.init({
+                    offset: 0,
+                    throttle: 150,
+                    unload: false,
+                    callback: function(element, op) {}
+                });
+                findinfo(page)
+                getmvlist()
+            } else {};
+        });
+    }
+
+    function findinfo(page) {
+        uiloading()
+        setTimeout(function() {
+            stoploading();
+        }, 8000);
+        var ret = initdata.gedanlist
         if (ret) {
             var html = '';
             var paths = [];
@@ -171,72 +178,99 @@ function findinfo(page) {
             stoploading();
             api.refreshHeaderLoadDone();
         };
-    });
-}
+        // });
+    }
 
-apiready = function() {
-    tui()
-    api.setRefreshHeaderInfo({
-        loadingImg: 'widget://image/refresh.png',
-        visible: true,
-        bgColor: '#f2f2f2',
-        textColor: '#4d4d4d',
-        textDown: '下拉刷新...',
-        textUp: '松开刷新...',
-        showTime: true
-    }, function(ret, err) {
-        findinfo(page)
-        api.hideProgress();
-        api.refreshHeaderLoadDone();
-    });
-    api.addEventListener({
-        name: 'scrolltobottom',
-        extra: {
-            threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
-        }
-    }, function(ret, err) {
-        page++
-        findinfo(page)
-    });
-};
-// 首页幻灯
-function huandeng(datalist) {
-    var UIScrollPicture = api.require('UIScrollPicture');
-    UIScrollPicture.open({
-        rect: {
-            x: 10,
-            y: 2,
-            w: api.winWidth - 20,
-            h: 170
-        },
-        data: datalist,
-        styles: {
-            caption: {
-                height: 35,
-                color: '#E0FFFF',
-                size: 13,
-                bgColor: '#696969',
-                position: 'bottom'
+    apiready = function() {
+        tui()
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/refresh.png',
+            visible: true,
+            bgColor: '#f2f2f2',
+            textColor: '#4d4d4d',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            tui()
+            api.hideProgress();
+            api.refreshHeaderLoadDone();
+        });
+
+    };
+    // 首页幻灯
+    function huandeng(datalist) {
+        var UIScrollPicture = api.require('UIScrollPicture');
+        UIScrollPicture.open({
+            rect: {
+                x: 10,
+                y: 2,
+                w: api.winWidth - 20,
+                h: 170
             },
-            indicator: {
-                align: 'center',
-                color: '#FFFFFF',
-                activeColor: '#DA70D6'
+            data: datalist,
+            styles: {
+                caption: {
+                    height: 35,
+                    color: '#E0FFFF',
+                    size: 13,
+                    bgColor: '#696969',
+                    position: 'bottom'
+                },
+                indicator: {
+                    align: 'center',
+                    color: '#FFFFFF',
+                    activeColor: '#DA70D6'
+                }
+            },
+            placeholderImg: 'http://p4.music.126.net/QoYmefgv--Zo9Ru5dJQnSA==/109951162864239811.jpg',
+            contentMode: 'scaleToFill',
+            interval: 3,
+            fixedOn: api.frameName,
+            loop: true,
+            fixed: false
+        }, function(ret, err) {
+            if (ret) {
+                //							alert(JSON.stringify(ret));
+            } else {
+                alert(JSON.stringify(err));
             }
-        },
-        placeholderImg: 'http://p4.music.126.net/QoYmefgv--Zo9Ru5dJQnSA==/109951162864239811.jpg',
-        contentMode: 'scaleToFill',
-        interval: 3,
-        fixedOn: api.frameName,
-        loop: true,
-        fixed: false
-    }, function(ret, err) {
-        if (ret) {
-            //							alert(JSON.stringify(ret));
-        } else {
-            alert(JSON.stringify(err));
+        });
+    }
+
+    function getmvlist() {
+        var ret = initdata.mvlist
+
+        var html = '';
+        for (i = 0; i < ret.length; i++) {
+            var vid = ret[i].vid;
+            var coverImgUrl = imageCache(ret[i].fengmian)
+            var tracksName = ret[i].name
+            html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openmv(' + vid + ')">';
+            html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
+            html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName.substring(0, 18) + '</div></div>';
         }
-    });
+        var mvlist = $api.byId('mvlist');
+        $api.html(mvlist, html);
+
+
+        echo.init({
+            offset: 0,
+            throttle: 150,
+            unload: false,
+            callback: function(element, op) {}
+        });
+
+    }
+function openmv(vid){
+  api.openWin({
+      name: 'mvhead',
+      url: '../../html/mv/mv_head.html',
+      pageParam: {
+          vid: vid
+      }
+  });
+
 }
 </script>
 
