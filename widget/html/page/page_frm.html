@@ -239,39 +239,50 @@
     }
 
     function getmvlist() {
-        var ret = initdata.mvlist
 
-        var html = '';
-        for (i = 0; i < ret.length; i++) {
-            var vid = ret[i].vid;
-            var coverImgUrl = imageCache(ret[i].fengmian)
-            var tracksName = ret[i].name
-            html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openmv(' + vid + ')">';
-            html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
-            html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName.substring(0, 18) + '</div></div>';
-        }
-        var mvlist = $api.byId('mvlist');
-        $api.html(mvlist, html);
+        api.ajax({
+            url: musicApi+'/top/mv?limit=10',
+            method: 'get',
+
+        }, function(ret, err) {
+            if (ret) {
+
+                 var data=ret.data
+                 var html = '';
+                for (i = 0; i < data.length; i++) {
+                    var vid = data[i].id;
+                    var coverImgUrl = imageCache(data[i].cover)
+                    var tracksName = data[i].name+"-"+data[i].artists[0].name
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openmv(' + vid + ')">';
+                    html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:100px;"    >';
+                    html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + tracksName.substring(0, 18) + '</div></div>';
+                }
+                var mvlist = $api.byId('mvlist');
+                $api.html(mvlist, html);
 
 
-        echo.init({
-            offset: 0,
-            throttle: 150,
-            unload: false,
-            callback: function(element, op) {}
+                echo.init({
+                    offset: 0,
+                    throttle: 150,
+                    unload: false,
+                    callback: function(element, op) {}
+                });
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function openmv(vid) {
+        api.openWin({
+            name: 'mvhead',
+            url: '../../html/mv/mv_head.html',
+            pageParam: {
+                vid: vid
+            }
         });
 
     }
-function openmv(vid){
-  api.openWin({
-      name: 'mvhead',
-      url: '../../html/mv/mv_head.html',
-      pageParam: {
-          vid: vid
-      }
-  });
-
-}
 </script>
 
 </html>

@@ -64,7 +64,7 @@
                 var url = ret.data.brs[720]
                 $api.text($api.byId('title'), ret.data.name);
                 $api.text($api.byId('artistName'), ret.data.artistName);
-                 console.log(ret.data.cover);
+                //  console.log(ret.data.cover);
                   var imgurl=ret.data.cover.replace('.jpg','.jpg?param=90y140')
                   $api.attr($api.byId('imgg'), 'src', imgurl);
                   $api.text($api.byId('content'), ret.data.desc);

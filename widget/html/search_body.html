@@ -70,9 +70,9 @@
 					api.showProgress({});
 					app.articles = []
 					api.ajax({
-						url : sUrl + message + sEnd,
+						url : musicApi+'/search?keywords='+ message,
 					}, function(ret, err) {
-						console.log(JSON.stringify(ret))
+
 						if (ret.code == 200 && ret.result) {
 							//							$api.addCls(obj, 'H-display-none');
 							var data = ret.result.songs
