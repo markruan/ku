@@ -41,7 +41,7 @@
                 <div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10">
                     <% if(list[i].tushu>0){ for(var k=0; k <list[i].tushu; k++){%>
                         <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-5 H-margin-vertical-top-10">
-                            <img onclick=" openPhoto('<%=JSON.parse(list[i].cover) %>',<%=k%>) " data-echo="<%=imageCache(JSON.parse(list[i].thumb)[k]) %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block H-border-radius-3 " alt="" title="" style="height: 120px;">
+                            <img onclick=" openPhoto('<%=JSON.parse(list[i].cover) %>',<%=k%>) " data-echo="<%=imageCache(JSON.parse(list[i].thumb)[k]) %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block H-border-radius-3 " alt="" title="" style="">
                         </div>
                         <%	}}else{  %>
                             <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-top-10">
@@ -217,7 +217,8 @@
             textUp: '松开刷新...',
             showTime: true
         }, function(ret, err) {
-            initPage(page);
+           
+            initPage(0);
             api.hideProgress();
             api.refreshHeaderLoadDone();
         });

@@ -43,7 +43,7 @@
                 <div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10">
                     <% if(list[i].tushu>0){ for(var k=0; k <list[i].tushu; k++){%>
                         <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10 H-margin-vertical-bottom-5 H-margin-vertical-top-10">
-                            <img onclick=" openPhoto('<%=JSON.parse(list[i].cover) %>',<%=k%>) " data-echo="<%=imageCache(JSON.parse(list[i].thumb)[k]) %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block H-border-radius-3 " alt="" title="" style="height: 120px;">
+                            <img onclick=" openPhoto('<%=JSON.parse(list[i].cover) %>',<%=k%>) " data-echo="<%=imageCache(JSON.parse(list[i].thumb)[k]) %>" src="../../image/default.jpg" class="H-width-100-percent  H-display-block H-border-radius-3 " alt="" title="" style="">
                         </div>
                         <%	}}else{  %>
                             <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-top-10">
@@ -150,22 +150,29 @@
     <script src="../../script/comm.js" type="text/javascript"></script>
     <script type="text/javascript">
         H.tppl_flag = ["<%", "%>"];
-        var page = 0;
+        var  page=0
 
-        function initPage(page) {
+        function initPage() {
+
+
             uiloading();
             var ye = page * 10
             api.ajax({
                 url: hostUrl + '/quan123.php?page=' + ye,
                 cache: true,
             }, function(ret, err) {
+                // alert(JSON.stringify(ret))
                 if (ret) {
                     var playlist = ret
+                    var data1={
+                      list:[]
+                    }
                     var data = {
                         list: ret
                     };
                     var render = H.tppl(H.D("#tppl").innerHTML);
                     if (page == 0) {
+                        H.D(".result").innerHTML = render(data1);
                         H.D(".result").innerHTML = render(data);
                     } else {
                         $api.after($api.last(H.D(".result")), render(data))
@@ -181,20 +188,25 @@
                     api.toast({
                         msg: '没有更多了'
                     });
+                    // page=0
                     stoploading();
                 }
             });
         }
 
         apiready = function() {
+
             api.addEventListener({
                 name: 'scrolltobottom',
                 extra: {
                     threshold: 180 //设置距离底部多少距离时触发，默认值为0，数字类型
                 }
             }, function(ret, err) {
+
                 page++
-                initPage(page)
+
+                initPage()
+
             });
             api.addEventListener({
                 name: 'playingquan'
@@ -220,8 +232,9 @@
                 textUp: '松开刷新...',
                 showTime: true
             }, function(ret, err) {
-                var page = 0
-                initPage(page);
+                 page = 0
+                
+                initPage();
                 api.refreshHeaderLoadDone();
             });
             api.addEventListener({
