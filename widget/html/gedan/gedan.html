@@ -64,9 +64,124 @@
             }
         });
     }
+    //  判断本地是否有数据
+    function isdata() {
+        uiloading();
+        api.readFile({
+            path: api.cacheDir + '/mlist/1081875.json',
+        }, function(ret, err) {
+
+            if (ret.status) {
+                mdata = $api.strToJson(ret.data);
+                initpage(mdata)
+            } else {
+                findinfo1()
+            }
+        });
 
 
-    function findinfo(page) {
+
+    }
+
+
+    // 渲染页面
+    function initpage(data) {
+        var html = ''
+        for (i = 1; i < data.playlist.length; i++) {
+            var Idd = data.playlist[i].id;
+            var coverImgUrl = imageCache(data.playlist[i].coverImgUrl + '?param=180y180')
+            var tracksName = data.playlist[i].name
+            $api.setStorage('lenpage', data.playlist.length);
+            html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+            html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+
+            html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+
+
+            api.refreshHeaderLoadDone();
+        }
+        var obj = $api.byId('main');
+
+        $api.html(obj, html);
+
+        echo.init({
+            offset: 0,
+            throttle: 0,
+            unload: false,
+            callback: function(element, op) {}
+        });
+        $api.removeCls($api.byId('body'), 'H-display-none');
+        stoploading()
+
+    }
+
+    //  获取用户的歌单
+    function findinfo1() {
+        uiloading()
+        setTimeout(function() {
+            stoploading();
+        }, 8000);
+        api.ajax({
+            url: musicApi + '/user/playlist?uid=1081875',
+            cache: true,
+        }, function(ret, err) {
+            if (ret) {
+            initpage(ret)
+                api.writeFile({
+                    path: api.cacheDir + '/mlist/1081875.json',
+                    data: ret
+                }, function(ret, err) {
+                    if (ret.status) {
+
+                    } else {
+
+                    }
+                });
+            } else {
+                api.toast({
+                    msg: '没有更多了'
+                });
+                stoploading();
+                api.refreshHeaderLoadDone();
+            };
+
+        });
+    }
+
+    apiready = function() {
+        // findinfo1(page)
+        isdata()
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/refresh.png',
+            visible: true,
+            bgColor: '#f2f2f2',
+            textColor: '#4d4d4d',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            findinfo1(page)
+            api.hideProgress();
+            api.refreshHeaderLoadDone();
+        });
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            // page++
+            // findinfo(page)
+        });
+    };
+
+
+
+
+
+
+    // 远程获取数据（ku里的数据）
+    function findinfo() {
         uiloading()
         setTimeout(function() {
             stoploading();
@@ -79,17 +194,6 @@
 
             if (ret) {
                 var html = '';
-                var paths = [];
-                var captions = [];
-                for (var i = 0; i < 3; i++) {
-                    paths[i] = imageCache(ret[i].fenpic)
-                    captions[i] = ret[i].name
-                }
-                datalist = {
-                    paths: paths,
-                    //						captions : captions
-                }
-
                 tuilist = ret
                 for (i = 0; i < ret.length; i++) {
                     var Idd = ret[i].idd;
@@ -126,81 +230,6 @@
             };
         });
     }
-    function findinfo1() {
-        uiloading()
-        setTimeout(function() {
-            stoploading();
-        }, 8000);
-
-
-        api.ajax({
-            url: musicApi + '/user/playlist?uid=1081875',
-            cache: true,
-        }, function(ret, err) {
-
-            if (ret) {
-             var html=''
-                for (i = 1; i < ret.playlist.length; i++) {
-                    var Idd = ret.playlist[i].id;
-                    var coverImgUrl = imageCache(ret.playlist[i].coverImgUrl+'?param=180y180')
-                    var tracksName = ret.playlist[i].name
-                    $api.setStorage('lenpage', ret.playlist.length);
-                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
-                    html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
-
-                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
-
-                    stoploading()
-                    api.refreshHeaderLoadDone();
-                }
-                var obj = $api.byId('main');
-                // if (page == 0) {
-                    $api.html(obj, html);
-                // } else {
-                //     $api.after($api.last(obj), html);
-                // }
-                echo.init({
-                    offset: 0,
-                    throttle: 100,
-                    unload: false,
-                    callback: function(element, op) {}
-                });
-                $api.removeCls($api.byId('body'), 'H-display-none');
-            } else {
-                api.toast({
-                    msg: '没有更多了'
-                });
-                stoploading();
-                api.refreshHeaderLoadDone();
-            };
-        });
-    }
-
-    apiready = function() {
-       findinfo1(page)
-        api.setRefreshHeaderInfo({
-            loadingImg: 'widget://image/refresh.png',
-            visible: true,
-            bgColor: '#f2f2f2',
-            textColor: '#4d4d4d',
-            textDown: '下拉刷新...',
-            textUp: '松开刷新...',
-            showTime: true
-        }, function(ret, err) {
-            findinfo1(page)
-            api.hideProgress();
-            api.refreshHeaderLoadDone();
-        });
-        api.addEventListener({
-            name: 'scrolltobottom',
-            extra: {
-                threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
-            }
-        }, function(ret, err) {
-            // page++
-            // findinfo(page)
-        });
-    };
 </script>
 
 </html>

@@ -2,29 +2,29 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-  <title>Hui</title>
-  <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hui</title>
+    <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<div class="" style="margin-top:300px">
-  <div class="H-flexbox-horizontal H-theme-background-color-white background H-border-vertical-bottom-after H-clear-both">
-        <div class="H-padding-vertical-both-10 H-box-sizing-border-box"><img id="imgg" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10" style="width: 90px; height: 120px;"></div>
-        <div class="H-flex-item H-padding-10 H-position-relative H-box-sizing-border-box" style="height: 140px; ">
-            <span class="H-flex-item  H-font-size-18  H-text-show-row-1" id="title"></span>
-            <span class="H-flex-item  H-font-size-14  " id="artistName"></span>
-            <p class="H-font-size-10 H-theme-font-color-999 H-position-absolute H-z-index-10 H-margin-0" style="bottom: 50px; left: 10px; right: 10px;">
-                <span class="H-flex-item"><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i> 1727人评分</span>
-            </p>
-            <p class="H-font-size-10 H-theme-font-color-999 H-position-absolute H-z-index-10 H-margin-0" style="bottom: 10px; left: 10px; right: 10px;">230万字 0.05元/千字</p>
+    <div class="" style="margin-top:300px">
+        <div class="H-flexbox-horizontal H-theme-background-color-white background H-border-vertical-bottom-after H-clear-both">
+            <div class="H-padding-vertical-both-10 H-box-sizing-border-box"><img id="imgg" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10" style="width: 90px; height: 120px;"></div>
+            <div class="H-flex-item H-padding-10 H-position-relative H-box-sizing-border-box" style="height: 140px; ">
+                <span class="H-flex-item  H-font-size-18  H-text-show-row-1" id="title"></span>
+                <span class="H-flex-item  H-font-size-14  " id="artistName"></span>
+                <p class="H-font-size-10 H-theme-font-color-999 H-position-absolute H-z-index-10 H-margin-0" style="bottom: 50px; left: 10px; right: 10px;">
+                    <span class="H-flex-item"><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i><i class="H-iconfont H-icon-star-null H-theme-font-color4 H-font-size-18 H-margin-horizontal-right-5"></i> 1727人评分</span>
+                </p>
+                <p class="H-font-size-10 H-theme-font-color-999 H-position-absolute H-z-index-10 H-margin-0" style="bottom: 10px; left: 10px; right: 10px;">230万字 0.05元/千字</p>
+            </div>
         </div>
     </div>
-</div>
-  <div class="H-padding-vertical-bottom-10"></div>
-  <div class="H-theme-background-color-white H-padding-horizontal-both-10">
+    <div class="H-padding-vertical-bottom-10"></div>
+    <div class="H-theme-background-color-white H-padding-horizontal-both-10">
         <p class="H-padding-horizontal-both-10 H-font-size-18 H-theme-font-color-black H-text-show-row-4" id="content"></p>
 
     </div>
@@ -46,8 +46,8 @@
     function isfull() {
         var moviePlayer = api.require('moviePlayer');
         moviePlayer.isFullscreen(function(ret) {
-            if(!ret.state){
-               api.closeWin();
+            if (!ret.state) {
+                api.closeWin();
 
             }
         });
@@ -56,18 +56,16 @@
     function openmv(vid) {
         api.ajax({
             url: "https://api.imjad.cn/cloudmusic/?type=mv&id=" + vid,
-            method: 'post',
-
-        }, function(ret, err) {
+            method: 'get',
+     }, function(ret, err) {
             if (ret) {
                 var title = ret.data.name + '-' + ret.data.artistName
                 var url = ret.data.brs[720]
                 $api.text($api.byId('title'), ret.data.name);
                 $api.text($api.byId('artistName'), ret.data.artistName);
-                //  console.log(ret.data.cover);
-                  var imgurl=ret.data.cover.replace('.jpg','.jpg?param=90y140')
-                  $api.attr($api.byId('imgg'), 'src', imgurl);
-                  $api.text($api.byId('content'), ret.data.desc);
+                var imgurl = ret.data.cover.replace('.jpg', '.jpg?param=90y140')
+                $api.attr($api.byId('imgg'), 'src', imgurl);
+                $api.text($api.byId('content'), ret.data.desc);
 
                 var moviePlayer = api.require('moviePlayer');
                 moviePlayer.open({
