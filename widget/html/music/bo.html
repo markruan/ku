@@ -126,7 +126,7 @@
 			<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style=" min-height: 50px; ">
 					<div>
-						<span class="H-icon H-display-block H-horizontal-center"><i id="menubtn" class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
+						<span class="H-icon H-display-block H-horizontal-center"><i id="menubtn" onclick="openlist()" class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
 					</div>
 				</div>
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
@@ -312,6 +312,9 @@
 			H.D(".result").innerHTML = render(data);
 			var render = H.tppl(H.D("#tppl2").innerHTML);
 			H.D(".result2").innerHTML = render(data);
+			var artist=songdata.artists[0].name
+			 var datetime=Number(new Date())
+			saveMlistDB(sid,songdata.name,artist,songdata.album.picUrl,datetime)
 			api.imageCache({
 				url: songdata.album.picUrl
 			}, function(ret, err) {
@@ -332,6 +335,8 @@
 
 					// console.log(JSON.stringify(mp3Url))
 					$api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
+
+
 					play_c(mp3Url, cover, songdata.name, songdata.artists[0].name)
 				} else {
 					playNext_b()
@@ -364,6 +369,7 @@
 			var audioPlayer = api.require('audioPlayer');
 			var menubtn = $api.byId("menubtn")
 			var juli = $api.offset(menubtn).l
+
 
 			$api.attr($api.byId('slider'), 'style', 'width' + juli);
 			audioPlayer.addEventListener({
@@ -486,6 +492,26 @@
 				//					alert(JSON.stringify(err));
 			}
 		});
+	}
+
+	function openlist(){
+   api.openFrame({
+       name: 'mlist_bo',
+       url: 'bolist.html',
+       rect: {
+           x: 0,
+           y: api.winHeight-300,
+           w: api.winWidth,
+           h: 300
+       },
+
+       bounces: false,
+       bgColor: 'rgba(0,0,0,0)',
+       vScrollBarEnabled: true,
+       hScrollBarEnabled: true
+   });
+
+
 	}
 </script>
 </body>

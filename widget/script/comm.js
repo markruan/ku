@@ -3,8 +3,7 @@ function switchplay(button, mp3, sid) {
 	var click = button.getAttribute("data-click");
 	if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
 		$api.setStorage('listopen', 2);
-
-		api.openWin({
+   	api.openWin({
 			name : 'nww',
 			url : '../../html/music/bo_head.html',
 			slidBackEnabled : false,
@@ -31,7 +30,8 @@ function switchplay(button, mp3, sid) {
 			name : 'songid',
 			extra : {
 				sid : sid,
-				index : 0
+				index : 0,
+				isquan:true
 			}
 		})
 		uiloading()

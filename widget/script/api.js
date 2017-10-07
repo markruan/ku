@@ -2,6 +2,40 @@
  * APICloud JavaScript Library
  * Copyright (c) 2014 apicloud.com
  */
+ // 读写测试
+ function saveMlistDB(sid, name, artist, pic,date) {
+	   var db = api.require('db');
+		 db.openDatabase({
+				 name: 'test'
+		 }, function(ret, err) {
+				 if (ret.status) {
+						 db.executeSql({
+								 name: 'test',
+								 sql: 'CREATE TABLE IF NOT EXISTS mlist(mlist_id INT  AUTO_INCREMENT, mlist_sid INT(25),mlist_name varchar(255), mlist_artist varchar(255), mlist_pic varchar(255),mlist_date int(23),PRIMARY KEY ( mlist_id ))'
+						 }, function(ret, err) {
+								 if (ret.status) {
+										 db.executeSql({
+												 name: 'test',
+												 sql: "INSERT INTO mlist (mlist_sid,mlist_name,mlist_artist,mlist_pic,mlist_date) VALUES ('" + sid + "', '" + name + "', '" + artist + "', '" + pic + "','"+date+"')",
+										 }, function(ret, err) {
+												 if (ret.status) {
+														//  alert(JSON.stringify(ret));
+												 } else {
+														//  alert(JSON.stringify(err));
+												 }
+										 });
+
+								 } else {
+										//  alert(JSON.stringify(err));
+								 }
+						 });
+
+				 } else {
+						 alert(JSON.stringify(err));
+				 }
+		 });
+
+ }
 function share(title, art, img, mp3) {
 	var data = {}
 	data.title = title;
