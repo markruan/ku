@@ -263,9 +263,9 @@
                     // var tracksName = data[i].name + "-" + data[i].artists[0].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openmv(' + vid + ')">';
                     html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:100px;"    >';
-                    html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name + '</div>';
+                    html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
 
-                    html +='<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].artists[0].name + '</div></div>';
+                    html +='<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + data[i].artists[0].name.substring(0, 12) + '</div></div>';
                 }
                 api.parseTapmode();
                 var mvlist = $api.byId('mvlist');
