@@ -612,9 +612,12 @@
 	}
 
 	function openMusiclistshare() {
+
 		var wx = api.require('wx');
-		var tracksName = $api.getStorage('trackTitle');
-		var thumb = $api.getStorage('trackThumb');
+		var tracksName = $api.text($api.byId('tracksName'));
+		var thumb = $api.attr($api.byId("thumb"), 'src');
+
+
 		//          获取专辑封面缓存
 		api.imageCache({
 			url: thumb
@@ -628,7 +631,7 @@
 					title: tracksName,
 					description: '聆听音乐 感悟人生',
 					thumb: thumbb,
-					contentUrl: 'http://bbs.xggsj.com/?sid='+api.pageParam.lid
+					contentUrl: 'http://bbs.xggsj.com/?lid='+api.pageParam.lid
 				}, function(ret, err) {
 					if (ret.status) {
 						api.toast({
@@ -640,7 +643,10 @@
 						});
 					}
 				});
-			} else {}
+			} else {
+
+				alert(err)
+			}
 		});
 		$api.rmStorage('trackTitle');
 	}
@@ -831,8 +837,8 @@
 
 		getCommCount(lid, 0)
 
-		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img src="' + coverImgUrl +
-			'?param=140y140" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em">' + tracksName.substr(0, 17) +
+		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img id="thumb" src="' + coverImgUrl +
+			'?param=140y140" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em" id="tracksName">' + tracksName.substr(0, 17) +
 			'</div><span  class="egret-flex-item-shelf02"><img src="../../image/qq.png" alt="" class="createrlogo"><div class="creatername">新感官</div><div class="egret-flex-item-arrow"><img src="./image/musiclist/cm2_list_icn_arr.png" alt="" class=""></div> </span></div></div>';
 		$api.byId('ava').innerHTML = str1;
 		arr = mdata.tracks;

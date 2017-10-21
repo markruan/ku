@@ -20,6 +20,7 @@
         });
 
         if ($api.getStorage('firsttime4')) {
+
             openIndex()
         } else {
             // 打开引导页
@@ -33,7 +34,7 @@
     // 打开首页
     function openIndex() {
         $api.rmStorage('isopen');
-        H.openSlidLayout(null, {
+      H.openSlidLayout(null, {
             name: "slidLayout",
             url: "./html/slidLayout_body.html",
             bgColor: "transparent",
