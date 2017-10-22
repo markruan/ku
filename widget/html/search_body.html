@@ -89,12 +89,12 @@
 				search_histry : function() {
 				  uiloading()
 					var list = $api.getStorage('h_list')
-					//					大于10条删除最后一条
-					if (list.length > 9) {
+				  	//					大于10条删除最后一条
+					if (list&&list.length > 9) {
 						list.splice(0, 1);
 						$api.setStorage('h_list', list);
 					}
-					if ($api.getStorage('h_list').length > 0) {
+					if (list&&$api.getStorage('h_list').length > 0) {
 						//						$api.removeCls(obj, 'H-display-none');
 						for (var i = 0; i < list.length; i++) {
 							this.html2 += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle "   >';

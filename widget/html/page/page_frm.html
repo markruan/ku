@@ -231,7 +231,7 @@
                     activeColor: '#DA70D6'
                 }
             },
-            placeholderImg: 'http://p4.music.126.net/QoYmefgv--Zo9Ru5dJQnSA==/109951162864239811.jpg',
+            placeholderImg: 'widget://image/default.jpg',
             contentMode: 'scaleToFill',
             interval: 3,
             fixedOn: api.frameName,
@@ -278,7 +278,12 @@
                     callback: function(element, op) {}
                 });
             } else {
-                alert(JSON.stringify(err));
+                api.toast({
+                    msg: err.msg,
+                    duration: 2000,
+                    location: 'bottom'
+                });
+
             }
 
         });
