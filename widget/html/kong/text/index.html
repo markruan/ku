@@ -7,7 +7,7 @@
     <title>title</title>
     <link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
     <style>
-    body {}
+        textarea: {}
     </style>
 </head>
 
@@ -20,10 +20,12 @@
             </div>
         </div>
         <div class="H-padding-vertical-bottom-10"></div>
-        <textarea placeholder="聆听音乐  感悟人生" id="feed_text" style="height:100px;width: 100%;line-height:24px;"></textarea>
+        <textarea class="H-center-all" placeholder="聆听音乐  感悟人生" id="feed_text" style="height: 100px;width: 98%;
+        line-height: 24px;"></textarea>
         <!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
         <div class="H-center-all">
-            <button tapmode onclick="addpic()" class="H-button    H-font-size-15 H-outline-none H-padding-vertical-both-12 H-padding-horizontal-both-20 H-theme-background-color2 H-theme-font-color-white H-theme-border-color2 H-theme-border-color2-click H-theme-background-color2-click H-theme-font-color2-click H-border-radius-3" style="width: 80%; min-width: 220px  ">
+            <button tapmode onclick="addpic()" class="H-button    H-font-size-15 H-outline-none H-padding-vertical-both-12 H-padding-horizontal-both-20 H-theme-background-color2 H-theme-font-color-white H-theme-border-color2 H-theme-border-color2-click H-theme-background-color2-click H-theme-font-color2-click H-border-radius-3"
+                style="width: 80%; min-width: 220px  ">
                 发布心情
             </button>
         </div>
@@ -32,59 +34,57 @@
 <script type="text/javascript" src="../../../script/api.js"></script>
 <script type="text/javascript" src="../../../script/H.js"></script>
 <script type="text/javascript">
-//		var img1 = 'http://p4.music.126.net/NLIxnlNPSPk3GFacJg01kA==/17814287393396301.jpg';
-var type = 2;
-//去除空格
-function trimStr(str) {
-    return str.replace(/(^\s*)|(\s*$)/g, "");
-}
+    //		var img1 = 'http://p4.music.126.net/NLIxnlNPSPk3GFacJg01kA==/17814287393396301.jpg';
+    var type = 2;
+    //去除空格
+    function trimStr(str) {
+        return str.replace(/(^\s*)|(\s*$)/g, "");
+    }
 
-function addpic() {
-    var text1 = $api.val($api.byId("feed_text"));
-    var img1 = $api.attr($api.byId('img1'), 'src');
-    uiloading();
-    api.getPrefs({
-        key: 'user'
-    }, function(ret, err) {
-        var username = ret.value;
-        var url = hostUrl + '/addpic.php';
-        if (ret) {
-            api.ajax({
-                url: url,
-                method: 'post',
-                dataType: 'text',
-                data: {
-                    values: {
-                        user: username,
-                        type: type,
-                        uid: $api.getStorage('userinfo').data_id,
-                        text: text1,
-                    },
-                }
-            }, function(ret, err) {
-                if (ret == 1) {
-                    api.toast({
-                        msg: '发布成功'
-                    });
-                    api.closeWin({});
-                } else {
-                    alert(0)
-                    stoploading()
-                    api.closeFrame({
-                        name: 'kong'
-                    });
-                    api.closeWin({});
-                }
-            });
-        } else {
-            api.alert({
-                msg: JSON.stringify(err)
-            });
-        }
-    });
-}
-
- 
+    function addpic() {
+        var text1 = $api.val($api.byId("feed_text"));
+        var img1 = $api.attr($api.byId('img1'), 'src');
+        uiloading();
+        api.getPrefs({
+            key: 'user'
+        }, function(ret, err) {
+            var username = ret.value;
+            var url = hostUrl + '/addpic.php';
+            if (ret) {
+                api.ajax({
+                    url: url,
+                    method: 'post',
+                    dataType: 'text',
+                    data: {
+                        values: {
+                            user: username,
+                            type: type,
+                            uid: $api.getStorage('userinfo').data_id,
+                            text: text1,
+                        },
+                    }
+                }, function(ret, err) {
+                    if (ret == 1) {
+                        api.toast({
+                            msg: '发布成功'
+                        });
+                        api.closeWin({});
+                    } else {
+                        alert(0)
+                        stoploading()
+                        api.closeFrame({
+                            name: 'kong'
+                        });
+                        api.closeWin({});
+                    }
+                });
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            }
+        });
+    }
 </script>
 
 </html>
