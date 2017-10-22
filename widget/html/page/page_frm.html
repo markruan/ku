@@ -238,10 +238,11 @@
             loop: true,
             fixed: false
         }, function(ret, err) {
-            if (ret) {
-                //							alert(JSON.stringify(ret));
+            if (ret.eventType == "click") {
+                var lid = initdata.gedanlist[ret.index].idd
+                openMusicList(lid)
             } else {
-                alert(JSON.stringify(err));
+                // alert(JSON.stringify(err));
             }
         });
     }
