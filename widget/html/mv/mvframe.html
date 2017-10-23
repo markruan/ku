@@ -38,8 +38,17 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript">
     apiready = function() {
+        var moviePlayer = api.require('moviePlayer');
         openmv(api.pageParam.vid)
+        moviePlayer.addEventListener(function(ret) {
+            if (ret && ret.eventType == 'back') {
+                api.closeWin();
+
+            }
+        });
+
     }
+
     function isfull() {
         var moviePlayer = api.require('moviePlayer');
         moviePlayer.isFullscreen(function(ret) {
@@ -87,7 +96,7 @@
                                 width: 340,
                                 leftMargin: 10
                             },
-                            backSize: 25,
+                            backSize: 22,
                             backImg: 'widget://image/back.png',
                             customButtons: [{
                                 w: 30,
@@ -117,7 +126,7 @@
                                 sliderW: 20,
                                 sliderH: 20,
                                 progressColor: '#696969',
-                                progressSelected: '#76EE00',
+                                progressSelected: 'rgba(183, 52, 52, 0.79)',
                                 marginLeft: 10,
                                 marginRight: 10
                             },

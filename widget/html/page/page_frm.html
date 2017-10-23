@@ -252,8 +252,8 @@
         api.ajax({
             url: musicApi + '/top/mv?limit=10',
             method: 'get',
-
-        }, function(ret, err) {
+            cache:true
+      }, function(ret, err) {
             if (ret) {
                 var data = ret.data
                 var html = '';
