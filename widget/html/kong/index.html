@@ -24,7 +24,7 @@
     <!--<div class="space H-flex-item"></div>-->
     <div class="share-menu H-animate-scale-big  H-theme-background-color-white">
         <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-transparent H-padding-vertical-both-10">
-            <div class="H-flex-item" onclick="tu_xuanze()">
+            <div class="H-flex-item" onclick="opentu()">
                 <span class="H-icon H-center-all H-theme-background-color-white H-border-radius-circle   H-margin-horizontal-auto H-theme-border-color2" style="height: 50px; width: 50px; "> <!--<i class="H-iconfont H-icon-thumb H-font-size-24 H-theme-font-color-red"></i>--> <img src="../../image/tu-18.png" alt="" / style="height: 28px;"> </span>
                 <label class="H-display-block H-font-size-14 H-margin-vertical-top-5 H-theme-font-color-red">图片</label>
             </div>
@@ -96,6 +96,19 @@
         api.openWin({
             name: 'searsh',
             url: '../../html/search.html'
+        });
+    }
+
+    function opentu() {
+        if (!$api.getStorage('userinfo')) {
+            api.toast({
+                msg: '先登陆'
+            });
+            return
+        }
+        api.openWin({
+            name: 'tu',
+            url: 'photo/duotu.html'
         });
     }
 

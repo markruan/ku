@@ -62,7 +62,8 @@
     <script type="text/javascript" src="../../script/play.js"></script>
     <script type="text/javascript">
         var playid = $api.byId('pp')
-            // 底部打开播放页面
+
+        // 底部打开播放页面
         function openPlayer() {
             $api.setStorage('listopen', false);
             if ($api.getStorage('isopen')) {
@@ -162,6 +163,15 @@
 
         H.ready(function() {
             H.dblclickToCloseApp();
+
+            // 监听耳机拔下事件
+            var phoneListener = api.require('phoneListener');
+            phoneListener.headphonePluggedListener({
+                    enable: true
+                },
+                function(ret) {
+                    alert(JSON.stringify(ret));
+                });
             api.setWinAttr({
                 bounces: false
             });

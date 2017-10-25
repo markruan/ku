@@ -12,7 +12,7 @@
     .H-margin-vertical-top-30 {
         margin-top: 185px;
     }
-    
+
     .aui-waterfall li {
         width: 100%;
         position: relative;
@@ -69,12 +69,13 @@
 
     H.tppl_flag = ["<%", "%>"];
     H.ready(function() {
+      init()
         api.setFrameAttr({
             name: api.frameName,
             bounces: false
         });
-        
-        init()
+
+
         H.getCacheSize(function(ret, err) {
             H.D("#cacheSize").innerText = (ret.size / 1000 / 1000).toFixed(2) + "M";
         });
