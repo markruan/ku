@@ -423,12 +423,13 @@
 			var top = offset.t
 			test(width, top)
 			$api.setStorage('isopen', 1);
-			var arr = $api.getStorage('listm');
+
 			// 上下曲
     	api.addEventListener({
 				name: 'playNext'
 			}, function(ret, err) {
 				var index_m = Number(ret.value.index) + 1
+				var arr = $api.getStorage('listm');
 				if (arr) {
 					if (index_m == arr.length) {
 						var sid = arr[0].id
