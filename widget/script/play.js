@@ -32,8 +32,7 @@ function play_c(mp3, cover, songName, artists, current, sid) {
             audioPlayer.addEventListener({
                 name: "state"
             }, function(ret) {
-
-                if (ret.state == 'finished') {
+              if (ret.state == 'finished') {
                     if ($api.getStorage('PlayAll') == 1) {
                         play();
                         return
@@ -476,8 +475,6 @@ function audioCover(cover, duration, songName, artists, per) {
         } else {}
     });
 }
-
-
 
 function imageCache(url) { //图片缓存方法
     var path = url;

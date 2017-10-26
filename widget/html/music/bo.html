@@ -315,10 +315,7 @@
 				if (ret&&ret.data[0].url != null) {
 					var mp3Url = ret.data[0].url.replace(/https/, 'http')
 						// 去除安全限制
-						// mp3Url1.replace(/https/,'http')
-
-					// console.log(JSON.stringify(mp3Url))
-					$api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
+			   $api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
 					play_c(mp3Url, cover, songdata.name, songdata.artists[0].name)
 				} else {
 					playNext_b()
@@ -542,8 +539,7 @@
 				w: api.winWidth,
 				h: 300
 			},
-
-			bounces: false,
+    	bounces: false,
 			bgColor: 'rgba(0,0,0,0)',
 			vScrollBarEnabled: true,
 			hScrollBarEnabled: true
