@@ -7,7 +7,6 @@ function play_c(mp3, cover, songName, artists, current, sid) {
             songName: songName,
             artists: artists,
             mp3: mp3,
-
         }
     });
 
@@ -25,7 +24,6 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                     songName: songName,
                     artists: artists,
                     mp3: mp3,
-
                 }
             });
 
@@ -455,7 +453,6 @@ function isOnLineStatus(callback) {
 function audioCover(cover, duration, songName, artists, per) {
     var objj = api.require('audioCover');
     //	var uul = $api.getStorage('uulr');
-
     var msg = {
         totalTime: duration,
         cover: cover,

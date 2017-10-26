@@ -9,6 +9,9 @@
     <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
     <style type="text/css">
+     html,body{
+       background-color: white
+     }
         .iconfont {
             font-size: 39px;
         }
@@ -164,8 +167,6 @@
         var page = 0
 
         function initPage() {
-
-
             // uiloading();
             var ye = page * 10
             api.ajax({
@@ -245,9 +246,6 @@
                   html+='  <span class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><img id="imgg" src="../../image/loading.gif" alt=""></span>';
                   html+='  <div  class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">加载中......</div>';
                 $api.html($api.byId('footer'), html);
-
-
-
                 initPage();
                 // $api.removeClass($api.byId('footbar'), 'H-display-none')
                 api.refreshHeaderLoadDone();

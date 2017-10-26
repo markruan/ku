@@ -170,7 +170,7 @@
 		var audioPlayer = api.require('audioPlayer');
 		audioPlayer.stop();
 	}
-
+	// 分享
 	function shareWx() {
 		var thumb = $api.attr($api.byId('bg'), 'data-img');
 		var title = $api.text($api.byId('title1'));
@@ -212,10 +212,6 @@
 			// 点开
 			$api.removeCls(bg, 'xuanzhuan');
 			button.setAttribute("data-click", 1);
-			//				pause();
-			// api.toast({
-			// 	msg: '暂停'
-			// });
 			audioPlayer.pause();
 			api.sendEvent({
 				name: 'stopmusic'
@@ -226,11 +222,8 @@
 			$api.addCls(bg, 'xuanzhuan');
 			button.setAttribute("data-click", 0);
 			$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white animated bounceIn');
-			//				play()
+
 			audioPlayer.play();
-			// api.toast({
-			// 	msg: '播放'
-			// });
 			api.sendEvent({
 				name: 'playing'
 			});
@@ -243,8 +236,6 @@
 		var index_m = $api.attr($api.byId('playNext_b'), 'data-index');
 		var audioPlayer = api.require('audioPlayer');
 		audioPlayer.stop();
-
-
 		uiloading()
 		api.sendEvent({
 			name: 'playNext',
@@ -280,20 +271,14 @@
 			button.setAttribute("data-click", 1);
 			$api.removeCls(rep, 'icon-xunhuan');
 			$api.addCls(rep, 'icon-danquxunhuan');
-			//				$api.addCls(rep, 'icon-xunhuan');
 			$api.setStorage('PlayAll', 1);
-			// api.toast({
-			// 	msg: '单曲播放'
-			// });
 		} else {
 			// 关闭
 			button.setAttribute("data-click", 0);
 			$api.removeCls(rep, 'icon-danquxunhuan');
 			$api.addCls(rep, 'icon-xunhuan');
 			$api.setStorage('PlayAll', 0);
-			// api.toast({
-			// 	msg: '顺序播放'
-			// });
+
 		}
 	}
 
@@ -304,7 +289,6 @@
 			url: 'http://music.163.com/api/song/detail/?id=' + sid + '&ids=[' + sid + ']',
 		}, function(ret, err) {
 			var songdata = ret.songs[0]
-
 			var data = {
 				list: songdata
 			};
@@ -312,9 +296,9 @@
 			H.D(".result").innerHTML = render(data);
 			var render = H.tppl(H.D("#tppl2").innerHTML);
 			H.D(".result2").innerHTML = render(data);
-			var artist=songdata.artists[0].name
-			 var datetime=Number(new Date())
-			saveMlistDB(sid,songdata.name,artist,songdata.album.picUrl,datetime)
+			var artist = songdata.artists[0].name
+			var datetime = Number(new Date())
+			saveMlistDB(sid, songdata.name, artist, songdata.album.picUrl, datetime) //存储播放历史
 			api.imageCache({
 				url: songdata.album.picUrl
 			}, function(ret, err) {
@@ -328,15 +312,13 @@
 			api.ajax({
 				url: 'https://api.imjad.cn/cloudmusic/?id=' + songdata.id
 			}, function(ret, err) {
-				if (ret.data[0].url != null) {
+				if (ret&&ret.data[0].url != null) {
 					var mp3Url = ret.data[0].url.replace(/https/, 'http')
 						// 去除安全限制
 						// mp3Url1.replace(/https/,'http')
 
 					// console.log(JSON.stringify(mp3Url))
 					$api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
-
-
 					play_c(mp3Url, cover, songdata.name, songdata.artists[0].name)
 				} else {
 					playNext_b()
@@ -351,7 +333,6 @@
 	function intt(sid, index_m) {
 		var bg = $api.byId('bg');
 		var bgw = $api.offset(bg).w / 2;
-		// $api.attr(bg, 'style', 'border: 4px solid rgba(235, 103, 136, 0.48)');
 		getinfo(sid)
 		$api.attr($api.byId('playerIcon'), 'class', 'iconfont  icon-zanting H-theme-font-color-white');
 		$api.attr($api.byId('playerIcon'), 'data-click', 0);
@@ -369,11 +350,12 @@
 			var audioPlayer = api.require('audioPlayer');
 			var menubtn = $api.byId("menubtn")
 			var juli = $api.offset(menubtn).l
-      $api.attr($api.byId('slider'), 'style', 'width' + juli);
+			$api.attr($api.byId('slider'), 'style', 'width' + juli);
+			// 监听是否播放
 			audioPlayer.addEventListener({
 				name: "state"
 			}, function(ret) {
-         if (ret.state == "playing") {
+				if (ret.state == "playing") {
 					$api.addCls(bg, 'xuanzhuan');
 				} else {
 					$api.removeCls(bg, 'xuanzhuan');
@@ -441,6 +423,64 @@
 			var top = offset.t
 			test(width, top)
 			$api.setStorage('isopen', 1);
+			var arr = $api.getStorage('listm');
+			// 上下曲
+    	api.addEventListener({
+				name: 'playNext'
+			}, function(ret, err) {
+				var index_m = Number(ret.value.index) + 1
+				if (arr) {
+					if (index_m == arr.length) {
+						var sid = arr[0].id
+						api.sendEvent({
+							name: 'songid',
+							extra: {
+								sid: sid,
+								index: 0
+							}
+						});
+						return
+					}
+					var sid = arr[index_m].id
+					audioPlayer.stop();
+					api.sendEvent({
+						name: 'songid',
+						extra: {
+							sid: sid,
+							index: index_m
+						}
+					});
+				} else {
+         api.toast({
+             msg: '暂无数据',
+             duration: 2000,
+             location: 'bottom'
+         });
+
+
+				}
+			});
+			api.addEventListener({
+				name: 'prev_b'
+			}, function(ret, err) {
+				var index_m = Number(ret.value.index) - 1
+				if (index_m < 0) {
+					api.sendEvent({
+						name: 'firstsong'
+					});
+					return
+				}
+				var sid = arr[index_m].id
+
+				audioPlayer.stop();
+				api.sendEvent({
+					name: 'songid',
+					extra: {
+						sid: sid,
+						index: index_m
+					}
+				});
+			});
 		}
 		// 进度条
 	function test(width, top) {
@@ -490,22 +530,23 @@
 		});
 	}
 
-	function openlist(){
-   api.openFrame({
-       name: 'mlist_bo',
-       url: 'bolist.html',
-       rect: {
-           x: 0,
-           y: api.winHeight-300,
-           w: api.winWidth,
-           h: 300
-       },
+	function openlist() {
+		api.openFrame({
+			name: 'mlist_bo',
+			url: 'bolist.html',
 
-       bounces: false,
-       bgColor: 'rgba(0,0,0,0)',
-       vScrollBarEnabled: true,
-       hScrollBarEnabled: true
-   });
+			rect: {
+				x: 0,
+				y: api.winHeight - 300,
+				w: api.winWidth,
+				h: 300
+			},
+
+			bounces: false,
+			bgColor: 'rgba(0,0,0,0)',
+			vScrollBarEnabled: true,
+			hScrollBarEnabled: true
+		});
 
 
 	}

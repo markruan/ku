@@ -50,9 +50,7 @@
                 <div onclick=" openPlayer()" class="inner" id="title" style="overflow-x:hidden;white-space:nowrap;width: 200px;">
                     新感官音乐
                 </div>
-
             </div>
-
             <span id="pp" class="play" tapmode="focus" data-click="0" onclick="switchmusic(this)" data-mp3=""></span>
             <span class="next" tapmode="active" onclick="next()"></span>
         </div>
@@ -75,7 +73,6 @@
                         subType: "from_bottom", //动画子类型（详见动画子类型常量）
                         duration: 500 //动画过渡时间，默认300毫秒
                     },
-
                 });
             }
         }
@@ -128,18 +125,11 @@
                 api.sendEvent({
                     name: 'stopmusic'
                 });
-                // api.toast({
-                //     msg: '暂停播放'
-                // });
-            } else {
                 // 关闭
                 button.setAttribute("data-click", 0);
                 api.sendEvent({
                     name: 'replaying'
                 });
-                // api.toast({
-                //     msg: '继续播放'
-                // });
                 $api.attr(playid, 'class', 'pause');
                 //				}
             }
@@ -170,11 +160,11 @@
                     enable: true
                 },
                 function(ret) {
-                  if(!ret.state){
-                    api.sendEvent({
-                        name: 'stopmusic',
-                    });
-                  }
+                    if (!ret.state) {
+                        api.sendEvent({
+                            name: 'stopmusic',
+                        });
+                    }
 
                 });
             api.setWinAttr({
@@ -210,7 +200,7 @@
         });
 
 
-
+        //首页获取播放历史列表
         function getMlistDB() {
             api.openFrame({
                 name: 'page2',

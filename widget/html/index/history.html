@@ -56,7 +56,6 @@
                 }, function(ret, err) {
                   var html = ''
                     if (ret.status) {
-
                         var data = ret.data
                         if (ret.data && ret.data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
@@ -87,7 +86,6 @@
     function opensong(sid, index) {
         if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
             $api.setStorage('listopen', 2);
-
             api.openWin({
                 name: 'nww',
                 url: '../../html/music/bo_head.html',

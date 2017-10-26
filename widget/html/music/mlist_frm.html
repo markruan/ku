@@ -612,12 +612,9 @@
 	}
 
 	function openMusiclistshare() {
-
 		var wx = api.require('wx');
 		var tracksName = $api.text($api.byId('tracksName'));
 		var thumb = $api.attr($api.byId("thumb"), 'src');
-
-
 		//          获取专辑封面缓存
 		api.imageCache({
 			url: thumb
@@ -631,7 +628,7 @@
 					title: tracksName,
 					description: '聆听音乐 感悟人生',
 					thumb: thumbb,
-					contentUrl: 'http://bbs.xggsj.com/?lid='+api.pageParam.lid
+					contentUrl: 'http://bbs.xggsj.com/?lid=' + api.pageParam.lid
 				}, function(ret, err) {
 					if (ret.status) {
 						api.toast({
@@ -644,7 +641,6 @@
 					}
 				});
 			} else {
-
 				alert(err)
 			}
 		});
@@ -702,57 +698,9 @@
 	}
 
 	apiready = function() {
+    var isopen = $api.getStorage('isopen');
 		initPage();
-		var isopen = $api.getStorage('isopen');
-		api.addEventListener({
-			name: 'playNext'
-		}, function(ret, err) {
-			var arr = $api.getStorage('listm');
-			var index_m = Number(ret.value.index) + 1
-			if (index_m == arr.length){
-				var sid = arr[0].id
-				api.sendEvent({
-					name: 'songid',
-					extra: {
-						sid: sid,
-						index: 0
-					}
-				});
-				return
-			}
-			var sid = arr[index_m].id
-			var audioPlayer = api.require('audioPlayer');
-			audioPlayer.stop();
-			api.sendEvent({
-				name: 'songid',
-				extra: {
-					sid: sid,
-					index: index_m
-				}
-			});
-		});
-		api.addEventListener({
-			name: 'prev_b'
-		}, function(ret, err) {
-			var index_m = Number(ret.value.index) - 1
-			if (index_m < 0) {
-				api.sendEvent({
-					name: 'firstsong'
-				});
-				return
-			}
-			var sid = arr[index_m].id
-			var audioPlayer = api.require('audioPlayer');
-			audioPlayer.stop();
-			api.sendEvent({
-				name: 'songid',
-				extra: {
-					sid: sid,
-					index: index_m
-				}
-			});
-		});
-		api.setRefreshHeaderInfo({
+  	api.setRefreshHeaderInfo({
 			loadingImg: 'widget://image/refresh.png',
 			visible: true,
 			bgColor: '#f2f2f2',
@@ -958,11 +906,7 @@
 		}, function(ret, err) {
 			if (ret) {
 				var cout = ret.length
-
-				$api.text($api.byId('CommCount'), cout);
-			} else {
-
-
+        	$api.text($api.byId('CommCount'), cout);
 			}
 		});
 	}
