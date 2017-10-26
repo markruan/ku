@@ -13,7 +13,7 @@
             background-image: url(../../image/hd2.jpg);
             background-position: right bottom, left top;
         }
-
+        
         #footer {
             position: fixed;
             bottom: 0px;
@@ -169,8 +169,10 @@
             phoneListener.headphonePluggedListener({
                     enable: true
                 },
-                function(ret) {
-                    alert(JSON.stringify(ret));
+                function(!ret.state) {
+                    api.sendEvent({
+                        name: 'stopmusic',
+                    });
                 });
             api.setWinAttr({
                 bounces: false
