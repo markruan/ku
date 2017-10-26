@@ -125,7 +125,8 @@
                 api.sendEvent({
                     name: 'stopmusic'
                 });
-                // 关闭
+
+            } else {
                 button.setAttribute("data-click", 0);
                 api.sendEvent({
                     name: 'replaying'
