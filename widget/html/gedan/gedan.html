@@ -15,7 +15,7 @@
             background-repeat: no-repeat;
             background-size: 15px 15px;
         }
-        
+
 
         .H-font-size-10 {
             font-size: 8px;
@@ -151,7 +151,8 @@
 
     apiready = function() {
         // findinfo1(page)
-        isdata()
+        // isdata()
+        findinfo()
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
             visible: true,
@@ -192,13 +193,12 @@
             url: hostUrl + '/fen.php?page=' + ye,
             cache: true,
         }, function(ret, err) {
-
-            if (ret) {
+             if (ret) {
                 var html = '';
                 tuilist = ret
                 for (i = 0; i < ret.length; i++) {
                     var Idd = ret[i].idd;
-                    var coverImgUrl = imageCache(ret[i].imgUrl)
+                    var coverImgUrl = imageCache(ret[i].imgUrl+'?param=120y120')
                     var tracksName = ret[i].name
                     $api.setStorage('lenpage', ret.length);
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
