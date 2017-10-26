@@ -152,7 +152,7 @@
     apiready = function() {
         // findinfo1(page)
         // isdata()
-        findinfo()
+        findinfo(page)
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
             visible: true,
@@ -172,8 +172,8 @@
                 threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
-            // page++
-            // findinfo(page)
+            page++
+            findinfo(page)
         });
     };
 
