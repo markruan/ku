@@ -19,9 +19,9 @@
 			</div>
 			<ul v-if='articles.length>0'  >
 				<div v-for='item in articles'>
-					<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active" @click="openww(item.id, item.album.picUrl, item.audio, item.name, item.artists[0].name) ">
+					<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active" @click="openww(item.id, item.al.picUrl,item.audio, item.name, item.ar[0].name) ">
 						<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-							{{item.name}}-{{item.artists[0].name}}
+							{{item.name}}-{{item.ar[0].name}}
 						</div>
 						<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 					</div>
@@ -52,14 +52,14 @@
 			mounted : function() {
 			},
 			methods : {
-				openww : function(sid, img, mp3, song, artists) {
+				openww : function(sid, img, mp3, songname, artists) {
 					api.openWin({
 						name : 'addmusic',
 						url : '../html/kong/music/index.html',
 						pageParam : {
 							name : img,
 							mp3 : mp3,
-							song : song,
+							song : songname,
 							artists : artists,
 							sid : sid
 						}

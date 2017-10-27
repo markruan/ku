@@ -8,8 +8,6 @@
 	<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
 	<link rel="stylesheet" type="text/css" href="../../../css/iconfont.css">
 	<style>
-		body {}
-
 		.pplay {
 			bottom: 10px;
 			margin-left: 30px;
@@ -20,7 +18,6 @@
 <body>
 	<div class="H-width-80-percent  ">
 		<div>
-			<!--<div class="H-padding-vertical-bottom-5"></div>-->
 			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box  " onclick="">
 				<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1   H-margin-vertical-bottom-10">
 					<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10" style="right: 6%;bottom: 5px;margin-bottom: 3px;"> <i id="player" data-click="0" onclick="switchplay(this)" class=" pplay iconfont icon-bofang H-theme-font-color-white   " style="font-size: 35px"></i></span>
@@ -29,7 +26,7 @@
 				<div class="H-padding-vertical-bottom-10"></div>
 			</div>
 			<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="">
-				<span id="song">Beautiful Now (feat. Jon Bellion)</span>-<span id="artists">Zedd</span>
+				<span id="song">加载中....</span>-<span id="artists">Zedd</span>
 			</div>
 		</div>
 		<div class="H-padding-vertical-bottom-10"></div>
@@ -66,31 +63,24 @@
 			pause(mp3);
 			$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 		}
-		//			}
 	}
-
+	var songname, fengmian, sid
 	apiready = function() {
-		var fengmian
 		api.ajax({
-			url: musicApi + '/song/detail?ids=' + api.pageParam.sid,
+			url: 'https://api.imjad.cn/cloudmusic/?type=detail&id=' + api.pageParam.sid,
 		}, function(ret, err) {
 			if (ret) {
-				// console.log(JSON.stringify(ret));
+				sid = ret.songs[0].id
 				fengmian = ret.songs[0].al.picUrl
+				songname = ret.songs[0].name
+				artist = ret.songs[0].ar[0].name
 				$api.attr($api.byId('img1'), 'src', fengmian);
+				$api.text($api.byId('song'), ret.songs[0].name);
+				$api.text($api.byId('artists'), ret.songs[0].ar[0].name);
 			} else {
 				alert(JSON.stringify(err));
 			}
 		});
-
-
-
-
-		var song = api.pageParam.song
-		var artists = api.pageParam.artists
-
-		$api.text($api.byId('song'), song);
-		$api.text($api.byId('artists'), artists);
 	};
 
 	function pause() {
@@ -103,101 +93,38 @@
 
 	function addmusic() {
 		var text1 = $api.val($api.byId("feed_text"));
-		var fengmian = $api.attr($api.byId('img1'), 'src');
-
-		var song = api.pageParam.song
-		var artists = api.pageParam.artists
-		var mp3 = api.pageParam.mp3
-		var sid = api.pageParam.sid
-		api.getPrefs({
-			key: 'user'
-		}, function(ret, err) {
-			var username = ret.value;
+		if ($api.getStorage('userinfo')) {
 			var url = hostUrl + '/addmusic.php';
-			if (ret) {
-				uiloading();
-				api.ajax({
-					url: url,
-					method: 'post',
-					dataType: 'text',
-					data: {
-						values: {
-							img: fengmian,
-							song: song,
-							text: text1,
-							artist: artists,
-							mp3: mp3,
-							user: username,
-							sid: sid,
-							type: 0,
-							uid: $api.getStorage('userinfo').data_id
-						},
-					}
-				}, function(ret, err) {
-					if (ret == 1) {
-						stoploading();
-						api.toast({
-							msg: '发布成功'
-						});
-						api.closeFrame({
-							name: 'kong'
-						});
-						api.closeWin({});
-					} else {
-						stoploading();
-						api.toast({
-							msg: '发布失败'
-						});
-						api.closeFrame({
-							name: 'kong'
-						});
-						api.closeWin({});
-					}
-				});
-			} else {
-				api.alert({
-					msg: JSON.stringify(err)
-				});
-			}
-		});
+			uiloading();
+			api.ajax({
+				url: url,
+				method: 'post',
+				dataType: 'text',
+				data: {
+					values: {
+						img: fengmian,
+						song: songname,
+						text: text1,
+						artist: artist,
+						sid: sid,
+						type: 0,
+						uid: $api.getStorage('userinfo').data_id
+					},
+				}
+			}, function(ret, err) {
+				if (ret == 1) {
+					    stoploading(); api.toast({ msg: '发布成功' }); api.closeFrame({ name: 'kong' }); api.closeWin({});
+				} else {
+							stoploading(); api.toast({ msg: '发布失败' }); api.closeFrame({ name: 'kong' }); api.closeWin({});
+				}
+			});
+		} else {
+					api.toast({ msg: '登录后才能操作', duration: 2000, location: 'bottom' });
+		}
 	}
 
 	function play(mp3) {
-		var pdd = $api.byId('playe');
-		var audioPlayer = api.require('audioPlayer');
-		var pdd = $api.byId('playerIcon');
-		api.sendEvent({
-		    name: 'songid',
-		    extra: {
-		        sid: api.pageParam.sid,
-						index:0,
-						isquan:true
-
-		        // key2: 'value2'
-		    }
-		});
-
-
-		// api.ajax({
-		// 	url: 'https://api.imjad.cn/cloudmusic/?id=' + api.pageParam.sid,
-		//
-		// }, function(ret, err) {
-		// 	if (ret) {
-		//
-		// 		var mp3 = ret.data[0].url.replace(/https/, 'http')
-		// 		audioPlayer.initPlayer({
-		// 			path: mp3
-		// 		}, function(ret) {
-		// 			if (ret.status) {
-		// 				api.toast({
-		// 					msg: '播放'
-		// 				});
-		// 			}
-		// 		});
-		// 	} else {
-		// 		alert(JSON.stringify(err));
-		// 	}
-		// });
+			 api.sendEvent({ name: 'songid', extra: { sid: api.pageParam.sid, index: 0, } });
 	}
 </script>
 
