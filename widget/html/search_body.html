@@ -70,7 +70,8 @@
 					api.showProgress({});
 					app.articles = []
 					api.ajax({
-						url : musicApi+'/search?keywords='+ message,
+						// url : musicApi+'/search?keywords='+ message,
+						url:sUrl+message
 					}, function(ret, err) {
 
 						if (ret.code == 200 && ret.result) {

@@ -42,7 +42,7 @@ function share(title, art, img, sid) {
     data.title = title;
     data.art = art;
     data.img = img;
-     
+
     api.ajax({
         url: 'https://api.imjad.cn/cloudmusic/?id=' + sid,
 
@@ -279,11 +279,11 @@ function imageCache(url) { //图片缓存方法
 (function(window) {
     hostUrl = 'http://www.v7idc.com/ku/api';
     musicApi = 'http://musicapi4785.cloudapp.net:3000',
-        musicUrl = 'http://music.163.com/api/playlist/detail?id=';
+    musicUrl = 'http://music.163.com/api/playlist/detail?id=';
     houZhui = '&updateTime=-1'
 
-    sUrl = 'http://s.music.163.com/search/get/?src=lofter&type=1&filterDj=true&s='
-    sEnd = '&limit=100&offset=0&callback'
+    sUrl = 'http://s.music.163.com/search/get/?src=lofter&type=1&filterDj=true&limit=100&offset=0&callback&s='
+    // sEnd = ''
 
     aUrl = 'http://music.163.com/api/song/detail/?id='
     shouUrl = 'http://v7idc.com/m/addm.php'
