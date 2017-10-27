@@ -461,6 +461,7 @@
 			api.addEventListener({
 				name: 'prev_b'
 			}, function(ret, err) {
+				var arr = $api.getStorage('listm');
 				var index_m = Number(ret.value.index) - 1
 				if (index_m < 0) {
 					api.sendEvent({
