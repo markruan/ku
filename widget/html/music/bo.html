@@ -310,7 +310,7 @@
 				$api.text($api.byId('titleName'), songdata.artists[0].name);
 			});
 			api.ajax({
-				url: 'https://api.imjad.cn/cloudmusic/?id=' + songdata.id
+				url: songDetail + songdata.id
 			}, function(ret, err) {
 				if (ret&&ret.data[0].url != null) {
 					var mp3Url = ret.data[0].url.replace(/https/, 'http')
