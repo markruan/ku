@@ -118,12 +118,15 @@
 
     //  获取用户的歌单
     function findinfo1() {
+        var jingxuan=musicApi+'/top/playlist/highquality?limit=10&cat=%E6%B0%91%E8%B0%A3';
+        var kulist=musicApi + '/user/playlist?uid=1081875'
+
         uiloading()
         setTimeout(function() {
             stoploading();
         }, 8000);
         api.ajax({
-            url: musicApi + '/user/playlist?uid=1081875',
+            url: kulist,
             cache: true,
         }, function(ret, err) {
             if (ret) {
@@ -150,9 +153,9 @@
     }
 
     apiready = function() {
-        // findinfo1(page)
-        // isdata()
-        findinfo(page)
+        findinfo1(page)
+        isdata()
+        // findinfo(page)
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
             visible: true,
@@ -172,8 +175,8 @@
                 threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
-            page++
-            findinfo(page)
+            // page++
+            // findinfo(page)
         });
     };
 
