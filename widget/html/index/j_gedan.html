@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+    <style>
+        .fresh {
+            height: 35px;
+            width: 100%;
+            background-image: url('../../image/loading_more.gif');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 15px 15px;
+        }
+
+
+        .H-font-size-10 {
+            font-size: 8px;
+        }
+
+        .H-flexbox-horizontal1 {
+            display: box;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-flex-flow: row;
+            flex-flow: row;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body id="body">
+    <div id="main" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/echo.min.js"></script>
+<script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript">
+    var page = 0;
+    var datalist;
+    var tuilist;
+    var initdata
+        // 打开歌曲列表
+    function openMusicList(lid) {
+        api.openWin({
+            name: 'musiclist',
+            url: '../../html/music/mlist_win.html',
+
+            reload: true,
+            animation: {
+                type: "reveal", //动画类型（详见动画类型常量）
+                subType: "from_right", //动画子类型（详见动画子类型常量）
+                duration: 400 //动画过渡时间，默认300毫秒
+            },
+            pageParam: {
+                lid: lid
+            }
+        });
+    }
+    //  判断本地是否有数据
+    function isdata() {
+        uiloading();
+        api.readFile({
+            path: api.cacheDir + '/mlist/'+api.pageParam.pinyin+'.json',
+        }, function(ret, err) {
+          console.log(ret);
+             if (ret&&ret.status) {
+                mdata = $api.strToJson(ret.data);
+                initpage(mdata)
+            } else {
+                findinfo1()
+            }
+        });
+
+
+
+    }
+
+
+    // 渲染页面
+    function initpage(data) {
+        var html = ''
+        for (i = 0; i < data.playlists.length; i++) {
+            var Idd = data.playlists[i].id;
+            var coverImgUrl = imageCache(data.playlists[i].coverImgUrl + '?param=180y180')
+            var tracksName = data.playlists[i].name
+            $api.setStorage('lenpage', data.playlists.length);
+            html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+            html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+
+            html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName.substring(0, 12) + '</div></div>';
+
+
+            api.refreshHeaderLoadDone();
+        }
+        var obj = $api.byId('main');
+
+        $api.html(obj, html);
+
+        echo.init({
+            offset: 0,
+            throttle: 0,
+            unload: false,
+            callback: function(element, op) {}
+        });
+        $api.removeCls($api.byId('body'), 'H-display-none');
+        stoploading()
+
+    }
+
+    //  获取用户的歌单
+    function findinfo1() {
+        var jingxuan=musicApi+'/top/playlist/highquality?limit=30&cat='+api.pageParam.cat;
+        // console.log(api.pageParam.cat);
+        uiloading()
+        setTimeout(function() {
+            stoploading();
+        }, 8000);
+        api.ajax({
+            url: jingxuan,
+            cache: true,
+        }, function(ret, err) {
+            if (ret) {
+              initpage(ret)
+                api.writeFile({
+                    path: api.cacheDir + '/mlist/'+api.pageParam.pinyin+'.json',
+                    data: ret
+                }, function(ret, err) {
+                    if (ret.status) {
+
+                    } else {
+
+                    }
+                });
+
+            } else {
+                api.toast({
+                    msg: '没有更多了'
+                });
+                stoploading();
+                api.refreshHeaderLoadDone();
+            };
+
+        });
+    }
+
+    apiready = function() {
+        findinfo1()
+        isdata()
+        // findinfo(page)
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/refresh.png',
+            visible: true,
+            bgColor: '#f2f2f2',
+            textColor: '#4d4d4d',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            findinfo1(page)
+            api.hideProgress();
+            api.refreshHeaderLoadDone();
+        });
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            // page++
+            // findinfo(page)
+        });
+    };
+
+
+
+
+
+
+    // 远程获取数据（ku里的数据）
+    function findinfo() {
+        uiloading()
+        setTimeout(function() {
+            stoploading();
+        }, 8000);
+        var ye = page * 20
+        api.ajax({
+            url: hostUrl + '/fen.php?page=' + ye,
+            cache: true,
+        }, function(ret, err) {
+             if (ret) {
+                var html = '';
+                tuilist = ret
+                for (i = 0; i < ret.length; i++) {
+                    var Idd = ret[i].idd;
+                    var coverImgUrl = imageCache(ret[i].imgUrl+'?param=120y120')
+                    var tracksName = ret[i].name
+                    $api.setStorage('lenpage', ret.length);
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+                    html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+
+                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+
+                    stoploading()
+                    api.refreshHeaderLoadDone();
+                }
+                var obj = $api.byId('main');
+                if (page == 0) {
+                    $api.html(obj, html);
+                } else {
+                    $api.after($api.last(obj), html);
+                }
+                echo.init({
+                    offset: 0,
+                    throttle: 100,
+                    unload: false,
+                    callback: function(element, op) {}
+                });
+                $api.removeCls($api.byId('body'), 'H-display-none');
+            } else {
+                api.toast({
+                    msg: '没有更多了'
+                });
+                stoploading();
+                api.refreshHeaderLoadDone();
+            };
+        });
+    }
+</script>
+
+</html>
