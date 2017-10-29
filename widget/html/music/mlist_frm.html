@@ -556,7 +556,12 @@
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/mm.js"></script>
+<script type="text/javascript" src="../../script/touchpoint.js"></script>
 <script type="text/javascript">
+		// 点击效果初始化
+		TouchPoint.color = 'white';
+		TouchPoint.size = 10;
+		TouchPoint.init();
 	var isopen
 
 	function collectmusic(clicktoolitem) {
@@ -808,8 +813,8 @@
 			var a = i;
 			var n = i + 1;
 			//                      var nType = thisItem.type;
-			html += '<div class="egret-flex-item musiclist-item" > <div class="egret-flex-item-logo">' + n + '</div>';
-			html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + sid + ',' + i + ')">';
+			html += '<div class="egret-flex-item musiclist-item" tapmode onclick="abc(' + sid + ',' + i + ')" > <div class="egret-flex-item-logo">' + n + '</div>';
+			html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" >';
 			html += '<div class="egret-flex-item-shelf01">' + bb + '</div><div class="egret-flex-item-shelf02">';
 			html += '' + artists + '</div></div><div class="egret-flex-item-arrow"><img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg"">';
 			html += '</div></div></div><div class="musiclist-item-tool" >';
@@ -826,6 +831,7 @@
 		//                  api.hideProgress();
 		stoploading();
 		api.refreshHeaderLoadDone();
+		api.parseTapmode();
 
 	}
 

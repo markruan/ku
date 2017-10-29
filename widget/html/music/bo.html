@@ -81,10 +81,10 @@
 	</style>
 </head>
 <script type="text/html" id="tppl">
-	<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" onclick="shouCang(<%=list.id %>,null,'<%=list.mp3Url %>','<%=list.artists[0].name %>','<%=list.name %>','<%=list.album.picUrl %>')" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+	<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" tapmode onclick="shouCang(<%=list.id %>,null,'<%=list.mp3Url %>','<%=list.artists[0].name %>','<%=list.name %>','<%=list.album.picUrl %>')" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
 </script>
 <script type="text/html" id="tppl2">
-	<span class="H-icon H-display-block H-horizontal-center"><i onclick="openComm(<%=list.id %>, 1)" tapmode=" iconfont  icon-focus "  class="iconfont icon-pinglun   H-vertical-middle H-theme-font-color-white"style="    font-size:25px; "></i></span>
+	<span class="H-icon H-display-block H-horizontal-center"><i tapmode onclick="openComm(<%=list.id %>, 1)" tapmode=" iconfont  icon-focus "  class="iconfont icon-pinglun   H-vertical-middle H-theme-font-color-white"style="    font-size:25px; "></i></span>
 </script>
 
 <body>
@@ -102,17 +102,17 @@
 			<div class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-center-all">
 				<div class=" leftB  H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 80px;">
 					<div>
-						<span class="H-icon H-display-block H-horizontal-center"><i onclick="prev_b()" id="prev_b" data-sid="" data-index=""  tapmode  class="iconfont icon-mediaprevious  H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
+						<span class="H-icon H-display-block H-horizontal-center"><i tapmode onclick="prev_b()" id="prev_b" data-sid="" data-index=""  tapmode  class="iconfont icon-mediaprevious  H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
 					</div>
 				</div>
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-0" style="min-height: 80px;">
 					<div>
-						<span class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" data-url="" onclick="switchmusic(this);" tapmode id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white H-theme-font-color9-click "style="  font-size:70px;"></i></span>
+						<span class=" H-icon H-display-block H-horizontal-center"><i   data-click="0" tapmode data-url="" onclick="switchmusic(this);" tapmode id="playerIcon" class="iconfont icon-zanting    H-vertical-middle H-theme-font-color-white H-theme-font-color9-click "style="  font-size:70px;"></i></span>
 					</div>
 				</div>
 				<div class=" rightN H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-3 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 80px;">
 					<div>
-						<span id="next" class="H-icon H-display-block H-horizontal-center"><i onclick="playNext_b() "  id="playNext_b" data-sid="" data-index=""  tapmode  class="iconfont icon-medianext   H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
+						<span id="next" class="H-icon H-display-block H-horizontal-center"><i tapmode onclick="playNext_b() "  id="playNext_b" data-sid="" data-index=""  tapmode  class="iconfont icon-medianext   H-font-size-32 H-vertical-middle H-theme-font-color-white H-theme-font-color9-click"style="  font-size:30px;"></i></span>
 					</div>
 				</div>
 			</div>
@@ -126,7 +126,7 @@
 			<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style=" min-height: 50px; ">
 					<div>
-						<span class="H-icon H-display-block H-horizontal-center"><i id="menubtn" onclick="openlist()" class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
+						<span class="H-icon H-display-block H-horizontal-center"><i id="menubtn" tapmode onclick="openlist()" class="iconfont icon-mulu  H-font-size-60 H-vertical-middle H-theme-font-color-white" style="    font-size:25px;"></i></span>
 					</div>
 				</div>
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
@@ -134,12 +134,12 @@
 				</div>
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent     H-padding-vertical-both-10" style="min-height: 50px;">
 					<div>
-						<span class="H-icon H-display-block H-horizontal-center"><i id="rep" data-click="0" onclick="switchi(this);"  tapmode class="iconfont icon-xunhuan   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+						<span class="H-icon H-display-block H-horizontal-center"><i id="rep" data-click="0" tapmode  onclick="switchi(this);"  tapmode class="iconfont icon-xunhuan   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
 					</div>
 				</div>
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
 					<div>
-						<span class="H-icon H-display-block H-horizontal-center"><i  onclick="shareWx()" tapmode  class="iconfont icon-share   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+						<span class="H-icon H-display-block H-horizontal-center"><i tapmode onclick="shareWx()" tapmode  class="iconfont icon-share   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
 					</div>
 				</div>
 				<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent   H-padding-vertical-both-10" style="min-height: 50px;">
@@ -152,7 +152,12 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/play.js"></script>
 <script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript" src="../../script/touchpoint.js"></script>
 <script type="text/javascript">
+// 点击效果初始化
+TouchPoint.color = 'white';
+TouchPoint.size = 10;
+TouchPoint.init();
 	H.tppl_flag = ["<%", "%>"];
 	var title2
 
@@ -297,6 +302,8 @@
 			var render = H.tppl(H.D("#tppl2").innerHTML);
 			H.D(".result2").innerHTML = render(data);
 			var artist = songdata.artists[0].name
+			api.parseTapmode();
+			
 			var datetime = Number(new Date())
 			saveMlistDB(sid, songdata.name, artist, songdata.album.picUrl, datetime) //存储播放历史
 			api.imageCache({
