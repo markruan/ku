@@ -159,9 +159,6 @@
             H.dblclickToCloseApp();
             cookie()
             // test2()
-
-
-
             // 监听耳机拔下事件
             var phoneListener = api.require('phoneListener');
             phoneListener.headphonePluggedListener({
@@ -202,7 +199,7 @@
                 url: '../../html/page/page_frm.html',
                 name: 'kuxuan'
             }, {
-                url: '../../html/quan/index.html',
+                url: '../../html/quan/quan_index.html',
                 name: 'quanzi'
             }], 0, "#header", "#footer");
         });
@@ -250,7 +247,7 @@
                 if (ret) {
                     console.log(JSON.stringify(ret));
                 } else {
-                    alert(JSON.stringify(err));
+                    // alert(JSON.stringify(err));
                 }
             });
 

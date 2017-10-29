@@ -15,7 +15,6 @@
             background-repeat: no-repeat;
             background-size: 15px 15px;
         }
-
         .H-font-size-10 {
             font-size: 8px;
         }
@@ -40,11 +39,9 @@
     <div id="index" class="H-display-none" style="  background-color: white;">
         <div style="height: 170px"></div>
         <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
-
-
-            <div class="H-flex-item" tapmode onclick="openjingxuanlist('民谣','minyao')">
+             <div class="H-flex-item" tapmode onclick="openjingxuanlist('民谣','minyao')">
                 <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
-                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5" >民谣</label>
+                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">民谣</label>
             </div>
             <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')">
                 <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
@@ -54,7 +51,7 @@
                 <span class="H-icon H-center-all H-theme-background-color5 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music H-font-size-22 H-theme-font-color-white"></i></span>
                 <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">欧美</label>
             </div>
-            <div class="H-flex-item"tapmode onclick="openjingxuanlist('轻音乐','qing')">
+            <div class="H-flex-item" tapmode onclick="openjingxuanlist('轻音乐','qing')">
                 <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-level H-font-size-22 H-theme-font-color-white"></i></span>
                 <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">轻音乐</label>
             </div>
@@ -87,17 +84,17 @@
 <script type="text/javascript" src="../../script/touchpoint.js"></script>
 
 <script type="text/javascript">
-// 点击效果初始化
-TouchPoint.color = 'white';
-TouchPoint.size = 16;
-TouchPoint.dom = "H-flex-item";
-TouchPoint.init();
+    // 点击效果初始化
+    TouchPoint.color = 'white';
+    TouchPoint.size = 16;
+    TouchPoint.dom = "H-flex-item";
+    TouchPoint.init();
 
     var page = 0;
     var datalist;
     var tuilist;
     var initdata
-   // 打开歌曲列表
+        // 打开歌曲列表
     function openMusicList(lid) {
         api.openWin({
             name: 'musiclist',
@@ -116,6 +113,7 @@ TouchPoint.init();
 
     // 热门推荐初始化
     function tui() {
+        getmvlist()
         uiloading()
         api.ajax({
             url: 'http://v7idc.com/ku/admin.php?r=home/api/getindex&type=1',
@@ -123,32 +121,23 @@ TouchPoint.init();
         }, function(ret, err) {
             if (ret) {
                 initdata = ret
+                  findinfo(page)
                 var html = '';
                 for (i = 0; i < 2; i++) {
                     var lid = initdata.huandenglist[i].idd;
                     var coverImgUrl = imageCache(initdata.huandenglist[i].fenpic)
                     var tracksName = initdata.huandenglist[i].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + lid + ')">';
-                    html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
+                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
                     html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
                 }
                 var tui = $api.byId('tui');
                 $api.html(tui, html);
-                echo.init({
-                    offset: 0,
-                    throttle: 0,
-                    unload: false,
-                    callback: function(element, op) {}
-                });
-                findinfo(page)
-                getmvlist()
-
-            } else {};
+              } else {};
         });
     }
 
     function findinfo(page) {
-
         setTimeout(function() {
             stoploading();
         }, 20000);
@@ -173,7 +162,7 @@ TouchPoint.init();
                 var tracksName = ret[i].name
                 $api.setStorage('lenpage', ret.length);
                 html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
-                html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+                html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
 
                 html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
 
@@ -186,12 +175,7 @@ TouchPoint.init();
             } else {
                 $api.after($api.last(obj), html);
             }
-            echo.init({
-                offset: 0,
-                throttle: 0,
-                unload: false,
-                callback: function(element, op) {}
-            });
+
             $api.removeCls($api.byId('index'), 'H-display-none');
             stoploading()
                 // $api.removeCls($api.byId('body'), 'H-display-none');
@@ -224,6 +208,72 @@ TouchPoint.init();
         });
 
     };
+  function getmvlist() {
+      api.ajax({
+            url: musicApi + '/top/mv?limit=10',
+            // url: 'http://v7idc.com/ku/admin.php?r=home/api/mvlist',
+            method: 'get',
+            cache: true
+        }, function(ret, err) {
+            if (ret) {
+                var data = ret.data
+                var html = '';
+                for (i = 0; i < data.length; i++) {
+                    var vid = data[i].id;
+                    var coverImgUrl = imageCache(data[i].cover)
+                        // var tracksName = data[i].name + "-" + data[i].artists[0].name
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
+                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:100px;"    >';
+                    html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
+
+                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-2">' + data[i].artistName.substring(0, 18) + '</div></div>';
+                }
+                var mvlist = $api.byId('mvlist');
+                $api.html(mvlist, html);
+                api.parseTapmode();
+            } else {
+                api.toast({
+                    msg: err.msg,
+                    duration: 2000,
+                    location: 'bottom'
+                });
+            }
+        });
+    }
+
+    function openMv(vid) {
+        api.openWin({
+            name: 'mvhead',
+            url: '../../html/mv/mv_head.html',
+            pageParam: {
+                vid: vid
+            },
+            animation: {
+                type: "movein", //动画类型（详见动画类型常量）
+                subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                duration: 400
+            }
+        });
+
+    }
+
+    function openjingxuanlist(cat, pinyin) {
+        api.openWin({
+            name: 'win_' + pinyin,
+            url: '../index/j_gedan_head.html',
+            pageParam: {
+                cat: cat,
+                pinyin: pinyin
+            },
+            animation: {
+                type: "reveal", //动画类型（详见动画类型常量）
+                subType: "from_right", //动画子类型（详见动画子类型常量）
+                duration: 400 //动画过渡时间，默认300毫秒
+            },
+        });
+    }
+
+
     // 首页幻灯
     function huandeng(datalist) {
         var UIScrollPicture = api.require('UIScrollPicture');
@@ -264,83 +314,6 @@ TouchPoint.init();
             }
         });
     }
-
-    function getmvlist() {
-
-        api.ajax({
-            url: musicApi + '/top/mv?limit=10',
-            // url: 'http://v7idc.com/ku/admin.php?r=home/api/mvlist',
-            method: 'get',
-            cache: true
-        }, function(ret, err) {
-            if (ret) {
-                var data = ret.data
-                var html = '';
-                for (i = 0; i < data.length; i++) {
-                    var vid = data[i].id;
-                    var coverImgUrl = imageCache(data[i].cover)
-                        // var tracksName = data[i].name + "-" + data[i].artists[0].name
-                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
-                    html += '<img  src="../../image/default.jpg"    data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:100px;"    >';
-                    html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
-
-                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-2">' + data[i].artistName.substring(0, 18) + '</div></div>';
-                }
-                var mvlist = $api.byId('mvlist');
-                $api.html(mvlist, html);
-
-                echo.init({
-                    offset: 0,
-                    throttle: 50,
-                    unload: false,
-                    callback: function(element, op) {}
-                });
-                api.parseTapmode();
-            } else {
-                api.toast({
-                    msg: err.msg,
-                    duration: 2000,
-                    location: 'bottom'
-                });
-
-            }
-
-        });
-
-
-    }
-
-    function openMv(vid) {
-        api.openWin({
-            name: 'mvhead',
-            url: '../../html/mv/mv_head.html',
-            pageParam: {
-                vid: vid
-            },
-            animation: {
-                type: "movein", //动画类型（详见动画类型常量）
-                subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                duration: 400
-            }
-        });
-
-    }
-
-    function openjingxuanlist(cat,pinyin){
-      api.openWin({
-          name: 'win_'+pinyin,
-          url: '../index/j_gedan_head.html',
-          pageParam: {
-              cat: cat,
-              pinyin:pinyin
-          },
-          animation: {
-              type: "reveal", //动画类型（详见动画类型常量）
-              subType: "from_right", //动画子类型（详见动画子类型常量）
-              duration: 400 //动画过渡时间，默认300毫秒
-          },
-      });
-   }
 </script>
 
 </html>
