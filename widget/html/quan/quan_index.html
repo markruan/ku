@@ -174,13 +174,14 @@
         var page = 0
        function initPage() {
             // uiloading();
+
             var ye = page * 10
             api.ajax({
                 url: hostUrl + '/quan123.php?page=' + ye,
                 cache: true,
             }, function(ret, err) {
-                // alert(JSON.stringify(ret))
-                if (ret) {
+                 if (ret) {
+
                     var playlist = ret
                     var data1 = {
                         list: []
@@ -188,6 +189,7 @@
                     var data = {
                         list: ret
                     };
+
                     var render = H.tppl(H.D("#tppl").innerHTML);
                     if (page == 0) {
                         H.D(".result").innerHTML = render(data1);
@@ -195,6 +197,7 @@
                     } else {
                         $api.after($api.last(H.D(".result")), render(data))
                     }
+
                     echo.init({
                         offset: 10,
                         throttle: 200,
@@ -202,12 +205,13 @@
                         callback: function(element, op) {}
                     });
                     stoploading();
-                    api.parseTapmode();
-                } else {
+              } else {
                     $api.html($api.byId('footer'), '<div  class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">没有更多了......</div>');
 
                 }
+                  api.parseTapmode();
             });
+
         }
 
         apiready = function() {
@@ -264,6 +268,7 @@
                     pause()
                 }
             });
+
         }
 
         function dianzan(id, button, zan) {
