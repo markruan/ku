@@ -272,11 +272,25 @@
                         });
                     } else {
                         for (var i = 0; i < ret.list.length; i++) {
-                            var dcc = document.createElement("div");
-                            dcc.setAttribute("class", "addimg");
-                            dcc.setAttribute("onclick", "yichu(this)");
-                            dcc.innerHTML = '<img class="imgg" dataimg="' + ret.list[i].path + '" src="' + ret.list[i].thumbPath + '"/><div class="x" ><img src="../../../res/x.png"/></div>';
-                            prependChild(dcc, imgs)
+                            (function(i) {
+                                setTimeout(function() {
+                                    var UIMediaScanner = api.require('UIMediaScanner');
+                                    UIMediaScanner.transPath({
+                                        path: ret.list[i].path
+                                    }, function(ret1, err) {
+                                        if (ret1) {
+                                            var dcc = document.createElement("div");
+                                            dcc.setAttribute("class", "addimg");
+                                            dcc.setAttribute("onclick", "yichu(this)");
+                                            dcc.innerHTML = '<img class="imgg" dataimg="' + ret1.path + '" src="' + ret.list[i].thumbPath + '"/><div class="x" ><img src="../../../res/x.png"/></div>';
+                                            prependChild(dcc, imgs)
+                                     } else {
+                                            // alert(JSON.stringify(err));
+                                        }
+                                    });
+                                }, 1000);
+                            })(i);
+
                         }
                     }
                 }
@@ -330,7 +344,7 @@
                         user: $api.getStorage('userinfo').nickname,
                         type: 1,
                         uid: $api.getStorage('userinfo').data_id,
-                        text : $api.val($api.byId('sm')),
+                        text: $api.val($api.byId('sm')),
                     },
                     files: {
                         'myfile[]': imglist1,
@@ -341,7 +355,7 @@
                 var msg
                 switch (ret.status) {
                     case 0:
-                        msg = "上传中" + ret.progress+"%"
+                        msg = "上传中" + parseInt(ret.progress)+ "%"
                         break;
                     case 1:
                         msg = "上传完成"
@@ -361,13 +375,13 @@
                     default:
 
                 }
-              api.showProgress({
-                  style: 'default',
-                  animationType: 'fade',
-                  title: msg,
-                  text: '先喝杯茶...',
-                  modal: false
-              });
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: msg,
+                    text: '先喝杯茶...',
+                    modal: false
+                });
 
 
             });
