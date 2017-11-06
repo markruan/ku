@@ -69,7 +69,7 @@
     function isdata() {
         uiloading();
         api.readFile({
-            path: api.cacheDir + '/mlist/1081875.json',
+            path: 'fs://mlist/1081875.json',
         }, function(ret, err) {
 
             if (ret.status) {
@@ -132,7 +132,7 @@
             if (ret) {
             initpage(ret)
                 api.writeFile({
-                    path: api.cacheDir + '/mlist/1081875.json',
+                    path:'fs://mlist/1081875.json',
                     data: ret
                 }, function(ret, err) {
                     if (ret.status) {
@@ -153,7 +153,7 @@
     }
 
     apiready = function() {
-        findinfo1(page)
+        findinfo1()
         isdata()
         // findinfo(page)
         api.setRefreshHeaderInfo({
