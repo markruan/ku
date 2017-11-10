@@ -277,7 +277,7 @@ function imageCache(url) { //图片缓存方法
 }
 
 (function(window) {
-    hostUrl = 'http://www.v7idc.com/ku/api';
+    hostUrl = 'http://api.iqimeng.com/ku/api';
     musicApi = 'http://67.21.85.120:3000',
     musicUrl = 'http://music.163.com/api/playlist/detail?id=';
     houZhui = '&updateTime=-1'
