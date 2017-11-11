@@ -189,6 +189,11 @@
                 $api.attr(playid, 'data-click', 0);
             });
             api.addEventListener({
+                name: 'resume'
+            }, function(ret, err) {
+                $api.attr(playid, 'class', 'pause');
+            });
+            api.addEventListener({
                 name: 'stopmusic'
             }, function(ret, err) {
                 $api.attr($api.byId('pp'), 'class', 'play');

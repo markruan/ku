@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="copyright" content="www.apicloud.com" />
 	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
 	<title>歌单</title>
 	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
 	<style>
@@ -558,7 +559,6 @@
 <script type="text/javascript" src="../../script/mm.js"></script>
 
 <script type="text/javascript">
-
 	var isopen
 
 	function collectmusic(clicktoolitem) {
@@ -700,9 +700,9 @@
 	}
 
 	apiready = function() {
-    var isopen = $api.getStorage('isopen');
+		var isopen = $api.getStorage('isopen');
 		initPage();
-  	api.setRefreshHeaderInfo({
+		api.setRefreshHeaderInfo({
 			loadingImg: 'widget://image/refresh.png',
 			visible: true,
 			bgColor: '#f2f2f2',
@@ -781,7 +781,7 @@
 		var html = ''
 		var tracksName = mdata.name;
 		var avatarUrl = mdata.creator.avatarUrl;
-		var fenmian=mdata.coverImgUrl+'?param=120y120'
+		var fenmian = mdata.coverImgUrl + '?param=120y120'
 		var coverImgUrl = imageCache(fenmian);
 		var nickname = mdata.creator.nickname;
 		id = mdata.id
@@ -910,7 +910,7 @@
 		}, function(ret, err) {
 			if (ret) {
 				var cout = ret.length
-        	$api.text($api.byId('CommCount'), cout);
+				$api.text($api.byId('CommCount'), cout);
 			}
 		});
 	}
