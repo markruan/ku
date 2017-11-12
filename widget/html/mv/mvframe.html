@@ -47,6 +47,8 @@
             }
         });
 
+
+
     }
 
     function isfull() {
@@ -55,6 +57,10 @@
             if (!ret.state) {
                 api.closeWin();
 
+            }else{
+              moviePlayer.onBack(function() {
+                        alert("onBack");
+                });
             }
         });
     }

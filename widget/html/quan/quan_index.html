@@ -64,8 +64,10 @@
                     <%=list[i].text%>
                 </div>
                 <div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box  ">
-                    <span tapmode onclick="openComm(<%=list[i].data_id %>,3)" class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color2  "><i  class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle">评论</label></span>
-                    <span class="H-font-size-14 H-flex-item  H-center-all   "><i tapmode  onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan%></label></span>
+                    <span tapmode onclick="openComm(<%=list[i].data_id %>,3)" class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color2  "><i  class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle"><%=list[i].comm.count==0?'':list[i].comm.count%></label></span>
+                    <span class="H-font-size-14 H-flex-item  H-center-all   "><i tapmode  onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan==0?'':list[i].zan%></label></span>
+                    <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
+                    <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
                     <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
                     <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
                     <span tapmode onclick="shareImg('<%=list[i].cover %>')" class="H-font-size-14 H-flex-item  H-center-all   "><i class="H-iconfont H-icon-share-to H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"> </label></span>
@@ -98,9 +100,12 @@
                         <%=list[i].text %>
                     </div>
                     <div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box  r">
-                        <span tapmode onclick="openComm(<%=list[i].data_id %>,3)" class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color2  "><i  class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle">评论</label></span>
-                        <span class="H-font-size-14 H-flex-item  H-center-all    "><i tapmode onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan%></label></span>
+                        <span tapmode onclick="openComm(<%=list[i].data_id %>,3)" class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color2  "><i  class="H-iconfont H-icon-review-fill  H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle"><%=list[i].comm.count==0?'':list[i].comm.count%></label></span>
+                        <span class="H-font-size-14 H-flex-item  H-center-all    "><i tapmode onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan==0?'':list[i].zan%></label></span>
                         <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
+                        <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
+                        <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
+
                         <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
                         <span tapmode onclick="shareImg('<%=list[i].cover %>')" class="H-font-size-14 H-flex-item  H-center-all    "><i class="H-iconfont H-icon-share-to H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"> </label></span>
                     </div>
@@ -137,10 +142,14 @@
                             </div>
                         </div>
                         <div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box  ">
-                            <span tapmode onclick="openComm(<%=list[i].data_id %>,3)" class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color2  "><i  class="H-iconfont H-icon-review-fill   H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle">评论</label></span>
-                            <span tapmode onclick=" shouCang(<%=list[i].sid %>,'<%=list[i].user %>','<%=list[i].mp3 %>','<%=list[i].artist %>','<%=list[i].title %>','<%=list[i].cover %>')" class="H-font-size-14 H-flex-item  H-center-all"><i class="H-iconfont H-icon-like H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle">收藏</label></span>
-                            <span class="H-font-size-14 H-flex-item  H-center-all    "><i tapmode onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan%></label></span>
+                            <span tapmode onclick="openComm(<%=list[i].data_id %>,3)" class="H-font-size-14 H-flex-item  H-center-all H-theme-font-color2  "><i  class="H-iconfont H-icon-review-fill   H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-vertical-middle"><%=list[i].comm.count==0?'':list[i].comm.count%></label></span>
+                            <span tapmode onclick=" shouCang(<%=list[i].sid %>,'<%=list[i].user %>','<%=list[i].mp3 %>','<%=list[i].artist %>','<%=list[i].title %>','<%=list[i].cover %>')" class="H-font-size-14 H-flex-item  H-center-all"><i class="H-iconfont H-icon-like H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"></label></span>
+                            <span class="H-font-size-14 H-flex-item  H-center-all    "><i tapmode onclick="dianzan(<%=list[i].data_id %>,this)" class="H-iconfont H-icon-ding-null H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"><%=list[i].zan==0?'':list[i].zan%></label></span>
                             <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
+                            <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
+
+                            <span class="H-font-size-14 H-flex-item  H-center-all"> </span>
+
                             <span tapmode onclick="share('<%=list[i].title %>','<%=list[i].artist %>','<%=list[i].cover %>','<%=list[i].sid %>')" class="H-font-size-14 H-flex-item  H-center-all    "><i class="H-iconfont H-icon-share-to H-theme-font-color-ccc H-font-size-18 H-margin-horizontal-right-5"></i><label class="H-display-inline-block H-theme-font-color-ccc H-vertical-middle"> </label></span>
                         </div>
                     </div>
@@ -179,7 +188,7 @@
                 cache: true,
             }, function(ret, err) {
                  if (ret) {
-
+            // console.log(JSON.stringify(ret));
                     var playlist = ret
                     var data1 = {
                         list: []
@@ -214,7 +223,7 @@
         }
 
         apiready = function() {
-        
+
             api.addEventListener({
                 name: 'scrolltobottom',
                 extra: {
@@ -285,7 +294,7 @@
                 }
             }, function(ret, err) {
                 if (ret == 1) {
-                    $api.attr(button, 'class', 'H-iconfont H-icon-ding-null H-theme-font-color-red H-font-size-18 H-margin-horizontal-right-5 animated bounceIn');
+                    $api.attr(button, 'class', 'H-iconfont H-icon-ding-null H-theme-font-color-red H-font-size-18 H-margin-horizontal-right-5 animated zoomInUp');
                     var zan = button.nextSibling
                     $api.text(zan, eval($api.text(zan)) + 1);
                     $api.attr(zan, 'style', 'color: #ff003c');
