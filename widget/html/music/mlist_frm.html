@@ -744,12 +744,12 @@
 	function getlistdata() {
 		var lid = api.pageParam.lid
 		api.ajax({
-			url: musicUrl + lid + houZhui,
+			url: musicUrl + lid,
 			cache: true,
 			dataType: 'json'
 		}, function(ret, err) {
 			if (ret) {
-				mdata = ret.result
+				mdata = ret.playlist
 				initlist(mdata, lid)
 				api.writeFile({
 					path: api.cacheDir + '/mlist/' + lid + '.json',
