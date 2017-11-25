@@ -59,11 +59,11 @@
 		}
 
 		function initPage() {
-			api.showProgress({
-				title : ' 加载中...',
-				text : '先喝杯茶...',
-				modal : false
-			})
+			// api.showProgress({
+			// 	title : ' 加载中...',
+			// 	text : '先喝杯茶...',
+			// 	modal : false
+			// })
 			var audioPlayer = api.require('audioPlayer');
 			audioPlayer.scanAudioLibrary(function(ret) {
 				console.log(JSON.stringify(ret));
