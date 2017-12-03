@@ -66,112 +66,142 @@
     }
 
     function openmv(vid) {
-        api.ajax({
-            url: "https://api.imjad.cn/cloudmusic/?type=mv&id=" + vid,
-            method: 'get',
-        }, function(ret, err) {
-            if (ret) {
-                var title = ret.data.name + '-' + ret.data.artistName
-                var url = ret.data.brs[720]
-                $api.text($api.byId('title'), ret.data.name);
-                $api.text($api.byId('artistName'), ret.data.artistName);
-                var imgurl = ret.data.cover.replace('.jpg', '.jpg?param=140y120')
+       api.readFile({
+           path: api.cacheDir + '/mv/' + vid + '.json'
+       }, function(ret, err){
+           if( ret.status ){
+                var mdata = $api.strToJson(ret.data);
+                var title = mdata.data.name + '-' + mdata.data.artistName
+                var url = mdata.data.brs[720]
+                $api.text($api.byId('title'), mdata.data.name);
+                $api.text($api.byId('artistName'), mdata.data.artistName);
+                var imgurl = mdata.data.cover.replace('.jpg', '.jpg?param=140y120')
                 $api.attr($api.byId('imgg'), 'src', imgurl);
-                $api.text($api.byId('content'), ret.data.desc);
+                $api.text($api.byId('content'), mdata.data.desc);
+               initPlayer(url,title)
+           }else{
+             api.ajax({
+                 url: "https://api.imjad.cn/cloudmusic/?type=mv&id=" + vid,
+                 method: 'get',
+             }, function(ret, err) {
+                 if (ret) {
+                      api.writeFile({
+                         path: api.cacheDir + '/mv/' + vid + '.json',
+                          data: ret
+                      }, function(ret, err){
 
-                var moviePlayer = api.require('moviePlayer');
-                moviePlayer.open({
-                    texts: {
-                        title: title
-                    },
-                    rect: {
-                        x: 0,
-                        y: 0,
-                        w: api.frameWidth,
-                        h: 300
-                    },
-                    styles: {
-                        head: {
-                            bg: 'rgba(0,0,0,0.5)',
-                            // text:'成都'，
-                            height: 44,
-                            y: 20,
-                            title: {
-                                size: 16,
-                                color: '#fff',
-                                width: 340,
-                                leftMargin: 10
-                            },
-                            backSize: 22,
-                            backImg: 'widget://image/back.png',
-                            customButtons: [{
-                                w: 30,
-                                h: 30,
-                                rightMagin: 10,
-                                img: 'widget://image/image/collect.png',
-                                imgSelected: 'fs://image/collectSelected.png',
-                            }]
-                        },
-                        foot: {
-                            bg: 'rgba(0,0,0,0.5)',
-                            height: 44,
-                            palyBtn: {
-                                size: 20,
-                                playImg: 'widget://image/play.png',
-                                pauseImg: 'widget://image/pause.png',
-                                marginLeft: 5
-                            },
-                            currentTimeLabel: {
-                                textSize: 14,
-                                textColor: "#FFF",
-                                textWidth: 43,
-                                marginLeft: 5
-                            },
-                            seekBar: {
-                                sliderImg: 'widget://image/circle.png',
-                                sliderW: 20,
-                                sliderH: 20,
-                                progressColor: '#696969',
-                                progressSelected: 'rgba(183, 52, 52, 0.79)',
-                                marginLeft: 10,
-                                marginRight: 10
-                            },
-                            totalTimeLabel: {
-                                textSize: 14,
-                                textColor: "#FFF",
-                                textWidth: 43,
-                                marginRight: 5
-                            },
-                            fullscreenBtn: {
-                                size: 20,
-                                verticalImg: 'widget://image/vertical.png',
-                                horizontalImg: 'widget://image/horizontal.png',
-                            }
-                        }
-                    },
-                    path: url,
-                    coverImg: 'widget://image/ting.jpg',
-                    autoPlay: true,
-                    // fixedOn:api.frameName
-                }, function(ret, err) {
-                    if (ret) {
-                        // alert(JSON.stringify(ret));
-                        // } else {
-                        // alert(JSON.stringify(err));
-                    }
+                      });
 
-                });
-            } else {
-                api.toast({
-                    msg: err.msg,
-                    duration: 2000,
-                    location: 'bottom'
-                });
-            }
-        });
+                     var title = ret.data.name + '-' + ret.data.artistName
+                     var url = ret.data.brs[720]
+                     $api.text($api.byId('title'), ret.data.name);
+                     $api.text($api.byId('artistName'), ret.data.artistName);
+                     var imgurl = ret.data.cover.replace('.jpg', '.jpg?param=140y120')
+                     $api.attr($api.byId('imgg'), 'src', imgurl);
+                     $api.text($api.byId('content'), ret.data.desc);
+                     initPlayer(url,title)
+
+                 } else {
+                     api.toast({
+                         msg: err.msg,
+                         duration: 2000,
+                         location: 'bottom'
+                     });
+                 }
+             });
+
+           }
+       });
+
+
 
 
     }
+
+  function initPlayer(url,title){
+    var moviePlayer = api.require('moviePlayer');
+    moviePlayer.open({
+        texts: {
+            title: title
+        },
+        rect: {
+            x: 0,
+            y: 0,
+            w: api.frameWidth,
+            h: 300
+        },
+        styles: {
+            head: {
+                bg: 'rgba(0,0,0,0.5)',
+                // text:'成都'，
+                height: 44,
+                y: 20,
+                title: {
+                    size: 16,
+                    color: '#fff',
+                    width: 340,
+                    leftMargin: 10
+                },
+                backSize: 22,
+                backImg: 'widget://image/back.png',
+                customButtons: [{
+                    w: 30,
+                    h: 30,
+                    rightMagin: 10,
+                    img: 'widget://image/image/collect.png',
+                    imgSelected: 'fs://image/collectSelected.png',
+                }]
+            },
+            foot: {
+                bg: 'rgba(0,0,0,0.5)',
+                height: 44,
+                palyBtn: {
+                    size: 20,
+                    playImg: 'widget://image/play.png',
+                    pauseImg: 'widget://image/pause.png',
+                    marginLeft: 5
+                },
+                currentTimeLabel: {
+                    textSize: 14,
+                    textColor: "#FFF",
+                    textWidth: 43,
+                    marginLeft: 5
+                },
+                seekBar: {
+                    sliderImg: 'widget://image/circle.png',
+                    sliderW: 20,
+                    sliderH: 20,
+                    progressColor: '#696969',
+                    progressSelected: 'rgba(183, 52, 52, 0.79)',
+                    marginLeft: 10,
+                    marginRight: 10
+                },
+                totalTimeLabel: {
+                    textSize: 14,
+                    textColor: "#FFF",
+                    textWidth: 43,
+                    marginRight: 5
+                },
+                fullscreenBtn: {
+                    size: 20,
+                    verticalImg: 'widget://image/vertical.png',
+                    horizontalImg: 'widget://image/horizontal.png',
+                }
+            }
+        },
+        path: url,
+        coverImg: 'widget://image/xia.png',
+        autoPlay: true,
+        // fixedOn:api.frameName
+    }, function(ret, err) {
+        if (ret) {
+            // alert(JSON.stringify(ret));
+            // } else {
+            // alert(JSON.stringify(err));
+        }
+
+    });
+  }
 </script>
 
 </html>

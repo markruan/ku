@@ -15,6 +15,7 @@
             background-repeat: no-repeat;
             background-size: 15px 15px;
         }
+
         .H-font-size-10 {
             font-size: 8px;
         }
@@ -39,7 +40,7 @@
     <div id="index" class="H-display-none" style="  background-color: white;">
         <div style="height: 170px"></div>
         <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
-             <div class="H-flex-item" tapmode onclick="openjingxuanlist('民谣','minyao')">
+            <div class="H-flex-item" tapmode onclick="openjingxuanlist('民谣','minyao')">
                 <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
                 <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">民谣</label>
             </div>
@@ -84,8 +85,6 @@
 
 
 <script type="text/javascript">
-
-
     var page = 0;
     var datalist;
     var tuilist;
@@ -116,8 +115,19 @@
             cache: true,
         }, function(ret, err) {
             if (ret) {
+                api.writeFile({
+                    path: api.cacheDir + '/indexInit.json',
+                    data: ret
+                }, function(ret, err) {
+                    // if(ret.status){
+                    //
+                    // }else{
+                    //
+                    // }
+                });
+
                 initdata = ret
-                  findinfo(page)
+                findinfo(page)
                 var html = '';
                 for (i = 0; i < 2; i++) {
                     var lid = initdata.huandenglist[i].idd;
@@ -129,7 +139,7 @@
                 }
                 var tui = $api.byId('tui');
                 $api.html(tui, html);
-              } else {};
+            } else {};
         });
     }
 
@@ -204,15 +214,58 @@
         });
 
     };
-  function getmvlist() {
-      api.ajax({
+
+    function getmvlist() {
+
+        api.readFile({
+            path: api.cacheDir + 'indexInitMv.json'
+        }, function(ret, err) {
+            if (ret.status) {
+                var data = $api.strToJson(ret.data);
+                var html = '';
+                for (i = 0; i < data.length; i++) {
+                    var vid = data[i].id;
+                    var coverImgUrl = imageCache(data[i].cover)
+                        // var tracksName = data[i].name + "-" + data[i].artists[0].name
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
+                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:100px;"    >';
+                    html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
+
+                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-2">' + data[i].artistName.substring(0, 18) + '</div></div>';
+                }
+                var mvlist = $api.byId('mvlist');
+                $api.html(mvlist, html);
+                api.parseTapmode();
+
+
+            } else {
+                updataMvList()
+
+            }
+
+
+        });
+
+
+    }
+
+    function updataMvList() {
+        api.ajax({
             url: musicApi + '/top/mv?limit=10',
             // url: 'http://v7idc.com/ku/admin.php?r=home/api/mvlist',
             method: 'get',
             cache: true
         }, function(ret, err) {
             if (ret) {
+                api.writeFile({
+                    path: api.cacheDir + 'indexInitMv.json',
+                    data: ret.data
+                }, function(ret, err) {
+
+                });
+
                 var data = ret.data
+
                 var html = '';
                 for (i = 0; i < data.length; i++) {
                     var vid = data[i].id;
@@ -235,6 +288,7 @@
                 });
             }
         });
+
     }
 
     function openMv(vid) {
