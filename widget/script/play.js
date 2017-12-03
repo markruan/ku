@@ -33,8 +33,8 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                 name: "state"
             }, function(ret) {
               if (ret.state == 'finished') {
-                    if ($api.getStorage('PlayAll') == 1) {
-                        play();
+                    if (app.isRepeat) {
+                        app.replay();
                         return
                     } else {
                         playNext_b()
@@ -42,7 +42,8 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                             msg: '播放完毕'
                         });
                     }
-                } else if (ret.state == 'buffering') {
+                } else if (ret.state == 'paused'||ret.state == 'idle'||ret.state=='buffering') {
+                  app.playState = false
 
                 } else {
 
@@ -62,11 +63,11 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                 var cur = formatSeconds(current);
                 audioCover(cover, duration, songName, artists, per)
                 var uislider = api.require('UISlider');
+                app.playState = true
                 uislider.setValue({
                     id: 1,
                     value: {
-
-                        value: percent
+                    value: percent
                     }
                 });
 
@@ -109,28 +110,28 @@ function getCache(pic) {
     $api.rmStorage('album')
 }
 
-function pause() {
-    var pdd = $api.byId('playerIcon');
-    $api.removeCls(pdd, 'icon-zanting');
-    $api.addCls(pdd, 'icon-bofang');
-    api.getPrefs({
-        key: 'isPlaying'
-    }, function(ret, err) {
-        if (ret.value == 1) {}
-    });
-    var netAudio = api.require('audio');
-    netAudio.pause();
-}
+// function pause() {
+//     var pdd = $api.byId('playerIcon');
+//     $api.removeCls(pdd, 'icon-zanting');
+//     $api.addCls(pdd, 'icon-bofang');
+//     api.getPrefs({
+//         key: 'isPlaying'
+//     }, function(ret, err) {
+//         if (ret.value == 1) {}
+//     });
+//     var netAudio = api.require('audio');
+//     netAudio.pause();
+// }
 
-function stop() {
-    api.getPrefs({
-        key: 'isPlaying'
-    }, function(ret, err) {
-        if (ret.value == 1) {}
-    });
-    var obj = api.require('audio');
-    obj.stop();
-}
+// function stop() {
+//     api.getPrefs({
+//         key: 'isPlaying'
+//     }, function(ret, err) {
+//         if (ret.value == 1) {}
+//     });
+//     var obj = api.require('audio');
+//     obj.stop();
+// }
 
 function getNowFormatDate() {
     var date = new Date();
@@ -189,11 +190,11 @@ function formatSeconds(value) {
     }
 }
 
-function kai() {
-    api.toast({
-        msg: '正在开发中...'
-    });
-}
+// function kai() {
+//     api.toast({
+//         msg: '正在开发中...'
+//     });
+// }
 
 function quXiaoShouCang() {
 

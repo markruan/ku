@@ -870,15 +870,14 @@
 					index: i,
 				}
 			});
-			setTimeout(function() {
+
 				api.sendEvent({
 					name: 'songid',
 					extra: {
 						sid: el,
 						index: i
 					}
-				}), 600
-			});
+				})
 		} else {
 			api.openWin({
 				name: 'nww',

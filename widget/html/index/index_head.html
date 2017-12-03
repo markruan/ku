@@ -117,7 +117,7 @@
         // 底部控件-下一曲
         function next() {
             api.sendEvent({
-                name: 'nextsong'
+                name: 'playNext'
             });
         }
         // 底部控件——播放
@@ -125,9 +125,10 @@
             var click = button.getAttribute("data-click");
             if (click == 0) {
                 // 点开
+                $api.attr(playid, 'class', 'play');
                 button.setAttribute("data-click", 1);
                 api.sendEvent({
-                    name: 'stopmusic'
+                    name: 'pause'
                 });
 
             } else {

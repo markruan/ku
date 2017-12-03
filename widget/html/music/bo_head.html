@@ -56,11 +56,12 @@
             style: 'dark'
         });
 
-        H.openFrameNavOrFoot('bo', 'bo.html', "#header", {
+        H.openFrameNavOrFoot('bo', 'bo0.html', "#header", {
             sid: api.pageParam.sid,
             index: api.pageParam.index,
         }, null, {
-            bounces: false
+            bounces: false,
+            reload:true
         });
         api.addEventListener({
             name: 'keyback'
