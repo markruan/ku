@@ -13,9 +13,10 @@ function play_c(mp3, cover, songName, artists, current, sid) {
     var audioPlayer = api.require('audioPlayer');
     audioPlayer.stop();
     audioPlayer.initPlayer({
-        path: mp3,
+        path: app.music_mp3,
         cache: true
     }, function(ret) {
+    
       if (ret.status) {
             api.sendEvent({
                 name: 'startplaying',

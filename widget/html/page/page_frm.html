@@ -236,7 +236,7 @@
                 var mvlist = $api.byId('mvlist');
                 $api.html(mvlist, html);
                 api.parseTapmode();
-
+                updataMvListData()
 
             } else {
                 updataMvList()
@@ -285,6 +285,25 @@
                     msg: err.msg,
                     duration: 2000,
                     location: 'bottom'
+                });
+            }
+        });
+
+    }
+
+    function updataMvListData() {
+        api.ajax({
+            url: musicApi + '/top/mv?limit=10',
+            // url: 'http://v7idc.com/ku/admin.php?r=home/api/mvlist',
+            method: 'get',
+            cache: true
+        }, function(ret, err) {
+            if (ret) {
+                api.writeFile({
+                    path: api.cacheDir + 'indexInitMv.json',
+                    data: ret.data
+                }, function(ret, err) {
+
                 });
             }
         });

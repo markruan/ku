@@ -261,14 +261,15 @@
 				api.ajax({
 					url: songDetail + music_id
 				}, function(ret, err) {
-					if (ret && ret.data[0].url != null) {
+					  // console.log(JSON.stringify(ret));
+					if (ret && ret.data[0].code==200) {
 						var mp3Url = ret.data[0].url.replace(/https/, 'http')
 							// 去除安全限制
 						$api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
 						app.music_mp3 = mp3Url
 						play_c(mp3Url, app.music_imgurl, app.music_title, app.music_artist)
 					} else {
-						playNext_b()
+						app.playNext()
 						api.toast({
 							msg: '版权问题，自动播放下一曲'
 						});
