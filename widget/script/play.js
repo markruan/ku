@@ -1,5 +1,5 @@
 function play_c(mp3, cover, songName, artists, current, sid) {
-    var pdd = $api.byId('playerIcon');
+    // var pdd = $api.byId('playerIcon');
     uiloading();
     api.sendEvent({
         name: 'playing',
@@ -16,8 +16,7 @@ function play_c(mp3, cover, songName, artists, current, sid) {
         path: mp3,
         cache: true
     }, function(ret) {
-
-        if (ret.status) {
+      if (ret.status) {
             api.sendEvent({
                 name: 'startplaying',
                 extra: {
@@ -37,7 +36,7 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                         app.replay();
                         return
                     } else {
-                        playNext_b()
+                        app.playNext()
                         api.toast({
                             msg: '播放完毕'
                         });
@@ -79,36 +78,35 @@ function play_c(mp3, cover, songName, artists, current, sid) {
             api.toast({
                 msg: '播放超时，自动播放下一曲'
             });
-            playNext_b()
+            app.playNext()
         }
     });
 
 }
 
-function getCurrent() {
-    var audioPlayer = api.require('audioPlayer');
-    audioPlayer.getCurrent(function(ret) {
-        var current = ret.current
+// function getCurrent() {
+//     var audioPlayer = api.require('audioPlayer');
+//     audioPlayer.getCurrent(function(ret) {
+//         var current = ret.current
+//         return current
+//     });
+// }
 
-        return current
-    });
-}
-
-function getCache(pic) {
-    api.imageCache({
-        url: pic
-    }, function(ret, err) {
-        if (ret) {
-            albumC = ret.url;
-            $api.setStorage('uulr', albumC);
-            api.setPrefs({
-                key: 'apic',
-                value: albumC
-            });
-        } else {}
-    });
-    $api.rmStorage('album')
-}
+// function getCache(pic) {
+//     api.imageCache({
+//         url: pic
+//     }, function(ret, err) {
+//         if (ret) {
+//             albumC = ret.url;
+//             $api.setStorage('uulr', albumC);
+//             api.setPrefs({
+//                 key: 'apic',
+//                 value: albumC
+//             });
+//         } else {}
+//     });
+//     $api.rmStorage('album')
+// }
 
 // function pause() {
 //     var pdd = $api.byId('playerIcon');
@@ -452,7 +450,6 @@ function isOnLineStatus(callback) {
 
 function audioCover(cover, duration, songName, artists, per) {
     var objj = api.require('audioCover');
-    //	var uul = $api.getStorage('uulr');
     var msg = {
         totalTime: duration,
         cover: cover,
@@ -463,31 +460,21 @@ function audioCover(cover, duration, songName, artists, per) {
     objj.set(msg, function(ret, err) {
         if (ret.eventType == 'pause') {
             //			pause();
-            play();
+            app.replay()
         } else if (ret.eventType == 'next') {
-            stop();
-            playNext_b()
+            app.stop();
+            app.playNext()
         } else if (ret.eventType == 'previous') {
-            stop();
-            prev_b()
+            app.stop();
+            app.playBack()
         } else if (ret.eventType == 'play') {
             //			play()
-            pause();
+            app.pause();
         } else {}
     });
 }
 
-function imageCache(url) { //图片缓存方法
-    var path = url;
-    api.imageCache({
-        url: url,
-    }, function(ret, err) {
-        if (ret) {
-            path = ret.url;
-        }
-    });
-    return path;
-}
+
 
 function openComm(sid, type) {
     if (!$api.getStorage('userinfo')) {

@@ -126,7 +126,7 @@
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
 						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" tapmode onclick="shouCang(<%=list.id %>,null,'<%=list.mp3Url %>','<%=list.artists[0].name %>','<%=list.name %>','<%=list.album.picUrl %>')" tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" tapmode @click='setcomm' tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
 
 						</div>
 					</div>
@@ -172,33 +172,33 @@
 			}
 		});
 		api.addEventListener({
-		    name: 'playNext'
-		}, function(ret, err){
-		    if( ret ){
-		        app.playNext()
-		    }else{
-		        //  alert( JSON.stringify( err ) );
-		    }
+			name: 'playNext'
+		}, function(ret, err) {
+			if (ret) {
+				app.playNext()
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
 		});
 		api.addEventListener({
-		    name: 'pause'
-		}, function(ret, err){
-		    if( ret ){
-		         app.isPlaying=false
-						 app.pause()
-		    }else{
-		        //  alert( JSON.stringify( err ) );
-		    }
+			name: 'pause'
+		}, function(ret, err) {
+			if (ret) {
+				app.isPlaying = false
+				app.pause()
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
 		});
 		api.addEventListener({
-		    name: 'replaying'
-		}, function(ret, err){
-		    if( ret ){
-		        app.isPlaying=true
-						app.replay()
-		    }else{
-		        //  alert( JSON.stringify( err ) );
-		    }
+			name: 'replaying'
+		}, function(ret, err) {
+			if (ret) {
+				app.isPlaying = true
+				app.replay()
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
 		});
 
 
@@ -232,7 +232,19 @@
 					if (ret.code == 200) {
 						app.music_title = ret.songs[0].name
 						app.music_artist = ret.songs[0].ar[0].name
-						app.music_imgurl = ret.songs[0].al.picUrl + '?param=500y500'
+							// app.music_imgurl = ret.songs[0].al.picUrl + '?param=500y500'
+							// app.music_imgurl = imageCache(ret.songs[0].al.picUrl)
+						api.imageCache({
+							url: ret.songs[0].al.picUrl + '?param=500y500'
+						}, function(ret, err) {
+							if (ret) {
+								app.music_imgurl = ret.url
+							} else {
+								//  alert( JSON.stringify( err ) );
+							}
+						});
+
+
 						app.getMusic(ret.songs[0].id)
 					} else {
 						// alert( JSON.stringify( err ) );
@@ -280,7 +292,7 @@
 				var audioPlayer = api.require('audioPlayer');
 				audioPlayer.play();
 			},
-			stop:function(){
+			stop: function() {
 				var audioPlayer = api.require('audioPlayer');
 				audioPlayer.stop();
 			},
@@ -427,12 +439,12 @@
 					});
 
 				}
-      },
-			playBack:function(){
+			},
+			playBack: function() {
 				app.stop()
 				var arr = $api.getStorage('listm');
-				var index_m = Number(app.music_index) -1
-				if (index_m <=0) {
+				var index_m = Number(app.music_index) - 1
+				if (index_m <= 0) {
 					api.sendEvent({
 						name: 'songid',
 						extra: {
@@ -441,12 +453,10 @@
 						}
 					});
 					api.toast({
-					    msg: '第一首了',
-					    duration: 2000,
-					    location: 'bottom'
+						msg: '第一首了',
+						duration: 2000,
+						location: 'bottom'
 					});
-
-
 				} else {
 					api.sendEvent({
 						name: 'songid',
@@ -455,10 +465,77 @@
 							index: index_m
 						}
 					});
-
 				}
-
+			},
+			setcomm: function() {
+				if (!$api.getStorage('userinfo')) {
+					api.toast({
+						msg: '先登陆'
+					});
+					return
+				}
+				api.ajax({
+					url: hostUrl + '/mylist.php',
+					method: 'post',
+				  data: {
+						values: {
+							sid: app.music_id,
+							uid: $api.getStorage('userinfo').data_id
+						}
+					}
+				}, function(ret, err) {
+					if (ret.code==200) {
+						api.ajax({
+							url: hostUrl + '/addm.php',
+							method: 'post',
+							cache: true,
+							timeout: 30,
+							dataType: 'json',
+							data: {
+								values: {
+									artist: app.music_artist,
+									title: app.music_title,
+									uid: $api.getStorage('userinfo').data_id,
+									background: app.music_imgurl,
+									cover: app.music_imgurl,
+									sid: app.music_id
+								}
+							}
+						}, function(ret, err) {
+							//coding...
+						});
+						api.toast({
+							msg: '收藏成功'
+						});
+					} else if (ret.code == 202) {
+						api.confirm({
+							title: '取消收藏',
+							msg: '亲，要取消吗？',
+							buttons: ['确定', '取消']
+						}, function(ret, err) {
+							if (ret.buttonIndex == 1) {
+								app.quXiaoShouCang()
+							}
+						});
+					} else {
+						api.toast({
+							msg: '收藏失败'
+						});
+					}
+					//coding...
+				});
+			},
+			quXiaoShouCang:function(){
+				var uid = $api.getStorage('userinfo').data_id
+				api.ajax({
+						url: hostUrl + '/quxiao.php?uid=' + uid + '&sid=' + app.music_id,
+         }, function(ret, err) {
+						api.toast({
+								msg: ret.msg
+						});
+				});
 			}
+
 		}
 	})
 </script>

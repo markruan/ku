@@ -923,3 +923,14 @@ function closeT() {
     api.closeSlidPane();
 
 }
+function imageCache(url) { //图片缓存方法
+    var path = url;
+    api.imageCache({
+        url: url,
+    }, function(ret, err) {
+        if (ret) {
+            path = ret.url;
+        }
+    });
+    return path;
+}

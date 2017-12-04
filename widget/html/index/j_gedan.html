@@ -72,8 +72,8 @@
         api.readFile({
             path: api.cacheDir + '/mlist/'+api.pageParam.pinyin+'.json',
         }, function(ret, err) {
-          console.log(ret);
-             if (ret&&ret.status) {
+          // console.log(JSON.stringify(ret));
+             if (ret&&ret.status&&ret!='') {
                 mdata = $api.strToJson(ret.data);
                 initpage(mdata)
             } else {
@@ -119,8 +119,8 @@
 
     //  获取用户的歌单
     function findinfo1() {
-        var jingxuan=musicApi+'/top/playlist/highquality?limit=30&cat='+api.pageParam.cat;
-        // console.log(api.pageParam.cat);
+        var jingxuan=musicApi+'/top/playlist/highquality?limit=15&cat='+api.pageParam.cat;
+        console.log(api.pageParam.cat);
         uiloading()
         setTimeout(function() {
             stoploading();
@@ -129,7 +129,8 @@
             url: jingxuan,
             cache: true,
         }, function(ret, err) {
-            if (ret) {
+            if (ret.code==200) {
+              // console.log(JSON.stringify(api.pageParam.cat));
               initpage(ret)
                 api.writeFile({
                     path: api.cacheDir + '/mlist/'+api.pageParam.pinyin+'.json',
@@ -144,7 +145,7 @@
 
             } else {
                 api.toast({
-                    msg: '没有更多了'
+                    msg: '数据错误'
                 });
                 stoploading();
                 api.refreshHeaderLoadDone();

@@ -17,7 +17,7 @@
 </head>
 <script type="text/html" id="tppl">
     <% for(var i=0; i < list.length; i++){ %>
-        <div onclick="play(this,'<%=list[i].mp3 %>')" data-click="0" mp3url="<%=list[i].mp3 %>" title="<%=list[i].title %>" class="list H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
+        <div onclick="play(this,'<%=list[i].mp3 %>','<%=list[i].sid %>')" data-click="0" mp3url="<%=list[i].mp3 %>" title="<%=list[i].title %>" class="list H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
             <div class="H-padding-vertical-both-10"><img data-echo="<%=imageCache(list[i].cover) %>" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10" style="width: 70px; height: 70px;"></div>
             <div class="H-padding-vertical-both-10"><img id="icon" src="../../image/zan.png" alt="" title="" class="H-display-block H-margin-horizontal-left-10 zanting" style="display: none"></div>
             <div class="H-flex-item H-padding-10">
@@ -41,14 +41,18 @@
 H.tppl_flag = ["<%", "%>"];
 var url = hostUrl + '/song.php';
 
-function play(button, mp3) {
-    //			alert($api.attr(button, 'mp3url'))
-    var audioPlayer = api.require('audioPlayer');
-    var click = button.getAttribute("data-click");
-    var el = $api.last($api.eq(button, 2));
-    var ceshi = $api.next(button);
+function play(button, mp3,sid) {
+var click = button.getAttribute("data-click");
+var el = $api.last($api.eq(button, 2));
     if (click == 0) {
-        playmp3(mp3, button)
+        api.sendEvent({
+            name: 'songid',
+            extra: {
+                sid: sid,
+                index: 0
+            }
+        });
+        uiloading();
         var listel = $api.domAll('.zanting');
         for (i = 0; i < listel.length; i++) {
             $api.attr(listel[i], 'style', 'display: none ');
@@ -58,7 +62,11 @@ function play(button, mp3) {
     } else {
         $api.attr(el, 'style', 'display: none ');
         button.setAttribute("data-click", 0);
-        audioPlayer.stop();
+        api.sendEvent({
+            name: 'pause',
+
+        });
+
     }
 }
 
@@ -99,15 +107,17 @@ function initPage() {
 }
 
 
-H.ready(function() {
+  apiready = function() {
     var audioPlayer = api.require('audioPlayer');
     //		 console.log(JSON.stringify(audioPlayer));
     var el = $api.getStorage('el');
-    audioPlayer.addEventListener({
-        name: "playing"
-    }, function(ret) {
-        //				alert(JSON.stringify(el))
-        //
+    api.addEventListener({
+        name: 'playing'
+    }, function(ret, err) {
+        if (ret) {
+            //						play()
+            stoploading();
+        }
     });
     audioPlayer.addEventListener({
         name: "state"
@@ -140,7 +150,7 @@ H.ready(function() {
     }, function(ret, err) {
         initPage()
     });
-});
+};
 
 function playmp3(mp3, button) {
     api.showProgress({});

@@ -44,27 +44,27 @@ function switchplay(button, mp3, sid) {
         $api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
     }
 }
+// 
+// function stop1() {
+//     var audio = api.require('audioPlayer');
+//     audio.stop();
+//     api.sendEvent({
+//         name: 'stopmusic'
+//     });
+// }
 
-function stop1() {
-    var audio = api.require('audioPlayer');
-    audio.stop();
-    api.sendEvent({
-        name: 'stopmusic'
-    });
-}
+// function play() {
+//     var audio = api.require('audioPlayer');
+//     audio.play();
+//     api.sendEvent({
+//         name: 'playing'
+//     });
+// }
 
-function play() {
-    var audio = api.require('audioPlayer');
-    audio.play();
-    api.sendEvent({
-        name: 'playing'
-    });
-}
-
-function pause() {
-    var audioPlayer = api.require('audioPlayer');
-    audioPlayer.pause();
-}
+// function pause() {
+//     var audioPlayer = api.require('audioPlayer');
+//     audioPlayer.pause();
+// }
 
 function openPhoto(data, i) {
     var dd = data.split(',')
