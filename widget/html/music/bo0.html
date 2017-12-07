@@ -156,7 +156,9 @@
 	apiready = function() {
 		app.music_id = api.pageParam.sid
 		app.music_index = api.pageParam.index
-		app.slider()
+		console.log($api.getStorage('listm'));
+		app.mlistdata=api.pageParam.mlistdata?api.pageParam.mlistdata:$api.getStorage('listm');
+    app.slider()
 		$api.setStorage('isopen', 1);
 
 		app.init()
@@ -164,11 +166,14 @@
 			name: 'songid'
 		}, function(ret, err) {
 			if (ret) {
+				// console.log(JSON.stringify(ret));
 				app.music_id = ret.value.sid
 				app.music_index = ret.value.index
+				app.mlistdata=ret.value.mlistdata?ret.value.mlistdata:$api.getStorage('listm');
+
 				app.init()
 			} else {
-				alert(JSON.stringify(err));
+				// alert(JSON.stringify(err));
 			}
 		});
 		api.addEventListener({
@@ -200,14 +205,12 @@
 				//  alert( JSON.stringify( err ) );
 			}
 		});
-
-
-
-	}
+	 }
 
 	var app = new Vue({
 		el: '#app',
 		data: {
+			mlistdata:'',
 			music_imgurl: '../../image/default.jpg',
 			music_title: '',
 			music_artist: '',
@@ -280,19 +283,28 @@
 				if (app.isPlaying) {
 					app.isPlaying = false;
 					app.pause()
+					api.sendEvent({
+					    name: 'pause',
+
+					});
+
 				} else {
 					app.isPlaying = true;
 					app.replay()
+
+
 				}
 			},
 			pause: function() {
 				var audioPlayer = api.require('audioPlayer');
 				audioPlayer.pause();
+
+
 			},
 			replay: function() {
 				var audioPlayer = api.require('audioPlayer');
 				audioPlayer.play();
-			},
+			 },
 			stop: function() {
 				var audioPlayer = api.require('audioPlayer');
 				audioPlayer.stop();
@@ -347,11 +359,11 @@
 				});
 			},
 			openlist: function() {
+
 				api.openFrame({
 					name: 'mlist_bo',
 					url: 'bolist.html',
-
-					rect: {
+          rect: {
 						x: 0,
 						y: api.winHeight - 300,
 						w: api.winWidth,
@@ -360,7 +372,8 @@
 					bounces: false,
 					bgColor: 'rgba(0,0,0,0)',
 					vScrollBarEnabled: true,
-					hScrollBarEnabled: true
+					hScrollBarEnabled: true,
+					pageParam:app.mlistdata
 				});
 			},
 			shareWx: function() {
@@ -419,7 +432,7 @@
 			},
 			playNext: function() {
 				app.stop()
-				var arr = $api.getStorage('listm');
+				var arr = app.mlistdata;
 				var index_m = Number(app.music_index) + 1
 				if (index_m == arr.length) {
 					api.sendEvent({
@@ -435,7 +448,8 @@
 						name: 'songid',
 						extra: {
 							sid: arr[index_m].id,
-							index: index_m
+							index: index_m,
+							mlistdata:app.mlistdata
 						}
 					});
 
@@ -443,7 +457,7 @@
 			},
 			playBack: function() {
 				app.stop()
-				var arr = $api.getStorage('listm');
+				var arr =app.mlistdata;
 				var index_m = Number(app.music_index) - 1
 				if (index_m <= 0) {
 					api.sendEvent({

@@ -1,7 +1,7 @@
 function switchplay(button, mp3, sid) {
     var click = button.getAttribute("data-click");
     if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
-        $api.setStorage('listopen', 2);
+        $api.setStorage('listopen', 3);
         api.openWin({
             name: 'nww',
             url: '../../html/music/bo_head.html',
@@ -14,11 +14,13 @@ function switchplay(button, mp3, sid) {
             pageParam: {
                 sid: sid,
                 index: 0,
+                mlistdata:false
             }
         });
     }
     if (click == 0) {
         // 点开
+        // uiloading()
         var dd = document.getElementsByClassName('icon-zanting');
         for (i = 0; i < dd.length; i++) {
             $api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
@@ -29,22 +31,23 @@ function switchplay(button, mp3, sid) {
             extra: {
                 sid: sid,
                 index: 0,
+                mlistdata:false
             }
         })
-        uiloading()
+
         $api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
     } else {
         // 关闭
         button.setAttribute("data-click", 0);
         api.sendEvent({
-            name: 'stopmusic'
+            name: 'pause'
         });
-        pause()
+
         stoploading();
         $api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
     }
 }
-// 
+//
 // function stop1() {
 //     var audio = api.require('audioPlayer');
 //     audio.stop();

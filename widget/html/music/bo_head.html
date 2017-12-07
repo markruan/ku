@@ -10,14 +10,14 @@
     <style type="text/css"></style>
 </head>
 <style>
-.H-theme-font-color-white {
-    color: #fff
-}
-.bgg {
-  background-image: url(../../image/hd2.jpg);
-  background-position: right bottom, left top;
+    .H-theme-font-color-white {
+        color: #fff
+    }
 
-}
+    .bgg {
+        background-image: url(../../image/hd2.jpg);
+        background-position: right bottom, left top;
+    }
 </style>
 
 <body>
@@ -28,50 +28,61 @@
     <script src="../../script/H.js" type="text/javascript"></script>
     <script src="../../script/api.js" type="text/javascript"></script>
     <script type="text/javascript">
-    function goback() {
-        if ($api.getStorage('listopen') == 1) {
-            api.openWin({
-                name: 'musiclist',
-                animation: {
-                    type: "push", //动画类型（详见动画类型常量）
-                    subType: "from_left", //动画子类型（详见动画子类型常量）
-                    duration: 300 //动画过渡时间，默认300毫秒
-                }
-            });
-        } else {
-            api.openWin({
-                name: 'slidLayout',
-                animation: {
-                    type: "push", //动画类型（详见动画类型常量）
-                    subType: "from_left", //动画子类型（详见动画子类型常量）
-                    duration: 300 //动画过渡时间，默认300毫秒
-                }
-            })
+        function goback() {
+            if ($api.getStorage('listopen') == 1) {
+                api.openWin({
+                    name: 'musiclist',
+                    animation: {
+                        type: "push", //动画类型（详见动画类型常量）
+                        subType: "from_left", //动画子类型（详见动画子类型常量）
+                        duration: 300 //动画过渡时间，默认300毫秒
+                    }
+                });
+            } else if ($api.getStorage('listopen') == 2) {
+              api.openWin({
+                  name: 'dailymusic',
+                  animation: {
+                      type: "push", //动画类型（详见动画类型常量）
+                      subType: "from_left", //动画子类型（详见动画子类型常量）
+                      duration: 300 //动画过渡时间，默认300毫秒
+                  }
+              });
+
+            } else {
+                api.openWin({
+                    name: 'slidLayout',
+                    animation: {
+                        type: "push", //动画类型（详见动画类型常量）
+                        subType: "from_left", //动画子类型（详见动画子类型常量）
+                        duration: 300 //动画过渡时间，默认300毫秒
+                    }
+                })
+            }
         }
-    }
 
 
-    H.ready(function() {
-        api.setStatusBarStyle({
-            style: 'dark'
-        });
+        H.ready(function() {
+            api.setStatusBarStyle({
+                style: 'dark'
+            });
 
-        H.openFrameNavOrFoot('bo', 'bo0.html', "#header", {
-            sid: api.pageParam.sid,
-            index: api.pageParam.index,
-        }, null, {
-            bounces: false,
-            reload:true
+            H.openFrameNavOrFoot('bo', 'bo0.html', "#header", {
+                sid: api.pageParam.sid,
+                index: api.pageParam.index,
+                mlistdata:api.pageParam.mlistdata
+            }, null, {
+                bounces: false,
+                reload: true
+            });
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                goback()
+            });
+            api.sendEvent({
+                name: 'bofangye'
+            });
         });
-        api.addEventListener({
-            name: 'keyback'
-        }, function(ret, err) {
-            goback()
-        });
-        api.sendEvent({
-            name: 'bofangye'
-        });
-    });
     </script>
 </body>
 

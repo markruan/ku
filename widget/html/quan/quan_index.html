@@ -60,7 +60,7 @@
                             </div>
                             <%}%>
                 </div>
-                <div class=" H-theme-background-color-white H-theme-font-color-333 H-padding-5 H-font-size-14" tapmode  >
+                <div class=" H-theme-background-color-white H-theme-font-color-333 H-padding-5 H-font-size-14" tapmode>
                     <%=list[i].text%>
                 </div>
                 <div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box  ">
@@ -96,7 +96,7 @@
                     </div>
                     <div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10" tapmode onclick=" openPhoto('<%=list[i].cover %>') ">
                     </div>
-                    <div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14"  >
+                    <div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14">
                         <%=list[i].text %>
                     </div>
                     <div class="H-flexbox-horizontal H-clear-both H-theme-background-color-white H-padding-8 H-box-sizing-border-box  r">
@@ -179,7 +179,8 @@
 
         H.tppl_flag = ["<%", "%>"];
         var page = 0
-       function initPage() {
+
+        function initPage() {
             // uiloading();
 
             var ye = page * 10
@@ -187,8 +188,8 @@
                 url: hostUrl + '/quan123.php?page=' + ye,
                 cache: true,
             }, function(ret, err) {
-                 if (ret) {
-            // console.log(JSON.stringify(ret));
+                if (ret) {
+                    // console.log(JSON.stringify(ret));
                     var playlist = ret
                     var data1 = {
                         list: []
@@ -212,11 +213,11 @@
                         callback: function(element, op) {}
                     });
                     stoploading();
-              } else {
+                } else {
                     $api.html($api.byId('footer'), '<div  class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">没有更多了......</div>');
 
                 }
-                  // api.parseTapmode();
+                // api.parseTapmode();
 
             });
 
@@ -236,20 +237,20 @@
                 initPage()
 
             });
-            api.addEventListener({
-                name: 'playingquan'
-            }, function(ret, err) {
-                if (ret) {
-                    play()
-                }
-            });
-            api.addEventListener({
-                name: 'playing'
-            }, function(ret, err) {
-                if (ret) {
-                    stoploading();
-                }
-            });
+            // api.addEventListener({
+            //     name: 'playingquan'
+            // }, function(ret, err) {
+            //     if (ret) {
+            //         play()
+            //     }
+            // });
+            // api.addEventListener({
+            //     name: 'playing'
+            // }, function(ret, err) {
+            //     if (ret) {
+            //         stoploading();
+            //     }
+            // });
             initPage(page)
             api.setRefreshHeaderInfo({
                 loadingImg: 'widget://image/refresh.png',
@@ -271,10 +272,12 @@
                 api.refreshHeaderLoadDone();
             });
             api.addEventListener({
-                name: 'stopmusic'
+                name: 'pause'
             }, function(ret, err) {
                 if (ret) {
-                    pause()
+                    var audioPlayer = api.require('audioPlayer');
+                    audioPlayer.pause();
+                    // pause()
                 }
             });
 
@@ -319,4 +322,5 @@
         }
     </script>
 </body>
- </html>
+
+</html>

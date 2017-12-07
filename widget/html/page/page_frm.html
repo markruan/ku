@@ -40,9 +40,9 @@
     <div id="index" class="H-display-none" style="  background-color: white;">
         <div style="height: 170px"></div>
         <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
-            <div class="H-flex-item" tapmode onclick="openjingxuanlist('电子','dianzi')">
+            <div class="H-flex-item" tapmode onclick="openDaily()">
                 <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
-                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">电子</label>
+                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">每日推荐</label>
             </div>
             <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')">
                 <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
@@ -198,6 +198,7 @@
 
     apiready = function() {
         tui()
+        // alert(2)
         api.parseTapmode();
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
@@ -382,6 +383,15 @@
                 // alert(JSON.stringify(err));
             }
         });
+    }
+
+    function openDaily(){
+      api.openWin({
+          name: 'dailymusic',
+          url: './dailymusic.html',
+
+      });
+
     }
 </script>
 

@@ -794,6 +794,7 @@
 		$api.byId('ava').innerHTML = str1;
 		arr = mdata.tracks;
 		$api.setStorage('listm', arr);
+
 		var myobj = eval(arr);
 		var len = myobj.length;
 		$api.setStorage('lens', len);
@@ -831,26 +832,29 @@
 		api.parseTapmode();
 
 	}
+	//
+	// function playNext_f() {
+	// 	api.addEventListener({
+	// 		name: 'playNext'
+	// 	}, function(ret, err) {
+	// 		index_m = ret.value.index
+	// 		var arr = $api.getStorage('listm');
+	// 		var sid = arr[index_m + 1].id
+	// 		api.sendEvent({
+	// 			name: 'songid',
+	// 			extra: {
+	// 				sid: sid,
+	// 				index: index_m + 1,
+	// 				mlistdata:arr
+	// 			}
+	// 		});
+	// 	});
+	// }
 
-	function playNext_f() {
-		api.addEventListener({
-			name: 'playNext'
-		}, function(ret, err) {
-			index_m = ret.value.index
-			var arr = $api.getStorage('listm');
-			var sid = arr[index_m + 1].id
-			api.sendEvent({
-				name: 'songid',
-				extra: {
-					sid: sid,
-					index: index_m + 1
-				}
-			});
-		});
-	}
-
-	function abc(el, i) {
+	function abc(el,i,mlistdata) {
 		// var Idd = api.pageParam.name;
+	var mlistdata=$api.getStorage('listm')
+
 		$api.setStorage('name', 1);
 		$api.setStorage('idi', i);
 		$api.setStorage('listopen', 1);
@@ -868,16 +872,18 @@
 				pageParam: {
 					sid: el,
 					index: i,
-				}
+					mlistdata:mlistdata
+         }
 			});
-
+      setTimeout(
 				api.sendEvent({
 					name: 'songid',
 					extra: {
 						sid: el,
-						index: i
+						index: i,
+						mlistdata:mlistdata
 					}
-				})
+				}),1000)
 		} else {
 			api.openWin({
 				name: 'nww',
@@ -886,7 +892,8 @@
 				name: 'songid',
 				extra: {
 					sid: el,
-					index: i
+					index: i,
+					mlistdata:mlistdata
 				}
 			})
 		}

@@ -1,31 +1,23 @@
 function play_c(mp3, cover, songName, artists, current, sid) {
     // var pdd = $api.byId('playerIcon');
     uiloading();
-    api.sendEvent({
-        name: 'playing',
-        extra: {
-            songName: songName,
-            artists: artists,
-            mp3: mp3,
-        }
-    });
-
     var audioPlayer = api.require('audioPlayer');
     audioPlayer.stop();
     audioPlayer.initPlayer({
         path: app.music_mp3,
         cache: true
     }, function(ret) {
-    
+
       if (ret.status) {
-            api.sendEvent({
-                name: 'startplaying',
-                extra: {
-                    songName: songName,
-                    artists: artists,
-                    mp3: mp3,
-                }
-            });
+        stoploading()
+            // api.sendEvent({
+            //     name: 'startplaying',
+            //     extra: {
+            //         songName: songName,
+            //         artists: artists,
+            //         mp3: mp3,
+            //     }
+            // });
 
             var duration = ret.duration;
             $api.setStorage('duration', duration);
@@ -49,11 +41,20 @@ function play_c(mp3, cover, songName, artists, current, sid) {
 
                 }
             });
-
             audioPlayer.addEventListener({
                 name: "playing"
             }, function(ret) {
-                stoploading()
+
+                app.isPlaying = true
+                api.sendEvent({
+                    name: 'playing',
+                    extra: {
+                        songName: songName,
+                        artists: artists,
+                        mp3: mp3,
+                    }
+                });
+
                 current = ret.current
                 var tii = duration * 10;
                 //				console.log(JSON.stringify(current))

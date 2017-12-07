@@ -158,8 +158,7 @@
 
         H.ready(function() {
             H.dblclickToCloseApp();
-            cookie()
-            // test2()
+          
             // 监听耳机拔下事件
             var phoneListener = api.require('phoneListener');
             phoneListener.headphonePluggedListener({
@@ -168,7 +167,7 @@
                 function(ret) {
                     if (!ret.state) {
                         api.sendEvent({
-                            name: 'stopmusic',
+                            name: 'pause',
                         });
                     }
 
@@ -183,19 +182,20 @@
                 var txt = ret.value.songName + '-' + ret.value.artists
                 $api.text($api.byId('title'), txt);
                 $api.attr(playid, 'data-click', 0);
+                stoploading();
             });
             api.addEventListener({
                 name: 'replaying'
             }, function(ret, err) {
                 $api.attr(playid, 'data-click', 0);
             });
+            // api.addEventListener({
+            //     name: 'resume'
+            // }, function(ret, err) {
+            //     $api.attr(playid, 'class', 'pause');
+            // });
             api.addEventListener({
-                name: 'resume'
-            }, function(ret, err) {
-                $api.attr(playid, 'class', 'pause');
-            });
-            api.addEventListener({
-                name: 'stopmusic'
+                name: 'pause'
             }, function(ret, err) {
                 $api.attr($api.byId('pp'), 'class', 'play');
             });
@@ -231,34 +231,7 @@
         }
 
         // 登录测试获取cookie
-        function cookie() {
-            api.ajax({
-                url: musicApi + '/login/cellphone?phone=18806519061&password=ruannan002',
-                returnAll: true,
-            }, function(ret, err) {
-                if (ret) {
-                    // console.log( JSON.stringify( ret ) );
-                    $api.setStorage('apicookie', ret.headers);
-                } else {
-                    alert(JSON.stringify(err));
-                }
-            });
-        }
 
-        function test2() {
-            api.ajax({
-                url: musicApi + '/recommend/songs',
-                headers: $api.getStorage('apicookie')
-            }, function(ret, err) {
-                if (ret) {
-                    console.log(JSON.stringify(ret));
-                } else {
-                    // alert(JSON.stringify(err));
-                }
-            });
-
-
-        }
     </script>
 </body>
 
