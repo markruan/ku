@@ -156,17 +156,17 @@
 	apiready = function() {
 		app.music_id = api.pageParam.sid
 		app.music_index = api.pageParam.index
-		console.log($api.getStorage('listm'));
+		// console.log($api.getStorage('listm'));
 		app.mlistdata=api.pageParam.mlistdata?api.pageParam.mlistdata:$api.getStorage('listm');
     app.slider()
 		$api.setStorage('isopen', 1);
-
-		app.init()
+   	app.init()
 		api.addEventListener({
 			name: 'songid'
 		}, function(ret, err) {
 			if (ret) {
 				// console.log(JSON.stringify(ret));
+        app.stop();
 				app.music_id = ret.value.sid
 				app.music_index = ret.value.index
 				app.mlistdata=ret.value.mlistdata?ret.value.mlistdata:$api.getStorage('listm');
