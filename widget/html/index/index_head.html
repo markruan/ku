@@ -158,7 +158,17 @@
 
         H.ready(function() {
             H.dblclickToCloseApp();
-          
+            var fs = api.require('fs');
+            fs.createDir({
+                path: 'fs://cache'
+            }, function(ret, err) {
+                if (ret.status) {
+                    // alert(JSON.stringify(ret));
+                } else {
+                    // alert(JSON.stringify(err));
+                }
+            });
+
             // 监听耳机拔下事件
             var phoneListener = api.require('phoneListener');
             phoneListener.headphonePluggedListener({

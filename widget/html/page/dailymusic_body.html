@@ -606,7 +606,7 @@
 			},
 			getTui: function() {
 				api.readFile({
-					path: api.cacheDir + 'cache/dailymusic.json',
+					path: api.fsDir + 'dailymusic.json',
 				}, function(ret, err) {
 					if (ret.status) {
 						// console.log(JSON.stringify(ret));
@@ -623,7 +623,7 @@
 								app.listData = ret.recommend
 								var arr = ret.recommend
 								api.writeFile({
-									path: api.cacheDir + 'cache/dailymusic.json',
+									path: api.fsDir + 'dailymusic.json',
 									data: ret.recommend
 								}, function(ret, err) {
 
@@ -646,7 +646,7 @@
 								app.listData = ret.recommend
 								var arr = ret.recommend
 								api.writeFile({
-									path: api.cacheDir + 'cache/dailymusic.json',
+									path: api.fsDir + 'dailymusic.json',
 									data: ret.recommend
 								}, function(ret, err) {
 

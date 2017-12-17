@@ -271,6 +271,8 @@
 						$api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
 						app.music_mp3 = mp3Url
 						play_c(mp3Url, app.music_imgurl, app.music_title, app.music_artist)
+						var datetime = Number(new Date())
+						saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime) //存储播放历史
 					} else {
 						app.playNext()
 						api.toast({

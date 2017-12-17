@@ -278,8 +278,8 @@ function imageCache(url) { //图片缓存方法
 
 (function(window) {
     hostUrl = 'http://api.iqimeng.com/ku/api';
-    musicApi = 'http://67.21.85.120:3000',
-    musicUrl = 'http://67.21.85.120:3000/playlist/detail?id=';
+    musicApi = 'http://musicapi4785.cloudapp.net:3000',
+    musicUrl = 'http://musicapi4785.cloudapp.net:3000/playlist/detail?id=';
     houZhui = '&updateTime=-1'
     songDetail='https://api.imjad.cn/cloudmusic/?id='
 
