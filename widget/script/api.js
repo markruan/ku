@@ -279,7 +279,9 @@ function imageCache(url) { //图片缓存方法
 (function(window) {
     hostUrl = 'http://api.iqimeng.com/ku/api';
     musicApi = 'http://musicapi4785.cloudapp.net:3000',
+    // musicApi='http://67.21.85.120:3000'
     musicUrl = 'http://musicapi4785.cloudapp.net:3000/playlist/detail?id=';
+    // musicUrl='http://67.21.85.120:3000/playlist/detail?id='
     houZhui = '&updateTime=-1'
     songDetail='https://api.imjad.cn/cloudmusic/?id='
 
@@ -288,7 +290,7 @@ function imageCache(url) { //图片缓存方法
     // sEnd = ''
 
     aUrl = 'http://music.163.com/api/song/detail/?id='
-    shouUrl = 'http://v7idc.com/m/addm.php'
+    shouUrl = 'http://api.iqimeng.com/m/addm.php'
 
     var u = {};
     var isAndroid = (/android/gi).test(navigator.appVersion);
@@ -934,3 +936,24 @@ function imageCache(url) { //图片缓存方法
     });
     return path;
 }
+// 语言包
+  var yuyan
+  yuyan={
+    jingxuan:'精选',
+    quanzi:'圈子',
+    yinyue:'音乐',
+    gengduo:'更多',
+    paihang:'排行',
+    liuxing:'流行',
+    meirituijian:'每日推荐',
+    oumei:'欧美',
+    qingyinyue:'轻音乐',
+    fenxiang:'分享',
+    xiazai:'下载',
+    bofangliebao:'播放列表',
+    wodezhuye:'我的主页',
+    wodeshoucang:'我的收藏',
+    shezhi:'设置',
+    guanyuwomen:'关于我们',
+    yijianfankui:'意见反馈'
+  }

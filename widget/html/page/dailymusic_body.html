@@ -568,16 +568,13 @@
 		<div v-for="(item,index) in listData" class="egret-flex-item musiclist-item">
 			<div class="egret-flex-item-abright" @click='openMusic(item.id,index)'>
 				<div class="egret-flex-item-shelf pl10">
-					<div class="egret-flex-item-shelf01">{{item.name}}</div>
-					<div class="egret-flex-item-shelf02">{{item.artists[0].name}}
+					<div v-cloak class="egret-flex-item-shelf01">{{item.name}}</div>
+					<div v-cloak class="egret-flex-item-shelf02">{{item.artists[0].name}}
 					</div>
 
 				</div>
 			</div>
-
-
-		</div>
-
+ 	</div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/vue.min.js"></script>
@@ -606,10 +603,10 @@
 			},
 			getTui: function() {
 				api.readFile({
-					path: api.fsDir + 'dailymusic.json',
+					path: api.fsDir + '/cache/dailymusic.json',
 				}, function(ret, err) {
-					if (ret.status) {
-						// console.log(JSON.stringify(ret));
+					if (ret.status&&ret.data!='') {
+						console.log(JSON.stringify(ret));
 						app.listData = $api.strToJson(ret.data);
 						$api.setStorage('listm', $api.strToJson(ret.data));
 						stoploading()
@@ -619,11 +616,11 @@
 							cache: true,
 						}, function(ret, err) {
 							if (ret) {
-								// console.log(JSON.stringify(ret));
+								console.log(JSON.stringify(ret));
 								app.listData = ret.recommend
 								var arr = ret.recommend
 								api.writeFile({
-									path: api.fsDir + 'dailymusic.json',
+									path: api.fsDir + '/cache/dailymusic.json',
 									data: ret.recommend
 								}, function(ret, err) {
 
@@ -636,17 +633,18 @@
 							}
 						});
 					} else {
+
 						api.ajax({
 							url: musicApi + '/recommend/songs',
 							headers: $api.getStorage('apicookie'),
 							cache: true,
 						}, function(ret, err) {
 							if (ret) {
-								// console.log(JSON.stringify(ret));
+								console.log(JSON.stringify(ret));
 								app.listData = ret.recommend
 								var arr = ret.recommend
 								api.writeFile({
-									path: api.fsDir + 'dailymusic.json',
+									path: api.fsDir + '/cache/dailymusic.json',
 									data: ret.recommend
 								}, function(ret, err) {
 
@@ -655,7 +653,7 @@
 								$api.setStorage('listm', arr);
 								stoploading()
 							} else {
-								// alert(JSON.stringify(err));
+								alert(JSON.stringify(err));
 								// console.log();
 							}
 						});
@@ -663,7 +661,7 @@
 					}
 				});
 
-
+        api.refreshHeaderLoadDone();
 
 			},
 			openMusic: function(sid, index) {
@@ -717,8 +715,10 @@
 				app.openMusic(app.listData[0].id,0)
 			}
 
+		},
+    created:function(){
+	    // console.log(123);
 		}
-
 
 	})
 
@@ -728,6 +728,17 @@
 		uiloading()
 		app.getcookie();
 		app.getTui();
+		api.setRefreshHeaderInfo({
+			loadingImg: 'widget://image/refresh.png',
+			visible: true,
+			bgColor: '#f2f2f2',
+			textColor: '#4d4d4d',
+			textDown: '下拉刷新...',
+			textUp: '松开刷新...',
+			showTime: true
+		}, function(ret, err) {
+			app.getTui();
+		});
 	}
 </script>
 

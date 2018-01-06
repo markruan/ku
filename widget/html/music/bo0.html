@@ -248,7 +248,13 @@
 						});
 
 
-						app.getMusic(ret.songs[0].id)
+						// app.getMusic(ret.songs[0].id)
+						app.music_mp3='http://music.163.com/song/media/outer/url?id='+ret.songs[0].id+'.mp3'
+						// console.log(app.music_mp3);
+						play_c(app.music_mp3, app.music_imgurl, app.music_title, app.music_artist)
+						var datetime = Number(new Date())
+						saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime)
+
 					} else {
 						// alert( JSON.stringify( err ) );
 						api.toast({

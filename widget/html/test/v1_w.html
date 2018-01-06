@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        initPlayer('http://ocrwjcfuj.bkt.clouddn.com/0170803121402.mp4', '测试')
+        var moviePlayer = api.require('moviePlayer');
+        moviePlayer.setShowOrHideControlView({
+            isShow: false
+        });
+        moviePlayer.addEventListener(function(ret) {
+          moviePlayer.setShowOrHideControlView({
+              isShow: false
+          });
+            if (ret && ret.eventType == 'upFling') {
+                moviePlayer.close();
+                // moviePlayer.hide();
+                api.openWin({
+                    name: 'v2',
+                    url: 'v2_w.html',
+                    animation: {
+                        type: "push", //动画类型（详见动画类型常量）
+                        subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                        duration: 300 //动画过渡时间，默认300毫秒
+                    }
+
+                });
+
+                api.closeWin();
+            }
+        });
+
+
+
+
+
+    }
+
+    function initPlayer(url, title) {
+        var moviePlayer = api.require('moviePlayer');
+        moviePlayer.open({
+            texts: {
+                title: title
+            },
+            rect: {
+                x: 0,
+                y: 0,
+                w: api.frameWidth,
+                h: api.winHeight
+
+            },
+            styles: {
+                head: {
+                    bg: 'rgba(111, 135, 144, 0.88)',
+                    // text:'成都'，
+                    height: 44,
+                    y: 20,
+                    title: {
+                        size: 16,
+                        color: '#fff',
+                        width: 340,
+                        leftMargin: 10
+                    },
+                    backSize: 22,
+                    backImg: 'widget://image/back.png',
+                    customButtons: [{
+                        w: 30,
+                        h: 30,
+                        rightMagin: 10,
+                        img: 'widget://image/image/collect.png',
+                        imgSelected: 'fs://image/collectSelected.png',
+                    }]
+                },
+                foot: {
+                    bg: 'rgba(0,0,0,0.5)',
+                    height: 44,
+                    palyBtn: {
+                        size: 20,
+                        playImg: 'widget://image/play.png',
+                        pauseImg: 'widget://image/pause.png',
+                        marginLeft: 5
+                    },
+                    currentTimeLabel: {
+                        textSize: 14,
+                        textColor: "#FFF",
+                        textWidth: 43,
+                        marginLeft: 5
+                    },
+                    seekBar: {
+                        sliderImg: 'widget://image/circle.png',
+                        sliderW: 20,
+                        sliderH: 20,
+                        progressColor: '#696969',
+                        progressSelected: 'rgba(183, 52, 52, 0.79)',
+                        marginLeft: 10,
+                        marginRight: 10
+                    },
+                    totalTimeLabel: {
+                        textSize: 14,
+                        textColor: "#FFF",
+                        textWidth: 43,
+                        marginRight: 5
+                    },
+                    fullscreenBtn: {
+                        size: 20,
+                        verticalImg: 'widget://image/vertical.png',
+                        horizontalImg: 'widget://image/horizontal.png',
+                    }
+                }
+            },
+            autorotation: false,
+            isShowStatusBar: false,
+            path: url,
+            coverImg: 'widget://image/xia.png',
+            autoPlay: true,
+            // fixedOn:api.frameName
+        }, function(ret, err) {
+            if (ret) {
+                // alert(JSON.stringify(ret));
+                // } else {
+                // alert(JSON.stringify(err));
+            }
+
+        });
+    }
+</script>
+
+</html>

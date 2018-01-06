@@ -83,6 +83,7 @@ function initPage() {
         }
     }, function(ret, err) {
         if (ret) {
+          console.log(JSON.stringify(ret));
             var data = {
                 list: ret
             };
@@ -159,7 +160,7 @@ function playmp3(mp3, button) {
     audioPlayer.initPlayer({
         path: mp3
     }, function(ret, err) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         if (ret.status) {
             //					audioPlayer.pause();
             //					audioPlayer.play();

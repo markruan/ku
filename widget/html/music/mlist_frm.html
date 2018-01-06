@@ -784,12 +784,11 @@
 		var html = ''
 		var tracksName = mdata.name;
 		var avatarUrl = mdata.creator.avatarUrl;
-		var fenmian = mdata.coverImgUrl + '?param=120y120'
+		var fenmian = mdata.coverImgUrl + '?param=300y300'
 		var coverImgUrl = imageCache(fenmian);
 		var nickname = mdata.creator.nickname;
 		id = mdata.id
-
-		getCommCount(lid, 0)
+   	getCommCount(lid, 0)
 
 		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img id="thumb" src="' + coverImgUrl +
 			'?param=140y140" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em" id="tracksName">' + tracksName.substr(0, 17) +
