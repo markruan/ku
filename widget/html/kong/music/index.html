@@ -64,23 +64,38 @@
 			$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 		}
 	}
-	var songname, fengmian, sid
+	var songname, fengmian, sid,song
 	apiready = function() {
+		// api.ajax({
+		// 	url: 'https://api.imjad.cn/cloudmusic/?type=detail&id=' + api.pageParam.sid,
+		// }, function(ret, err) {
+		// 	if (ret) {
+		sid = api.pageParam.sid
+		source=api.pageParam.source
+		pid=api.pageParam.pid
 		api.ajax({
-			url: 'https://api.imjad.cn/cloudmusic/?type=detail&id=' + api.pageParam.sid,
+			url: 'http://www.xggsj.com/api.php?types=pic&source='+source+'&id=' + pid,
 		}, function(ret, err) {
 			if (ret) {
-				sid = ret.songs[0].id
-				fengmian = ret.songs[0].al.picUrl
-				songname = ret.songs[0].name
-				artist = ret.songs[0].ar[0].name
+          console.log(JSON.stringify(ret));
+				fengmian = ret.url
 				$api.attr($api.byId('img1'), 'src', fengmian);
-				$api.text($api.byId('song'), ret.songs[0].name);
-				$api.text($api.byId('artists'), ret.songs[0].ar[0].name);
 			} else {
 				alert(JSON.stringify(err));
 			}
 		});
+
+
+
+		songname = api.pageParam.name
+		artist = api.pageParam.artists
+
+		$api.text($api.byId('song'), songname);
+		$api.text($api.byId('artists'), artist);
+		// 	} else {
+		// 		alert(JSON.stringify(err));
+		// 	}
+		// });
 	};
 
 	function pause() {
@@ -104,6 +119,7 @@
 					values: {
 						img: fengmian,
 						song: songname,
+						mp3:api.pageParam.mp3,
 						text: text1,
 						artist: artist,
 						sid: sid,
@@ -113,18 +129,41 @@
 				}
 			}, function(ret, err) {
 				if (ret == 1) {
-					    stoploading(); api.toast({ msg: '发布成功' }); api.closeFrame({ name: 'kong' }); api.closeWin({});
+					stoploading();
+					api.toast({
+						msg: '发布成功'
+					});
+			    api.closeWin({
+			        name: 'search'
+			    });
+
+					api.closeWin();
 				} else {
-							stoploading(); api.toast({ msg: '发布失败' }); api.closeFrame({ name: 'kong' }); api.closeWin({});
+					stoploading();
+					api.toast({
+						msg: '发布失败'
+					});
+
+					api.closeWin();
 				}
 			});
 		} else {
-					api.toast({ msg: '登录后才能操作', duration: 2000, location: 'bottom' });
+			api.toast({
+				msg: '登录后才能操作',
+				duration: 2000,
+				location: 'bottom'
+			});
 		}
 	}
 
 	function play(mp3) {
-			 api.sendEvent({ name: 'songid', extra: { sid: api.pageParam.sid, index: 0, } });
+		api.sendEvent({
+			name: 'songid',
+			extra: {
+				sid: api.pageParam.sid,
+				index: 0,
+			}
+		});
 	}
 </script>
 

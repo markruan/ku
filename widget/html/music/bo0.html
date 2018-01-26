@@ -173,6 +173,7 @@
 
 				app.init()
 			} else {
+
 				// alert(JSON.stringify(err));
 			}
 		});
@@ -228,17 +229,21 @@
 		methods: {
 			init: function() {
 				uiloading();
+
+				// var murl=aUrl+app.music_id+'&ids=['+app.music_id+']'
+				console.log(JSON.stringify(murl));
 				api.ajax({
-					url: musicApi + '/song/detail?ids=' + app.music_id,
+					// url: musicApi + '/song/detail?ids=' + app.music_id,
+					url:murl,
 				}, function(ret, err) {
 					//  console.log($api.jsonToStr(ret));
 					if (ret.code == 200) {
 						app.music_title = ret.songs[0].name
-						app.music_artist = ret.songs[0].ar[0].name
+						app.music_artist = ret.songs[0].artists[0].name
 							// app.music_imgurl = ret.songs[0].al.picUrl + '?param=500y500'
 							// app.music_imgurl = imageCache(ret.songs[0].al.picUrl)
 						api.imageCache({
-							url: ret.songs[0].al.picUrl + '?param=500y500'
+							url: ret.songs[0].album.picUrl + '?param=500y500'
 						}, function(ret, err) {
 							if (ret) {
 								app.music_imgurl = ret.url

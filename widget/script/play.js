@@ -1,10 +1,12 @@
 function play_c(mp3, cover, songName, artists, current, sid) {
     // var pdd = $api.byId('playerIcon');
+    // 状态栏
+
     uiloading();
     var audioPlayer = api.require('audioPlayer');
     audioPlayer.stop();
     audioPlayer.initPlayer({
-        path: app.music_mp3,
+        path: mp3,
         cache: true
     }, function(ret) {
 
@@ -63,6 +65,8 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                 var dur = formatSeconds(duration);
                 var cur = formatSeconds(current);
                 audioCover(cover, duration, songName, artists, per)
+                // 状态栏显示
+                notify(songName+'-'+artists,cur+'-'+dur)
                 var uislider = api.require('UISlider');
                 app.playState = true
                 uislider.setValue({

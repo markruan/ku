@@ -277,6 +277,8 @@ function imageCache(url) { //图片缓存方法
 }
 
 (function(window) {
+    superSearch='http://www.xggsj.com/api.php?types=search&name='
+    searchSource='&source='
     hostUrl = 'http://api.iqimeng.com/ku/api';
     musicApi = 'http://musicapi4785.cloudapp.net:3000',
     // musicApi='http://67.21.85.120:3000'
@@ -957,3 +959,19 @@ function imageCache(url) { //图片缓存方法
     guanyuwomen:'关于我们',
     yijianfankui:'意见反馈'
   }
+// 公共函数
+//状态栏歌曲播放监听
+function notify(title,content,extra,updateCurrent){
+    updateCurrent = updateCurrent?updateCurrent:true;
+    api.notification({
+        sound:'',
+        notify: {
+            title:title,                //标题，默认值为应用名称，只Android有效
+            content:content,               //内容，默认值为'有新消息'
+            extra:extra,                  //传递给通知的数据，在通知被点击后，该数据将通过监听函数回调给网页
+            updateCurrent: updateCurrent    //是否覆盖更新已有的通知，取值范围true|false。只Android有效
+        }
+    }, function(ret, err) {
+        return ret.id;
+    });
+}

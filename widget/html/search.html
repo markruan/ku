@@ -10,7 +10,9 @@
 		.bgg {
 			background-image: url(../image/hd2.jpg);
 			background-position: right bottom, left top;
-		};
+		}
+
+		;
 		#main {
 			height: 100%;
 		}
@@ -33,6 +35,7 @@
 <script type="text/javascript" src="../script/H.js"></script>
 <script type="text/javascript">
 	var listdata = []
+	var header, headerPos
 
 	function closeWin() {
 		api.closeWin();
@@ -52,23 +55,24 @@
 		//		  $api.rmStorage('h_list');
 		api.parseTapmode();
 		searchbar()
-		var header = $api.byId('header');
+		header = $api.byId('header');
 		$api.fixStatusBar(header);
-		var headerPos = $api.offset(header);
+		headerPos = $api.offset(header);
 		var body_h = $api.offset($api.dom('body')).h;
+		open_frameGroup()
 
-		api.openFrame({
-			name: 'my_frm',
-			url: 'search_body.html',
-			bounces: false,
-			rect: {
-				x: 0,
-				y: headerPos.h,
-				w: headerPos.w,
-				h: 'auto'
-			}
-
-		});
+		// api.openFrame({
+		// 	name: 'my_frm',
+		// 	url: 'search_body.html',
+		// 	bounces: false,
+		// 	rect: {
+		// 		x: 0,
+		// 		y: headerPos.h,
+		// 		w: headerPos.w,
+		// 		h: 'auto'
+		// 	}
+		//
+		// });
 	};
 
 	function searchbar() {
@@ -122,6 +126,122 @@
 			} else {
 				//					alert(JSON.stringify(err));
 			}
+		});
+	}
+
+	function open_frameGroup() {
+		NVNavigationBar()
+		api.openFrameGroup({
+			name: 'searchGroup',
+			background: '#fff',
+			scrollEnabled: true,
+			preload:5,
+			rect: {
+				x: 0,
+				y: headerPos.h + 42,
+				w: 'auto',
+				h: 'auto'
+			},
+			index: 0,
+			frames: [{
+				name: 'netease',
+				url: 'search_body.html',
+				bgColor: '#fff',
+
+			}, {
+				name: 'tencent',
+				url: 'search_body.html',
+				bgColor: '#fff'
+			}, {
+				name: 'xiami',
+				url: 'search_body.html',
+				bgColor: '#fff'
+			}, {
+				name: 'kugou',
+			url: 'search_body.html',
+				bgColor: '#fff'
+			}, {
+				name: 'baidu',
+		url: 'search_body.html',
+				bgColor: '#fff'
+			}]
+		}, function(ret, err) {
+			if (ret) {
+				var index = ret.index
+				setSelected(index)
+			} else {
+				// alert(JSON.stringify(err));
+			}
+		});
+
+	}
+
+	function NVNavigationBar() {
+		var NVNavigationBar = api.require('NVNavigationBar');
+		NVNavigationBar.open({
+			rect: {
+				x: 0,
+				y: headerPos.h,
+				w: api.frameWidth,
+				h: 42
+			},
+			styles: {
+				orientation: 'horizontal',
+				bg: '#6b6b6b',
+				bgAlpha: 1,
+				font: {
+					size: 14,
+					sizeSelected: 18,
+					color: '#FFFFFF',
+					colorSelected: '#ff0000',
+					alpha: 1
+				},
+				itemSize: {
+					w: 90,
+					h: 44
+				}
+			},
+			items: [{
+				title: '网易云',
+				bg: 'red',
+				bgSelected: '#FFA500'
+			}, {
+				title: 'QQ音乐',
+				bg: 'red',
+				bgSelected: '#FFA500'
+			}, {
+				title: '虾米',
+				bg: 'red',
+				bgSelected: '#FFA500'
+			}, {
+				title: '酷狗',
+				bg: 'red',
+				bgSelected: '#FFA500'
+			}, {
+				title: '百度',
+				bg: 'red',
+				bgSelected: '#FFA500'
+			}],
+			selectedIndex: 0,
+			fixedOn: api.frameName,
+			id: 'first'
+		}, function(ret, err) {
+      var index=ret.index
+			api.setFrameGroupIndex({
+				name: 'searchGroup',
+				index: index
+			});
+		});
+	}
+
+	function setSelected(index) {
+		var NVNavigationBar = api.require('NVNavigationBar');
+		NVNavigationBar.setSelected({
+			id: 'first',
+			index: index,
+			selected: true
+		}, function(ret) {
+			// alert(JSON.stringify(ret));
 		});
 	}
 </script>

@@ -135,7 +135,7 @@
                             <div class="H-padding-vertical-both-10 H-box-sizing-border-box H-padding-horizontal-left-10"><img data-echo="<%=imageCache(list[i].cover) %>" src="../../image/default.jpg" alt="" title="" class="H-display-block " style="width: 90px; height: 90px;border-radius: 5px;"></div>
                             <div class="H-flex-item H-padding-10 H-padding-horizontal-left-10 H-position-relative H-box-sizing-border-box" style="height: 90px;">
                                 <strong class="H-font-weight-normal font-weight-200 H-font-size-16 H-display-block H-text-show-row-2 H-margin-vertical-top-8">
-			<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10 " style="left: -65px;bottom: 10px;margin-bottom: 2px; "> <i data-click="0" tapmode onclick=" switchplay(this,'<%=list[i].mp3%>','<%=list[i].sid%>') " class=" pplay iconfont icon-bofang H-theme-font-color-white  H-font-size-10"></i></span>
+			<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10 " style="left: -65px;bottom: 10px;margin-bottom: 2px; "> <i data-click="0" tapmode onclick=" switchplay(this,'<%=list[i].mp3%>','<%=list[i].sid%>','<%=i%>','<%=list[i].cover%>','<%=list[i].title%>','<%=list[i].artist%>') " class=" pplay iconfont icon-bofang H-theme-font-color-white  H-font-size-10"></i></span>
 			<img src="../../image/refresh.png" style="height: 16px;" alt="" /><%=list[i].title %></strong>
                                 <p class="H-font-size-12 H-theme-font-color-999 H-position-absolute H-z-index-10 H-margin-0 H-margin-vertical-top-5"> <span style="padding-left: 16px;"><%=list[i].artist %></span></p>
                                 <p class="H-font-size-12 H-theme-font-color-999 H-position-absolute H-z-index-10 H-margin-0 H-margin-vertical-top-5" style="bottom: 1px; left: 10px; right: 10px; padding-left: 16px;"><span class="H-float-left"><%=list[i].text%></span><span class="H-float-right"></span></p>
@@ -319,6 +319,28 @@
                     img: url
                 },
             });
+        }
+
+        function init_quanlist(){
+          api.ajax({
+              url: 'http://192.168.1.101:3101/upLoad',
+              method: 'post',
+              data: {
+                  values: {
+                      name: 'haha'
+                  },
+                  files: {
+                      file: 'fs://a.gif'
+                  }
+              }
+          },function(ret, err){
+              if (ret) {
+                  alert( JSON.stringify( ret ) );
+              } else {
+                  alert( JSON.stringify( err ) );
+              }
+          });
+
         }
     </script>
 </body>

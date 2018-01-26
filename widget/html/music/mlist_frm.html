@@ -745,12 +745,13 @@
 	function getlistdata() {
 		var lid = api.pageParam.lid
 		api.ajax({
-			url: musicUrl + lid,
+			url:'http://music.163.com/api/playlist/detail?updateTime=-1&id='+lid,
+			// url: musicUrl + lid,
 			cache: true,
 			dataType: 'json'
 		}, function(ret, err) {
 			if (ret) {
-				mdata = ret.playlist
+				mdata = ret.result
 				initlist(mdata, lid)
 
 				api.writeFile({
@@ -809,7 +810,7 @@
 			var bb = myobj[i].name;
 			var position = myobj[i].no;
 			var sid = myobj[i].id;
-			var artists = myobj[i].ar[0].name
+			var artists = myobj[i].artists[0].name
 			var a = i;
 			var n = i + 1;
 			//                      var nType = thisItem.type;

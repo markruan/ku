@@ -60,16 +60,25 @@
             }
         }
 
-
+        var music_data
         H.ready(function() {
             api.setStatusBarStyle({
                 style: 'dark'
             });
 
+            music_data={
+              sid:api.pageParam.sid,
+              index:api.pageParam.index,
+              title:api.pageParam.title,
+              mp3:api.pageParam.mp3,
+              cover:api.pageParam.cover,
+              artist:api.pageParam.artist
+            }
             H.openFrameNavOrFoot('bo', 'bo0.html', "#header", {
                 sid: api.pageParam.sid,
                 index: api.pageParam.index,
-                mlistdata:api.pageParam.mlistdata
+                mlistdata:api.pageParam.mlistdata,
+                music_data:music_data
             }, null, {
                 bounces: false,
                 reload: true
