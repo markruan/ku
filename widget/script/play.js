@@ -64,9 +64,10 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                 var per = Math.round(percent);
                 var dur = formatSeconds(duration);
                 var cur = formatSeconds(current);
-                audioCover(cover, duration, songName, artists, per)
+                audioCover(app.music_imgurl, duration, app.music_title, app.music_artist, per)
                 // 状态栏显示
-                notify(songName+'-'+artists,cur+'-'+dur)
+
+                notify(app.music_title+'-'+app.music_artist,cur+'-'+dur)
                 var uislider = api.require('UISlider');
                 app.playState = true
                 uislider.setValue({

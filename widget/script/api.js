@@ -63,6 +63,7 @@ function share(title, art, img, sid) {
                     data: data
                 },
             });
+            
         } else {
             api.toast({
                 msg: '数据错误',

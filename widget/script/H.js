@@ -2156,6 +2156,7 @@
                             that.closeWidget(null, null, {
                                 silent: true
                             });
+                            
                         }, 300);
                     }
                 });
