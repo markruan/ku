@@ -188,6 +188,7 @@
             api.addEventListener({
                 name: 'playing'
             }, function(ret, err) {
+              
                 $api.attr(playid, 'class', 'pause');
                 var txt = ret.value.songName + '-' + ret.value.artists
                 $api.text($api.byId('title'), txt);

@@ -46,13 +46,12 @@ function play_c(mp3, cover, songName, artists, current, sid) {
             audioPlayer.addEventListener({
                 name: "playing"
             }, function(ret) {
-
                 app.isPlaying = true
                 api.sendEvent({
                     name: 'playing',
                     extra: {
-                        songName: songName,
-                        artists: artists,
+                        songName: app.music_title,
+                        artists: app.music_artist,
                         mp3: mp3,
                     }
                 });

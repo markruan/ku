@@ -1,5 +1,5 @@
 function switchplay(button, mp3,sid,index,cover,title,artist) {
-  console.log(JSON.stringify(artist));
+  // console.log(JSON.stringify(artist));
     var click = button.getAttribute("data-click");
     if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
         $api.setStorage('listopen', 3);
