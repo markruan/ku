@@ -1,170 +1,160 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-	<title>title</title>
-	<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
-	<link rel="stylesheet" type="text/css" href="../../../css/iconfont.css">
-	<style>
-		.pplay {
-			bottom: 10px;
-			margin-left: 30px;
-		}
-	</style>
-</head>
-
-<body>
-	<div class="H-width-80-percent  ">
-		<div>
-			<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box  " onclick="">
-				<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1   H-margin-vertical-bottom-10">
-					<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10" style="right: 6%;bottom: 5px;margin-bottom: 3px;"> <i id="player" data-click="0" onclick="switchplay(this)" class=" pplay iconfont icon-bofang H-theme-font-color-white   " style="font-size: 35px"></i></span>
-					<img id="img1" src="http://p4.music.126.net/XhCBGqLJhgpNGQwqtNdvWg==/2913705813975955.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/iconfont.css">
+		<style>
+			body {
+			}
+			.pplay {
+				bottom: 10px;
+				margin-left: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="H-width-80-percent  ">
+			<div>
+				<!--<div class="H-padding-vertical-bottom-5"></div>-->
+				<div class="H-theme-background-color-white H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box  " onclick="">
+					<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-1   H-margin-vertical-bottom-10">
+						<span class="H-badge H-display-inline-block H-position-absolute H-z-index-10" style="right: 6%;bottom: 5px;margin-bottom: 3px;"> <i id="player" data-click="0" onclick="switchplay(this)" class=" pplay iconfont icon-bofang H-theme-font-color-white   " style="font-size: 35px"></i></span>
+						<img id="img1" src="http://p4.music.126.net/XhCBGqLJhgpNGQwqtNdvWg==/2913705813975955.jpg" class="H-width-100-percent  H-display-block" alt="" title="">
+					</div>
+					<div class="H-padding-vertical-bottom-10"></div>
 				</div>
-				<div class="H-padding-vertical-bottom-10"></div>
+				<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="">
+					<span id="song">Beautiful Now (feat. Jon Bellion)</span>-<span id="artists">Zedd</span>
+				</div>
 			</div>
-			<div class="H-theme-background-color-white H-theme-font-color-333 H-padding-10 H-font-size-14" onclick="">
-				<span id="song">加载中....</span>-<span id="artists">Zedd</span>
-			</div>
+			<div class="H-padding-vertical-bottom-10"></div>
 		</div>
-		<div class="H-padding-vertical-bottom-10"></div>
-	</div>
-	<textarea class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 " placeholder="聆听音乐  感悟人生" id="feed_text" style="margin: 0 auto;width: 100%;"></textarea>
-	<!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
-	<div class="H-center-all">
-		<button tapmode onclick="addmusic()" class="H-button    H-font-size-15 H-outline-none H-padding-vertical-both-12 H-padding-horizontal-both-20 H-theme-background-color2 H-theme-font-color-white H-theme-border-color2 H-theme-border-color2-click H-theme-background-color2-click H-theme-font-color2-click H-border-radius-3"
-						style="width: 80%; min-width: 220px  ">
+		<textarea  class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 "  placeholder="聆听音乐  感悟人生" id="feed_text" style="margin: 0 auto;width: 100%;" ></textarea>
+		<!--<input id="feed_text" placeholder="聆听音乐 感悟人生"class="H-theme-border-color5" style="height:100px;width: 100%;line-height:24px;font-size: 18px"> </input>-->
+		<div class="H-center-all">
+			<button tapmode onclick="addmusic()"class="H-button    H-font-size-15 H-outline-none H-padding-vertical-both-12 H-padding-horizontal-both-20 H-theme-background-color2 H-theme-font-color-white H-theme-border-color2 H-theme-border-color2-click H-theme-background-color2-click H-theme-font-color2-click H-border-radius-3" style="width: 80%; min-width: 220px  ">
 				发布
 			</button>
-	</div>
-	</div>
-</body>
-<script type="text/javascript" src="../../../script/api.js"></script>
-<script type="text/javascript" src="../../../script/H.js"></script>
-<script type="text/javascript">
-	function switchplay(button) {
-		var mp3 = api.pageParam.mp3
-		var click = button.getAttribute("data-click");
-		if (click == 0) {
-			// 点开
-			var dd = document.getElementsByClassName('icon-zanting');
-			for (i = 0; i < dd.length; i++) {
-				$api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
-			}
-			button.setAttribute("data-click", 1);
-			stop();
-			play(mp3)
-			$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
-		} else {
-			// 关闭
-			button.setAttribute("data-click", 0);
-			pause(mp3);
-			$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
-		}
-	}
-	var songname, fengmian, sid,song
-	apiready = function() {
-		// api.ajax({
-		// 	url: 'https://api.imjad.cn/cloudmusic/?type=detail&id=' + api.pageParam.sid,
-		// }, function(ret, err) {
-		// 	if (ret) {
-		sid = api.pageParam.sid
-		source=api.pageParam.source
-		pid=api.pageParam.pid
-		api.ajax({
-			url: 'http://www.xggsj.com/api.php?types=pic&source='+source+'&id=' + pid,
-		}, function(ret, err) {
-			if (ret) {
-          console.log(JSON.stringify(ret));
-				fengmian = ret.url
-				$api.attr($api.byId('img1'), 'src', fengmian);
+		</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../script/api.js"></script>
+	<script type="text/javascript" src="../../../script/H.js"></script>
+	<script type="text/javascript">
+		function switchplay(button) {
+			var mp3 = api.pageParam.mp3
+			var click = button.getAttribute("data-click");
+			if (click == 0) {
+				// 点开
+				var dd = document.getElementsByClassName('icon-zanting');
+				for ( i = 0; i < dd.length; i++) {
+					$api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+				}
+				button.setAttribute("data-click", 1);
+				stop();
+				play(mp3)
+				$api.attr(button, 'class', 'iconfont  icon-zanting H-theme-font-color-white');
 			} else {
-				alert(JSON.stringify(err));
+				// 关闭
+				button.setAttribute("data-click", 0);
+				pause(mp3);
+				$api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
 			}
-		});
+			//			}
+		}
+		apiready = function() {
 
-
-
-		songname = api.pageParam.name
-		artist = api.pageParam.artists
-
-		$api.text($api.byId('song'), songname);
-		$api.text($api.byId('artists'), artist);
-		// 	} else {
-		// 		alert(JSON.stringify(err));
-		// 	}
-		// });
-	};
-
-	function pause() {
-		var netAudio = api.require('audioPlayer');
-		netAudio.stop();
-		api.toast({
-			msg: '暂停'
-		});
-	}
-
-	function addmusic() {
-		var text1 = $api.val($api.byId("feed_text"));
-		if ($api.getStorage('userinfo')) {
-			var url = hostUrl + '/addmusic.php';
-			uiloading();
-			api.ajax({
-				url: url,
-				method: 'post',
-				dataType: 'text',
-				data: {
-					values: {
-						img: fengmian,
-						song: songname,
-						mp3:api.pageParam.mp3,
-						text: text1,
-						artist: artist,
-						sid: sid,
-						type: 0,
-						uid: $api.getStorage('userinfo').data_id
-					},
-				}
-			}, function(ret, err) {
-				if (ret == 1) {
-					stoploading();
-					api.toast({
-						msg: '发布成功'
-					});
-			    api.closeWin({
-			        name: 'search'
-			    });
-
-					api.closeWin();
-				} else {
-					stoploading();
-					api.toast({
-						msg: '发布失败'
-					});
-
-					api.closeWin();
-				}
-			});
-		} else {
+			var fengmian = api.pageParam.img
+			var song = api.pageParam.song
+			var artists = api.pageParam.artists
+			$api.attr($api.byId('img1'), 'src', fengmian);
+			$api.text($api.byId('song'), song);
+			$api.text($api.byId('artists'), artists);
+		};
+		function pause() {
+			var netAudio = api.require('audioPlayer');
+			netAudio.stop();
 			api.toast({
-				msg: '登录后才能操作',
-				duration: 2000,
-				location: 'bottom'
+				msg : '暂停'
 			});
 		}
-	}
-
-	function play(mp3) {
-		api.sendEvent({
-			name: 'songid',
-			extra: {
-				sid: api.pageParam.sid,
-				index: 0,
-			}
-		});
-	}
-</script>
-
+		function addmusic() {
+			var text1 = $api.val($api.byId("feed_text"));
+			var fengmian = api.pageParam.img
+			var song = api.pageParam.song
+			var artists = api.pageParam.artists
+			var mp3 = api.pageParam.mp3
+			var sid = api.pageParam.sid
+			api.getPrefs({
+				key : 'user'
+			}, function(ret, err) {
+				var username = ret.value;
+				var url = hostUrl + '/addmusic.php';
+				if (ret) {
+					uiloading();
+					api.ajax({
+						url : url,
+						method : 'post',
+						dataType : 'text',
+						data : {
+							values : {
+								img : fengmian,
+								song : song,
+								text : text1,
+								artist : artists,
+								mp3 : mp3,
+								user : username,
+								sid : sid,
+								type : 0,
+								uid : $api.getStorage('userinfo').data_id
+							},
+						}
+					}, function(ret, err) {
+						if (ret == 1) {
+							stoploading();
+							api.toast({
+								msg : '发布成功'
+							});
+							api.closeFrame({
+								name : 'kong'
+							});
+							api.closeWin({
+							});
+						} else {
+							stoploading();
+							api.toast({
+								msg : '发布失败'
+							});
+							api.closeFrame({
+								name : 'kong'
+							});
+							api.closeWin({
+							});
+						}
+					});
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+		function play(mp3) {
+			var pdd = $api.byId('playe');
+			var audioPlayer = api.require('audioPlayer');
+			var pdd = $api.byId('playerIcon');
+			audioPlayer.initPlayer({
+				path : mp3
+			}, function(ret) {
+				if (ret.status) {
+					api.toast({
+						msg : '播放'
+					});
+				}
+			});
+		}
+	</script>
 </html>
