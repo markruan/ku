@@ -260,6 +260,7 @@
             cache: true
         }, function(ret, err) {
             if (ret) {
+              console.log(JSON.stringify(ret));
                 api.writeFile({
                     path: api.fsDir + '/cache/indexInitMv.json',
                     data: ret.data
@@ -284,6 +285,7 @@
                 $api.html(mvlist, html);
                 api.parseTapmode();
             } else {
+
                 api.toast({
                     msg: err.msg,
                     duration: 2000,

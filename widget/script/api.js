@@ -281,9 +281,9 @@ function imageCache(url) { //图片缓存方法
     superSearch='http://www.xggsj.com/api.php?types=search&name='
     searchSource='&source='
     hostUrl = 'http://api.iqimeng.com/ku/api';
-    musicApi = 'http://musicapi4785.cloudapp.net:3000',
+    musicApi = 'hhttp://neteasemusic.leanapp.cn',
     // musicApi='http://67.21.85.120:3000'
-    musicUrl = 'http://musicapi4785.cloudapp.net:3000/playlist/detail?id=';
+    musicUrl = 'http://neteasemusic.leanapp.cn/playlist/detail?id=';
     // musicUrl='http://67.21.85.120:3000/playlist/detail?id='
     houZhui = '&updateTime=-1'
     songDetail='https://api.imjad.cn/cloudmusic/?id='
