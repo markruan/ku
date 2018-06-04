@@ -2152,11 +2152,25 @@
                         if (that.isFunction(callback)) {
                             callback();
                         }
+                        // 取消锁屏
+                        var audioCover = api.require('audioCover');
+                          audioCover.cancel(function( ret, err ){
+                              if( ret.status ){
+                                  // alert( JSON.stringify( ret ) );
+                              }else{
+                                  // alert( JSON.stringify( err ) );
+                              }
+                          });
+                        // 取消状态栏通知
+                        api.cancelNotification({
+                            id: -1
+                        });
                         setTimeout(function () {
                             that.closeWidget(null, null, {
                                 silent: true
                             });
-                            
+
+
                         }, 300);
                     }
                 });

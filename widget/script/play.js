@@ -11,16 +11,7 @@ function play_c(mp3, cover, songName, artists, current, sid) {
     }, function(ret) {
 
       if (ret.status) {
-        stoploading()
-            // api.sendEvent({
-            //     name: 'startplaying',
-            //     extra: {
-            //         songName: songName,
-            //         artists: artists,
-            //         mp3: mp3,
-            //     }
-            // });
-
+            stoploading()
             var duration = ret.duration;
             $api.setStorage('duration', duration);
             audioPlayer.addEventListener({
