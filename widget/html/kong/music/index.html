@@ -45,7 +45,7 @@
 	<script type="text/javascript" src="../../../script/H.js"></script>
 	<script type="text/javascript">
 		function switchplay(button) {
-			var mp3 = api.pageParam.mp3
+			var mp3 = 'http://music.163.com/song/media/outer/url?id='+api.pageParam.sid+'.mp3'
 			var click = button.getAttribute("data-click");
 			if (click == 0) {
 				// 点开
@@ -88,18 +88,12 @@
 			var artists = api.pageParam.artists
 			var mp3 = api.pageParam.mp3
 			var sid = api.pageParam.sid
-			if(!$api.getStorage('userinfo')&&$api.getStorage('userinfo').data_id) {
-				 api.alert({
-				     title: '提醒',
-				     msg: '请先登录',
-				 }, function(ret, err){
-				     if( ret ){
-				        api.closeWin();
-				     }else{
-				          // alert( JSON.stringify( err ) );
-				     }
-				 });
-      }
+			if (!$api.getStorage('userinfo')) {
+					api.toast({
+							msg: '先登陆'
+					});
+					return
+			}
 			api.getPrefs({
 				key : 'user'
 			}, function(ret, err) {
@@ -158,9 +152,11 @@
 			var pdd = $api.byId('playe');
 			var audioPlayer = api.require('audioPlayer');
 			var pdd = $api.byId('playerIcon');
+				// console.log(mp3);
 			audioPlayer.initPlayer({
 				path : mp3
 			}, function(ret) {
+
 				if (ret.status) {
 					api.toast({
 						msg : '播放'

@@ -36,13 +36,15 @@
     </style>
 </head>
 
-<body id="body">
+<body >
+  <div id="body">
     <div id="index" class="H-display-none" style="  background-color: white;">
         <div style="height: 170px"></div>
         <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
-            <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')">
+            <!-- <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')"> -->
+                <div class="H-flex-item" tapmode onclick="openDaily()">
                 <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
-                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">流行</label>
+                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">新音乐</label>
             </div>
             <div class="H-flex-item" tapmode onclick="openjingxuanlist('电子','dianzi')">
                 <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
@@ -78,13 +80,14 @@
 
         <div id="mvlist" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
     </div>
+    </div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/H.js"></script>
-
-
+<script type="text/javascript" src="../../script/music.js"></script>
 <script type="text/javascript">
+    var wy
     var page = 0;
     var datalist;
     var tuilist;
@@ -105,9 +108,8 @@
             }
         });
     }
-
-    // 热门推荐初始化
-    function tui() {
+  // 热门推荐初始化
+  function tui() {
         getmvlist()
         uiloading()
         api.ajax({
@@ -120,11 +122,6 @@
                     data: ret
                 }, function(ret, err) {
 
-                    // if(ret.status){
-                    //
-                    // }else{
-                    //
-                    // }
                 });
 
                 initdata = ret
@@ -135,13 +132,16 @@
                     var coverImgUrl = imageCache(initdata.huandenglist[i].fenpic)
                     var tracksName = initdata.huandenglist[i].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + lid + ')">';
-                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:90px;"    >';
+                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:120px;"    >';
                     html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
                 }
                 var tui = $api.byId('tui');
                 $api.html(tui, html);
+
             } else {};
         });
+
+      $api.setStorage('body',$api.html($api.byId('body')))
     }
 
     function findinfo(page) {
@@ -159,7 +159,6 @@
             }
             datalist = {
                 paths: paths,
-                //						captions : captions
             }
             huandeng(datalist)
             tuilist = ret
@@ -185,7 +184,7 @@
 
             $api.removeCls($api.byId('index'), 'H-display-none');
             stoploading()
-                // $api.removeCls($api.byId('body'), 'H-display-none');
+
         } else {
             api.toast({
                 msg: '没有更多了'
@@ -199,7 +198,6 @@
 
     apiready = function() {
         tui()
-        // alert(2)
         api.parseTapmode();
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
@@ -216,9 +214,7 @@
         });
 
     };
-
-    function getmvlist() {
-
+function getmvlist() {
         api.readFile({
             path: api.fsDir + '/cache/indexInitMv.json'
         }, function(ret, err) {
@@ -229,9 +225,8 @@
                 for (i = 0; i < data.length; i++) {
                     var vid = data[i].id;
                     var coverImgUrl = imageCache(data[i].cover)
-                        // var tracksName = data[i].name + "-" + data[i].artists[0].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
-                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:100px;"    >';
+                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:110px;"    >';
                     html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
 
                     html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-2">' + data[i].artistName.substring(0, 18) + '</div></div>';
@@ -239,7 +234,7 @@
                 var mvlist = $api.byId('mvlist');
                 $api.html(mvlist, html);
                 api.parseTapmode();
-                updataMvListData()
+                // updataMvListData()
 
             } else {
                 updataMvList()
@@ -248,19 +243,12 @@
 
 
         });
-
-
-    }
-
+  }
+    wy= new neteaseMusic()
     function updataMvList() {
-        api.ajax({
-            url: musicApi + '/top/mv?limit=10',
-            // url: 'http://v7idc.com/ku/admin.php?r=home/api/mvlist',
-            method: 'get',
-            cache: true
-        }, function(ret, err) {
+        wy.send(wy.getmvlist(), function(ret, err) {
             if (ret) {
-              console.log(JSON.stringify(ret));
+              // console.log(JSON.stringify(ret));
                 api.writeFile({
                     path: api.fsDir + '/cache/indexInitMv.json',
                     data: ret.data
@@ -276,7 +264,7 @@
                     var coverImgUrl = imageCache(data[i].cover)
                         // var tracksName = data[i].name + "-" + data[i].artists[0].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
-                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:100px;"    >';
+                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:110px;"    >';
                     html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
 
                     html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-2">' + data[i].artistName.substring(0, 18) + '</div></div>';
@@ -297,12 +285,7 @@
     }
 
     function updataMvListData() {
-        api.ajax({
-            url: musicApi + '/top/mv?limit=10',
-            // url: 'http://v7idc.com/ku/admin.php?r=home/api/mvlist',
-            method: 'get',
-            cache: true
-        }, function(ret, err) {
+        wy.send(wy.getmvlist(), function(ret, err) {
             if (ret) {
                 api.writeFile({
                     path: api.fsDir + '/cache/indexInitMv.json',
@@ -346,10 +329,8 @@
             },
         });
     }
-
-
     // 首页幻灯
-    function huandeng(datalist) {
+  function huandeng(datalist) {
         var UIScrollPicture = api.require('UIScrollPicture');
         UIScrollPicture.open({
             rect: {
@@ -389,13 +370,11 @@
         });
     }
 
-    function openDaily(){
-      api.openWin({
+  function openDaily(){
+    api.openWin({
           name: 'dailymusic',
           url: './dailymusic.html',
-
       });
-
     }
 </script>
 

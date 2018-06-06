@@ -569,17 +569,21 @@
 			<div class="egret-flex-item-abright" @click='openMusic(item.id,index)'>
 				<div class="egret-flex-item-shelf pl10">
 					<div v-cloak class="egret-flex-item-shelf01">{{item.name}}</div>
-					<div v-cloak class="egret-flex-item-shelf02">{{item.artists[0].name}}
+					<div v-cloak class="egret-flex-item-shelf02">{{item.song.name}}
 					</div>
 
 				</div>
 			</div>
- 	</div>
+		</div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/vue.min.js"></script>
+<script type="text/javascript" src="../../script/music.js"></script>
+
 <script type="text/javascript">
 	var isopen
+	var wy
+	wy=new neteaseMusic()
 
 	var app = new Vue({
 		el: '#app',
@@ -587,41 +591,34 @@
 			listData: ''
 		},
 		methods: {
-			getcookie: function() {
-				api.ajax({
-					url: musicApi + '/login/cellphone?phone=18806519061&password=ruannan002',
-					returnAll: true,
-				}, function(ret, err) {
-					if (ret) {
-						// console.log( JSON.stringify( ret ) );
-						$api.setStorage('apicookie', ret.headers);
-					} else {
-						// alert(JSON.stringify(err));
-					}
-				});
-
-			},
+			// getcookie: function() {
+			// 	wy.send(wy.login(), function(ret, err) {
+			// 		if (ret) {
+			// 			console.log( JSON.stringify( ret.headers ) );
+			// 			$api.setStorage('apicookie', ret.headers);
+			// 		} else {
+			// 			// alert(JSON.stringify(err));
+			// 		}
+			// 	});
+			//
+			// },
 			getTui: function() {
 				api.readFile({
 					path: api.fsDir + '/cache/dailymusic.json',
 				}, function(ret, err) {
-					if (ret.status&&ret.data!='') {
+					if (ret.status && ret.data != '') {
 						console.log(JSON.stringify(ret));
 						app.listData = $api.strToJson(ret.data);
 						$api.setStorage('listm', $api.strToJson(ret.data));
 						stoploading()
-						api.ajax({
-							url: musicApi + '/recommend/songs',
-							headers: $api.getStorage('apicookie'),
-							cache: true,
-						}, function(ret, err) {
+						wy.send(wy.newsong(), function(ret, err) {
 							if (ret) {
-								console.log(JSON.stringify(ret));
-								app.listData = ret.recommend
-								var arr = ret.recommend
+								// console.log(JSON.stringify(ret));
+								app.listData = ret.result
+								var arr = ret.result
 								api.writeFile({
 									path: api.fsDir + '/cache/dailymusic.json',
-									data: ret.recommend
+									data: ret.result
 								}, function(ret, err) {
 
 								});
@@ -634,18 +631,14 @@
 						});
 					} else {
 
-						api.ajax({
-							url: musicApi + '/recommend/songs',
-							headers: $api.getStorage('apicookie'),
-							cache: true,
-						}, function(ret, err) {
+						wy.send(wy.newsong(), function(ret, err) {
 							if (ret) {
 								console.log(JSON.stringify(ret));
-								app.listData = ret.recommend
-								var arr = ret.recommend
+								app.listData = ret.result
+								var arr = ret.result
 								api.writeFile({
 									path: api.fsDir + '/cache/dailymusic.json',
-									data: ret.recommend
+									data: ret.result
 								}, function(ret, err) {
 
 								});
@@ -661,7 +654,7 @@
 					}
 				});
 
-        api.refreshHeaderLoadDone();
+				api.refreshHeaderLoadDone();
 
 			},
 			openMusic: function(sid, index) {
@@ -684,7 +677,7 @@
 						pageParam: {
 							sid: sid,
 							index: index,
-							mlistdata:app.listData
+							mlistdata: app.listData
 
 						}
 					});
@@ -694,7 +687,7 @@
 						extra: {
 							sid: sid,
 							index: index,
-							mlistdata:$api.jsonToStr(app.listData)
+							mlistdata: $api.jsonToStr(app.listData)
 						}
 					})
 				} else {
@@ -706,18 +699,18 @@
 						extra: {
 							sid: sid,
 							index: index,
-							mlistdata:$api.jsonToStr(app.listData)
+							mlistdata: $api.jsonToStr(app.listData)
 						}
 					})
 				}
 			},
-			openMusicPlay:function(){
-				app.openMusic(app.listData[0].id,0)
+			openMusicPlay: function() {
+				app.openMusic(app.listData[0].id, 0)
 			}
 
 		},
-    created:function(){
-	    // console.log(123);
+		created: function() {
+			// console.log(123);
 		}
 
 	})
@@ -726,7 +719,7 @@
 	apiready = function() {
 		var isopen = $api.getStorage('isopen');
 		uiloading()
-		app.getcookie();
+		// app.getcookie();
 		app.getTui();
 		api.setRefreshHeaderInfo({
 			loadingImg: 'widget://image/refresh.png',

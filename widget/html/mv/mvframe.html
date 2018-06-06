@@ -85,9 +85,10 @@
                  method: 'get',
              }, function(ret, err) {
                  if (ret) {
+                   console.log(JSON.stringify(ret));
                       api.writeFile({
                          path: api.cacheDir + '/mv/' + vid + '.json',
-                          data: ret
+                         data: ret
                       }, function(ret, err){
 
                       });
