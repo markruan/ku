@@ -80,16 +80,19 @@
 
 <body>
 	<div id="app">
-		<div class="" style="padding-top: 35px;">
+		<div class="" style="padding-top: 5%">
 			<!-- <img id="bg" :src='music_imgurl' alt=""  v-blind:class="play-up-bg H-center-all "> -->
 			<img id="bg" :src='music_imgurl' alt="" :class="{ xuanzhuan:playState }" class="play-up-bg H-center-all ">
 
 		</div>
+		<!-- 歌词 -->
+		<div id="zxx-lyric" style="text-align:center;margin-top:3%;"></div>
 		<div class="  " style="position: fixed;bottom: 0px;width: 100%;">
 			<span class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white   H-width-100-percent" style="height:30px; ">{{music_title}} </span>
 			<!--<br />-->
-			<span id="titleName" class="H-header-title H-center-all H-font-size-12 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent" style="height:50px;">{{music_artist}} </span>
+			<span id="titleName" class="H-header-title H-center-all H-font-size-12 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent" style="height:30px;">{{music_artist}} </span>
 			<br />
+
 			<!--<span class="   H-theme-font-color-white  H-width-100-percent " > <i class="iconfont icon-play H-center-all H-margin-vertical-top-10 "style="font-size:60px;color: white;top: 12px;"> </i> </span>-->
 			<div class="H-n-grid kongZhi H-clear-both  H-overflow-auto H-margin-vertical-top-12">
 				<div class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-center-all">
@@ -151,6 +154,8 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/play.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
+<script type="text/javascript" src="../../script/lyric.js"></script>
+
 
 
 <script type="text/javascript">
@@ -231,20 +236,22 @@
 			xunHuanIcon: 'icon-danquxunhuan',
 			noXunHuanIcon: 'icon-xunhuan',
 			playicon: 'icon-bofang',
-			pauseicon: 'icon-zanting'
+			pauseicon: 'icon-zanting',
+			current:'',
+			lyric:''
 		},
 		methods: {
 			init: function() {
 				uiloading();
-				// var murl=aUrl+app.music_id+'&ids=['+app.music_id+']'
+				var murl=aUrl+app.music_id+'&ids=['+app.music_id+']'
 				// console.log(JSON.stringify(murl));
-				wy.send(wy.info(app.music_id), function(ret, err) {
+				wy.send(murl, function(ret, err) {
 					//  console.log($api.jsonToStr(ret));
 					if (ret.code == 200) {
 						app.music_title = ret.songs[0].name
-						app.music_artist = ret.songs[0].ar[0].name
+						app.music_artist = ret.songs[0].artists[0].name
 						api.imageCache({
-							url: ret.songs[0].al.picUrl + '?param=500y500'
+							url: ret.songs[0].album.picUrl + '?param=500y500'
 						}, function(ret, err) {
 							if (ret) {
 								app.music_imgurl = ret.url
@@ -260,7 +267,7 @@
 						play_c(app.music_mp3, app.music_imgurl, app.music_title, app.music_artist)
 						var datetime = Number(new Date())
 						saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime)
-
+            app.getLyric()
 					} else {
 						// alert( JSON.stringify( err ) );
 						api.toast({
@@ -563,6 +570,21 @@
 						msg: ret.msg
 					});
 				});
+			},
+			getLyric:function(){
+	  var lrc_url='http://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+app.music_id
+				wy.send(lrc_url,function(ret,err){
+
+					if (ret) {
+
+							app.lyric = parseLyrics(ret.lrc.lyric);
+
+					} else {
+
+							$api.html($api.byId(zxx-lyric), "<br/>歌词数据载入失败");
+
+					}
+				})
 			}
 
 		}

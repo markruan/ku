@@ -1,18 +1,16 @@
 function play_c(mp3, cover, songName, artists, current, sid) {
-    // var pdd = $api.byId('playerIcon');
-    // 状态栏
-
-    uiloading();
-    var audioPlayer = api.require('audioPlayer');
-    audioPlayer.stop();
-    audioPlayer.initPlayer({
+     uiloading();
+     var audioPlayer = api.require('audioPlayer');
+     audioPlayer.stop();
+     audioPlayer.initPlayer({
         path: mp3,
         cache: true
-    }, function(ret) {
+     }, function(ret) {
 
       if (ret.status) {
             stoploading()
             var duration = ret.duration;
+
             $api.setStorage('duration', duration);
             audioPlayer.addEventListener({
                 name: "state"
@@ -49,11 +47,17 @@ function play_c(mp3, cover, songName, artists, current, sid) {
 
                 current = ret.current
                 var tii = duration * 10;
-                //				console.log(JSON.stringify(current))
+
                 var percent = (current / duration) * 100;
                 var per = Math.round(percent);
                 var dur = formatSeconds(duration);
                 var cur = formatSeconds(current);
+                app.current=cur
+                // 歌词显示
+               getLyrics(app.lyric, app.current, function (i) {
+
+                    $api.text($api.byId("zxx-lyric"), app.lyric[i].split(']')[1]);
+                });
                 audioCover(app.music_imgurl, duration, app.music_title, app.music_artist, per)
                 // 状态栏显示
 
@@ -67,7 +71,7 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                     }
                 });
 
-                strmiao = '<span class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
+                strmiao = '<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
                 $api.byId('slider').innerHTML = strmiao;
             });
         } else {
