@@ -1,129 +1,168 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-		<title>title</title>
-		<link rel="stylesheet" type="text/css" href="../css/Hui.css" />
-		<script type="text/javascript" src="../script/vue.min.js"></script>
-		<style>
-			.display1 {
-				display: none
-			}
-		</style>
-	</head>
-	<body>
-		<div id="app">
-			<div v-bind:style="{display:xianshi}">
-				<div v-html="html2"></div>
-			</div>
-			<ul v-if='articles.length>0'  >
-				<div v-for='item in articles'>
-					<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active" @click="openww(item.id, item.al.picUrl, item.audio, item.name, item.ar[0].name) ">
-						<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-							{{item.name}}-{{item.ar[0].name}}
-						</div>
-						<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-					</div>
-				</div>
-			</ul>
-		</div>
-	</body>
-	<script type="text/javascript" src="../script/api.js"></script>
-	<script type="text/javascript">
-		var data
-		//		var obj = $api.byId('list');
-		apiready = function() {
-			api.addEventListener({
-				name : 'smsg'
-			}, function(ret, err) {
-				app.say(ret.value.msg);
-			});
-			app.search_histry()
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../css/Hui.css" />
+	<script type="text/javascript" src="../script/vue.min.js"></script>
+	<style>
+		.display1 {
+			display: none
 		}
-		var app = new Vue({
-			el : '#app',
-			data : {
-				message : '',
-				articles : '',
-				html2 : '',
-				xianshi : 'block',
-			},
-			mounted : function() {
-			},
-			methods : {
-				openww : function(sid, img, mp3, song, artists) {
-					api.openWin({
-						name : 'addmusic',
-						url : '../html/kong/music/index.html',
-						pageParam : {
-							img : img,
-							mp3 : mp3,
-							song : song,
-							artists : artists,
-							sid : sid
-						}
-					});
-				},
-				say : function(message) {
-          // console.log(message);
-					this.xianshi = 'none';
-					api.showProgress({});
-					app.articles = []
-					api.ajax({
-						url : sUrl + message ,
-					}, function(ret, err) {
-						// console.log(JSON.stringify(ret))
-						if (ret.code == 200 && ret.result) {
-							//							$api.addCls(obj, 'H-display-none');
-							var data = ret.result.songs
-							app.articles = data
-							api.hideProgress();
-						} else {
-							api.toast({
-								msg : '数据错误'
-							});
-							api.hideProgress();
-						}
-					});
-				},
-				search_histry : function() {
-				  uiloading()
-					var list = $api.getStorage('h_list')
-					//					大于10条删除最后一条
-					if (list.length > 9) {
-						list.splice(0, 1);
-						$api.setStorage('h_list', list);
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div v-bind:style="{display:xianshi}">
+			<div v-html="html2"></div>
+		</div>
+		<ul v-if='articles.length>0'>
+			<div v-for='item in articles'>
+				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active" @click="ting(item.id,item.audio,item.al.picUrl,item.name,item.ar[0].name)">
+					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
+						{{item.name}}-{{item.ar[0].name}}
+					</div>
+					<span class="H-icon H-padding-horizontal-right-20 H-display-block" @click="openww(item.id, item.al.picUrl, item.audio, item.name, item.ar[0].name) "><i class="H-iconfont H-icon-plus H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
+				</div>
+			</div>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var data
+		//		var obj = $api.byId('list');
+	apiready = function() {
+		api.addEventListener({
+			name: 'smsg'
+		}, function(ret, err) {
+			app.say(ret.value.msg);
+		});
+		app.search_histry()
+	}
+	var app = new Vue({
+		el: '#app',
+		data: {
+			message: '',
+			articles: '',
+			html2: '',
+			xianshi: 'block',
+		},
+		mounted: function() {},
+		methods: {
+			openww: function(sid, img, mp3, song, artists) {
+				api.openWin({
+					name: 'addmusic',
+					url: '../html/kong/music/index.html',
+					pageParam: {
+						img: img,
+						mp3: mp3,
+						song: song,
+						artists: artists,
+						sid: sid
 					}
-					if ($api.getStorage('h_list').length > 0) {
-						//						$api.removeCls(obj, 'H-display-none');
-						for (var i = 0; i < list.length; i++) {
-							this.html2 += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle "   >';
-							this.html2 += '<div onclick="app.inputkey(' + i + ')"  class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12"><span   class="H-touch-active ">' + list[i] + '</span></div><span onclick="app.clean_h(' + i + ')"class="H-icon H-padding-horizontal-both-20   H-display-block "><i class="H-iconfont H-icon-close  H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span></div>';
-						}
+				});
+			},
+			say: function(message) {
+				// console.log(message);
+				this.xianshi = 'none';
+				api.showProgress({});
+				app.articles = []
+				api.ajax({
+					url: sUrl + message,
+				}, function(ret, err) {
+					// console.log(JSON.stringify(ret))
+					if (ret.code == 200 && ret.result) {
+						//							$api.addCls(obj, 'H-display-none');
+						var data = ret.result.songs
+						app.articles = data
+						api.hideProgress();
 					} else {
-						this.html2 = '<div class="H-center-all H-padding-vertical-top-20">暂无记录</div>';
+						api.toast({
+							msg: '数据错误'
+						});
+						api.hideProgress();
 					}
-					stoploading()
+				});
+			},
+			search_histry: function() {
+				uiloading()
+				var list = $api.getStorage('h_list')
+					//					大于10条删除最后一条
+				if (list.length > 9) {
+					list.splice(0, 1);
+					$api.setStorage('h_list', list);
+				}
+				if ($api.getStorage('h_list').length > 0) {
+					//						$api.removeCls(obj, 'H-display-none');
+					for (var i = 0; i < list.length; i++) {
+						this.html2 += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle "   >';
+						this.html2 += '<div onclick="app.inputkey(' + i + ')"  class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12"><span   class="H-touch-active ">' + list[i] + '</span></div><span onclick="app.clean_h(' + i +
+							')"class="H-icon H-padding-horizontal-both-20   H-display-block "><i class="H-iconfont H-icon-close  H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span></div>';
+					}
+				} else {
+					this.html2 = '<div class="H-center-all H-padding-vertical-top-20">暂无记录</div>';
+				}
+				stoploading()
 					//					$api.html(obj, this.html2);
-				},
-				inputkey : function(index) {
-					var list = $api.getStorage('h_list');
-					api.sendEvent({
-						name : 'smsg',
-						extra : {
-							msg : list[index]
+			},
+			inputkey: function(index) {
+				var list = $api.getStorage('h_list');
+				api.sendEvent({
+					name: 'smsg',
+					extra: {
+						msg: list[index]
+					}
+				});
+			},
+			clean_h: function(index) {
+				var list = $api.getStorage('h_list');
+				list.splice(index, 1)
+				$api.setStorage('h_list', list);
+				this.html2 = ''
+				app.search_histry();
+			},
+			ting: function(sid, mp3, cover, title, artist) {
+				if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
+					$api.setStorage('listopen', 3);
+					api.openWin({
+						name: 'nww',
+						url: '../html/music/bo_head.html',
+						slidBackEnabled: false,
+						animation: {
+							type: "movein", //动画类型（详见动画类型常量）
+							subType: "from_bottom", //动画子类型（详见动画子类型常量）
+							duration: 500 //动画过渡时间，默认300毫秒
+						},
+						pageParam: {
+							sid: sid,
+							mp3: mp3,
+							index: 0,
+							mlistdata: false,
+							cover: cover,
+							title: title,
+							artist: artist
 						}
 					});
-				},
-				clean_h : function(index) {
-					var list = $api.getStorage('h_list');
-					list.splice(index, 1)
-					$api.setStorage('h_list', list);
-					this.html2 = ''
-					app.search_histry();
+				} else {
+					api.sendEvent({
+						name: 'songid',
+						extra: {
+							sid: sid,
+							index: 0,
+							mlistdata: false
+						}
+					})
+					api.closeWin();
+
 				}
+
 			}
-		})
-	</script>
+		}
+	})
+</script>
+
 </html>

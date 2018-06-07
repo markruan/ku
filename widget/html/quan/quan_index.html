@@ -321,27 +321,27 @@
             });
         }
 
-        function init_quanlist(){
-          api.ajax({
-              url: 'http://192.168.1.101:3101/upLoad',
-              method: 'post',
-              data: {
-                  values: {
-                      name: 'haha'
-                  },
-                  files: {
-                      file: 'fs://a.gif'
-                  }
-              }
-          },function(ret, err){
-              if (ret) {
-                  alert( JSON.stringify( ret ) );
-              } else {
-                  alert( JSON.stringify( err ) );
-              }
-          });
-
-        }
+        // function init_quanlist(){
+        //   api.ajax({
+        //       url: 'http://192.168.1.101:3101/upLoad',
+        //       method: 'post',
+        //       data: {
+        //           values: {
+        //               name: 'haha'
+        //           },
+        //           files: {
+        //               file: 'fs://a.gif'
+        //           }
+        //       }
+        //   },function(ret, err){
+        //       if (ret) {
+        //           alert( JSON.stringify( ret ) );
+        //       } else {
+        //           alert( JSON.stringify( err ) );
+        //       }
+        //   });
+        //
+        // }
     </script>
 </body>
 
