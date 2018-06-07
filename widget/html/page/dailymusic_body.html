@@ -607,7 +607,7 @@
 					path: api.fsDir + '/cache/dailymusic.json',
 				}, function(ret, err) {
 					if (ret.status && ret.data != '') {
-						console.log(JSON.stringify(ret));
+						// console.log(JSON.stringify(ret));
 						app.listData = $api.strToJson(ret.data);
 						$api.setStorage('listm', $api.strToJson(ret.data));
 						stoploading()
@@ -633,7 +633,7 @@
 
 						wy.send(wy.newsong(), function(ret, err) {
 							if (ret) {
-								console.log(JSON.stringify(ret));
+								// console.log(JSON.stringify(ret));
 								app.listData = ret.result
 								var arr = ret.result
 								api.writeFile({

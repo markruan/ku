@@ -12,7 +12,7 @@
  * error_code:22000 代表成功！
  */
 
-var ApiURL = "http://neteasemusic.leanapp.cn";
+var ApiURL = "http://musicapi4785.cloudapp.net:3000";
 var method = "GET";
 var dType = "json";
 
@@ -64,10 +64,10 @@ function neteaseMusic(){
 	    api.ajax({
 			url : doUrl,
 			dataType : dType,
-			xhrFields: { withCredentials: true },
+			// xhrFields: { withCredentials: true },
 		}, function(ret, err) {
 			// console.log(debug(arguments,"third"));
-			// console.log("百度音乐API请求地址："+doUrl);
+			// console.log("音乐API请求地址："+doUrl);
 			// console.log("返回数据："+JSON.stringify(ret));
 			// console.log("状态信息："+JSON.stringify(err));
 			callback(ret,err);//回调
