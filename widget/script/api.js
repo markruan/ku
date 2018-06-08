@@ -293,8 +293,8 @@ function imageCache(url) { //图片缓存方法
     houZhui = '&updateTime=-1'
     songDetail='https://api.imjad.cn/cloudmusic/?id='
 
-      // sUrl = 'http://s.music.163.com/search/get/?src=lofter&type=1&filterDj=true&limit=100&offset=0&callback&s='
-    sUrl='https://api.imjad.cn/cloudmusic/?type=search&search_type=1&limit=50&s='
+      sUrl = 'http://s.music.163.com/search/get/?src=lofter&type=1&filterDj=true&limit=100&offset=0&callback&s='
+    // sUrl='https://api.imjad.cn/cloudmusic/?type=search&search_type=1&limit=50&s='
       sEnd = ''
 
     aUrl = 'http://music.163.com/api/song/detail/?id='

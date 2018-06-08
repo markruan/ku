@@ -114,9 +114,9 @@
 				</div>
 			</div>
 			<div id="slider" class="H-padding-horizontal-both-0  ">
-				<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">00:00</span>
+				<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">{{current}}</span>
 				<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
-				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem ; ">03:25</span>
+				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem ; ">{{duration}}</span>
 			</div>
 			<div id="palyB" class="H-n-grid  H-clear-both H-center-all H-overflow-auto">
 				<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
@@ -237,8 +237,11 @@
 			noXunHuanIcon: 'icon-xunhuan',
 			playicon: 'icon-bofang',
 			pauseicon: 'icon-zanting',
-			current:'',
-			lyric:''
+			current:'00:00',
+			duration:'3:27',
+			dur:'',
+			lyric:'',
+			per:''
 		},
 		methods: {
 			init: function() {
@@ -264,7 +267,7 @@
 						// app.getMusic(ret.songs[0].id)
 						app.music_mp3 = wy.mp3(app.music_id)
 							// console.log(app.music_mp3);
-						play_c(app.music_mp3, app.music_imgurl, app.music_title, app.music_artist)
+						play_c()
 						var datetime = Number(new Date())
 						saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime)
             app.getLyric()
@@ -279,27 +282,7 @@
 					}
 				});
 			},
-			// getMusic: function(music_id) {
-			// 	api.ajax({
-			// 		url: songDetail + music_id
-			// 	}, function(ret, err) {
-			// 		  // console.log(JSON.stringify(ret));
-			// 		if (ret && ret.data[0].code==200) {
-			// 			var mp3Url = ret.data[0].url.replace(/https/, 'http')
-			// 				// 去除安全限制
-			// 			$api.attr($api.byId('playerIcon'), 'data-url', mp3Url);
-			// 			app.music_mp3 = mp3Url
-			// 			play_c(mp3Url, app.music_imgurl, app.music_title, app.music_artist)
-			// 			var datetime = Number(new Date())
-			// 			saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime) //存储播放历史
-			// 		} else {
-			// 			app.playNext()
-			// 			api.toast({
-			// 				msg: '版权问题，自动播放下一曲'
-			// 			});
-			// 		}
-			// 	})
-			// },
+		 
 			switchmusic: function() {
 				if (app.isPlaying) {
 					app.isPlaying = false;
@@ -575,13 +558,14 @@
 	  var lrc_url='http://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+app.music_id
 				wy.send(lrc_url,function(ret,err){
 
-					if (ret) {
+          $api.html($api.byId('zxx-lyric'), "");
+					if (ret.lrc) {
 
 							app.lyric = parseLyrics(ret.lrc.lyric);
 
 					} else {
 
-							$api.html($api.byId(zxx-lyric), "<br/>歌词数据载入失败");
+							$api.html($api.byId('zxx-lyric'), "<br/>歌词数据载入失败");
 
 					}
 				})

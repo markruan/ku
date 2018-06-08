@@ -1,34 +1,36 @@
-function play_c(mp3, cover, songName, artists, current, sid) {
-     uiloading();
-     var audioPlayer = api.require('audioPlayer');
-     audioPlayer.stop();
-     audioPlayer.initPlayer({
-        path: mp3,
+function play_c() {
+    uiloading();
+    var audioPlayer = api.require('audioPlayer');
+    audioPlayer.stop();
+    audioPlayer.initPlayer({
+        path: app.music_mp3,
         cache: true
-     }, function(ret) {
-
-      if (ret.status) {
+    }, function(ret) {
+        if (ret.status) {
             stoploading()
             var duration = ret.duration;
-
-            $api.setStorage('duration', duration);
+            app.dur = ret.duration
+            var dur = formatSeconds(duration);
+            app.duration = dur
+                // $api.setStorage('duration', duration);
             audioPlayer.addEventListener({
                 name: "state"
             }, function(ret) {
-              if (ret.state == 'finished') {
+                if (ret.state == 'finished') {
                     if (app.isRepeat) {
                         app.replay();
                         return
                     } else {
-                        app.playNext()
-                        api.toast({
-                            msg: '播放完毕'
-                        });
-                    }
-                } else if (ret.state == 'paused'||ret.state == 'idle'||ret.state=='buffering') {
-                  app.playState = false
+                        setTimeout(function() {
+                            app.playNext(), 400
+                        })
 
-                } else {
+                        // api.toast({
+                        //     msg: '播放完毕'
+                        // });
+                    }
+                } else if (ret.state == 'paused' || ret.state == 'idle' || ret.state == 'buffering') {
+                    app.playState = false
 
                 }
             });
@@ -41,96 +43,52 @@ function play_c(mp3, cover, songName, artists, current, sid) {
                     extra: {
                         songName: app.music_title,
                         artists: app.music_artist,
-                        mp3: mp3,
+                        mp3: app.music_mp3,
                     }
                 });
 
-                current = ret.current
-                var tii = duration * 10;
+                var current = ret.current
+                    // var tii = duration * 10;
 
                 var percent = (current / duration) * 100;
-                var per = Math.round(percent);
-                var dur = formatSeconds(duration);
-                var cur = formatSeconds(current);
-                app.current=cur
+                app.per = Math.round(percent);
+                // var dur = formatSeconds(duration);
+                app.current = formatSeconds(current);
+                // app.current=cur
+
+
                 // 歌词显示
-               getLyrics(app.lyric, app.current, function (i) {
+                getLyrics(app.lyric, app.current, function(i) {
 
                     $api.text($api.byId("zxx-lyric"), app.lyric[i].split(']')[1]);
                 });
-                audioCover(app.music_imgurl, duration, app.music_title, app.music_artist, per)
-                // 状态栏显示
+                audioCover(duration)
+                    // 状态栏显示
 
-                notify(app.music_title+'-'+app.music_artist,cur+'-'+dur)
+                notify(app.music_title + '-' + app.music_artist, app.current + '-' + app.duration)
                 var uislider = api.require('UISlider');
                 app.playState = true
                 uislider.setValue({
                     id: 1,
                     value: {
-                    value: percent
+                        value: percent
                     }
                 });
 
-                strmiao = '<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + cur + '</span>  <span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10" style="font-size: 1.1rem; ">' + dur + '</span> ';
-                $api.byId('slider').innerHTML = strmiao;
             });
         } else {
             stoploading()
-            api.toast({
-                msg: '播放超时，自动播放下一曲'
-            });
-            app.playNext()
+            setTimeout(function() {
+                api.toast({
+                    msg: '播放超时，自动播放下一曲'
+                });
+                app.playNext()
+            }, 5000)
         }
     });
 
 }
 
-// function getCurrent() {
-//     var audioPlayer = api.require('audioPlayer');
-//     audioPlayer.getCurrent(function(ret) {
-//         var current = ret.current
-//         return current
-//     });
-// }
-
-// function getCache(pic) {
-//     api.imageCache({
-//         url: pic
-//     }, function(ret, err) {
-//         if (ret) {
-//             albumC = ret.url;
-//             $api.setStorage('uulr', albumC);
-//             api.setPrefs({
-//                 key: 'apic',
-//                 value: albumC
-//             });
-//         } else {}
-//     });
-//     $api.rmStorage('album')
-// }
-
-// function pause() {
-//     var pdd = $api.byId('playerIcon');
-//     $api.removeCls(pdd, 'icon-zanting');
-//     $api.addCls(pdd, 'icon-bofang');
-//     api.getPrefs({
-//         key: 'isPlaying'
-//     }, function(ret, err) {
-//         if (ret.value == 1) {}
-//     });
-//     var netAudio = api.require('audio');
-//     netAudio.pause();
-// }
-
-// function stop() {
-//     api.getPrefs({
-//         key: 'isPlaying'
-//     }, function(ret, err) {
-//         if (ret.value == 1) {}
-//     });
-//     var obj = api.require('audio');
-//     obj.stop();
-// }
 
 function getNowFormatDate() {
     var date = new Date();
@@ -188,12 +146,7 @@ function formatSeconds(value) {
         return result;
     }
 }
-
-// function kai() {
-//     api.toast({
-//         msg: '正在开发中...'
-//     });
-// }
+ 
 
 function quXiaoShouCang() {
 
@@ -449,14 +402,14 @@ function isOnLineStatus(callback) {
     }
 }
 
-function audioCover(cover, duration, songName, artists, per) {
+function audioCover() {
     var objj = api.require('audioCover');
     var msg = {
-        totalTime: duration,
-        cover: cover,
-        progress: per,
-        audio: songName,
-        author: artists,
+        totalTime: app.dur,
+        cover: app.music_imgurl,
+        progress: app.per,
+        audio: app.music_title,
+        author: app.music_artist,
     }
     objj.set(msg, function(ret, err) {
         if (ret.eventType == 'pause') {
