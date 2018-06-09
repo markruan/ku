@@ -177,6 +177,13 @@
     <script type="text/javascript">
         // 点击效果初始化
 
+        function allPlayicon(){
+          var dd = document.getElementsByClassName('icon-zanting');
+                for (i = 0; i < dd.length; i++) {
+                    $api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+                }
+        }
+
         H.tppl_flag = ["<%", "%>"];
         var page = 0
 
@@ -224,7 +231,20 @@
         }
 
         apiready = function() {
-
+            var audio = api.require('audioPlayer');
+            
+            api.addEventListener({
+                name: 'playNext'
+            }, function(ret, err) {
+                if (ret) {
+                    var dd = document.getElementsByClassName('icon-zanting');
+                    for (i = 0; i < dd.length; i++) {
+                        $api.attr(dd[i], 'class', 'iconfont  icon-bofang H-theme-font-color-white');
+                    }
+                } else {
+                    //  alert( JSON.stringify( err ) );
+                }
+            });
             api.addEventListener({
                 name: 'scrolltobottom',
                 extra: {
@@ -237,20 +257,7 @@
                 initPage()
 
             });
-            // api.addEventListener({
-            //     name: 'playingquan'
-            // }, function(ret, err) {
-            //     if (ret) {
-            //         play()
-            //     }
-            // });
-            // api.addEventListener({
-            //     name: 'playing'
-            // }, function(ret, err) {
-            //     if (ret) {
-            //         stoploading();
-            //     }
-            // });
+
             initPage(page)
             api.setRefreshHeaderInfo({
                 loadingImg: 'widget://image/refresh.png',
@@ -320,28 +327,6 @@
                 },
             });
         }
-
-        // function init_quanlist(){
-        //   api.ajax({
-        //       url: 'http://192.168.1.101:3101/upLoad',
-        //       method: 'post',
-        //       data: {
-        //           values: {
-        //               name: 'haha'
-        //           },
-        //           files: {
-        //               file: 'fs://a.gif'
-        //           }
-        //       }
-        //   },function(ret, err){
-        //       if (ret) {
-        //           alert( JSON.stringify( ret ) );
-        //       } else {
-        //           alert( JSON.stringify( err ) );
-        //       }
-        //   });
-        //
-        // }
     </script>
 </body>
 

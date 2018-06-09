@@ -21,9 +21,9 @@
 		</div>
 		<ul v-if='articles.length>0'>
 			<div v-for='item in articles'>
-				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active" @click="ting(item.id,item.audio,item.album.picUrl,item.name,item.artists[0].name)">
+				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active" @click="ting(item.id,item.audio,item.al.picUrl,item.name,item.ar[0].name)">
 					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-						{{item.name}}-{{item.artists[0].name}}
+						{{item.name}}-{{item.ar[0].name}}
 					</div>
 					<span class="H-icon H-padding-horizontal-right-20 H-display-block" @click="openww(item.id, item.al.picUrl, item.audio, item.name, item.ar[0].name) "><i class="H-iconfont H-icon-plus H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 				</div>
@@ -69,22 +69,24 @@
 			say: function(message) {
 				// console.log(message);
 				this.xianshi = 'none';
-				api.showProgress({});
+				// api.showProgress({});
+				uiloading();
 				app.articles = []
 				api.ajax({
 					url: sUrl + message,
 				}, function(ret, err) {
-
+					// console.log(JSON.stringify(ret))
 					if (ret.code == 200 && ret.result) {
 						//							$api.addCls(obj, 'H-display-none');
 						var data = ret.result.songs
 						app.articles = data
-						api.hideProgress();
+						stoploading()
 					} else {
 						api.toast({
-							msg: '数据错误'
+							msg: '数据错误,稍后再试'
 						});
-						api.hideProgress();
+						// api.hideProgress();
+						stoploading()
 					}
 				});
 			},

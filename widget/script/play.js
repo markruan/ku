@@ -6,6 +6,7 @@ function play_c() {
         path: app.music_mp3,
         cache: true
     }, function(ret) {
+      // console.log(ret.status);
         if (ret.status) {
             stoploading()
             var duration = ret.duration;
@@ -16,13 +17,21 @@ function play_c() {
             audioPlayer.addEventListener({
                 name: "state"
             }, function(ret) {
+              console.log(ret.state);
                 if (ret.state == 'finished') {
                     if (app.isRepeat) {
                         app.replay();
                         return
                     } else {
+                        // 恢复圈子里的播放图标
+                        var jsfun = 'allPlayicon()';
+                        api.execScript({
+                            name: 'index',
+                            frameName: 'quanzi',
+                            script: jsfun
+                        });
                         setTimeout(function() {
-                            app.playNext(), 400
+                            app.playNext()
                         })
 
                         // api.toast({
@@ -146,7 +155,7 @@ function formatSeconds(value) {
         return result;
     }
 }
- 
+
 
 function quXiaoShouCang() {
 
@@ -423,6 +432,7 @@ function audioCover() {
             app.playBack()
         } else if (ret.eventType == 'play') {
             //			play()
+            app.isPlaying=false
             app.pause();
         } else {}
     });

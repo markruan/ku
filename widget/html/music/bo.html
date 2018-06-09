@@ -16,6 +16,9 @@
 			border-radius: 60%;
 			border: 4px solid rgba(235, 103, 136, 0.48);
 		}
+		.lyric-color{
+			color: rgba(235, 103, 136, 0.48);
+		}
 
 		.xuanzhuan {
 			-webkit-animation: circle 20s infinite linear;
@@ -86,7 +89,7 @@
 
 		</div>
 		<!-- 歌词 -->
-		<div id="zxx-lyric" style="text-align:center;margin-top:3%;"></div>
+		<div id="zxx-lyric" class='lyric-color' style="text-align:center;margin-top:3%;"></div>
 		<div class="  " style="position: fixed;bottom: 0px;width: 100%;">
 			<span class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white   H-width-100-percent" style="height:30px; ">{{music_title}} </span>
 			<!--<br />-->
@@ -189,6 +192,7 @@
 				// alert(JSON.stringify(err));
 			}
 		});
+
 		api.addEventListener({
 			name: 'playNext'
 		}, function(ret, err) {
@@ -282,7 +286,7 @@
 					}
 				});
 			},
-		 
+
 			switchmusic: function() {
 				if (app.isPlaying) {
 					app.isPlaying = false;
@@ -352,9 +356,9 @@
 					//			alert(JSON.stringify(ret));
 					if (ret.eventType == 'end') {
 						var audioPlayer = api.require('audioPlayer');
-						var duration = $api.getStorage('duration');
+
 						audioPlayer.setCurrent({
-							current: ret.value / 100 * duration
+							current: ret.value / 100 * app.dur
 						});
 						//					alert(JSON.stringify(ret));
 					} else {
