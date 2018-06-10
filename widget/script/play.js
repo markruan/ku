@@ -2,7 +2,7 @@ function play_c() {
     uiloading();
     var audioPlayer = api.require('audioPlayer');
     audioPlayer.stop();
-    console.log(app.music_mp3);
+    // console.log(app.music_mp3);
     audioPlayer.initPlayer({
         path: app.music_mp3,
         cache: true
@@ -35,8 +35,16 @@ function play_c() {
                         app.playNext()
 
                     }
-                } else if (ret.state == 'paused' || ret.state == 'idle' || ret.state == 'buffering') {
+                } else if (ret.state == 'paused' || ret.state == 'idle') {
                     app.playState = false
+
+                }else if (ret.state == 'buffering') {
+                    app.playState = false
+
+                    // api.execScript({
+                    //     name: 'index',
+                    //     script: 'buffering();'
+                    // });
 
                 }
             });
@@ -71,18 +79,22 @@ function play_c() {
                 });
                 audioCover(duration)
                     // 状态栏显示
+                if(api.systemType=='ios'){
 
-                notify(app.music_title + '-' + app.music_artist, app.current + '-' + app.duration)
-                var uislider = api.require('UISlider');
+                }else{
+                  notify(app.music_title + '-' + app.music_artist, app.current + '-' + app.dur)
+                }
+
                 app.playState = true
+                // 滑块设置
+                var uislider = api.require('UISlider');
                 uislider.setValue({
                     id: 1,
                     value: {
                         value: percent
                     }
                 });
-
-            });
+             });
         } else {
             stoploading()
 
@@ -153,8 +165,7 @@ function formatSeconds(value) {
 
 
 function quXiaoShouCang() {
-
-    api.getPrefs({
+   api.getPrefs({
         key: 'songid2'
     }, function(ret, err) {
         sid = ret.value
@@ -409,7 +420,7 @@ function isOnLineStatus(callback) {
 function audioCover() {
     var objj = api.require('audioCover');
     var msg = {
-        totalTime: app.dur,
+        totalTime: app.duration,
         cover: app.music_imgurl,
         progress: app.per,
         audio: app.music_title,

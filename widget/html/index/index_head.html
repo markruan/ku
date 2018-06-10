@@ -155,11 +155,17 @@
                 H.D("#H-frame").setAttribute("src", url);
             }
         }
+        function buffering(){
+          $api.text($api.byId('title'), '缓冲中..');
+          console.log(123);
+
+        }
+
+
 
         H.ready(function() {
-            H.dblclickToCloseApp();
 
- 
+            H.dblclickToCloseApp();
             var fs = api.require('fs');
             fs.createDir({
                 path: 'fs://cache'
