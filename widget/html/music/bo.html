@@ -119,7 +119,7 @@
 			<div id="slider" class="H-padding-horizontal-both-0  ">
 				<span id="huakuai" class="s H-float-left   H-padding-horizontal-left-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem;  ">{{current}}</span>
 				<!--<input id="hua" type="range"  oninput="change()"  class="H-range H-width-80-percent H-position-relative  H-border-radius-3 H-theme-font-white"  value="0" >-->
-				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem ; ">{{duration}}</span>
+				<span class="e H-float-right   H-padding-horizontal-right-5 H-padding-vertical-top-10 H-z-index-1000" style="font-size: 1.1rem ; ">{{dur}}</span>
 			</div>
 			<div id="palyB" class="H-n-grid  H-clear-both H-center-all H-overflow-auto">
 				<div class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-vertical-both-10">
@@ -243,6 +243,7 @@
 			pauseicon: 'icon-zanting',
 			current:'00:00',
 			duration:'3:27',
+			cur:'',
 			dur:'',
 			lyric:'',
 			per:''
@@ -269,9 +270,31 @@
 
 
 						// app.getMusic(ret.songs[0].id)
-						app.music_mp3 = wy.mp3(app.music_id)
+						api.ajax({
+						    url: 'https://api.imjad.cn/cloudmusic/?type=song&br=128000&id='+app.music_id,
+
+
+						},function(ret, err){
+							// console.log(JSON.stringify(ret));
+						    if (ret.data[0].url=="") {
+								 api.toast({
+								     msg: '数据错误',
+								     duration: 2000,
+								     location: 'bottom'
+								 });
+
+									app.playNext()
+
+						    } else {
+									app.music_mp3=ret.data[0].url
+									play_c();
+
+						    }
+						});
+
+						// app.music_mp3 = wy.mp3(app.music_id)
 							// console.log(app.music_mp3);
-						play_c()
+
 						var datetime = Number(new Date())
 						saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime)
             app.getLyric()
@@ -358,7 +381,7 @@
 						var audioPlayer = api.require('audioPlayer');
 
 						audioPlayer.setCurrent({
-							current: ret.value / 100 * app.dur
+							current: ret.value / 100 * app.duration
 						});
 						//					alert(JSON.stringify(ret));
 					} else {
@@ -439,7 +462,7 @@
 				}
 			},
 			playNext: function() {
-				app.stop()
+				// app.stop()
 				var arr = app.mlistdata;
 				var index_m = Number(app.music_index) + 1
 				if (index_m == arr.length) {

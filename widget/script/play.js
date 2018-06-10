@@ -2,23 +2,24 @@ function play_c() {
     uiloading();
     var audioPlayer = api.require('audioPlayer');
     audioPlayer.stop();
+    console.log(app.music_mp3);
     audioPlayer.initPlayer({
         path: app.music_mp3,
         cache: true
     }, function(ret) {
-      // console.log(ret.status);
+        // console.log(ret.status);
         if (ret.status) {
             stoploading()
             var duration = ret.duration;
-            app.dur = ret.duration
+            app.duration = ret.duration
             var dur = formatSeconds(duration);
-            app.duration = dur
-                // $api.setStorage('duration', duration);
+            app.dur = dur
+                // console.log(app.dur);
             audioPlayer.addEventListener({
                 name: "state"
             }, function(ret) {
-              console.log(ret.state);
-                if (ret.state == 'finished') {
+                // console.log(ret.state);
+                if (ret.state == 'finished'||ret.state=='error') {
                     if (app.isRepeat) {
                         app.replay();
                         return
@@ -30,13 +31,9 @@ function play_c() {
                             frameName: 'quanzi',
                             script: jsfun
                         });
-                        setTimeout(function() {
-                            app.playNext()
-                        })
 
-                        // api.toast({
-                        //     msg: '播放完毕'
-                        // });
+                        app.playNext()
+
                     }
                 } else if (ret.state == 'paused' || ret.state == 'idle' || ret.state == 'buffering') {
                     app.playState = false
@@ -56,14 +53,15 @@ function play_c() {
                     }
                 });
 
-                var current = ret.current
+                app.cur = ret.current
                     // var tii = duration * 10;
 
-                var percent = (current / duration) * 100;
+                var percent = (app.cur / app.duration) * 100;
                 app.per = Math.round(percent);
-                // var dur = formatSeconds(duration);
-                app.current = formatSeconds(current);
+                // app.duration = formatSeconds(duration);
+                app.current = formatSeconds(app.cur);
                 // app.current=cur
+                // console.log(app.per+'--'+app.current+'--'+app.dur);
 
 
                 // 歌词显示
@@ -87,12 +85,9 @@ function play_c() {
             });
         } else {
             stoploading()
-            setTimeout(function() {
-                api.toast({
-                    msg: '播放超时，自动播放下一曲'
-                });
-                app.playNext()
-            }, 5000)
+
+            app.playNext()
+
         }
     });
 
@@ -432,7 +427,7 @@ function audioCover() {
             app.playBack()
         } else if (ret.eventType == 'play') {
             //			play()
-            app.isPlaying=false
+            app.isPlaying = false
             app.pause();
         } else {}
     });
