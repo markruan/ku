@@ -36,7 +36,10 @@
     </div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/music.js"></script>
+
 <script type="text/javascript">
+   var wy=new neteaseMusic()
     apiready = function() {
         var moviePlayer = api.require('moviePlayer');
         openmv(api.pageParam.vid)
@@ -72,20 +75,21 @@
            if( ret.status ){
                 var mdata = $api.strToJson(ret.data);
                 var title = mdata.data.name + '-' + mdata.data.artistName
-                var url = mdata.data.brs[720]
+                var url = mdata.data.brs[480]
                 $api.text($api.byId('title'), mdata.data.name);
                 $api.text($api.byId('artistName'), mdata.data.artistName);
                 var imgurl = mdata.data.cover.replace('.jpg', '.jpg?param=140y120')
                 $api.attr($api.byId('imgg'), 'src', imgurl);
                 $api.text($api.byId('content'), mdata.data.desc);
-               initPlayer(url,title)
+                wy.getmv(vid,function(ret,err){
+                  var url = ret.data.brs[480]
+                  initPlayer(url,title)
+                })
+
            }else{
-             api.ajax({
-                 url: "https://api.imjad.cn/cloudmusic/?type=mv&id=" + vid,
-                 method: 'get',
-             }, function(ret, err) {
+             wy.getmv(vid, function(ret, err) {
                  if (ret) {
-                  //  console.log(JSON.stringify(ret));
+
                       api.writeFile({
                          path: api.cacheDir + '/mv/' + vid + '.json',
                          data: ret
@@ -94,12 +98,13 @@
                       });
 
                      var title = ret.data.name + '-' + ret.data.artistName
-                     var url = ret.data.brs[720]
+                     var url = ret.data.brs[480]
                      $api.text($api.byId('title'), ret.data.name);
                      $api.text($api.byId('artistName'), ret.data.artistName);
                      var imgurl = ret.data.cover.replace('.jpg', '.jpg?param=140y120')
                      $api.attr($api.byId('imgg'), 'src', imgurl);
                      $api.text($api.byId('content'), ret.data.desc);
+
                      initPlayer(url,title)
 
                  } else {
@@ -120,6 +125,7 @@
     }
 
   function initPlayer(url,title){
+// console.log(url);
     var moviePlayer = api.require('moviePlayer');
     moviePlayer.open({
         texts: {
@@ -191,13 +197,13 @@
             }
         },
         path: url,
-        coverImg: 'widget://image/xia.png',
+        coverImg: 'widget://image/xia1.png',
         autoPlay: true,
         // fixedOn:api.frameName
     }, function(ret, err) {
         if (ret) {
             // alert(JSON.stringify(ret));
-            // } else {
+            } else {
             // alert(JSON.stringify(err));
         }
 

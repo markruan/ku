@@ -12,7 +12,9 @@
  * error_code:22000 代表成功！
  */
 
-var ApiURL = "http://musicapi4785.cloudapp.net:3000";
+// var ApiURL = "http://musicapi4785.cloudapp.net:3000";
+var ApiURL = "http://neteasemusic.leanapp.cn";
+
 var method = "GET";
 var dType = "json";
 
@@ -107,7 +109,7 @@ function neteaseMusic(){
 	}
 
   this.getmvlist=function(){
-    return neteaseMusicURL('/top/mv?limit=10')
+    return neteaseMusicURL('/top/mv?limit=20')
   }
 
 	this.lrc = function(songid){//网易音乐歌词接口
@@ -116,6 +118,16 @@ function neteaseMusic(){
 	}
 	this.newsong=function(){
 		return neteaseMusicURL('/personalized/newsong')
+	}
+	this.getmv=function(mvid,callback){
+		api.ajax({
+		    url: 'https://api.imjad.cn/cloudmusic/?type=mv&id='+mvid,
+
+		},function(ret, err){
+		   callback(ret,err)
+		});
+
+
 	}
   //
 	// this.recommendList = function(song_id,num){//百度音乐推荐接口

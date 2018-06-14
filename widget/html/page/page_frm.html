@@ -117,6 +117,7 @@
             url: 'http://api.iqimeng.com/ku/admin.php?r=home/api/getindex&type=1',
             cache: true,
         }, function(ret, err) {
+          // console.log(JSON.stringify(ret));
             if (ret) {
                 api.writeFile({
                     path: api.fsDir + '/cache/indexInit.json',
