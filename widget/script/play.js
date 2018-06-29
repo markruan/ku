@@ -79,8 +79,11 @@ function play_c() {
                 });
                 audioCover(duration)
                     // 状态栏显示
-                if(api.systemType=='ios'){
-
+                if(api.systemType=='ios'||$api.getStorage('notify')==false){
+                  // 取消状态栏通知
+                  api.cancelNotification({
+                      id: -1
+                  });
                 }else{
                   notify(app.music_title + '-' + app.music_artist, app.current + '-' + app.dur)
                 }

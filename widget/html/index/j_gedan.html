@@ -53,7 +53,7 @@
         api.openWin({
             name: 'musiclist',
             url: '../../html/music/mlist_win.html',
-            slidBackEnabled:false, 
+            slidBackEnabled:false,
             reload: true,
             animation: {
                 type: "reveal", //动画类型（详见动画类型常量）
@@ -72,7 +72,7 @@
         api.readFile({
             path: api.cacheDir + '/mlist/'+api.pageParam.pinyin+'.json',
         }, function(ret, err) {
-          // console.log(JSON.stringify(ret));
+          console.log(JSON.stringify(ret));
              if (ret&&ret.status&&ret!='') {
                 mdata = $api.strToJson(ret.data);
                 initpage(mdata)
@@ -120,7 +120,7 @@
     //  获取用户的歌单
     function findinfo1() {
         var jingxuan=musicApi+'/top/playlist/highquality?limit=15&cat='+api.pageParam.cat;
-        // console.log(jingxuan);
+        console.log(jingxuan);
         // console.log(api.pageParam.cat);
         uiloading()
         setTimeout(function() {
