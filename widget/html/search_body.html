@@ -22,8 +22,8 @@
 		<ul v-if='articles.length>0'>
 			<div v-for='item in articles'>
 				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle ">
-        <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active" @click="ting(item.id,item.audio,item.al.picUrl,item.name,item.ar[0].name)">{{item.name}}-{{item.ar[0].name}}</div>
-        <div  class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openww(item.id, item.al.picUrl, item.audio, item.name, item.ar[0].name) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div>
+        <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active" @click="ting(item.id,item.audio,item.album.picUrl,item.name,item.artists[0].name)">{{item.name}}-{{item.artists[0].name}}</div>
+        <div  class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openww(item.id, item.album.picUrl, item.audio, item.name, item.artists[0].name) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div>
     </div>
 				<!-- <div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle " @click="ting(item.id,item.audio,item.al.picUrl,item.name,item.ar[0].name)">
 					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
@@ -39,7 +39,7 @@
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
-	var data
+	var data,list
 		//		var obj = $api.byId('list');
 	apiready = function() {
 		api.addEventListener({
@@ -88,6 +88,7 @@
 						app.articles = data
 						stoploading()
 					} else {
+
 						api.toast({
 							msg: '数据错误,稍后再试'
 						});
@@ -98,7 +99,8 @@
 			},
 			search_histry: function() {
 				uiloading()
-				var list = $api.getStorage('h_list')
+			  list = $api.getStorage('h_list')
+
 					//					大于10条删除最后一条
 				if (list.length > 9) {
 					list.splice(0, 1);

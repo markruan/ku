@@ -14,9 +14,11 @@
 
 // var ApiURL = "http://musicapi4785.cloudapp.net:3000";
 var ApiURL = "http://neteasemusic.leanapp.cn";
+var musicDetail="http://music.163.com/api/playlist/detail?updateTime=-1&id=";
 
 var method = "GET";
 var dType = "json";
+
 
 /**
  * 拼接请求地址和参数
@@ -119,6 +121,16 @@ function neteaseMusic(){
 	this.newsong=function(){
 		return neteaseMusicURL('/personalized/newsong')
 	}
+	this.login=function(){
+		return neteaseMusicURL('/login/cellphone?phone=18806519061&password=ruannan002')
+	}
+	this.getListDetail=function(lid,callback){//获取歌单详情
+		api.ajax({
+		    url:musicDetail+lid,
+   },function(ret, err){
+		   callback(ret,err)
+		});
+	}
 	this.getmv=function(mvid,callback){
 		api.ajax({
 		    url: 'https://api.imjad.cn/cloudmusic/?type=mv&id='+mvid,
@@ -129,29 +141,7 @@ function neteaseMusic(){
 
 
 	}
-  //
-	// this.recommendList = function(song_id,num){//百度音乐推荐接口
-	// 	num = (num == undefined)?5:num;//默认获取5条推荐数据
-	// 	console.log(debug(arguments,"third"));
-	// 	return neteaseMusicURL("baidu.ting.song.getRecommandSongList","&songid="+songid+"&num="+num);
-	// }
-  //
-	// this.download = function(songid,bit){//百度音乐下载接口
-	// 	bit = (bit == undefined)?24:bit;//默认码率24
-	// 	console.log(debug(arguments,"third"));
-	// 	console.log("百度音乐下载："+songid+"|"+bit+"|"+new Date().getTime());
-	// 	return neteaseMusicURL("baidu.ting.song.downWeb","&songid="+songid+"&bit="+bit+"&_t="+new Date().getTime());
-	// }
-  //
-	// this.singer = function(tinguid){//百度音乐歌手信息接口
-	// 	console.log(debug(arguments,"third"));
-	// 	return neteaseMusicURL("baidu.ting.artist.getInfo","&tinguid="+tinguid);
-	// }
-  //
-	// this.singerSong = function(tinguid,limits){//百度音乐歌手歌曲接口
-	// 	console.log(debug(arguments,"third"));
-	// 	return neteaseMusicURL("baidu.ting.artist.getSongList","&tinguid="+tinguid+"&limits="+limits+"&use_cluster=1&order=2");
-	// }
+
 
 	this.mv = function(songid,callback){
         api.ajax({

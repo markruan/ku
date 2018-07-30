@@ -550,7 +550,7 @@
 		<img src="../../image/frame0101cover/cm2_pro_head_140.png" alt="" class="border">
 		<img src="../../image/frame0101cover/cm2_mv_btn_fav.png" alt="" class="inside">
 	</div> -->
-			<div class="info">每天不一样的音乐为您特别推荐</div>
+			<div class="info">不一样的推荐</div>
 		</div>
 
 		<!-- 2 播放全部 -->
@@ -569,7 +569,7 @@
 			<div class="egret-flex-item-abright" @click='openMusic(item.id,index)'>
 				<div class="egret-flex-item-shelf pl10">
 					<div v-cloak class="egret-flex-item-shelf01">{{item.name}}</div>
-					<div v-cloak class="egret-flex-item-shelf02">{{item.song.name}}
+					<div v-cloak class="egret-flex-item-shelf02">{{item.artists[0].name}}
 					</div>
 
 				</div>
@@ -591,17 +591,7 @@
 			listData: ''
 		},
 		methods: {
-			// getcookie: function() {
-			// 	wy.send(wy.login(), function(ret, err) {
-			// 		if (ret) {
-			// 			console.log( JSON.stringify( ret.headers ) );
-			// 			$api.setStorage('apicookie', ret.headers);
-			// 		} else {
-			// 			// alert(JSON.stringify(err));
-			// 		}
-			// 	});
-			//
-			// },
+
 			getTui: function() {
 				api.readFile({
 					path: api.fsDir + '/cache/dailymusic.json',
@@ -611,19 +601,19 @@
 						app.listData = $api.strToJson(ret.data);
 						$api.setStorage('listm', $api.strToJson(ret.data));
 						stoploading()
-						wy.send(wy.newsong(), function(ret, err) {
+						wy.getListDetail(1317159, function(ret, err) {
 							if (ret) {
-								// console.log(JSON.stringify(ret));
-								app.listData = ret.result
-								var arr = ret.result
+
+								app.listData = ret.result.tracks
+								var arr = ret.result.tracks
 								api.writeFile({
 									path: api.fsDir + '/cache/dailymusic.json',
-									data: ret.result
+									data: ret.result.tracks
 								}, function(ret, err) {
 
 								});
 
-
+               $api.setStorage('listm', arr);
 							} else {
 								// alert(JSON.stringify(err));
 								// console.log();
@@ -631,14 +621,14 @@
 						});
 					} else {
 
-						wy.send(wy.newsong(), function(ret, err) {
+						wy.getListDetail(1317159, function(ret, err) {
 							if (ret) {
 								// console.log(JSON.stringify(ret));
-								app.listData = ret.result
-								var arr = ret.result
+								app.listData = ret.result.tracks
+								var arr = ret.result.tracks
 								api.writeFile({
 									path: api.fsDir + '/cache/dailymusic.json',
-									data: ret.result
+									data: ret.result.tracks
 								}, function(ret, err) {
 
 								});
@@ -687,7 +677,7 @@
 						extra: {
 							sid: sid,
 							index: index,
-							mlistdata: $api.jsonToStr(app.listData)
+							// mlistdata: $api.jsonToStr(app.listData)
 						}
 					})
 				} else {
@@ -699,7 +689,7 @@
 						extra: {
 							sid: sid,
 							index: index,
-							mlistdata: $api.jsonToStr(app.listData)
+							// mlistdata: $api.jsonToStr(app.listData)
 						}
 					})
 				}
@@ -719,7 +709,7 @@
 	apiready = function() {
 		var isopen = $api.getStorage('isopen');
 		uiloading()
-		// app.getcookie();
+
 		app.getTui();
 		api.setRefreshHeaderInfo({
 			loadingImg: 'widget://image/refresh.png',
