@@ -271,11 +271,11 @@
 
 						// app.getMusic(ret.songs[0].id)
 						api.ajax({
-						    url: 'https://api.imjad.cn/cloudmusic/?type=song&br=128000&id='+app.music_id,
+						    url: musicApi+'/music/url?id='+app.music_id,
 
 
 						},function(ret, err){
-							// console.log(JSON.stringify(ret));
+							console.log(JSON.stringify(ret));
 						    if (ret.data[0].url=="") {
 								 api.toast({
 								     msg: '数据错误',
