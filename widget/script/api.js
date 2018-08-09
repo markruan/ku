@@ -281,7 +281,7 @@ function imageCache(url) { //图片缓存方法
     superSearch='http://www.xggsj.com/api.php?types=search&name='
     searchSource='&source='
     hostUrl = 'http://api.iqimeng.com/ku/api';
-    musicApi = 'http://neteasemusic.leanapp.cn',
+    musicApi = 'http://iqimeng.leanapp.cn',
     // musicApi = 'http://musicapi4785.cloudapp.net:3000',
 
 
