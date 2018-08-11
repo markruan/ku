@@ -53,17 +53,57 @@
 		$api.fixStatusBar(header);
 		var headerPos = $api.offset(header);
 		var body_h = $api.offset($api.dom('body')).h;
-		api.openFrame({
-			name: 'my_frm',
-			url: 'search_body.html',
-			bounces: false,
-			rect: {
-				x: 0,
-				y: headerPos.h,
-				w: headerPos.w,
-				h: 'auto'
-			}
+		menulist(headerPos);
+		// api.openFrame({
+		// 	name: 'my_frm',
+		// 	url: 'search_body.html',
+		// 	bounces: false,
+		// 	rect: {
+		// 		x: 0,
+		// 		y: headerPos.h,
+		// 		w: headerPos.w,
+		// 		h: 'auto'
+		// 	}
+		// });
+		api.openFrameGroup ({
+		    name: 'group1',
+		    background: '#fff',
+		    scrollEnabled: true,
+		    rect: {
+		         x: 0,
+						 y: headerPos.h+44,
+ 						 w: headerPos.w,
+ 						 h: 'auto'
+		    },
+		    index: 0,
+		    frames: [{
+		        name: 'frame1',
+		        url: 'search_body.html',
+		        bgColor: '#fff'
+		    },{
+		        name: 'frame2',
+		        url: 'search_body0.html',
+		        bgColor: '#fff'
+		    }]
+		}, function(ret, err){
+		    if( ret ){
+					var index=ret.index
+					// console.log(index);
+					var MNNavigationMenu = api.require('MNNavigationMenu');
+					 MNNavigationMenu.setIndex({
+					     index: index
+					 }, function(ret, err) {
+					     if (ret) {
+					        //  alert(JSON.stringify(ret));
+					     } else {
+					         alert(JSON.stringify(err));
+					     }
+					 });
+		    }else{
+		         alert( JSON.stringify( err ) );
+		    }
 		});
+
 	};
 	function searchbar() {
 		var UIInput = api.require('UIInput');
@@ -118,6 +158,70 @@
 			}
 		});
 	}
+
+function menulist(headerPos){
+	var MNNavigationMenu = api.require('MNNavigationMenu');
+MNNavigationMenu.open({
+    rect: {
+        x: 0,
+        y: headerPos.h,
+        w: api.winWidth,
+        h: 44
+    },
+    index: 0,
+    animation: true,
+    styles: {
+        column: 2,
+        bg: '#eee',
+        item: {
+            bg: '#fff',
+            active: '#eee',
+            highlight: '#eee',
+            title: {
+                marginB: 6,
+                size: 18,
+                height: 14,
+                color: '#888',
+                active: '#f00',
+                highlight: '#f00',
+                ttf:'Alkatip Basma Tom'
+            },
+            icon: {
+                marginT: 0,
+                width: 30,
+                height: 30,
+                corner: 2
+            }
+        }
+    },
+    items: [{
+        title: '歌曲',
+        icon: 'fs://menu/0.png',
+        active: 'fs://menu/0.acitve.png',
+        highlight: 'fs://menu/0.highlight.png'
+    }, {
+        title: 'mv',
+        icon: 'fs://menu/1.png',
+        active: 'fs://menu/1.acitve.png',
+        highlight: 'fs://menu/1.highlight.png'
+    }],
+    fixedOn: api.frameName,
+    fixed: false
+}, function(ret, err) {
+    if (ret) {
+     var index=ret.index
+
+			       api.setFrameGroupIndex({
+			           name: 'group1',
+			           index: index,
+			           scroll: true
+			       });
+
+    } else {
+        alert(JSON.stringify(err));
+    }
+});
+}
 </script>
 
 </html>

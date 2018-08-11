@@ -32,6 +32,12 @@
     <div class="H-padding-vertical-bottom-10"></div>
     <div class="H-theme-background-color-white H-padding-horizontal-both-10">
         <p class="H-padding-horizontal-both-10 H-font-size-14 H-theme-font-color-black H-text-show-row-4" id="content"></p>
+    </div>
+    <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
+        <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+        <div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">你也喜欢</div>
+    </div>
+    <div id="similist" class="H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10">
 
     </div>
 </body>
@@ -39,10 +45,11 @@
 <script type="text/javascript" src="../../script/music.js"></script>
 
 <script type="text/javascript">
-   var wy=new neteaseMusic()
+    var wy = new neteaseMusic()
     apiready = function() {
         var moviePlayer = api.require('moviePlayer');
         openmv(api.pageParam.vid)
+
         moviePlayer.addEventListener(function(ret) {
             if (ret && ret.eventType == 'back') {
                 api.closeWin();
@@ -60,19 +67,19 @@
             if (!ret.state) {
                 api.closeWin();
 
-            }else{
-              moviePlayer.onBack(function() {
-                        alert("onBack");
+            } else {
+                moviePlayer.onBack(function() {
+                    alert("onBack");
                 });
             }
         });
     }
 
     function openmv(vid) {
-       api.readFile({
-           path: api.cacheDir + '/mv/' + vid + '.json'
-       }, function(ret, err){
-           if( ret.status ){
+        api.readFile({
+            path: api.cacheDir + '/mv/' + vid + '.json'
+        }, function(ret, err) {
+            if (ret.status) {
                 var mdata = $api.strToJson(ret.data);
                 var title = mdata.data.name + '-' + mdata.data.artistName
                 var url = mdata.data.brs[480]
@@ -81,134 +88,159 @@
                 var imgurl = mdata.data.cover.replace('.jpg', '.jpg?param=140y120')
                 $api.attr($api.byId('imgg'), 'src', imgurl);
                 $api.text($api.byId('content'), mdata.data.desc);
-                wy.getmv(vid,function(ret,err){
-                  var url = ret.data.brs[480]
-                  initPlayer(url,title)
+                wy.getmv(vid, function(ret, err) {
+                    var url = ret.data.brs[480]
+                    initPlayer(url, title)
                 })
 
-           }else{
-             wy.getmv(vid, function(ret, err) {
-                 if (ret) {
+            } else {
+                wy.getmv(vid, function(ret, err) {
+                    if (ret) {
 
-                      api.writeFile({
-                         path: api.cacheDir + '/mv/' + vid + '.json',
-                         data: ret
-                      }, function(ret, err){
+                        api.writeFile({
+                            path: api.cacheDir + '/mv/' + vid + '.json',
+                            data: ret
+                        }, function(ret, err) {
 
-                      });
+                        });
+                        var title = ret.data.name + '-' + ret.data.artistName
+                        var url = ret.data.brs[480]
+                        $api.text($api.byId('title'), ret.data.name);
+                        $api.text($api.byId('artistName'), ret.data.artistName);
+                        var imgurl = ret.data.cover.replace('.jpg', '.jpg?param=140y120')
+                        $api.attr($api.byId('imgg'), 'src', imgurl);
+                        $api.text($api.byId('content'), ret.data.desc);
 
-                     var title = ret.data.name + '-' + ret.data.artistName
-                     var url = ret.data.brs[480]
-                     $api.text($api.byId('title'), ret.data.name);
-                     $api.text($api.byId('artistName'), ret.data.artistName);
-                     var imgurl = ret.data.cover.replace('.jpg', '.jpg?param=140y120')
-                     $api.attr($api.byId('imgg'), 'src', imgurl);
-                     $api.text($api.byId('content'), ret.data.desc);
+                        initPlayer(url, title)
 
-                     initPlayer(url,title)
+                    } else {
+                        api.toast({
+                            msg: err.msg,
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                    }
+                });
 
-                 } else {
-                     api.toast({
-                         msg: err.msg,
-                         duration: 2000,
-                         location: 'bottom'
-                     });
-                 }
-             });
-
-           }
-       });
-
-
-
-
+            }
+        });
+          getsimi(vid)
     }
 
-  function initPlayer(url,title){
-// console.log(url);
-    var moviePlayer = api.require('moviePlayer');
-    moviePlayer.open({
-        texts: {
-            title: title
-        },
-        rect: {
-            x: 0,
-            y: 0,
-            w: api.frameWidth,
-            h: 300
-        },
-        styles: {
-            head: {
-                bg: 'rgba(0,0,0,0.5)',
-                // text:'成都'，
-                height: 44,
-                y: 20,
-                title: {
-                    size: 16,
-                    color: '#fff',
-                    width: 340,
-                    leftMargin: 10
-                },
-                backSize: 22,
-                backImg: 'widget://image/back.png',
-                customButtons: [{
-                    w: 30,
-                    h: 30,
-                    rightMagin: 10,
-                    img: 'widget://image/image/collect.png',
-                    imgSelected: 'fs://image/collectSelected.png',
-                }]
+    function initPlayer(url, title) {
+        // console.log(url);
+        var moviePlayer = api.require('moviePlayer');
+        moviePlayer.close();
+        moviePlayer.open({
+            texts: {
+                title: title
             },
-            foot: {
-                bg: 'rgba(0,0,0,0.5)',
-                height: 44,
-                palyBtn: {
-                    size: 20,
-                    playImg: 'widget://image/play.png',
-                    pauseImg: 'widget://image/pause.png',
-                    marginLeft: 5
+            rect: {
+                x: 0,
+                y: 0,
+                w: api.frameWidth,
+                h: 300
+            },
+            styles: {
+                head: {
+                    bg: 'rgba(0,0,0,0.5)',
+                    // text:'成都'，
+                    height: 44,
+                    y: 20,
+                    title: {
+                        size: 16,
+                        color: '#fff',
+                        width: 340,
+                        leftMargin: 10
+                    },
+                    backSize: 22,
+                    backImg: 'widget://image/back.png',
+                    customButtons: [{
+                        w: 30,
+                        h: 30,
+                        rightMagin: 10,
+                        img: 'widget://image/image/collect.png',
+                        imgSelected: 'fs://image/collectSelected.png',
+                    }]
                 },
-                currentTimeLabel: {
-                    textSize: 14,
-                    textColor: "#FFF",
-                    textWidth: 43,
-                    marginLeft: 5
-                },
-                seekBar: {
-                    sliderImg: 'widget://image/circle.png',
-                    sliderW: 20,
-                    sliderH: 20,
-                    progressColor: '#696969',
-                    progressSelected: 'rgba(183, 52, 52, 0.79)',
-                    marginLeft: 10,
-                    marginRight: 10
-                },
-                totalTimeLabel: {
-                    textSize: 14,
-                    textColor: "#FFF",
-                    textWidth: 43,
-                    marginRight: 5
-                },
-                fullscreenBtn: {
-                    size: 20,
-                    verticalImg: 'widget://image/vertical.png',
-                    horizontalImg: 'widget://image/horizontal.png',
+                foot: {
+                    bg: 'rgba(0,0,0,0.5)',
+                    height: 44,
+                    palyBtn: {
+                        size: 20,
+                        playImg: 'widget://image/play.png',
+                        pauseImg: 'widget://image/pause.png',
+                        marginLeft: 5
+                    },
+                    currentTimeLabel: {
+                        textSize: 14,
+                        textColor: "#FFF",
+                        textWidth: 43,
+                        marginLeft: 5
+                    },
+                    seekBar: {
+                        sliderImg: 'widget://image/circle.png',
+                        sliderW: 20,
+                        sliderH: 20,
+                        progressColor: '#696969',
+                        progressSelected: 'rgba(183, 52, 52, 0.79)',
+                        marginLeft: 10,
+                        marginRight: 10
+                    },
+                    totalTimeLabel: {
+                        textSize: 14,
+                        textColor: "#FFF",
+                        textWidth: 43,
+                        marginRight: 5
+                    },
+                    fullscreenBtn: {
+                        size: 20,
+                        verticalImg: 'widget://image/vertical.png',
+                        horizontalImg: 'widget://image/horizontal.png',
+                    }
                 }
-            }
-        },
-        path: url,
-        coverImg: 'widget://image/xia1.png',
-        autoPlay: true,
-        // fixedOn:api.frameName
-    }, function(ret, err) {
-        if (ret) {
-            // alert(JSON.stringify(ret));
+            },
+            path: url,
+            coverImg: 'widget://image/xia1.png',
+            autoPlay: true,
+            // fixedOn:api.frameName
+        }, function(ret, err) {
+            if (ret) {
+                // alert(JSON.stringify(ret));
             } else {
-            // alert(JSON.stringify(err));
-        }
+                // alert(JSON.stringify(err));
+            }
 
-    });
-  }
+        });
+    }
+
+    function getsimi(mvid) {
+        wy.simi(mvid, function(ret, err) {
+            var mvdata = ret.mvs;
+            var html='';
+            for (var i = 0; i < 4; i++) {
+                var coverImgUrl = imageCache(mvdata[i].cover)
+                html += ' <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMvmore('+mvdata[i].id+')">';
+                html += '<img src="' + coverImgUrl + '" class="H-width-100-percent H-display-block" alt="" title="" style="border-radius: 5px;">';
+                html += ' <div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + mvdata[i].name + '-' + mvdata[i].artistName + '</div></div>';
+            }
+            var obj = $api.byId('similist');
+            $api.html(obj, html);
+            // console.log(html);
+
+        })
+    }
+
+    function openMvmore(vid){
+
+      wy.getmv(vid,function(ret,err){
+        var title=ret.data.name+'-'+ret.data.artistName
+        var url = ret.data.brs[480]
+        initPlayer(url, title)
+      })
+     openmv(vid)
+
+    }
 </script>
 
 </html>
