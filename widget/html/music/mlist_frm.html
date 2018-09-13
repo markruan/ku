@@ -512,8 +512,8 @@
 		<div class="userinfocol01 userinfocol br" tapmode="toolhover" onclick="collectmusic(this)" data-click="0">
 			<div class="info"><img src="./image/musiclist/musiclistcollect.png" alt="" class="collectmusic">
 			</div>
-			<div class="num">
-				63
+			<div class="num" id="shoucangcount">
+				0
 			</div>
 		</div>
 		<div class="userinfocol02 userinfocol br" tapmode="toolhover" onclick="openComm(0)">
@@ -554,12 +554,14 @@
 	</div>
 	<div id="list"></div>
 	</div>
+
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/mm.js"></script>
 
 <script type="text/javascript">
 	var isopen
+	var page
 
 	function collectmusic(clicktoolitem) {
 		var toolbarlist = document.getElementsByClassName('collectmusic')[0];
@@ -607,7 +609,7 @@
 			opaque: true,
 			vScrollBarEnabled: false,
 			pageParam: {
-				type: type,
+				type: 2,
 				sid: sid
 			}
 		});
@@ -653,7 +655,7 @@
 		api.toast({
 			msg: '因版权问题暂无法提供下载'
 		});
-	 
+
 	}
 
 
@@ -727,33 +729,26 @@
 	function getlistdata() {
 		var lid = api.pageParam.lid
 		api.ajax({
-			url:'http://music.163.com/api/playlist/detail?updateTime=-1&id='+lid,
+			url: 'http://music.163.com/api/playlist/detail?updateTime=-1&id=' + lid,
 			// url: musicUrl + lid,
 			cache: true,
-			dataType: 'json'
+
 		}, function(ret, err) {
-			if (ret) {
+			if (ret.code = 200) {
+				// console.log(JSON.stringify(ret));
 				mdata = ret.result
 				initlist(mdata, lid)
 
 				api.writeFile({
 					path: api.fsDir + '/cache/' + lid + '.json',
 					data: mdata
-				}, function(ret, err) {
-						// console.log(JSON.stringify(mdata));
-					// api.toast({
-					//     msg: ret,
-					//     duration: 2000,
-					//     location: 'bottom'
-					// });
-
-				});
+				}, function(ret, err) {});
 			} else {
-				// api.toast({
-				// 	msg: '网络错误',
-				// 	duration: 2000,
-				// 	location: 'bottom'
-				// });
+				api.toast({
+					msg: ret.msg,
+					duration: 2000,
+					location: 'bottom'
+				});
 
 				stoploading();
 			}
@@ -770,8 +765,11 @@
 		var fenmian = mdata.coverImgUrl + '?param=300y300'
 		var coverImgUrl = imageCache(fenmian);
 		var nickname = mdata.creator.nickname;
+		var CommCount = mdata.commentCount;
+		var shoucangcount = mdata.subscribedCount
 		id = mdata.id
-   	getCommCount(lid, 0)
+		$api.text($api.byId('CommCount'), CommCount);
+		$api.text($api.byId('shoucangcount'), shoucangcount);
 
 		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img id="thumb" src="' + coverImgUrl +
 			'?param=140y140" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em" id="tracksName">' + tracksName.substr(0, 17) +
@@ -836,9 +834,9 @@
 	// 	});
 	// }
 
-	function abc(el,i,mlistdata) {
+	function abc(el, i, mlistdata) {
 		// var Idd = api.pageParam.name;
-	var mlistdata=$api.getStorage('listm')
+		var mlistdata = $api.getStorage('listm')
 
 		$api.setStorage('name', 1);
 		$api.setStorage('idi', i);
@@ -857,18 +855,18 @@
 				pageParam: {
 					sid: el,
 					index: i,
-					mlistdata:mlistdata
-         }
+					mlistdata: mlistdata
+				}
 			});
-      setTimeout(
+			setTimeout(
 				api.sendEvent({
 					name: 'songid',
 					extra: {
 						sid: el,
 						index: i,
-						mlistdata:mlistdata
+						mlistdata: mlistdata
 					}
-				}),1000)
+				}), 1000)
 		} else {
 			api.openWin({
 				name: 'nww',
@@ -878,33 +876,11 @@
 				extra: {
 					sid: el,
 					index: i,
-					mlistdata:mlistdata
+					mlistdata: mlistdata
 				}
 			})
 		}
 	};
-
-	function getCommCount(id, type) {
-
-		api.ajax({
-			url: hostUrl + '/comm.php',
-			method: 'get',
-			cache: false,
-			timeout: 30,
-			dataType: 'json',
-			data: {
-				values: {
-					ID: id,
-					type: type
-				}
-			}
-		}, function(ret, err) {
-			if (ret) {
-				var cout = ret.length
-				$api.text($api.byId('CommCount'), cout);
-			}
-		});
-	}
 </script>
 
 </html>

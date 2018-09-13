@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
@@ -8,7 +9,7 @@
 	<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
 	<script type="text/javascript" src="../../script/vue.min.js"></script>
-  <style>
+	<style>
 	.play-up-bg {
 			margin: 0 auto;
 			width: 70%;
@@ -16,12 +17,13 @@
 			border-radius: 60%;
 			border: 4px solid rgba(235, 103, 136, 0.48);
 		}
-		.lyric-color{
+
+		.lyric-color {
 			color: rgba(235, 103, 136, 0.48);
 		}
 
 		.xuanzhuan {
-			-webkit-animation: circle 20s infinite linear;
+			-webkit-animation: circle 45s infinite linear;
 			/*匀速 循环*/
 		}
 
@@ -78,11 +80,14 @@
 	.H-theme-font-color-white1 {
 		color: white;
 	}
+
 	</style>
 </head>
 
 <body>
-	<div id="app">
+	<div id="app"  >
+
+
 		<div class="" style="padding-top: 5%">
 			<!-- <img id="bg" :src='music_imgurl' alt=""  v-blind:class="play-up-bg H-center-all "> -->
 			<img id="bg" :src='music_imgurl' alt="" :class="{ xuanzhuan:playState }" class="play-up-bg H-center-all ">
@@ -130,7 +135,7 @@
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
 						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" tapmode @click='setcomm' tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" tapmode @click='shoucang' tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
 
 						</div>
 					</div>
@@ -158,12 +163,13 @@
 <script type="text/javascript" src="../../script/play.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
 <script type="text/javascript" src="../../script/lyric.js"></script>
-
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
 
 <script type="text/javascript">
 	var wy
 	wy = new neteaseMusic()
+	var getinfo = new getinfo()
 	apiready = function() {
 		app.music_id = api.pageParam.sid
 			// 歌词获取测试
@@ -229,6 +235,7 @@
 		data: {
 			mlistdata: '',
 			music_imgurl: '../../image/default.jpg',
+			music_thumb:'',
 			music_title: '',
 			music_artist: '',
 			music_id: '',
@@ -241,25 +248,26 @@
 			noXunHuanIcon: 'icon-xunhuan',
 			playicon: 'icon-bofang',
 			pauseicon: 'icon-zanting',
-			current:'00:00',
-			duration:'3:27',
-			cur:'',
-			dur:'',
-			lyric:'',
-			per:''
+			current: '00:00',
+			duration: '3:27',
+			cur: '',
+			dur: '',
+			lyric: '',
+			per: ''
 		},
 		methods: {
 			init: function() {
-				uiloading();
-				var murl=aUrl+app.music_id+'&ids=['+app.music_id+']'
-				// console.log(JSON.stringify(murl));
+				// uiloading();
+				var murl = songDetail +app.music_id;
+					// console.log(JSON.stringify(murl));
 				wy.send(murl, function(ret, err) {
 					//  console.log($api.jsonToStr(ret));
 					if (ret.code == 200) {
 						app.music_title = ret.songs[0].name
-						app.music_artist = ret.songs[0].artists[0].name
+						app.music_artist = ret.songs[0].ar[0].name
+            app.music_thumb=ret.songs[0].al.picUrl + '?param=80y80'
 						api.imageCache({
-							url: ret.songs[0].album.picUrl + '?param=500y500'
+							url: ret.songs[0].al.picUrl + '?param=500y500'
 						}, function(ret, err) {
 							if (ret) {
 								app.music_imgurl = ret.url
@@ -273,31 +281,31 @@
 						// app.music_mp3="http://music.163.com/song/media/outer/url?id="+app.music_id;
 						// play_c();
 						api.ajax({
-						    url: musicApi+'/music/url?id='+app.music_id,
-						},function(ret, err){
-							console.log(JSON.stringify(ret));
-						    if (ret.data[0].url=="") {
-								 api.toast({
-								     msg: '数据错误',
-								     duration: 2000,
-								     location: 'bottom'
-								 });
+							url: musicApi + '/music/url?id=' + app.music_id,
+						}, function(ret, err) {
+							// console.log(JSON.stringify(ret));
+							if (ret.data[0].url == "") {
+								api.toast({
+									msg: '数据错误',
+									duration: 2000,
+									location: 'bottom'
+								});
 
-									app.playNext()
+								app.playNext()
 
-						    } else {
-									app.music_mp3=ret.data[0].url
-									play_c();
+							} else {
+								app.music_mp3 = ret.data[0].url
+								play_c();
 
-						    }
+							}
 						});
 
 						// app.music_mp3 = wy.mp3(app.music_id)
-							// console.log(app.music_mp3);
+						// console.log(app.music_mp3);
 
 						var datetime = Number(new Date())
 						saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime)
-            app.getLyric()
+						app.getLyric()
 					} else {
 						// alert( JSON.stringify( err ) );
 						api.toast({
@@ -400,6 +408,11 @@
 						w: api.winWidth,
 						h: 300
 					},
+					animation: {
+						type: "push", //动画类型（详见动画类型常量）
+						subType: "from_bottom", //动画子类型（详见动画子类型常量）
+						duration: 450 //动画过渡时间，默认300毫秒
+					},
 					bounces: false,
 					bgColor: 'rgba(0,0,0,0)',
 					vScrollBarEnabled: true,
@@ -411,7 +424,7 @@
 				var data = {}
 				data.title = app.music_title;
 				data.art = app.music_artist;
-				data.img = app.music_imgurl;
+				data.img = app.music_thumb;
 				data.mp3 = app.music_mp3
 				api.openFrame({
 					name: 'sing_share',
@@ -448,7 +461,7 @@
 					opaque: true,
 					vScrollBarEnabled: false,
 					pageParam: {
-						type: 1,
+						type: 0,
 						sid: app.music_id
 					}
 				});
@@ -513,86 +526,46 @@
 					});
 				}
 			},
-			setcomm: function() {
+			shoucang: function() {
 				if (!$api.getStorage('userinfo')) {
 					api.toast({
 						msg: '先登陆'
 					});
 					return
 				}
-				api.ajax({
-					url: hostUrl + '/mylist.php',
-					method: 'post',
-					data: {
-						values: {
-							sid: app.music_id,
-							uid: $api.getStorage('userinfo').data_id
-						}
-					}
-				}, function(ret, err) {
-					if (ret.code == 200) {
-						api.ajax({
-							url: hostUrl + '/addm.php',
-							method: 'post',
-							cache: true,
-							timeout: 30,
-							dataType: 'json',
-							data: {
-								values: {
-									artist: app.music_artist,
-									title: app.music_title,
-									uid: $api.getStorage('userinfo').data_id,
-									background: app.music_imgurl,
-									cover: app.music_imgurl,
-									sid: app.music_id
-								}
-							}
-						}, function(ret, err) {
-							//coding...
-						});
+				getinfo.getDengLuInfo('/like?id=' + app.music_id, function(data) {
+					//  console.log(JSON.stringify(data));
+					if (data.code == 200) {
 						api.toast({
-							msg: '收藏成功'
+							msg: '成功',
+							duration: 2000,
+							location: 'bottom'
 						});
-					} else if (ret.code == 202) {
-						api.confirm({
-							title: '取消收藏',
-							msg: '亲，要取消吗？',
-							buttons: ['确定', '取消']
-						}, function(ret, err) {
-							if (ret.buttonIndex == 1) {
-								app.quXiaoShouCang()
-							}
-						});
+
 					} else {
 						api.toast({
-							msg: '收藏失败'
+							msg: '失败',
+							duration: 2000,
+							location: 'bottom'
 						});
-					}
-					//coding...
-				});
-			},
-			quXiaoShouCang: function() {
-				var uid = $api.getStorage('userinfo').data_id
-				api.ajax({
-					url: hostUrl + '/quxiao.php?uid=' + uid + '&sid=' + app.music_id,
-				}, function(ret, err) {
-					api.toast({
-						msg: ret.msg
-					});
-				});
-			},
-			getLyric:function(){
-	  var lrc_url='http://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+app.music_id
-				wy.send(lrc_url,function(ret,err){
 
-          $api.html($api.byId('zxx-lyric'), "");
+					}
+				})
+
+			},
+
+			getLyric: function() {
+				var lrc_url = 'http://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id=' + app.music_id
+				wy.send(lrc_url, function(ret, err) {
+
+					$api.html($api.byId('zxx-lyric'), "");
 					if (ret.lrc) {
 
-							app.lyric = parseLyrics(ret.lrc.lyric);
+						app.lyric = parseLyrics(ret.lrc.lyric);
 
 					} else {
 
-							$api.html($api.byId('zxx-lyric'), "<br/>");
+						$api.html($api.byId('zxx-lyric'), "<br/>");
 
 					}
 				})

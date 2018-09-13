@@ -16,6 +16,10 @@
             background-size: 15px 15px;
         }
 
+        #imgg {
+            height: 44px;
+            margin-left: 60px
+        }
 
         .H-font-size-10 {
             font-size: 8px;
@@ -39,6 +43,12 @@
 
 <body id="body">
     <div id="main" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+    <div class="H-header  H-display-block H-theme-background-color-white" id="footbar">
+        <span id="footer">
+        <span class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><img id="imgg" src="../../image/loading.gif" alt=""></span>
+        <div class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">加载中......</div>
+        </span>
+    </div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/echo.min.js"></script>
@@ -53,7 +63,7 @@
         api.openWin({
             name: 'musiclist',
             url: '../../html/music/mlist_win.html',
-            slidBackEnabled:false, 
+            slidBackEnabled: false,
             reload: true,
             animation: {
                 type: "reveal", //动画类型（详见动画类型常量）
@@ -74,80 +84,63 @@
 
             if (ret.status) {
                 mdata = $api.strToJson(ret.data);
-                initpage(mdata)
+                // initpage(mdata)
             } else {
                 findinfo1()
             }
         });
-
-
-
     }
 
 
     // 渲染页面
     function initpage(data) {
-        var html = ''
-        for (i = 1; i < data.playlist.length; i++) {
-            var Idd = data.playlist[i].id;
-            var coverImgUrl = imageCache(data.playlist[i].coverImgUrl + '?param=180y180')
-            var tracksName = data.playlist[i].name
-            $api.setStorage('lenpage', data.playlist.length);
-            html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
-            html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+        console.log(JSON.stringify(data));
 
-            html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
-
-
-            api.refreshHeaderLoadDone();
-        }
-        var obj = $api.byId('main');
-
-        $api.html(obj, html);
-
-        echo.init({
-            offset: 0,
-            throttle: 0,
-            unload: false,
-            callback: function(element, op) {}
-        });
-        $api.removeCls($api.byId('body'), 'H-display-none');
-        stoploading()
 
     }
 
     //  获取用户的歌单
+    var pageNum, offset;
+    var userinfo = $api.getStorage('userinfo')
+    var userId = userinfo.userId
+
     function findinfo1() {
-        var jingxuan=musicApi+'/top/playlist/highquality?limit=10&cat=%E6%B0%91%E8%B0%A3';
-        var kulist=musicApi + '/user/playlist?uid=1081875'
+        pageNum = 0
+        var kulist = musicApi + '/user/playlist?uid=' + userId + '&limit=30&offset=0'
 
         uiloading()
-        setTimeout(function() {
-            stoploading();
-        }, 8000);
         api.ajax({
             url: kulist,
-            cache: true,
         }, function(ret, err) {
+
             if (ret) {
-            initpage(ret)
-                api.writeFile({
-                    path:'fs://mlist/1081875.json',
-                    data: ret
-                }, function(ret, err) {
-                    if (ret.status) {
+                var data = ret
+                var html = ''
+                for (i = 0; i < data.playlist.length; i++) {
+                    var Idd = data.playlist[i].id;
+                    var coverImgUrl = imageCache(data.playlist[i].coverImgUrl + '?param=180y180')
+                    var tracksName = data.playlist[i].name
+                    $api.setStorage('lenpage', data.playlist.length);
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+                    html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
 
-                    } else {
+                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+                    api.refreshHeaderLoadDone();
+                }
+                var obj = $api.byId('main');
 
-                    }
+                $api.html(obj, html);
+
+                echo.init({
+                    offset: 0,
+                    throttle: 0,
+                    unload: false,
+                    callback: function(element, op) {}
                 });
-            } else {
-                api.toast({
-                    msg: '没有更多了'
-                });
-                stoploading();
-                api.refreshHeaderLoadDone();
-            };
+                $api.removeCls($api.byId('body'), 'H-display-none');
+                stoploading()
+            }
+
 
         });
     }
@@ -155,7 +148,7 @@
     apiready = function() {
         findinfo1()
         isdata()
-        // findinfo(page)
+            // findinfo(page)
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
             visible: true,
@@ -165,7 +158,13 @@
             textUp: '松开刷新...',
             showTime: true
         }, function(ret, err) {
-            findinfo1(page)
+            var html = ''
+            pageNum = 0
+            html +=
+                '  <span class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><img id="imgg" src="../../image/loading.gif" alt=""></span>';
+            html += ' <div  class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">加载中......</div>';
+            $api.html($api.byId('footer'), html);
+            findinfo1()
             api.hideProgress();
             api.refreshHeaderLoadDone();
         });
@@ -175,8 +174,9 @@
                 threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
-            // page++
-            // findinfo(page)
+            pageNum++
+            findinfo()
+
         });
     };
 
@@ -187,23 +187,29 @@
 
     // 远程获取数据（ku里的数据）
     function findinfo() {
+        pageNum++
         uiloading()
-        setTimeout(function() {
-            stoploading();
-        }, 8000);
-        var ye = page * 20
+        var offset = pageNum * 30
+            // console.log(offset);
         api.ajax({
-            url: hostUrl + '/fen.php?page=' + ye,
+            url: musicApi + '/user/playlist?uid=' + userId + '&limit=30&offset=' + offset,
             cache: true,
         }, function(ret, err) {
-             if (ret) {
+            console.log(JSON.stringify(ret));
+            ret = ret.playlist
+            if (ret.playlist=[]) {
+
+                $api.html($api.byId('footer'), '<div  class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">没有更多了......</div>');
+                stoploading();
+                api.refreshHeaderLoadDone();
+
+                // $api.removeCls($api.byId('body'), 'H-display-none');
+            } else {
                 var html = '';
-                tuilist = ret
                 for (i = 0; i < ret.length; i++) {
-                    var Idd = ret[i].idd;
-                    var coverImgUrl = imageCache(ret[i].imgUrl+'?param=120y120')
+                    var Idd = ret[i].id;
+                    var coverImgUrl = imageCache(ret[i].coverImgUrl + '?param=120y120')
                     var tracksName = ret[i].name
-                    $api.setStorage('lenpage', ret.length);
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
                     html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
 
@@ -213,24 +219,15 @@
                     api.refreshHeaderLoadDone();
                 }
                 var obj = $api.byId('main');
-                if (page == 0) {
-                    $api.html(obj, html);
-                } else {
-                    $api.after($api.last(obj), html);
-                }
+
+                $api.append(obj, html);
+
                 echo.init({
                     offset: 0,
                     throttle: 100,
                     unload: false,
                     callback: function(element, op) {}
                 });
-                $api.removeCls($api.byId('body'), 'H-display-none');
-            } else {
-                api.toast({
-                    msg: '没有更多了'
-                });
-                stoploading();
-                api.refreshHeaderLoadDone();
             };
         });
     }

@@ -24,60 +24,58 @@
 </head>
 
 <body class="H-flexbox-vertical">
-    <div class="H-horizontal-center   H-overflow-hidden" style="padding-top:20px; min-height: 200px; background-image:url('../../image/timg.jpg');">
-        <div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box">
-            <div class="picture H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
-                <span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color7" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i tapmode onclick="open_img()"  class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span>
-                <img
-                    id="icon" src="../../image/qq.png" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);">
+    <div id="body">
+        <div class="H-horizontal-center   H-overflow-hidden" style="padding-top:20px; min-height: 200px; background-image:url('../../image/timg.jpg');">
+            <div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box">
+                <div class="picture H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
+                    <span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color7" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i tapmode onclick="open_img()"  class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span>
+                    <img id="icon" src="../../image/qq.png" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);">
+                </div>
+                <strong id="name" class="H-display-block H-font-weight-normal H-font-weight-500 H-font-size-18 H-theme-font-color-white H-text-align-center H-margin-vertical-both-8">酷选</strong>
+                <div id="signature" class="H-font-size-12 H-theme-font-color-white H-text-show-row-1">
+                    聆听音乐 感悟人生
+                </div>
             </div>
-            <strong id="name" class="H-display-block H-font-weight-normal H-font-weight-500 H-font-size-18 H-theme-font-color-white H-text-align-center H-margin-vertical-both-8">酷选</strong>
-            <div id="signature" class="H-font-size-12 H-theme-font-color-white H-text-show-row-1">
-                聆听音乐 感悟人生
+        </div>
+        <div tapmode onclick="openWin('edit', '修改资料') " class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
+            <span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-profile H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
+            <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
+                修改资料
             </div>
+            <span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
         </div>
-    </div>
-    <div tapmode onclick="openWin('edit', '修改资料') " class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
-        <span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-profile H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
-        <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-            修改资料
+        <div tapmode class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
+            <span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-profile H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
+            <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
+                通知栏
+            </div>
+            <input type="checkbox" onclick="notify()" id="notify" class="H-switch H-display-block H-position-relative H-theme-background-color-white H-theme-font-color2 H-margin-horizontal-right-10">
         </div>
-        <span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-    </div>
-    <div tapmode   class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
-        <span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-profile H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
-        <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-            通知栏
+        <div tapmode onclick="H.clearCache(function(ret,err){H.D('#cacheSize').innerText='0.0M';H.toast('清除成功！');});" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
+            <span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-clear H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
+            <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
+                清除缓存
+            </div>
+            <span class="H-badge H-display-block"><label class="H-display-inline-block H-vertical-middle H-theme-background-color8 H-theme-font-color-white H-font-size-12" id="cacheSize">0.0M</label></span>
         </div>
-        <input type="checkbox" onclick="notify()" id="notify" class="H-switch H-display-block H-position-relative H-theme-background-color-white H-theme-font-color2 H-margin-horizontal-right-10">
-    </div>
-    <div tapmode onclick="H.clearCache(function(ret,err){H.D('#cacheSize').innerText='0.0M';H.toast('清除成功！');});" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
-        <span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-clear H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
-        <div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-            清除缓存
-        </div>
-        <span class="H-badge H-display-block"><label class="H-display-inline-block H-vertical-middle H-theme-background-color8 H-theme-font-color-white H-font-size-12" id="cacheSize">0.0M</label></span>
-    </div>
-    <div class="  H-center-all " style="margin-top: 80px">
-        <button onclick="logout()" class="H-theme-font-color-white H-theme-background-color2   H-margin-horizontal-left-10 H-button H-font-size-15 H-outline-none H-padding-vertical-both-10 H-padding-horizontal-both-20 H-theme-background-color2-active H-theme-font-color-white H-theme-border-color2 H-theme-border-color3-click H-theme-background-color3-click H-theme-font-color8-click H-border-radius-3"
-            style="min-width: 250px;border-radius: 30px;">
+        <div class="  H-center-all " style="margin-top: 80px">
+            <button onclick="logout()" class="H-theme-font-color-white H-theme-background-color2   H-margin-horizontal-left-10 H-button H-font-size-15 H-outline-none H-padding-vertical-both-10 H-padding-horizontal-both-20 H-theme-background-color2-active H-theme-font-color-white H-theme-border-color2 H-theme-border-color3-click H-theme-background-color3-click H-theme-font-color8-click H-border-radius-3"
+                style="min-width: 250px;border-radius: 30px;">
             注销
         </button>
+        </div>
     </div>
     <script type="text/javascript" src="../../script/H.js"></script>
     <script type="text/javascript" src="../../script/api.js"></script>
     <script type="text/javascript" src="../../script/echo.min.js"></script>
     <script type="text/javascript">
         function notify() {
-          // console.log(document.getElementById("notify").checked);
+            // console.log(document.getElementById("notify").checked);
             if (document.getElementById("notify").checked) {
-                $api.setStorage('notify', false);
-                api.cancelNotification({
-                    id: -1
-                });
-                console.log($api.getStorage('notify'));
+                $api.setStorage('notify', 1);
+
             } else {
-                $api.setStorage('notify', true);
+                $api.setStorage('notify', 0);
             }
         }
 
@@ -92,18 +90,25 @@
 
         H.tppl_flag = ["<%", "%>"];
         H.ready(function() {
-          console.log($api.getStorage('notify'));
-          if($api.getStorage('notify')){
-            document.getElementById("notify").checked=true;
-
-          }else{
-            document.getElementById("notify").checked=false;
-            // 取消状态栏通知
-            api.cancelNotification({
-                id: -1
+            // console.log($api.getStorage('notify'));
+            var uchtml = api.getPrefs({
+                sync: true,
+                key: 'uchtml'
             });
-          }
-            init()
+            if (uchtml) {
+                $api.html($api.byId('body'), uchtml);
+
+            } else {
+                init()
+            }
+            if ($api.getStorage('notify')&&$api.getStorage('notify')==1) {
+                document.getElementById("notify").checked = true;
+            } else {
+                if($api.getStorage('notify'))
+                document.getElementById("notify").checked = false;
+
+            }
+
             api.setFrameAttr({
                 name: api.frameName,
                 bounces: false
@@ -127,46 +132,13 @@
             api.addEventListener({
                 name: 'iconupdata'
             }, function(ret, err) {
-                var uid = $api.getStorage('userinfo').data_id
-                api.ajax({
-                    timeout: 300,
-                    method: 'post',
-                    url: hostUrl + '/upload.php',
-                    data: {
-                        files: {
-                            upfile: ret.value.img_path
-                        },
-                    },
-                    dataType: 'text',
-                }, function(ret, err) {
-                    var img_path = hostUrl + '/' + trimStr(ret)
-                    api.ajax({
-                        url: hostUrl + '/updateicon.php',
-                        dataType: 'json',
-                        method: 'post',
-                        data: {
-                            values: {
-                                uid: uid,
-                                pic: img_path
-                            }
-                        }
-                    }, function(ret, err) {
-                        if (ret.status == 1) {
-                            api.toast({
-                                msg: ret.msg
-                            });
-                            var userinfo = $api.getStorage('userinfo');
-                            userinfo.pic = img_path
-                            $api.setStorage('userinfo', userinfo);
-                            $api.attr($api.byId('beijing'), 'src', img_path);
-                            $api.attr($api.byId('icon'), 'src', img_path);
-                        } else {
-                            api.toast({
-                                msg: ret.msg
-                            });
-                        }
-                    });
-                });
+                var uid = $api.getStorage('userinfo').userId
+                var userinfo = $api.getStorage('userinfo');
+                userinfo.avatarUrl = img_path
+
+                $api.attr($api.byId('beijing'), 'src', img_path);
+                $api.attr($api.byId('icon'), 'src', img_path);
+
             });
             api.addEventListener({
                 name: 'zhuxiao'
@@ -174,6 +146,9 @@
                 init();
                 setTimeout(huifu(), 100)
             });
+
+
+
         });
 
         function huifu() {
@@ -183,19 +158,27 @@
 
         function init() {
             var userinfo = $api.getStorage('userinfo');
+
             if (!userinfo) {
                 var name = '酷选'
                 var icon = '../../image/qq.png'
                 var signature = '聆听音乐 感悟人生'
             } else {
                 var name = userinfo.nickname
-                var icon = userinfo.pic
+                var icon = userinfo.avatarUrl
                 var signature = userinfo.signature
             }
-            //				 alert(JSON.stringify(userinfo))
             $api.attr($api.byId('icon'), 'src', icon);
             $api.text($api.byId('name'), name);
             $api.text($api.byId('signature'), signature);
+            // console.log(JSON.stringify(userinfo))
+
+            api.setPrefs({
+                key: 'uchtml',
+                value: $api.html($api.byId('body'))
+            });
+
+
         }
 
         function open_img() {

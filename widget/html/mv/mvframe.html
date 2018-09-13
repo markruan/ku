@@ -223,7 +223,7 @@
                 var coverImgUrl = imageCache(coverImgUrl)
                 html += ' <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMvmore('+mvdata[i].id+')">';
                 html += '<img src="' + coverImgUrl + '" class="H-width-100-percent H-display-block" alt="" title="" style="border-radius: 5px;">';
-                html += ' <div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + mvdata[i].name + '-' + mvdata[i].artistName + '</div></div>';
+                html += ' <div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + mvdata[i].name + '-' + mvdata[i].artistName.substring(0,16) + '</div></div>';
             }
             var obj = $api.byId('similist');
             $api.html(obj, html);

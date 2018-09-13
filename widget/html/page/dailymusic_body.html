@@ -550,7 +550,7 @@
 		<img src="../../image/frame0101cover/cm2_pro_head_140.png" alt="" class="border">
 		<img src="../../image/frame0101cover/cm2_mv_btn_fav.png" alt="" class="inside">
 	</div> -->
-			<div class="info">不一样的推荐</div>
+			<div class="info">只推荐你喜欢的音乐...</div>
 		</div>
 
 		<!-- 2 播放全部 -->
@@ -579,11 +579,12 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/vue.min.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
 <script type="text/javascript">
 	var isopen
 	var wy
-	wy=new neteaseMusic()
+	wy = new neteaseMusic()
 
 	var app = new Vue({
 		el: '#app',
@@ -613,7 +614,7 @@
 
 								});
 
-               $api.setStorage('listm', arr);
+								$api.setStorage('listm', arr);
 							} else {
 								// alert(JSON.stringify(err));
 								// console.log();
@@ -696,6 +697,17 @@
 			},
 			openMusicPlay: function() {
 				app.openMusic(app.listData[0].id, 0)
+			},
+			getdaily: function() {
+        var getdailysong=new getinfo()
+				getdailysong.getDengLuInfo('/recommend/songs',function(data){
+					// console.log(JSON.stringify(data));
+					app.listData = data.recommend
+					$api.setStorage('listm', app.listData);
+					stoploading()
+				})
+
+
 			}
 
 		},
@@ -710,7 +722,7 @@
 		var isopen = $api.getStorage('isopen');
 		uiloading()
 
-		app.getTui();
+		app.getdaily();
 		api.setRefreshHeaderInfo({
 			loadingImg: 'widget://image/refresh.png',
 			visible: true,
@@ -720,7 +732,7 @@
 			textUp: '松开刷新...',
 			showTime: true
 		}, function(ret, err) {
-			app.getTui();
+			app.getdaily();
 		});
 	}
 </script>

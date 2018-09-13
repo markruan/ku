@@ -1,5 +1,5 @@
 function play_c() {
-    uiloading();
+    // uiloading();
     var audioPlayer = api.require('audioPlayer');
     audioPlayer.stop();
     // console.log(app.music_mp3);
@@ -79,13 +79,14 @@ function play_c() {
                 });
                 audioCover(duration)
                     // 状态栏显示
-                if(api.systemType=='ios'||$api.getStorage('notify')==false){
-                  // 取消状态栏通知
-                  api.cancelNotification({
-                      id: -1
-                  });
-                }else{
+                    // console.log($api.getStorage('notify'));
+                if($api.getStorage('notify')&&$api.getStorage('notify')==1){
                   notify(app.music_title + '-' + app.music_artist, app.current + '-' + app.dur)
+
+                }else{
+                  // 取消状态栏通知
+                 
+                  api.cancelNotification({id:-1});
                 }
 
                 app.playState = true

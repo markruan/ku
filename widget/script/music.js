@@ -143,22 +143,22 @@ function neteaseMusic() {
         });
     }
     this.getmv = function(mvid, callback) {
-        api.ajax({
-            url: 'https://api.imjad.cn/cloudmusic/?type=mv&id=' + mvid,
+            api.ajax({
+                url: 'https://api.imjad.cn/cloudmusic/?type=mv&id=' + mvid,
 
+            }, function(ret, err) {
+                callback(ret, err)
+            });
+        }
+        // 获取相似mv
+    this.simi = function(mvid, callback) {
+        api.ajax({
+            url: ApiURL + '/simi/mv?mvid=' + mvid,
         }, function(ret, err) {
             callback(ret, err)
         });
-    }
-		// 获取相似mv
-		this.simi=function(mvid, callback) {
-		    api.ajax({
-		        url: ApiURL + '/simi/mv?mvid=' + mvid,
-		       }, function(ret, err) {
-		        callback(ret, err)
-		    });
 
-		}
+    }
 
     this.mv = function(songid, callback) {
         api.ajax({
@@ -210,6 +210,44 @@ function listRecurSend(bm, ind, listRe, callback) { //递归发送多条请求�
 }
 // 获取相似mv
 
+function getinfo() {
+  var userinfo=$api.getStorage('userinfo')
+    this.getDengLuInfo = function(dourl, callback) {
+        if (typeof callback !== 'function') { //检查回调函数是否可用调用的
+            callback = false;
+        }
+        $.ajax({
+            url: musicApi+"/login/cellphone?phone="+userinfo.nickname+"&password="+userinfo.psw,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(data) {
+              var url=musicApi+dourl
+                 $.ajax({
+                    url: url,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(data1) {
+                     callback(data1)
+                    //  console.log(JSON.stringify(data1));
+                        // app.listData = data.recommend
+                        // $api.setStorage('listm', app.listData);
+                        // stoploading()
+                    },
+                    error: function(err) {
+                      console.log(JSON.stringify(err));
+                      callback(data)
+                    }
+                })
+            },
+            error: function(err) {
+                console.log(err)
+            }
+        })
+    }
 
+
+}
 
 //#############################################  接口方法说明  #############################################//

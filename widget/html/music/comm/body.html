@@ -1,5 +1,5 @@
-﻿<!doctype html>
-<html>
+<!doctype html>
+<html class="H-theme-background-color-white">
 
 <head>
     <meta charset="utf-8">
@@ -7,136 +7,208 @@
     <title>Hello APP</title>
     <link href="../../../css/Hui.css" rel="stylesheet" type="text/css" />
     <style>
-
+        #imgg {
+            height: 44px;
+            margin-left: 60px
+        }
     </style>
 </head>
 
-<body>
-    <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
-        <div class="H-channel-line H-theme-background-color-black H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+<body class="H-theme-background-color-white">
+    <div class="H-channel-title  H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
+        <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
         <div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">
             评论列表
         </div>
     </div>
-    <div id="comm"></div>
-    <div class="H-padding-vertical-bottom-25"></div>
-    <div class="H-padding-vertical-bottom-25"></div>
+    <div id="comm" class="H-display-block H-theme-background-color-white"></div>
+    <div class="H-header  H-display-block H-theme-background-color-white" id="footbar">
+        <span id="footer">
+        <span class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><img id="imgg" src="../../../image/loading.gif" alt=""></span>
+        <div class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">加载中......</div>
+        </span>
+    </div>
 </body>
 <script type="text/javascript" src="../../../script/api.js"></script>
 <script type="text/javascript" src="../../../script/common.js"></script>
 <script type="text/javascript" src="../../../script/play.js"></script>
+<script type="text/javascript" src="../../../script/music.js"></script>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
 <script type="text/javascript">
-apiready = function() {
-    var obj = api.require('inputField');
-    var type = api.pageParam.type
-    var sid = api.pageParam.sid
-    initPage(type, sid)
-    commm(sid, type)
-}
+    var getinfo = new getinfo()
+    var type, sid
+    var page = 0
+    apiready = function() {
+        var obj = api.require('inputField');
 
-function initPage(type, sid) {
-    setTimeout(uiloading(), 2000);
-    var html = '';
-    var html1 = '';
-    api.ajax({
-        url: hostUrl + '/comm.php',
-        method: 'get',
-        cache: false,
-        timeout: 30,
-        dataType: 'json',
-        data: {
-            values: {
-                ID: sid,
-                type: type,
-                uid: $api.getStorage('userinfo').data_id
+
+        initPage()
+        commm(sid, type)
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
-        }
-    }, function(ret, err) {
+        }, function(ret, err) {
 
+            page++
 
-      console.log( $api.jsonToStr(ret)+sid);
-        if (ret) {
-            var objc1 = $api.byId('comm');
-            for (var i = 0, len = ret.length; i < len; i++) {
-                var thisItem = ret[i];
-                var nType = thisItem.type;
-                var coo = thisItem.content;
-                var time = thisItem.time;
-                var pic = thisItem.pic;
-                var lou = i + 1
+            initPage()
 
-                html += '<div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">';
-                html += ' <div class="H-padding-vertical-both-5"><img id="face" src="' + pic + '" alt="" title="" class="imgCache H-display-block H-margin-horizontal-left-10 H-border-radius-circle" style="width: 30px; height: 30px;" /></div>';
-                html += '<div class="H-flex-item H-margin-vertical-both-8 H-margin-10">';
-                html += ' <div class="H-theme-font-color-999 H-font-size-14 H-flexbox-horizontal H-text-horizontal-left H-box-sizing-border-box">';
-                html += '<span class="H-display-block H-flex-item H-text-align-left H-font-size-14 H-theme-font-color1">' + thisItem.nickname + '</span>';
-                html += ' <span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times">' + lou + '楼</span></div>';
-                html += '<div class="H-font-size-12 H-text-show-row-2 H-margin-vertical-top-2 H-font-size-12"id="address">' + coo + '</div>';
-                html += '<div class="H-font-size-10 H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12" id="address">' + time + '</div></div></div>';
-            }
-            $api.html(objc1, html);
-            stoploading();
+        });
+        api.parseTapmode();
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/refresh.png',
+            visible: true,
+            bgColor: '#f2f2f2',
+            textColor: '#4d4d4d',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            page = 0
+            initPage()
+            api.hideProgress();
             api.refreshHeaderLoadDone();
-        } else {
-            str1 = '<div class="H-background-white H-padding10"><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">沙发空余，快来抢占</p><div class="H-padding-vertical-bottom-10"></div></div>';
-            $api.byId('comm').innerHTML = str1;
-            stoploading();
-        };
-    });
-}
+        });
+    }
 
-function commm(sid, type) {
-    //获取用户信息
-    var obj = api.require('inputField');
-    obj.open({
-        bgColor: 'rgba(228, 149, 97, 0.75)',
-        lineColor: 'rgba(228, 149, 97, 0.75)',
-        fileBgColor: '#ffffff',
-        borderColor: 'rgba(228, 149, 97, 0.75)',
-        sendImg: 'widget://res/send_bg.png'
-    }, function(ret, err) {
-        var imsg = ret.msg
-        var timer = getNowFormatDate()
-        if (imsg) {
-            api.ajax({
-                url: hostUrl + '/addcom.php',
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    values: {
-                        sid: sid,
-                        uid: $api.getStorage('userinfo').data_id,
-                        content: imsg,
-                        time: timer,
-                        type: type,
-                    },
-                }
-            }, function(ret, err) {
-                if (ret.status == 0) {
-                    initPage(type, sid);
-                    api.toast({
-                        msg: ret.msg,
-                        duration: 2000,
-                        location: 'middle'
-                    });
-                } else {
-                    initPage(type, sid);
-                    api.toast({
-                        msg: ret.msg,
-                        duration: 2000,
-                        location: 'middle'
-                    });
-                }
-            });
+    function initPage() {
+        // setTimeout(uiloading(), 2000);
+        var type = api.pageParam.type
+        var sid = api.pageParam.sid
+        var comtype
+        var offset = page * 30
+
+        if (type == 0) {
+            comtype = 'music'
         } else {
-            api.alert({
-                msg: '输入不能为空!!'
-            }, function(ret, err) {
-                initPage(type, sid);
-            });
+            comtype = 'playlist'
         }
-    });
-}
+        var html = '';
+        var html1 = '';
+        var url = musicApi + '/comment/' + comtype + '?limit=30&id=' + sid + '&offset=' + offset
+        api.ajax({
+            url: url,
+            cache: false,
+
+        }, function(ret, err) {
+
+            var commtotal = ret.total
+            var ret = ret.comments
+            if (ret.length > 0) {
+                var objc1 = $api.byId('comm');
+                for (var i = 0, len = ret.length; i < len; i++) {
+                    var thisItem = ret[i];
+                    var nType = 2;
+                    var nickname = thisItem.user.nickname
+                    var coo = thisItem.content;
+                    var time = UnixToDate(thisItem.time);
+                    var pic = thisItem.user.avatarUrl + '?param=30y30';
+                    var lou = i + 1
+
+                    html += '<div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">';
+                    html += ' <div class="H-padding-vertical-both-5"><img id="face" src="' + pic +
+                        '" alt="" title="" class="imgCache H-display-block H-margin-horizontal-left-10 H-border-radius-circle" style="width: 30px; height: 30px;" /></div>';
+                    html += '<div class="H-flex-item H-margin-vertical-both-8 H-margin-10">';
+                    html += ' <div class="H-theme-font-color-999 H-font-size-14 H-flexbox-horizontal H-text-horizontal-left H-box-sizing-border-box">';
+                    html += '<span class="H-display-block H-flex-item H-text-align-left H-font-size-14 H-theme-font-color1">' + nickname + '</span>';
+                    html += ' <span class="H-display-block H-flex-item H-text-align-right H-theme-font-color-999 H-font-size-12" id="times"></span></div>';
+                    html += '<div class="H-font-size-12  H-margin-vertical-top-2 H-font-size-12"id="address">' + coo + '</div>';
+                    html += '<div class="H-font-size-10 H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12" id="address">' + time + '</div></div></div>';
+                }
+                if (page > 0) {
+                    $api.append(objc1, html);
+                } else if (page == 0 &&ret.length ==30) {
+                    $api.html(objc1, html);
+               } else if(page==0&&ret.length<30) {
+                    $api.html(objc1, html);
+                    str1 = '<div class="H-theme-background-color-white "><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">没有更多了...</p><div class="H-padding-vertical-bottom-10"></div></div>';
+
+                    $api.html($api.byId('footer'), str1);
+
+                }
+
+                stoploading();
+                api.refreshHeaderLoadDone();
+
+            } else {
+                str1 = '<div class="H-theme-background-color-white  "><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">沙发空余，快来抢占</p><div class="H-padding-vertical-bottom-10"></div></div>';
+                $api.byId('comm').innerHTML = str1;
+                $api.html($api.byId('footer'), '');
+                stoploading();
+            };
+        });
+    }
+
+    function commm(sid, type) {
+        //获取用户信息
+        var obj = api.require('inputField');
+        var type = api.pageParam.type
+        var sid = api.pageParam.sid
+        obj.open({
+            bgColor: 'rgba(228, 149, 97, 0.75)',
+            lineColor: 'rgba(228, 149, 97, 0.75)',
+            fileBgColor: '#ffffff',
+            borderColor: 'rgba(228, 149, 97, 0.75)',
+            sendImg: 'widget://res/send_bg.png'
+        }, function(ret, err) {
+            var imsg = ret.msg
+            var url = '/comment?action=1&type=' + type + '&id=' + sid + '&content=' + imsg;
+            if (imsg) {
+                getinfo.getDengLuInfo(url, function(data) {
+                     
+                    if (data.code == 200) {
+                        initPage(type, sid);
+                        api.toast({
+                            msg: "评论成功",
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    } else {
+                        initPage(type, sid);
+                        api.toast({
+                            msg: '评论失败',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    }
+
+                })
+
+
+
+            } else {
+                api.alert({
+                    msg: '输入不能为空!!'
+                }, function(ret, err) {
+                    initPage(type, sid);
+                });
+            }
+        });
+    }
+
+    function UnixToDate(str) {
+        var oDate = new Date(str),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth() + 1,
+            oDay = oDate.getDate(),
+            oHour = oDate.getHours(),
+            oMin = oDate.getMinutes(),
+            oSen = oDate.getSeconds(),
+            oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSen); //最后拼接时间
+        return oTime;
+    };
+    //补0操作
+    function getzf(num) {
+        if (parseInt(num) < 10) {
+            num = '0' + num;
+        }
+        return num;
+
+    }
 </script>
 
 </html>

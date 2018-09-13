@@ -7,12 +7,12 @@
     <title>title</title>
     <link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
     <style>
-    .zanting {
-        width: 20px;
-        height: 20px;
-        margin-left: -45px;
-        margin-top: 25px
-    }
+        .zanting {
+            width: 20px;
+            height: 20px;
+            margin-left: -45px;
+            margin-top: 25px
+        }
     </style>
 </head>
 <script type="text/html" id="tppl">
@@ -37,104 +37,189 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/comm.js"></script>
+<script type="text/javascript" src="../../script/music.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+
 <script type="text/javascript">
-H.tppl_flag = ["<%", "%>"];
-var url = hostUrl + '/song.php';
+    var userId = $api.getStorage('userinfo').id
+    var getinfo = new getinfo()
 
-function play(button, mp3) {
-    var audioPlayer = api.require('audioPlayer');
-    var click = button.getAttribute("data-click");
-    var el = $api.last($api.eq(button, 2));
-    if (click == 0) {
-        playmp3(mp3)
-        var listel = $api.domAll('.zanting');
-        for (i = 0; i < listel.length; i++) {
-            $api.attr(listel[i], 'style', 'display: none ');
-        }
-        $api.attr(el, 'style', '');
-        button.setAttribute("data-click", 1);
-    } else {
-        $api.attr(el, 'style', 'display: none ');
-        button.setAttribute("data-click", 0);
-        audioPlayer.stop();
+    var data
+
+    function getdata() {
+        uiloading();
+        api.ajax({
+            url: musicApi + '/playlist/detail?id=1317159&limit=50',
+            cache: false
+        }, function(ret, err) {
+            if (ret) {
+                data = ret.playlist.tracks
+                var musicdata = []
+                for (var i = 0; i < data.length; i++) {
+                    var info = {}
+                    info.imgPath = data[i].al.picUrl
+                    info.title = data[i].name
+                    info.subTitle = data[i].ar[0].name
+                    info.sid = data[i].id
+                    musicdata[i] = info
+                }
+                init(musicdata)
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+
     }
-}
 
-function initPage() {
-    uiloading()
-    api.ajax({
-        url: url,
-        dataType: 'json',
-        method: 'post',
-        data: {
-            values: {
-                uid: $api.getStorage('userinfo').data_id,
+    function init(musicdata) {
+        var UIListView = api.require('UIListView');
+
+        UIListView.open({
+            rect: {
+                x: 0,
+                y: 65,
+                w: api.winWidth,
+                h: api.frameHeight
             },
-        }
-    }, function(ret, err) {
-        if (ret) {
-            var data = {
-                list: ret
-            };
-            var render = H.tppl(H.D("#tppl").innerHTML);
-            H.D(".result").innerHTML = render(data);
-            //						懒加载
-            echo.init({
-                offset: 0,
-                throttle: 350,
-                unload: false,
-                callback: function(element, op) {}
-            });
-            stoploading()
-        } else {
-            api.toast({
-                msg: '暂无信息'
-            });
-            stoploading()
-        }
-    });
-    api.refreshHeaderLoadDone();
-}
+            data: musicdata,
+            rightBtns: [{
+                bgColor: '#388e8e',
+                activeBgColor: '',
+                width: 70,
+                title: '取消收藏',
+                titleSize: 12,
+                titleColor: '#fff',
+                icon: '',
+                iconWidth: 20
+            }],
+            styles: {
+                borderColor: '#e6e6e6',
+                item: {
+                    bgColor: '#fff',
+                    activeBgColor: '#F5F5F5',
+                    height: 70.0,
+                    imgWidth: 50,
+                    imgHeight: 50,
+                    imgCorner: 25,
+                    placeholderImg: '',
+                    titleSize: 16.0,
+                    titleColor: '#fb0b0b',
+                    subTitleSize: 12.0,
+                    subTitleColor: '#000',
+                    remarkColor: '#000',
+                    remarkSize: 16,
+                    remarkIconWidth: 30
+                }
+            },
+            // fixedOn: api.frameName
+        }, function(ret, err) {
+          console.log(JSON.stringify(ret));
+            if (ret.index && ret.eventType == 'clickContent') {
+                // alert(JSON.stringify(ret));
+                var index = ret.index
+                if ($api.getStorage('isopen')) {
+                    api.sendEvent({
+                        name: 'songid',
+                        extra: {
+                            sid: data[index].id,
+                            mlistdata: data,
+                            index: index
+                        }
+                    });
+                } else {
+                    $api.setStorage('listopen', 3)
+                    api.openWin({
+                        name: 'nww',
+                        url: '../../html/music/bo_head.html',
+                        slidBackEnabled: false,
+                        animation: {
+                            type: "movein", //动画类型（详见动画类型常量）
+                            subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                            duration: 500 //动画过渡时间，默认300毫秒
+                        },
+                        pageParam: {
+                            sid: data[index].id,
+                            index: index,
+                            mlistdata: data,
+
+                        }
+                    });
+                }
 
 
-H.ready(function() {
-    //			initPage()
-    test()
-    api.setRefreshHeaderInfo({
-        loadingImg: 'widget://image/refresh.png',
-        visible: true,
-        bgColor: '#f2f2f2',
-        textColor: '#4d4d4d',
-        textDown: '下拉刷新...',
-        textUp: '松开刷新...',
-        showTime: true
-    }, function(ret, err) {
-        initPage()
-    });
-});
+            } else if (ret.eventType == 'clickRightBtn') {
+                console.log(JSON.stringify(ret));
+                var sid = data[ret.index].id
+                api.confirm({
+                    title: '提醒',
+                    msg: '取消收藏',
+                    buttons: ['确定', '取消']
+                }, function(ret, err) {
 
-function playmp3(mp3) {
-    api.showProgress({});
-    var audioPlayer = api.require('audioPlayer');
-    audioPlayer.initPlayer({
-        path: mp3
-    }, function(ret, err) {
-        if (ret.status) {
-            api.sendEvent({
-                name: 'stopmusic'
-            });
-            api.toast({
-                msg: '开始播放'
-            });
-            api.hideProgress();
-        } else {
-            api.toast({
-                msg: '播放错误'
-            });
-            api.hideProgress();
-        }
+                    if (ret.buttonIndex == 1) {
+
+                        getinfo.getDengLuInfo('/like?like=false&id=' + sid, function(data) {
+
+                            if (data.code == 200) {
+                                api.toast({
+                                    msg: '成功',
+                                    duration: 2000,
+                                    location: 'bottom'
+                                });
+                                UIListView.deleteItem({
+                                    index: ret.index
+                                }, function(ret, err) {
+                                    if (ret) {
+                                        // alert(JSON.stringify(ret));
+                                    } else {
+                                        // alert(JSON.stringify(err));
+                                    }
+                                });
+
+                            } else {
+                                api.toast({
+                                    msg: '失败',
+                                    duration: 2000,
+                                    location: 'bottom'
+                                });
+
+                            }
+                        })
+                    } else {
+                        //  alert( JSON.stringify( err ) );
+                    }
+                });
+
+
+            }
+        });
+    }
+
+
+
+    H.ready(function() {
+        uiloading();
+        getdata()
+        var UIListView = api.require('UIListView');
+        UIListView.setRefreshFooter({
+            loadingImg: 'widget://res/UIListView_arrow.png',
+            bgColor: '#F5F5F5',
+            textColor: '#8E8E8E',
+            textUp: '上拉加载更多...',
+            textDown: '松开开始加载...',
+            showTime: true
+        }, function(ret, err) {
+            if (ret) {
+                alert(JSON.stringify(ret));
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+        stoploading()
     });
-}
 </script>
 
 </html>

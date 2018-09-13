@@ -38,12 +38,12 @@
 
     function initpage(data) {
 
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         var html = ''
         if (data && data.length > 0) {
             for (var i = 0; i < data.length; i++) {
                 var index = i + 1
-                var artists = data[i].artists ? data[i].artists[0].name : data[i].artists[0].name
+                var artists = data[i].artists ? data[i].artists[0].name : data[i].ar[0].name
                 html += '<div onclick="opensong(' + data[i].id + ',' + i +
                     ')"   class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">';
                 html += '<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">' + index + '.' + data[i].name + '-' + artists + '</div>';

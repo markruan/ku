@@ -28,7 +28,7 @@
 					<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-friends H-font-size-22 H-theme-font-color-white"></i></span>
 					<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">朋友圈</label>
 				</div>
-				<div class="H-flex-item" onclick="closeDropMenu();">
+				<div class="H-flex-item" onclick="api.closeFrame();">
 					<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height:40px; width: 40px;"><i class="H-iconfont H-icon-close H-font-size-22 H-theme-font-color-white"></i></span>
 					<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">取消</label>
 				</div>
@@ -43,29 +43,30 @@
 
 	}
 
-			function closeDropMenu() {
-				H.addClass(H.D(".share-menu"), "H-animate-scale-small");
-				setTimeout(function() {
-					//					H.closeFrame();
-					api.setFrameAttr({
-						name : api.frameName,
-						hidden : true
-					});
-				}, 200);
-			}
+			// function closeDropMenu() {
+			// 	H.addClass(H.D(".share-menu"), "H-animate-scale-small");
+			// 	setTimeout(function() {
+			// 		//					H.closeFrame();
+			// 		api.setFrameAttr({
+			// 			name : api.frameName,
+			// 			hidden : true
+			// 		});
+			// 	}, 200);
+			// }
 
 
-			// document.body.addEventListener('touchstart', function(e) {
-			// 	var evt = event || window.event;
-			// 	var src = evt.target || evt.srcElement;
-			// 	if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
-			// 		closeDropMenu();
-			// 	}
-			// });
+			document.body.addEventListener('touchstart', function(e) {
+				var evt = event || window.event;
+				var src = evt.target || evt.srcElement;
+				if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
+					api.closeFrame();
+
+				}
+			});
 			function shareWx(cha) {
 				var img = api.pageParam.img
         var data = api.pageParam.data
-				if (img) {
+				if (!data.mp3) {
 					api.imageCache({
 						url : img
 					}, function(ret, err) {
@@ -90,7 +91,7 @@
 					});
 				} else {
 					api.imageCache({
-						url : data.img
+						url : data.img+'.jpg'
 					}, function(ret, err) {
 						var url = ret.url;
 						var wx = api.require('wx');
@@ -112,7 +113,8 @@
 								api.toast({
 									msg : '取消分享'
 								});
-								closeDropMenu();
+							api.closeFrame();
+
 							}
 						});
 					});

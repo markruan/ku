@@ -43,12 +43,12 @@
 				<!--<div class="H-theme-font-color1 H-text-align-center H-padding-vertical-both-10 H-font-size-14">
 				微信登录
 				</div>-->
-				<div tapmode onclick="login_winxin()"  class="H-flexbox-horizontal H-text-align-center  H-padding-vertical-both-15">
+				<!-- <div tapmode onclick="login_winxin()"  class="H-flexbox-horizontal H-text-align-center  H-padding-vertical-both-15">
 					<div class="H-flex-item">
 						<span class="H-icon H-center-all H-theme-background-color-transparent H-border-radius-circle H-margin-horizontal-auto" style="height: 62px; width: 62px; border: pink 1px solid"><i class="H-iconfont H-icon-weixin H-font-size-30 H-theme-font-color-white"></i></span>
 						<!--<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">微信</label>-->
-					</div>
-				</div>
+					<!-- </div>
+				</div>   -->
 				<div class="H-margin-horizontal-both-15 H-theme-font-color-white ">
 					<span class=" H-float-right H-font-size-14">忘记密码？</span>
 				</div>
@@ -88,25 +88,21 @@
 						return;
 					} else {
 						//						var nameVal = $api.byId('name').value;
-						var nameVal = $api.val($api.byId('name'));
-						var passwordVal = $api.byId('password').value;
+						var phone = $api.val($api.byId('name'));
+						var psw = $api.byId('password').value;
 						uiloading();
 						api.ajax({
-							url : hostUrl + '/login.php',
-							method : 'post',
-							data : {
-								values : {
-									username : nameVal,
-									password : passwordVal,
-								},
-							}
-						}, function(ret, err) {
-							console.log(ret);
-							if (ret.status == 1) {
+							url : musicApi + '/login/cellphone?phone='+phone+'&password='+psw,
+			    	}, function(ret, err) {
+							console.log(JSON.stringify(ret));
+							if (ret.code == 200) {
 								api.toast({
-									msg : ret.msg
+									msg : '登录成功'
 								});
-								$api.setStorage('userinfo', ret.userdata);
+								var nameVal=ret.profile.nickname
+								ret.profile.psw=psw;
+								// console.log(JSON.stringify(ret.profile));
+								$api.setStorage('userinfo', ret.profile);
 								api.setPrefs({
 									key : 'user',
 									value : nameVal
@@ -122,7 +118,7 @@
 								});
 								$api.setStorage('user', nameVal);
 								stoploading();
-								closeT()
+								closelogin()
 							} else {
 								alert(ret.msg);
 								stoploading();
@@ -130,6 +126,23 @@
 						});
 					}
 				}
+			}
+
+			function closelogin(){
+
+				$api.rmStorage('isopen');
+				H.openSlidLayout(null, {
+						name: "slidLayout",
+						url: "../../html/slidLayout_body.html",
+						bgColor: "transparent",
+						bounces: false
+				}, {
+						name: "index",
+						url: "../../html/index/index_head.html",
+						bounces: false
+				}, {
+						leftEdge: 100
+				});
 			}
 		</script>
 	</body>

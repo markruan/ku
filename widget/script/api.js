@@ -281,7 +281,7 @@ function imageCache(url) { //图片缓存方法
     superSearch='http://www.xggsj.com/api.php?types=search&name='
     searchSource='&source='
     hostUrl = 'http://api.iqimeng.com/ku/api';
-    musicApi = 'http://iqimeng.leanapp.cn',
+    musicApi = 'https://iqimeng.leanapp.cn',
     // musicApi = 'http://musicapi4785.cloudapp.net:3000',
 
 
@@ -291,7 +291,7 @@ function imageCache(url) { //图片缓存方法
 
     // musicUrl='http://67.21.85.120:3000/playlist/detail?id='
     houZhui = '&updateTime=-1'
-    songDetail='https://api.imjad.cn/cloudmusic/?id='
+    songDetail='https://api.imjad.cn/cloudmusic/?type=detail&id='
        sUrl='http://neteasemusic.leanapp.cn/search?keywords='
       // sUrl = 'http://s.music.163.com/search/get/?src=lofter&type=1&filterDj=true&limit=100&offset=0&callback&s='
     // sUrl='https://api.imjad.cn/cloudmusic/?type=search&search_type=1&limit=50&s='

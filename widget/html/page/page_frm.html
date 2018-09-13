@@ -36,58 +36,69 @@
     </style>
 </head>
 
-<body >
-  <div id="body">
-    <div id="index" class="H-display-none" style="  background-color: white;">
-        <div style="height: 170px"></div>
-        <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
-            <!-- <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')"> -->
+<body>
+    <div id="body">
+        <!-- <div id="index" class="H-display-none" style="  background-color: white;"> -->
+        <div id="index" class="" style="  background-color: white;">
+            <div style="height: 170px"></div>
+            <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
+                <!-- <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')"> -->
                 <div class="H-flex-item" tapmode onclick="openDaily()">
-                <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
-                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">新音乐</label>
+                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
+                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">每日推荐  </label>
+                </div>
+                <div class="H-flex-item" tapmode onclick="openjingxuanlist('电子','dianzi')">
+                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
+                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">电子</label>
+                </div>
+                <div class="H-flex-item" tapmode onclick="openjingxuanlist('欧美','oumei')">
+                    <span class="H-icon H-center-all H-theme-background-color5 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music H-font-size-22 H-theme-font-color-white"></i></span>
+                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">欧美</label>
+                </div>
+                <div class="H-flex-item" tapmode onclick="openjingxuanlist('华语','huayu')">
+                    <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-level H-font-size-22 H-theme-font-color-white"></i></span>
+                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">华语</label>
+                </div>
             </div>
-            <div class="H-flex-item" tapmode onclick="openjingxuanlist('电子','dianzi')">
-                <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
-                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">电子</label>
+            <!-- <div id='toppp' class=" H-border-vertical-bottom-margin-both-10-after  "></div> -->
+            <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
+                <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+                <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">酷选</div>
+                <span class="H-vertical-middle H-theme-font-color-ccc" tapmode onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
             </div>
-            <div class="H-flex-item" tapmode onclick="openjingxuanlist('欧美','oumei')">
-                <span class="H-icon H-center-all H-theme-background-color5 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music H-font-size-22 H-theme-font-color-white"></i></span>
-                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">欧美</label>
+            <div id="main" class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+            <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
+                <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+                <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">排行榜</div>
+                <!-- <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span> -->
             </div>
-            <div class="H-flex-item" tapmode onclick="openjingxuanlist('轻音乐','qing')">
-                <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-level H-font-size-22 H-theme-font-color-white"></i></span>
-                <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">轻音乐</label>
+            <div id="tui" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+            <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
+                <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+                <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">推荐歌单</div>
+                <!-- <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span> -->
             </div>
-        </div>
-        <!-- <div id='toppp' class=" H-border-vertical-bottom-margin-both-10-after  "></div> -->
-        <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
-            <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
-            <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">酷选</div>
-            <span class="H-vertical-middle H-theme-font-color-ccc" tapmode onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
-        </div>
-        <div id="main" class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
-        <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
-            <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
-            <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">排行榜</div>
-            <!-- <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span> -->
-        </div>
-        <div id="tui" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
-        <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
-            <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
-            <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">MV</div>
-            <!-- <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span> -->
-        </div>
 
-        <div id="mvlist" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
-    </div>
+            <div id="tuilist" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+            <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
+                <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+                <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">MV</div>
+                <!-- <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span> -->
+            </div>
+
+            <div id="mvlist" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+        </div>
     </div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/H.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+
     var wy
+    var getinfo = new getinfo()
     var page = 0;
     var datalist;
     var tuilist;
@@ -98,7 +109,7 @@
             name: 'musiclist',
             url: '../../html/music/mlist_win.html',
             reload: true,
-            slidBackEnabled:false,
+            slidBackEnabled: false,
             animation: {
                 type: "reveal", //动画类型（详见动画类型常量）
                 subType: "from_right", //动画子类型（详见动画子类型常量）
@@ -109,97 +120,86 @@
             }
         });
     }
-  // 热门推荐初始化
-  function tui() {
-        getmvlist()
+    // 热门推荐初始化
+    function tui() {
+        var data = [{
+                idx: 3779629,
+                name: "新歌榜",
+                pic: "http://p1.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg?param=320y180",
+            }, {
+                idx: 3778678,
+                name: "热歌榜",
+                pic: "http://p1.music.126.net/GhhuF6Ep5Tq9IEvLsyCN7w==/18708190348409091.jpg?param=320y180",
+            }, {
+                idx: 4395559,
+                name: "金曲榜",
+                pic: "http://p1.music.126.net/N2whh2Prf0l8QHmCpShrcQ==/19140298416347251.jpg?param=320y180",
+            }, {
+                idx: 60198,
+                name: "美国Billboard周榜",
+                pic: "http://p1.music.126.net/EBRqPmY8k8qyVHyF8AyjdQ==/18641120139148117.jpg?param=320y180",
+            }
+
+        ];
         uiloading()
-        api.ajax({
-            url: 'http://api.iqimeng.com/ku/admin.php?r=home/api/getindex&type=1',
-            cache: true,
-        }, function(ret, err) {
-          // console.log(JSON.stringify(ret));
-            if (ret) {
-                api.writeFile({
-                    path: api.fsDir + '/cache/indexInit.json',
-                    data: ret
-                }, function(ret, err) {
 
-                });
 
-                initdata = ret
-                findinfo(page)
-                var html = '';
-                for (i = 0; i < 2; i++) {
-                    var lid = initdata.huandenglist[i].idd;
-                    var coverImgUrl = imageCache(initdata.huandenglist[i].fenpic)
-                    var tracksName = initdata.huandenglist[i].name
-                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + lid + ')">';
-                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:120px;"    >';
-                    html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
-                }
-                var tui = $api.byId('tui');
-                $api.html(tui, html);
+        var html = '';
+        for (i = 0; i < 4; i++) {
+            var lid = data[i].idx;
+            var coverImgUrl = imageCache(data[i].pic)
+            var tracksName = data[i].name
+            html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + lid + ')">';
+            html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:120px;"    >';
+            html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+        }
+        var tui = $api.byId('tui');
+        $api.html(tui, html);
 
-            } else {};
-        });
-
-      $api.setStorage('body',$api.html($api.byId('body')))
     }
 
-    function findinfo(page) {
-        setTimeout(function() {
-            stoploading();
-        }, 20000);
-        var ret = initdata.gedanlist
-        if (ret) {
-            var html = '';
-            var paths = [];
-            var captions = [];
-            for (var i = 0; i < 3; i++) {
-                paths[i] = imageCache(ret[i].fenpic)
-                captions[i] = ret[i].name
-            }
-            datalist = {
-                paths: paths,
-            }
-            huandeng(datalist)
-            tuilist = ret
-            for (i = 0; i < ret.length; i++) {
-                var Idd = ret[i].idd;
-                var coverImgUrl = imageCache(ret[i].imgUrl)
-                var tracksName = ret[i].name
-                $api.setStorage('lenpage', ret.length);
-                html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
-                  html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+    function findinfo() {
+        var userId = $api.getStorage('userinfo').userId;
 
-                html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+        api.ajax({
+            url: musicApi + '/user/playlist?uid=' + userId + '&limit=30',
+            cache: true,
+        }, function(ret, err) {
+            // console.log(JSON.stringify(ret));
+            if (ret) {
 
-                // stoploading()
-                api.refreshHeaderLoadDone();
-            }
-            var obj = $api.byId('main');
-            if (page == 0) {
+                var html = '';
+                ret = ret.playlist
+                for (i = 0; i < 12; i++) {
+                    var Idd = ret[i].id;
+                    var coverImgUrl = imageCache(ret[i].coverImgUrl+ '?param=180y180')
+                    var tracksName = ret[i].name
+
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+
+                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+
+                    stoploading()
+                    api.refreshHeaderLoadDone();
+                }
+                var obj = $api.byId('main');
                 $api.html(obj, html);
+
             } else {
-                $api.after($api.last(obj), html);
+                //  alert( JSON.stringify( err ) );
             }
+        });
 
-            $api.removeCls($api.byId('index'), 'H-display-none');
-            stoploading()
-
-        } else {
-            api.toast({
-                msg: '没有更多了'
-            });
-            // stoploading();
-            api.refreshHeaderLoadDone();
-        };
-        $api.removeCls($api.byId('index'), 'H-display-none');
-        stoploading()
     }
 
     apiready = function() {
-        tui()
+      var userinfo=$api.getStorage('userinfo')
+        getinfo.getDengLuInfo('/user/subcount',function(data){
+          // console.log(JSON.stringify(data));
+        })
+
+        huandeng()
         api.parseTapmode();
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
@@ -210,23 +210,24 @@
             textUp: '松开刷新...',
             showTime: true
         }, function(ret, err) {
-            tui()
+            huandeng()
             api.hideProgress();
             api.refreshHeaderLoadDone();
         });
 
     };
-function getmvlist() {
+
+    function getmvlist() {
         api.readFile({
             path: api.fsDir + '/cache/indexInitMv.json'
         }, function(ret, err) {
-          	// console.log(JSON.stringify(ret));
+            // console.log(JSON.stringify(ret));
             if (ret.status) {
                 var data = $api.strToJson(ret.data);
                 var html = '';
                 for (i = 0; i < data.length; i++) {
                     var vid = data[i].id;
-                    var coverImgUrl = imageCache(data[i].cover)
+                    var coverImgUrl = imageCache(data[i].cover + '?param=320y180')
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
                     html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:110px;"    >';
                     html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
@@ -245,12 +246,13 @@ function getmvlist() {
 
 
         });
-  }
-    wy= new neteaseMusic()
+    }
+    wy = new neteaseMusic()
+
     function updataMvList() {
         wy.send(wy.getmvlist(), function(ret, err) {
             if (ret) {
-              // console.log(JSON.stringify(ret));
+                // console.log(JSON.stringify(ret));
                 api.writeFile({
                     path: api.fsDir + '/cache/indexInitMv.json',
                     data: ret.data
@@ -263,7 +265,7 @@ function getmvlist() {
                 var html = '';
                 for (i = 0; i < data.length; i++) {
                     var vid = data[i].id;
-                    var coverImgUrl = imageCache(data[i].cover)
+                    var coverImgUrl = imageCache(data[i].cover + '?param=320y180')
                         // var tracksName = data[i].name + "-" + data[i].artists[0].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
                     html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:110px;"    >';
@@ -322,7 +324,7 @@ function getmvlist() {
             url: '../index/j_gedan_head.html',
             pageParam: {
                 cat: cat,
-                slidBackEnabled:false,
+                slidBackEnabled: false,
                 pinyin: pinyin
             },
             animation: {
@@ -333,52 +335,107 @@ function getmvlist() {
         });
     }
     // 首页幻灯
-  function huandeng(datalist) {
+    function huandeng() {
+
+        var huanlist = {}
         var UIScrollPicture = api.require('UIScrollPicture');
-        UIScrollPicture.open({
-            rect: {
-                x: 10,
-                y: 2,
-                w: api.winWidth - 20,
-                h: 170
-            },
-            data: datalist,
-            styles: {
-                caption: {
-                    height: 35,
-                    color: '#E0FFFF',
-                    size: 13,
-                    bgColor: '#696969',
-                    position: 'bottom'
-                },
-                indicator: {
-                    align: 'right',
-                    color: '#FFFFFF',
-                    activeColor: '#DA70D6'
-                }
-            },
-            placeholderImg: 'widget://image/default.jpg',
-            contentMode: 'scaleToFill',
-            interval: 3,
-            fixedOn: api.frameName,
-            loop: true,
-            fixed: false
+        api.ajax({
+            url: musicApi + '/banner',
+
         }, function(ret, err) {
-            if (ret.eventType == "click") {
-                var lid = initdata.gedanlist[ret.index].idd
-                openMusicList(lid)
+            if (ret) {
+                var data = ret.banners
+                var paths = []
+                    // console.log(JSON.stringify(data));
+                for (var i = 0; i < data.length; i++) {
+                    paths[i] = imageCache(data[i].picUrl)
+                }
+
+                huanlist.paths = paths;
+                UIScrollPicture.open({
+                    rect: {
+                        x: 10,
+                        y: 2,
+                        w: api.winWidth - 20,
+                        h: 170
+                    },
+                    data: huanlist,
+                    styles: {
+                        caption: {
+                            height: 35,
+                            color: '#E0FFFF',
+                            size: 13,
+                            bgColor: '#696969',
+                            position: 'bottom'
+                        },
+                        indicator: {
+                            align: 'right',
+                            color: '#FFFFFF',
+                            activeColor: '#DA70D6'
+                        }
+                    },
+                    placeholderImg: 'widget://image/default.jpg',
+                    contentMode: 'scaleToFill',
+                    interval: 3,
+                    fixedOn: api.frameName,
+                    loop: true,
+                    fixed: false
+                }, function(ret, err) {
+                    // if (ret.eventType == "click") {
+                    //     // var lid = initdata.gedanlist[ret.index].idd
+                    //         // openMusicList(lid)
+                    // } else {
+                    //     // alert(JSON.stringify(err));
+                    // }
+                });
             } else {
                 // alert(JSON.stringify(err));
             }
         });
+
+        getmvlist()
+        tui()
+        findinfo()
+        getTuiList()
     }
 
-  function openDaily(){
-     api.openWin({
-          name: 'dailymusic',
-          url: './dailymusic.html',
-          reload:true
-      });
+    function openDaily() {
+
+        if (panduan()) {
+            api.openWin({
+                name: 'dailymusic',
+                url: './dailymusic.html',
+                reload: true
+            });
+        }
+    }
+
+    function getTuiList() {
+        getinfo.getDengLuInfo('/recommend/resource', function(data) {
+
+          if(data.code==200){
+                var html = ''
+                ret = data.recommend
+                //  console.log( JSON.stringify( ret ) );
+                for (i = 0; i < ret.length; i++) {
+                    var Idd = ret[i].id
+                    var coverImgUrl = imageCache(ret[i].picUrl+ '?param=180y180')
+                    var tracksName = ret[i].name
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+
+                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName.substring(0,16) + '</div></div>';
+
+                    stoploading()
+                    api.refreshHeaderLoadDone();
+                }
+                var obj = $api.byId('tuilist');
+                $api.html(obj, html);
+
+            } else {
+                //  alert( JSON.stringify( data ) );
+            }
+        })
     }
 </script>
 
