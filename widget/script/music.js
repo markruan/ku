@@ -122,7 +122,10 @@ function neteaseMusic() {
     }
 
     this.getmvlist = function() {
-        return neteaseMusicURL('/top/mv?limit=20');
+        return neteaseMusicURL('/top/mv?limit=10');
+    }
+    this.getcatlist = function() {
+        return neteaseMusicURL('/playlist/catlist');
     }
 
     this.lrc = function(songid) { //网易音乐歌词接口

@@ -177,7 +177,7 @@
 			// 	console.log("返回数据："+JSON.stringify(ret));
 			// })
 		app.music_index = api.pageParam.index
-			// console.log($api.getStorage('listm'));
+	 
 		app.mlistdata = api.pageParam.mlistdata ? api.pageParam.mlistdata : $api.getStorage('listm');
 		app.slider()
 		$api.setStorage('isopen', 1);
@@ -276,7 +276,9 @@
 							}
 						});
 
-
+          // getinfo.getDengLuInfo('/song/detail?ids='+app.music_id,function(data){
+					// 	console.log(JSON.stringify(data));
+					// })
 						// app.getMusic(ret.songs[0].id)
 						// app.music_mp3="http://music.163.com/song/media/outer/url?id="+app.music_id;
 						// play_c();
@@ -425,7 +427,8 @@
 				data.title = app.music_title;
 				data.art = app.music_artist;
 				data.img = app.music_thumb;
-				data.mp3 = app.music_mp3
+				data.mp3 = app.music_mp3;
+				data.id=app.music_id;
 				api.openFrame({
 					name: 'sing_share',
 					url: '../../html/single_share_body.html',

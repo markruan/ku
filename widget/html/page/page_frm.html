@@ -35,6 +35,18 @@
         }
     </style>
 </head>
+<script type="text/html" id="tppl">
+
+
+    <% for(var i=0; i <6; i++){ %>
+        <div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(<%=playlist[i].id%>)">
+            <img src="<%=imageCache(playlist[i].coverImgUrl+'?param=200y200')%>" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px">
+            <div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">
+                <%=playlist[i].name%>
+            </div>
+        </div>
+        <% } %>
+</script>
 
 <body>
     <div id="body">
@@ -66,7 +78,7 @@
                 <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">酷选</div>
                 <span class="H-vertical-middle H-theme-font-color-ccc" tapmode onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
             </div>
-            <div id="main" class=" H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+            <div id="main" class="test1 H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
             <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
                 <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
                 <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">排行榜</div>
@@ -96,7 +108,7 @@
 <script type="text/javascript" src="../../script/music.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-
+    H.tppl_flag = ["<%", "%>"];
     var wy
     var getinfo = new getinfo()
     var page = 0;
@@ -159,46 +171,48 @@
     }
 
     function findinfo() {
-        var userId = $api.getStorage('userinfo').userId;
 
-        api.ajax({
-            url: musicApi + '/user/playlist?uid=' + userId + '&limit=30',
-            cache: true,
+        api.readFile({
+            path: api.fsDir + '/cache/indexku.json',
         }, function(ret, err) {
-            // console.log(JSON.stringify(ret));
-            if (ret) {
-
-                var html = '';
-                ret = ret.playlist
-                for (i = 0; i < 12; i++) {
-                    var Idd = ret[i].id;
-                    var coverImgUrl = imageCache(ret[i].coverImgUrl+ '?param=180y180')
-                    var tracksName = ret[i].name
-
-                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
-                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
-
-                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
-
-                    stoploading()
-                    api.refreshHeaderLoadDone();
-                }
-                var obj = $api.byId('main');
-                $api.html(obj, html);
-
+            if (ret.status) {
+                var data = $api.strToJson(ret.data)
+                var render = H.tppl(H.D("#tppl").innerHTML);
+                H.D("#main").innerHTML = render(data);
+                getkulist()
             } else {
-                //  alert( JSON.stringify( err ) );
+                getkulist(true)
+
             }
         });
+    }
+    function getkulist(update){
+        var userId = $api.getStorage('userinfo').userId;
+      api.ajax({
+          url: musicApi + '/user/playlist?uid=' + userId + '&limit=30',
+          cache: true,
+      }, function(ret, err) {
+         if (ret) {
+             if(update){
+               var render = H.tppl(H.D("#tppl").innerHTML);
+               H.D("#main").innerHTML = render(ret);
+             }
 
+              api.writeFile({
+                  path: api.fsDir + '/cache/indexku.json',
+                  data: ret
+              }, function(ret, err) {
+
+              });
+
+          } else {
+              //  alert( JSON.stringify( err ) );
+          }
+      });
     }
 
     apiready = function() {
-      var userinfo=$api.getStorage('userinfo')
-        getinfo.getDengLuInfo('/user/subcount',function(data){
-          // console.log(JSON.stringify(data));
-        })
-
+        var userinfo = $api.getStorage('userinfo')
         huandeng()
         api.parseTapmode();
         api.setRefreshHeaderInfo({
@@ -210,6 +224,7 @@
             textUp: '松开刷新...',
             showTime: true
         }, function(ret, err) {
+            getkulist(true)
             huandeng()
             api.hideProgress();
             api.refreshHeaderLoadDone();
@@ -237,7 +252,7 @@
                 var mvlist = $api.byId('mvlist');
                 $api.html(mvlist, html);
                 api.parseTapmode();
-                // updataMvListData()
+                updataMvList()
 
             } else {
                 updataMvList()
@@ -413,18 +428,18 @@
     function getTuiList() {
         getinfo.getDengLuInfo('/recommend/resource', function(data) {
 
-          if(data.code==200){
+            if (data.code == 200) {
                 var html = ''
                 ret = data.recommend
-                //  console.log( JSON.stringify( ret ) );
-                for (i = 0; i < ret.length; i++) {
+                    //  console.log( JSON.stringify( ret ) );
+                for (i = 0; i < 6; i++) {
                     var Idd = ret[i].id
-                    var coverImgUrl = imageCache(ret[i].picUrl+ '?param=180y180')
+                    var coverImgUrl = imageCache(ret[i].picUrl + '?param=180y180')
                     var tracksName = ret[i].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
                     html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
 
-                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName.substring(0,16) + '</div></div>';
+                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName.substring(0, 16) + '</div></div>';
 
                     stoploading()
                     api.refreshHeaderLoadDone();

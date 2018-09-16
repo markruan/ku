@@ -52,7 +52,7 @@ function switchplay(button, mp3,sid,index,cover,title,artist) {
         $api.attr(button, 'class', 'iconfont  icon-bofang H-theme-font-color-white');
     }
 }
- 
+
 
 function openPhoto(data, i) {
     var dd = data.split(',')

@@ -1,160 +1,121 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>title</title>
-		<link rel="stylesheet" type="text/css" href="../../css/Hui.css"/>
-		<style>
-			.zanting {
-				width: 20px;
-				height: 20px;
-				margin-left: -45px;
-				margin-top: 25px
-			}
-		</style>
-	</head>
-	<script type="text/html" id="tppl">
-		<% for(var i=0; i < list.length; i++){ %>
-		<div onclick="play(this,'<%=list[i].mp3 %>')" data-click="0" mp3url= "<%=list[i].url %>" title="<%=list[i].title %>" class="list H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
-		<div class="H-padding-vertical-both-10"><img data-echo="<%=imageCache(list[i].cover) %>" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10" style="width: 70px; height: 70px;"></div>
-		<div class="H-padding-vertical-both-10"><img id="icon" src="../../image/zan.png" alt="" title="" class="H-display-block H-margin-horizontal-left-10 zanting" style="display: none"></div>
-		<div class="H-flex-item H-padding-10">
-		<strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block"><%=list[i].title %>-<%=list[i].artist %></strong>
-		<div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-2">  <%=list[i].signature %></div>
-		</div>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+	<style>
+		.zanting {
+			width: 20px;
+			height: 20px;
+			margin-left: -45px;
+			margin-top: 25px
+		}
+	</style>
+</head>
+<script type="text/html" id="tppl">
+	<% for(var i=0; i < list.length; i++){ %>
+		<div onclick="play(this)" data-click="0" mp3url="<%=list[i].url %>" title="<%=list[i].title %>" class="list H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
+			<div class="H-padding-vertical-both-10"><img data-echo="../../image/musiclist/bg.png " src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10" style="width: 70px; height: 70px;"></div>
+			<div class="H-padding-vertical-both-10"><img z-index=100 id="icon" src="../../image/zan.png" alt="" title="" class="H-display-block H-margin-horizontal-left-10 zanting" style="display: none"></div>
+			<div class="H-flex-item H-padding-10">
+				<strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block"><%=list[i].title %></strong>
+				<div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-2">
+					<%=list[i].artist %>
+				</div>
+			</div>
 		</div>
 		<% } %>
-	</script>
-	<body>
-		<div class="result" id="list"></div>
+</script>
 
-	</body>
-	<script type="text/javascript" src="../../script/H.js"></script>
-	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/echo.min.js"></script>
-	<script type="text/javascript" src="../../script/comm.js"></script>
-	<script type="text/javascript">
-		H.tppl_flag = ["<%", "%>"];
-		var url = hostUrl + '/song.php';
-		function play(button, mp3) {
-			//			alert($api.attr(button, 'mp3url'))
-			var audioPlayer = api.require('audioPlayer');
-			var click = button.getAttribute("data-click");
-			var el = $api.last($api.eq(button, 2));
-			var ceshi = $api.next(button);
-			if (click == 0) {
-				playmp3(mp3, button)
-				var listel = $api.domAll('.zanting');
-				for ( i = 0; i < listel.length; i++) {
-					$api.attr(listel[i], 'style', 'display: none ');
-				}
-				$api.attr(el, 'style', '');
-				button.setAttribute("data-click", 1);
-			} else {
-				$api.attr(el, 'style', 'display: none ');
-				button.setAttribute("data-click", 0);
-				audioPlayer.stop();
+<body>
+	<div class="result" id="list"></div>
+
+</body>
+<script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/echo.min.js"></script>
+<script type="text/javascript" src="../../script/comm.js"></script>
+<script type="text/javascript">
+	H.tppl_flag = ["<%", "%>"];
+	var url = hostUrl + '/song.php';
+
+	function play(button, mp3) {
+		var mp3 = $api.attr(button, 'mp3url')
+		var audioPlayer = api.require('audioPlayer');
+		var click = button.getAttribute("data-click");
+		var el = $api.last($api.eq(button, 2));
+		var ceshi = $api.next(button);
+		if (click == 0) {
+			playmp3(mp3, button)
+			var listel = $api.domAll('.zanting');
+			for (i = 0; i < listel.length; i++) {
+				$api.attr(listel[i], 'style', 'display: none ');
 			}
+			$api.attr(el, 'style', '');
+			button.setAttribute("data-click", 1);
+		} else {
+			$api.attr(el, 'style', 'display: none ');
+			button.setAttribute("data-click", 0);
+			audioPlayer.stop();
 		}
+	}
 
-		function initPage() {
-			// api.showProgress({
-			// 	title : ' 加载中...',
-			// 	text : '先喝杯茶...',
-			// 	modal : false
-			// })
-			var audioPlayer = api.require('audioPlayer');
-			audioPlayer.scanAudioLibrary(function(ret) {
-				console.log(JSON.stringify(ret));
-				var data = {
-					list : ret.audios
-				};
-				var render = H.tppl(H.D("#tppl").innerHTML);
-				H.D(".result").innerHTML = render(data);
-				//						懒加载
-				echo.init({
-					offset : 0,
-					throttle : 350,
-					unload : false,
-					callback : function(element, op) {
-					}
-				});
-				api.hideProgress();
-			});
-			api.refreshHeaderLoadDone();
-		}
+	function initPage() {
+		uiloading()
+		var audioPlayer = api.require('audioPlayer');
+		audioPlayer.scanAudioLibrary(function(ret) {
 
-
-		H.ready(function() {
-			var audioPlayer = api.require('audioPlayer');
-     initPage()
-			audioPlayer.scanAudioLibrary(function(ret) {
-			    api.alert({ msg: JSON.stringify(ret) });
-			});
-						// var audioPlayer = api.require('audioPlayer');
-						// audioPlayer.addEventListener({
-						// 	name : "playing"
-						// }, function(ret) {
-						// 	alert(JSON.stringify(ret))
-						// });
-						// audioPlayer.addEventListener({
-						// 	name : "state"
-						// }, function(ret) {
-						// 	alert(JSON.stringify(ret))
-						// 	if (ret.state == 'finished') {
-						// 		var next = $api.next(el);
-						// 		var nextUrl = $api.attr(next, 'mp3url');
-						// 		if (!next) {
-						// 			return
-						// 		}
-						// 		var listel = $api.domAll('.zanting');
-						// 		for ( i = 0; i < listel.length; i++) {
-						// 			$api.attr(listel[i], 'style', 'display: none ');
-						// 		}
-						// 		$api.attr(next, 'style', '');
-						// 		next.setAttribute("data-click", 0);
-						// 		playmp3(nextUrl, next)
-						// 	} else {
-						// 	}
-						// });
-						// initPage()
-						// api.setRefreshHeaderInfo({
-						// 	visible : true,
-						// 	bgColor : '#f2f2f2',
-						// 	textColor : '#4d4d4d',
-						// 	textDown : '下拉刷新...',
-						// 	textUp : '松开刷新...',
-						// 	showTime : true
-						// }, function(ret, err) {
-						// 	initPage()
-						// });
-		});
-		function playmp3(mp3, button) {
-			api.showProgress({
+			var data = {
+				list: ret.audios
+			};
+			var render = H.tppl(H.D("#tppl").innerHTML);
+			H.D(".result").innerHTML = render(data);
+			//						懒加载
+			echo.init({
+				offset: 0,
+				throttle: 350,
+				unload: false,
+				callback: function(element, op) {}
 			});
 			api.hideProgress();
-			var audioPlayer = api.require('audioPlayer');
-			audioPlayer.initPlayer({
-				path : mp3
-			}, function(ret, err) {
-				if (ret.status) {
-					//					audioPlayer.pause();
-					//					audioPlayer.play();
-					api.sendEvent({
-						name : 'stopmusic'
-					});
-					api.toast({
-						msg : '开始播放'
-					});
-					api.hideProgress();
-				} else {
-					api.toast({
-						msg : '播放错误'
-					});
-					api.hideProgress();
-				}
-			});
-		}
-	</script>
+			stoploading()
+		});
+		api.refreshHeaderLoadDone();
+	}
+
+
+	H.ready(function() {
+		initPage()
+	});
+
+	function playmp3(mp3, button) {
+		api.showProgress({});
+
+		var audioPlayer = api.require('audioPlayer');
+
+		console.log(JSON.stringify(button));
+		audioPlayer.initPlayer({
+			path: mp3
+		}, function(ret, err) {
+			console.log(JSON.stringify(mp3));
+			if (ret.status) {
+
+				api.hideProgress();
+				api.toast({
+					msg: '开始播放'
+				});
+				api.hideProgress();
+			} else {
+				api.toast({
+					msg: '播放错误'
+				});
+				api.hideProgress();
+			}
+		});
+	}
+</script>
+
 </html>

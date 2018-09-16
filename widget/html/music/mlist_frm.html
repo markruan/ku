@@ -558,32 +558,49 @@
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/mm.js"></script>
+<script type="text/javascript" src="../../script/music.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+
 
 <script type="text/javascript">
 	var isopen
 	var page
+	var getinfo = new getinfo()
 
 	function collectmusic(clicktoolitem) {
 		var toolbarlist = document.getElementsByClassName('collectmusic')[0];
 		var click = clicktoolitem.getAttribute("data-click");
+		var lid = api.pageParam.lid
 		if (click == 0) {
 			// 点开
 			clicktoolitem.setAttribute("data-click", 1);
 			toolbarlist.src = "./image/musiclist/musiclisttool01.png";
-			api.toast({
-				msg: '开发中...',
-				duration: 1000,
-				location: 'bottom'
-			});
+
+			// api.toast({
+			// 	msg: '开发中...',
+			// 	duration: 1000,
+			// 	location: 'bottom'
+			// });
 		} else {
 			// 关闭
 			clicktoolitem.setAttribute("data-click", 0);
 			toolbarlist.src = "./image/musiclist/musiclistcollect.png";
-			api.toast({
-				msg: '开发中...',
-				duration: 1000,
-				location: 'bottom'
-			});
+			getinfo.getDengLuInfo('/playlist/subscribe?t=1&id=' + lid, function(data) {
+				  console.log(JSON.stringify(data));
+					if (data.code == 200) {
+						api.toast({
+							msg: '收藏成功',
+							duration: 1000,
+							location: 'bottom'
+						});
+					}
+				})
+				// api.toast({
+				// 	msg: '开发中...',
+				// 	duration: 1000,
+				// 	location: 'bottom'
+				// });
 		}
 	}
 
@@ -728,6 +745,9 @@
 	//  初始化数据
 	function getlistdata() {
 		var lid = api.pageParam.lid
+		// getinfo.getDengLuInfo('/playlist/detail?id='+lid,function(data){
+		// 	 console.log(JSON.stringify(data));
+		// })
 		api.ajax({
 			url: 'http://music.163.com/api/playlist/detail?updateTime=-1&id=' + lid,
 			// url: musicUrl + lid,
@@ -794,12 +814,12 @@
 			var a = i;
 			var n = i + 1;
 			//                      var nType = thisItem.type;
-			html += '<div class="egret-flex-item musiclist-item" tapmode onclick="abc(' + sid + ',' + i + ')" > <div class="egret-flex-item-logo">' + n + '</div>';
-			html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" >';
+			html += '<div class="egret-flex-item musiclist-item" tapmode > <div class="egret-flex-item-logo">' + n + '</div>';
+			html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + sid + ',' + i + ')" >';
 			html += '<div class="egret-flex-item-shelf01">' + bb + '</div><div class="egret-flex-item-shelf02">';
-			html += '' + artists + '</div></div><div class="egret-flex-item-arrow"><img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg"">';
+			html += '' + artists + '</div></div><div class="egret-flex-item-arrow" onclick="expandlist('+i+',123)"><img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg"">';
 			html += '</div></div></div><div class="musiclist-item-tool" >';
-			html += '<div class="userinfocol" tapmode="toolhover" onclick="">';
+			html += '<div class="userinfocol" tapmode="toolhover" >';
 			html += '<div class="info"><img src="./image/musiclist/musiclisttool01.png" alt=""></div>';
 			html += '<div class="num">收藏</div></div><div class="userinfocol" tapmode="toolhover" onclick="downloadMusic()">';
 			html += '<div class="info"><img src="./image/musiclist/musiclisttool02.png" alt=""></div>';

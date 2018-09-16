@@ -733,6 +733,8 @@
 			showTime: true
 		}, function(ret, err) {
 			app.getdaily();
+			api.hideProgress();
+			api.refreshHeaderLoadDone();
 		});
 	}
 </script>

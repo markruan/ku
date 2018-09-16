@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+    <style>
+        .zanting {
+            width: 20px;
+            height: 20px;
+            margin-left: -45px;
+            margin-top: 25px
+        }
+    </style>
+</head>
+<script type="text/html" id="tppl">
+
+
+    <% for(var i=0; i < list.length; i++){ %>
+        <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(<%=list[i].id %>)">
+            <img data-echo="<%=imageCache(list[i].coverImgUrl+'?param=400y400')%>" src="../../image/default.jpg" class="H-width-100-percent H-display-block" alt="" title="">
+            <div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">
+                <%=list[i].name.substring(0,10) %>
+            </div>
+        </div>
+        <% } %>
+</script>
+
+<body id="body" >
+    <div class="result H-margin-vertical-top-20 H-padding-horizontal-left-10" id="list" style="margin-top:55px"></div>
+</body>
+<script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/echo.min.js"></script>
+<script type="text/javascript" src="../../script/comm.js"></script>
+<!-- <script type="text/javascript" src="../../script/music.js"></script> -->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+    H.tppl_flag = ["<%", "%>"];
+    var userId = $api.getStorage('userinfo').id
+    var data, data1
+
+    function getdata(cat) {
+        uiloading();
+        api.ajax({
+            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + cat,
+            cache: true
+        }, function(ret, err) {
+            if (ret) {
+                data = ret.playlists
+                data1 = {
+                    list: data
+                };
+                var render = H.tppl(H.D("#tppl").innerHTML);
+                H.D(".result").innerHTML = render(data1);
+                //						懒加载
+                echo.init({
+                    offset: 0,
+                    throttle: 350,
+                    unload: false,
+                    callback: function(element, op) {}
+                });
+                stoploading()
+
+                // $api.removeCls($api.byId('body'), 'H-display-none');
+
+
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+    }
+
+    function getcatlist() {
+        api.ajax({
+            url: musicApi + '/playlist/catlist',
+        }, function(ret, err) {
+            if (ret) {
+                var data = []
+                for (var i = 0; i < ret.sub.length; i++) {
+                    var list = {}
+                    list.title = ret.sub[i].name
+                    list.icon = 'fs://menu/0.png',
+                        list.active = 'fs://menu/0.acitve.png',
+                        list.highlight = 'fs://menu/0.highlight.png'
+
+                    data[i] = list
+                }
+                start(data)
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+
+    }
+
+    function start(data) {
+        var MNNavigationMenu = api.require('MNNavigationMenu');
+        getdata(data[0].title)
+        MNNavigationMenu.open({
+            rect: {
+                x: 0,
+                y: 0,
+                w: api.winWidth,
+                h: 50
+            },
+            index: 0,
+            animation: true,
+            styles: {
+                column: 4,
+                bg: '#eee',
+                item: {
+                    bg: '#fff',
+                    active: '#eee',
+                    highlight: '#eee',
+                    title: {
+                        marginB: 14,
+                        size: 14,
+                        height: 16,
+                        color: '#888',
+                        active: '#f00',
+                        highlight: '#f00',
+                        ttf: 'Alkatip Basma Tom'
+                    },
+                    icon: {
+                        marginT: 0,
+                        width: 30,
+                        height: 30,
+                        corner: 2
+                    }
+                }
+            },
+            items: data,
+            fixedOn: api.frameName,
+            fixed: false
+        }, function(ret, err) {
+            if (ret) {
+               var index=ret.index
+               getdata(data[index].title)
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    H.ready(function() {
+        // getdata()
+        getcatlist()
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/refresh.png',
+            visible: true,
+            bgColor: '#f2f2f2',
+            textColor: '#4d4d4d',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            getcatlist()
+            api.hideProgress();
+            api.refreshHeaderLoadDone();
+        });
+
+
+    });
+
+    // 打开歌曲列表
+function openMusicList(lid) {
+    api.openWin({
+        name: 'musiclist',
+        url: '../../html/music/mlist_win.html',
+        reload: true,
+        slidBackEnabled: false,
+        animation: {
+            type: "reveal", //动画类型（详见动画类型常量）
+            subType: "from_right", //动画子类型（详见动画子类型常量）
+            duration: 400 //动画过渡时间，默认300毫秒
+        },
+        pageParam: {
+            lid: lid
+        }
+    });
+}
+</script>
+
+</html>

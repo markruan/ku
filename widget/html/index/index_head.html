@@ -37,7 +37,7 @@
                 精选
             </div>
             <div tapmode="" onclick="setPage(1, '../../html/quan/index.html');" class="H-flex-item H-center-all H-theme-font-color-666 H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16" style="border-width: 0 0 1px  0">
-                圈子
+                歌单
             </div>
         </div>
     </header>
@@ -94,6 +94,13 @@
         }
         // 打开添加内容页面
         function openkong() {
+            api.toast({
+                msg: '废弃掉了',
+                duration: 2000,
+                location: 'bottom'
+            });
+            return 
+
             api.openFrame({
                 name: 'kong',
                 url: "../../html/kong/index.html",
@@ -224,7 +231,7 @@
                 url: '../../html/page/page_frm.html',
                 name: 'kuxuan'
             }, {
-                url: '../../html/quan/quan_index.html',
+                url: '../../html/quan/jingxuan.html',
                 name: 'quanzi'
             }], 0, "#header", "#footer");
         });
