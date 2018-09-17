@@ -42,7 +42,7 @@
 <script type="text/javascript">
     H.tppl_flag = ["<%", "%>"];
     var userId = $api.getStorage('userinfo').id
-    var data, data1
+    var data, data1,catindex
 
     function getdata(cat) {
         uiloading();
@@ -102,7 +102,7 @@
 
     function start(data) {
         var MNNavigationMenu = api.require('MNNavigationMenu');
-        getdata(data[0].title)
+        getdata(data[catindex].title)
         MNNavigationMenu.open({
             rect: {
                 x: 0,
@@ -141,8 +141,8 @@
             fixed: false
         }, function(ret, err) {
             if (ret) {
-               var index=ret.index
-               getdata(data[index].title)
+                 catindex=ret.index
+               getdata(data[catindex].title)
             } else {
                 alert(JSON.stringify(err));
             }
@@ -151,6 +151,7 @@
 
     H.ready(function() {
         // getdata()
+        catindex=0
         getcatlist()
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',

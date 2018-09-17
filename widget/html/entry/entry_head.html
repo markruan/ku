@@ -20,12 +20,13 @@
 			}
 		</style>
 	</head>
-	<body class="H-height-100-percent H-box-sizing-border-box H-overflow-hidden">
+	<body class="H-height-100-percent H-box-sizing-border-box H-overflow-hidden" style="background-image:url('../../image/1.jpg');background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
+">
 		<div class="fix">
 			<div class=" H-margin-vertical-top-10 divinput" >
 				<div class="H-flexbox-horizontal  H-border-vertical-bottom-after ">
 					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-phone H-font-size-18 H-vertical-middle H-theme-font-color-white"></i></span>
-					<input type="text" class="H-textbox H-vertical-align-middle H-theme-font-color-white H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" id="name" placeholder="请输入账号" />
+					<input type="text" class="H-textbox H-vertical-align-middle H-theme-font-color-white H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" id="name" placeholder="请输入网易云手机账号" />
 				</div>
 				<div class="H-flexbox-horizontal H-border-vertical-bottom-after H-theme-font-color-white">
 					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle "></i></span>
@@ -94,7 +95,7 @@
 						api.ajax({
 							url : musicApi + '/login/cellphone?phone='+phone+'&password='+psw,
 			    	}, function(ret, err) {
-							console.log(JSON.stringify(ret));
+							// console.log(JSON.stringify(ret));
 							if (ret.code == 200) {
 								api.toast({
 									msg : '登录成功'
