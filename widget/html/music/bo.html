@@ -177,7 +177,7 @@
 			// 	console.log("返回数据："+JSON.stringify(ret));
 			// })
 		app.music_index = api.pageParam.index
-	 
+
 		app.mlistdata = api.pageParam.mlistdata ? api.pageParam.mlistdata : $api.getStorage('listm');
 		app.slider()
 		$api.setStorage('isopen', 1);
@@ -258,16 +258,17 @@
 		methods: {
 			init: function() {
 				// uiloading();
-				var murl = songDetail +app.music_id;
-					// console.log(JSON.stringify(murl));
+				// var murl = songDetail +app.music_id;
+				var murl='http://music.163.com/api/song/detail/?id='+app.music_id+'&ids=['+app.music_id+']'
+
 				wy.send(murl, function(ret, err) {
 					//  console.log($api.jsonToStr(ret));
 					if (ret.code == 200) {
 						app.music_title = ret.songs[0].name
-						app.music_artist = ret.songs[0].ar[0].name
-            app.music_thumb=ret.songs[0].al.picUrl + '?param=80y80'
+						app.music_artist = ret.songs[0].artists[0].name
+            app.music_thumb=ret.songs[0].album.picUrl + '?param=80y80'
 						api.imageCache({
-							url: ret.songs[0].al.picUrl + '?param=500y500'
+							url: ret.songs[0].album.picUrl + '?param=500y500'
 						}, function(ret, err) {
 							if (ret) {
 								app.music_imgurl = ret.url

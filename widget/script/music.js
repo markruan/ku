@@ -225,6 +225,7 @@ function getinfo() {
                 withCredentials: true
             },
             success: function(data) {
+
               var url=musicApi+dourl
                  $.ajax({
                     url: url,
@@ -245,7 +246,7 @@ function getinfo() {
                 })
             },
             error: function(err) {
-                console.log(err)
+                console.log(JSON.stringify(err))
             }
         })
     }

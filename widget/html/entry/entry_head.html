@@ -60,16 +60,22 @@
 		<script src="../../script/play.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			function openreg() {
-				api.openWin({
-					name : 'reg_head',
-					url : 'reg_head.html',
-					bgColor : 'widget://image/1.jpg',
-					animation : {
-						type : "push", //动画类型（详见动画类型常量）
-						subType : "from_bottom", //动画子类型（详见动画子类型常量）
-						duration : 300 //动画过渡时间，默认300毫秒
-					}
+				api.toast({
+				    msg: '请使用网易云音乐手机账号登录',
+				    duration: 2000,
+				    location: 'bottom'
 				});
+
+				// api.openWin({
+				// 	name : 'reg_head',
+				// 	url : 'reg_head.html',
+				// 	bgColor : 'widget://image/1.jpg',
+				// 	animation : {
+				// 		type : "push", //动画类型（详见动画类型常量）
+				// 		subType : "from_bottom", //动画子类型（详见动画子类型常量）
+				// 		duration : 300 //动画过渡时间，默认300毫秒
+				// 	}
+				// });
 			}
 
 			var userdata;

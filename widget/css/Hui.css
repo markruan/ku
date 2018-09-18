@@ -2781,7 +2781,7 @@ textarea.H-textbox { min-height: 150px; resize: none; }
 .slideOutUp { -webkit-animation-name: slideOutUp; animation-name: slideOutUp; }
 		#miniplayer {
 				height: 52px;
-				 
+
 				border-top: 3px solid #e6e6e6;
 				-webkit-background-size: cover;
 				background-size: cover;

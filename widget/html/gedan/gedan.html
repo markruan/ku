@@ -116,7 +116,7 @@
             if (ret) {
                 var data = ret
                 var html = ''
-                for (i = 0; i < data.playlist.length; i++) {
+                for (i = 1; i < data.playlist.length; i++) {
                     var Idd = data.playlist[i].id;
                     var coverImgUrl = imageCache(data.playlist[i].coverImgUrl + '?param=180y180')
                     var tracksName = data.playlist[i].name
@@ -124,7 +124,7 @@
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
                     html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
 
-                    html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+                    html += '<div class="H-text-align-center H-font-size-11 H-padding-vertical-top-5">' + tracksName + '</div></div>';
                     api.refreshHeaderLoadDone();
                 }
                 var obj = $api.byId('main');
@@ -195,7 +195,7 @@
             url: musicApi + '/user/playlist?uid=' + userId + '&limit=30&offset=' + offset,
             cache: true,
         }, function(ret, err) {
-            console.log(JSON.stringify(ret));
+            // console.log(JSON.stringify(ret));
             ret = ret.playlist
             if (ret.playlist=[]) {
 
