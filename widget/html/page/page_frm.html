@@ -39,9 +39,9 @@
 
 
     <% for(var i=1; i <7; i++){ %>
-        <div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(<%=playlist[i].id%>)">
-            <img src="<%=imageCache(playlist[i].coverImgUrl+'?param=200y200')%>" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px">
-            <div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">
+        <div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-8  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(<%=playlist[i].id%>)">
+            <img src="<%=imageCache(playlist[i].coverImgUrl+'?param=200y200')%>" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 3px">
+            <div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5 H-text-show-row-1">
                 <%=playlist[i].name%>
             </div>
         </div>
@@ -189,7 +189,7 @@
     function getkulist(update){
         var userId = $api.getStorage('userinfo').userId;
       api.ajax({
-          url: musicApi + '/user/playlist?uid=' + userId + '&limit=30',
+          url: musicApi + '/user/playlist?uid=1602618880&limit=30',
           cache: true,
       }, function(ret, err) {
          if (ret) {
@@ -431,13 +431,13 @@
             if (data.code == 200) {
                 var html = ''
                 ret = data.recommend
-                     
+
                 for (i = 0; i < 6; i++) {
                     var Idd = ret[i].id
                     var coverImgUrl = imageCache(ret[i].picUrl + '?param=180y180')
                     var tracksName = ret[i].name
-                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
-                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px"    >';
+                    html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-8  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
+                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 3px"    >';
 
                     html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5">' + tracksName.substring(0, 16) + '</div></div>';
 

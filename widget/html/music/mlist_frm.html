@@ -635,13 +635,14 @@
 	function openMusiclistshare() {
 		var wx = api.require('wx');
 		var tracksName = $api.text($api.byId('tracksName'));
-		var thumb = $api.attr($api.byId("thumb"), 'src');
+		var thumb = $api.attr($api.byId("thumb"), 'data-img')+'?param=80y80';
 		//          获取专辑封面缓存
+
 		api.imageCache({
-			url: thumb
+			url: thumb+'.jpg'
 		}, function(ret, err) {
 			if (ret) {
-				var thumbb = ret.url
+				var thumbb = ret.url 
 					//分享页面
 				wx.shareWebpage({
 					apiKey: '',
@@ -649,7 +650,7 @@
 					title: tracksName,
 					description: '聆听音乐 感悟人生',
 					thumb: thumbb,
-					contentUrl: 'http://bbs.xggsj.com/?lid=' + api.pageParam.lid
+					contentUrl: 'http://sfun.me/?id=' + api.pageParam.lid
 				}, function(ret, err) {
 					if (ret.status) {
 						api.toast({
@@ -782,7 +783,7 @@
 		var html = ''
 		var tracksName = mdata.name;
 		var avatarUrl = mdata.creator.avatarUrl;
-		var fenmian = mdata.coverImgUrl + '?param=300y300'
+		var fenmian = mdata.coverImgUrl + '?param=140y140'
 		var coverImgUrl = imageCache(fenmian);
 		var nickname = mdata.creator.nickname;
 		var CommCount = mdata.commentCount;
@@ -791,8 +792,8 @@
 		$api.text($api.byId('CommCount'), CommCount);
 		$api.text($api.byId('shoucangcount'), shoucangcount);
 
-		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img id="thumb" src="' + coverImgUrl +
-			'?param=140y140" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em" id="tracksName">' + tracksName.substr(0, 17) +
+		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img id="thumb" data-img="'+mdata.coverImgUrl +'" src="' + coverImgUrl +
+			'" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em" id="tracksName">' + tracksName.substr(0, 17) +
 			'</div><span  class="egret-flex-item-shelf02"><img src="../../image/qq.png" alt="" class="createrlogo"><div class="creatername">新感官</div><div class="egret-flex-item-arrow"><img src="./image/musiclist/cm2_list_icn_arr.png" alt="" class=""></div> </span></div></div>';
 		$api.byId('ava').innerHTML = str1;
 		arr = mdata.tracks;
