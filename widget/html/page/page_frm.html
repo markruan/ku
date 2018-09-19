@@ -56,20 +56,20 @@
             <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
                 <!-- <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')"> -->
                 <div class="H-flex-item" tapmode onclick="openDaily()">
-                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
+                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-delegate H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">每日推荐  </label>
                 </div>
-                <div class="H-flex-item" tapmode onclick="openjingxuanlist('电子','dianzi')">
+                <div class="H-flex-item" tapmode onclick="openmylist('ismylsit',true)">
                     <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
-                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">电子</label>
+                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">我的歌单</label>
                 </div>
                 <div class="H-flex-item" tapmode onclick="openjingxuanlist('欧美','oumei')">
                     <span class="H-icon H-center-all H-theme-background-color5 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">欧美</label>
                 </div>
-                <div class="H-flex-item" tapmode onclick="openjingxuanlist('华语','huayu')">
-                    <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-level H-font-size-22 H-theme-font-color-white"></i></span>
-                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">华语</label>
+                <div class="H-flex-item" tapmode onclick="openWin('shoucang', '我喜欢的')">
+                    <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
+                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">I Like</label>
                 </div>
             </div>
             <!-- <div id='toppp' class=" H-border-vertical-bottom-margin-both-10-after  "></div> -->
@@ -186,32 +186,34 @@
             }
         });
     }
-    function getkulist(update){
+
+    function getkulist(update) {
         var userId = $api.getStorage('userinfo').userId;
-      api.ajax({
-          url: musicApi + '/user/playlist?uid=1602618880&limit=30',
-          cache: true,
-      }, function(ret, err) {
-         if (ret) {
-             if(update){
-               var render = H.tppl(H.D("#tppl").innerHTML);
-               H.D("#main").innerHTML = render(ret);
-             }
+        api.ajax({
+            url: musicApi + '/user/playlist?uid=1602618880&limit=30',
+            cache: true,
+        }, function(ret, err) {
+            if (ret) {
+                if (update) {
+                    var render = H.tppl(H.D("#tppl").innerHTML);
+                    H.D("#main").innerHTML = render(ret);
+                }
 
-              api.writeFile({
-                  path: api.fsDir + '/cache/indexku.json',
-                  data: ret
-              }, function(ret, err) {
+                api.writeFile({
+                    path: api.fsDir + '/cache/indexku.json',
+                    data: ret
+                }, function(ret, err) {
 
-              });
+                });
 
-          } else {
-              //  alert( JSON.stringify( err ) );
-          }
-      });
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
     }
 
     apiready = function() {
+
         var userinfo = $api.getStorage('userinfo')
         huandeng()
         api.parseTapmode();
@@ -233,11 +235,12 @@
     };
 
     function getmvlist() {
+
         api.readFile({
             path: api.fsDir + '/cache/indexInitMv.json'
         }, function(ret, err) {
             // console.log(JSON.stringify(ret));
-            if (ret.status) {
+            if (ret.status && ret.data != '') {
                 var data = $api.strToJson(ret.data);
                 var html = '';
                 for (i = 0; i < data.length; i++) {
@@ -333,14 +336,33 @@
 
     }
 
-    function openjingxuanlist(cat, pinyin) {
+    function openjingxuanlist(cat, pinyin, ismylsit) {
         api.openWin({
             name: 'win_' + pinyin,
             url: '../index/j_gedan_head.html',
             pageParam: {
                 cat: cat,
                 slidBackEnabled: false,
-                pinyin: pinyin
+                pinyin: pinyin,
+                ismylsit: ismylsit
+
+            },
+            animation: {
+                type: "reveal", //动画类型（详见动画类型常量）
+                subType: "from_right", //动画子类型（详见动画子类型常量）
+                duration: 400 //动画过渡时间，默认300毫秒
+            },
+        });
+    }
+
+    function openmylist(pinyin, ismylsit) {
+        api.openWin({
+            name: 'win_' + pinyin,
+            url: '../gedan/gedan_head.html',
+            pageParam: {
+                slidBackEnabled: false,
+                ismylsit: ismylsit
+
             },
             animation: {
                 type: "reveal", //动画类型（详见动画类型常量）
@@ -425,6 +447,18 @@
         }
     }
 
+    function openArtistList() {
+
+        api.openWin({
+            name: 'artistlist_h',
+            url: '../../html/artist/artist_head.html',
+            pageParam: {
+                artistId: 6452,
+                artistName: '许巍'
+            }
+        });
+    }
+
     function getTuiList() {
         getinfo.getDengLuInfo('/recommend/resource', function(data) {
 
@@ -451,6 +485,25 @@
                 //  alert( JSON.stringify( data ) );
             }
         })
+    }
+
+    function openWin(id, title) {
+        if (!panduan()) {} else {
+            var data = {
+                id: id,
+                title: title
+            }
+            api.openWin({
+                name: id + 'win',
+                url: '../../html/ucenter/shou_head.html',
+                animation: {
+                    type: "movein", //动画类型（详见动画类型常量）
+                    subType: "from_right", //动画子类型（详见动画子类型常量）
+                    duration: 300 //动画过渡时间，默认300毫秒
+                },
+                pageParam: data
+            });
+        }
     }
 </script>
 

@@ -45,7 +45,8 @@
 
 <script type="text/javascript">
     H.tppl_flag = ["<%", "%>"];
-    var userId = $api.getStorage('userinfo').id
+    var UserLikeLlistID = $api.getStorage('userinfo').UserLikeLlistID
+    // console.log(UserLikeLlistID);
     var getinfo = new getinfo()
 
     var data,data1
@@ -53,7 +54,7 @@
     function getdata() {
         uiloading();
         api.readFile({
-            path: api.fsDir + '/cache/like.json'
+            path: api.fsDir + '/cache/like'+UserLikeLlistID+'.json'
         }, function(ret, err) {
             if (ret.status) {
                 var data = $api.strToJson(ret.data)
@@ -75,14 +76,14 @@
 
             } else {
                 api.ajax({
-                    url: musicApi + '/playlist/detail?id=1317159&limit=50',
+                    url: musicApi + '/playlist/detail?id='+UserLikeLlistID+'&limit=50',
                     cache: true
                 }, function(ret, err) {
                     if (ret) {
                         data = ret.playlist.tracks
                             // 存储缓存
                         api.writeFile({
-                            path: api.fsDir + '/cache/like.json',
+                            path: api.fsDir + '/cache/like'+UserLikeLlistID+'.json',
                             data: data
                         }, function(ret, err) {
 
@@ -116,7 +117,7 @@
 
     function updateinfo() {
       api.ajax({
-          url: musicApi + '/playlist/detail?id=1317159&limit=50',
+          url: musicApi + '/playlist/detail?id='+UserLikeLlistID+'&limit=50',
           cache: true
       }, function(ret, err) {
           if (ret) {
@@ -141,7 +142,7 @@
 
     H.ready(function() {
         getdata()
-       
+
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
             visible: true,
@@ -171,7 +172,7 @@
                 }
             });
         } else {
-            $api.setStorage('listopen', 3)
+            $api.setStorage('listopen', 4)
             api.openWin({
                 name: 'nww',
                 url: '../../html/music/bo_head.html',

@@ -22,20 +22,25 @@
         }
     </style>
 </head>
+<script type="text/html" id='tppl'>
+
+    <div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box">
+        <div class="picture H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
+            <span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color7" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i tapmode onclick="open_img()"  class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span>
+            <img id="icon" src="<%=imageCache(userinfo.avatarUrl)%>" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);">
+        </div>
+        <strong id="name" class="H-display-block H-font-weight-normal H-font-weight-500 H-font-size-18 H-theme-font-color-white H-text-align-center H-margin-vertical-both-8">  <%= userinfo.nickname %></strong>
+        <div id="signature" class="H-font-size-12 H-theme-font-color-white H-text-show-row-1">
+            <%= userinfo.signature %>
+        </div>
+    </div>
+
+</script>
 
 <body class="H-flexbox-vertical">
     <div id="body">
-        <div class="H-horizontal-center   H-overflow-hidden" style="padding-top:20px; min-height: 200px; background-image:url('../../image/timg.jpg');">
-            <div class="H-overflow-hidden H-max-width-100-percent H-padding-horizontal-both-10 H-box-sizing-border-box">
-                <div class="picture H-position-relative  H-margin-horizontal-auto" style="width: 96px; height: 96px;">
-                    <span class="H-icon H-display-block H-position-absolute H-center-all H-border-radius-circle H-z-index-1000 H-line-height-0 H-theme-background-color7" style="height: 20px; width: 20px; bottom: 5px; right: 5px; "><i tapmode onclick="open_img()"  class="H-iconfont H-icon-camera H-theme-font-color-white H-font-size-12 H-vertical-align-middle"></i></span>
-                    <img id="icon" src="../../image/qq.png" class="H-display-block H-border-radius-circle" alt="" title="" style="width: 90px; height: 90px; border:3px solid rgba(255,255,255,0.3);">
-                </div>
-                <strong id="name" class="H-display-block H-font-weight-normal H-font-weight-500 H-font-size-18 H-theme-font-color-white H-text-align-center H-margin-vertical-both-8">酷选</strong>
-                <div id="signature" class="H-font-size-12 H-theme-font-color-white H-text-show-row-1">
-                    聆听音乐 感悟人生
-                </div>
-            </div>
+        <div id="userinfo" class="H-horizontal-center   H-overflow-hidden" style="padding-top:20px; min-height: 200px; background-image:url('../../image/timg.jpg');">
+
         </div>
         <div tapmode onclick="openWin('edit', '修改资料') " class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-margin-left-10-after H-vertical-middle H-touch-active">
             <span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-profile H-font-size-22 H-vertical-middle H-theme-font-color1"></i></span>
@@ -81,6 +86,9 @@
 
         function logout() {
             $api.rmStorage('userinfo');
+            api.removePrefs({
+                key: 'userinfo'
+            });
             closeT()
             api.sendEvent({
                 name: 'updateuserinfo'
@@ -90,22 +98,15 @@
 
         H.tppl_flag = ["<%", "%>"];
         H.ready(function() {
-            // console.log($api.getStorage('notify'));
-            var uchtml = api.getPrefs({
-                sync: true,
-                key: 'uchtml'
-            });
-            if (uchtml) {
-                $api.html($api.byId('body'), uchtml);
 
-            } else {
-                init()
-            }
-            if ($api.getStorage('notify')&&$api.getStorage('notify')==1) {
+
+            init()
+
+            if ($api.getStorage('notify') && $api.getStorage('notify') == 1) {
                 document.getElementById("notify").checked = true;
             } else {
-                if($api.getStorage('notify'))
-                document.getElementById("notify").checked = false;
+                if ($api.getStorage('notify'))
+                    document.getElementById("notify").checked = false;
 
             }
 
@@ -119,27 +120,27 @@
                 H.D("#cacheSize").innerText = (ret.size / 1000 / 1000).toFixed(2) + "M";
             });
 
-            api.addEventListener({
-                name: 'reg_login_successEvent'
-            }, function(ret, err) {
-                init()
-            });
-            api.addEventListener({
-                name: 'updateuserinfo'
-            }, function(ret, err) {
-                init()
-            });
-            api.addEventListener({
-                name: 'iconupdata'
-            }, function(ret, err) {
-                var uid = $api.getStorage('userinfo').userId
-                var userinfo = $api.getStorage('userinfo');
-                userinfo.avatarUrl = img_path
-
-                $api.attr($api.byId('beijing'), 'src', img_path);
-                $api.attr($api.byId('icon'), 'src', img_path);
-
-            });
+            // api.addEventListener({
+            //     name: 'reg_login_successEvent'
+            // }, function(ret, err) {
+            //     init()
+            // });
+            // api.addEventListener({
+            //     name: 'updateuserinfo'
+            // }, function(ret, err) {
+            //     init()
+            // });
+            // api.addEventListener({
+            //     name: 'iconupdata'
+            // }, function(ret, err) {
+            //     var uid = $api.getStorage('userinfo').userId
+            //     var userinfo = $api.getStorage('userinfo');
+            //     userinfo.avatarUrl = img_path
+            //
+            //     $api.attr($api.byId('beijing'), 'src', img_path);
+            //     $api.attr($api.byId('icon'), 'src', img_path);
+            //
+            // });
             api.addEventListener({
                 name: 'zhuxiao'
             }, function(ret, err) {
@@ -151,32 +152,51 @@
 
         });
 
-        function huifu() {
-            $api.text($api.byId('signature'), '聆听音乐 感悟人生');
-            $api.text($api.byId('name'), '酷选');
+        // function huifu() {
+        //     $api.text($api.byId('signature'), '聆听音乐 感悟人生');
+        //     $api.text($api.byId('name'), '酷选');
+        // }
+
+        var defaultuserinfo = {
+            userinfo: {
+                nickname: '酷选',
+                avatarUrl: '../../image/qq.png',
+                signature: '聆听音乐 感悟人生'
+            }
+
+
         }
 
         function init() {
-            var userinfo = $api.getStorage('userinfo');
 
-            if (!userinfo) {
-                var name = '酷选'
-                var icon = '../../image/qq.png'
-                var signature = '聆听音乐 感悟人生'
-            } else {
-                var name = userinfo.nickname
-                var icon = userinfo.avatarUrl
-                var signature = userinfo.signature
+            var render = H.tppl(H.D("#tppl").innerHTML);
+            H.D("#userinfo").innerHTML = render(defaultuserinfo);
+            var userinfo = api.getPrefs({
+                sync: true,
+                key: 'userinfo'
+            });
+            userinfo = $api.strToJson(userinfo);
+            var data = {
+                userinfo: userinfo
+
             }
-            $api.attr($api.byId('icon'), 'src', icon);
-            $api.text($api.byId('name'), name);
-            $api.text($api.byId('signature'), signature);
+            H.D("#userinfo").innerHTML = render(data);
+
+            // if (userinfo) {
+            //
+            //     H.D("#userinfo").innerHTML = render(defaultuserinfo);
+            // } else {
+            //     var data={
+            //       userinfo:userinfo
+            //     }
+            //     H.D("#userinfo").innerHTML = render(data);
+            //     // var name = userinfo.nickname
+            //     // var icon = userinfo.avatarUrl
+            //     // var signature = userinfo.signature
+            // }
+
             // console.log(JSON.stringify(userinfo))
 
-            api.setPrefs({
-                key: 'uchtml',
-                value: $api.html($api.byId('body'))
-            });
 
 
         }

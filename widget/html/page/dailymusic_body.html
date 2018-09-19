@@ -493,7 +493,7 @@
 		/* 头部背景 */
 
 		.musiclistprofile {
-			height: 9em;
+			height: 11em;
 		}
 
 		.egret-flex-item .topheaderbg {
@@ -545,7 +545,7 @@
 		<!-- 1 用户登录 -->
 		<div class="egret-flex-item musiclistprofile">
 			<img src="../../image/frame0101cover/europe_cover.jpg" alt="" class="topheaderbg">
-			<img src="../../image/frame0101cover/frame0101cover06.jpg" alt="" class="topheaderlogo">
+			<img id="usericon" src="" alt="" class="topheaderlogo">
 			<!-- <div class="topheadercollect">
 		<img src="../../image/frame0101cover/cm2_pro_head_140.png" alt="" class="border">
 		<img src="../../image/frame0101cover/cm2_mv_btn_fav.png" alt="" class="inside">
@@ -585,6 +585,7 @@
 	var isopen
 	var wy
 	wy = new neteaseMusic()
+
 
 	var app = new Vue({
 		el: '#app',
@@ -719,6 +720,8 @@
 
 
 	apiready = function() {
+		$api.attr($api.byId('usericon'), 'src', $api.getStorage('userinfo').avatarUrl);
+
 		var isopen = $api.getStorage('isopen');
 		uiloading()
 

@@ -1,156 +1,173 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>Hui</title>
-		<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
-		<style type="text/css">
-			body, html {
-				background-color: transparent;
-				overflow: hidden
-			}
-			.fix {
-				padding-top: 300px;
-			}
-			.divinput {
-				width: 265px;
-				padding-left: 93px;
-			}
-		</style>
-	</head>
-	<body class="H-height-100-percent H-box-sizing-border-box H-overflow-hidden" style="background-image:url('../../image/1.jpg');background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>Hui</title>
+	<link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		body,
+		html {
+			background-color: transparent;
+			overflow: hidden
+		}
+
+		.fix {
+			padding-top: 300px;
+		}
+
+		.divinput {
+			width: 265px;
+			padding-left: 93px;
+		}
+	</style>
+</head>
+
+<body class="H-height-100-percent H-box-sizing-border-box H-overflow-hidden" style="background-image:url('../../image/1.jpg');background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
 ">
-		<div class="fix">
-			<div class=" H-margin-vertical-top-10 divinput" >
-				<div class="H-flexbox-horizontal  H-border-vertical-bottom-after ">
-					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-phone H-font-size-18 H-vertical-middle H-theme-font-color-white"></i></span>
-					<input type="text" class="H-textbox H-vertical-align-middle H-theme-font-color-white H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" id="name" placeholder="请输入网易云手机账号" />
-				</div>
-				<div class="H-flexbox-horizontal H-border-vertical-bottom-after H-theme-font-color-white">
-					<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle "></i></span>
-					<input type="password" class="H-textbox H-vertical-align-middle H-theme-font-color-white H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" id="password" placeholder="请输入登录密码" />
-				</div>
-				<div class="H-padding-15 H-margin-vertical-top-10" style="display: inline-flex ">
-					<button  onclick="openreg() "  style="border-radius:   30px  0 0 30px ;width:65px;min-width: 65px; border-right: pink 1px solid" class="H-button H-width-100-percent  H-font-size-16 H-outline-none H-padding-vertical-both-10 H-padding-horizontal-both-10 H-theme-background-color-white H-theme-font-color-pink H-theme-border-color-white H-theme-border-color9-click H-theme-background-color1-click H-theme-font-color9-click H-border-radius-3">
+	<div class="fix">
+		<div class=" H-margin-vertical-top-10 divinput">
+			<div class="H-flexbox-horizontal  H-border-vertical-bottom-after ">
+				<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-phone H-font-size-18 H-vertical-middle H-theme-font-color-white"></i></span>
+				<input type="text" class="H-textbox H-vertical-align-middle H-theme-font-color-white H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" id="name" placeholder="请输入网易云手机账号"
+				/>
+			</div>
+			<div class="H-flexbox-horizontal H-border-vertical-bottom-after H-theme-font-color-white">
+				<span class="H-icon H-vertical-middle H-padding-horizontal-left-10"><i class="H-iconfont H-icon-lock H-font-size-18 H-vertical-middle "></i></span>
+				<input type="password" class="H-textbox H-vertical-align-middle H-theme-font-color-white H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15 H-theme-background-color-transparent" id="password"
+								placeholder="请输入登录密码" />
+			</div>
+			<div class="H-padding-15 H-margin-vertical-top-10" style="display: inline-flex ">
+				<button onclick="openreg() " style="border-radius:   30px  0 0 30px ;width:65px;min-width: 65px; border-right: pink 1px solid" class="H-button H-width-100-percent  H-font-size-16 H-outline-none H-padding-vertical-both-10 H-padding-horizontal-both-10 H-theme-background-color-white H-theme-font-color-pink H-theme-border-color-white H-theme-border-color9-click H-theme-background-color1-click H-theme-font-color9-click H-border-radius-3">
 						注册
 					</button>
-					<button id="login" style="border-radius:  0 30px 30px 0 ;width: 180px" class="H-button H-width-100-percent  H-font-size-18 H-outline-none H-padding-vertical-both-10 H-padding-horizontal-both-20 H-theme-background-color-white H-theme-font-color-pink H-theme-border-color-white H-theme-border-color9-click H-theme-background-color1-click H-theme-font-color9-click H-border-radius-3">
+				<button id="login" style="border-radius:  0 30px 30px 0 ;width: 180px" class="H-button H-width-100-percent  H-font-size-18 H-outline-none H-padding-vertical-both-10 H-padding-horizontal-both-20 H-theme-background-color-white H-theme-font-color-pink H-theme-border-color-white H-theme-border-color9-click H-theme-background-color1-click H-theme-font-color9-click H-border-radius-3">
 						登录
 					</button>
-				</div>
-				<div class="H-padding-vertical-bottom-10"></div>
-				<!--<div class="H-theme-font-color1 H-text-align-center H-padding-vertical-both-10 H-font-size-14">
+			</div>
+			<div class="H-padding-vertical-bottom-10"></div>
+			<!--<div class="H-theme-font-color1 H-text-align-center H-padding-vertical-both-10 H-font-size-14">
 				微信登录
 				</div>-->
-				<!-- <div tapmode onclick="login_winxin()"  class="H-flexbox-horizontal H-text-align-center  H-padding-vertical-both-15">
+			<!-- <div tapmode onclick="login_winxin()"  class="H-flexbox-horizontal H-text-align-center  H-padding-vertical-both-15">
 					<div class="H-flex-item">
 						<span class="H-icon H-center-all H-theme-background-color-transparent H-border-radius-circle H-margin-horizontal-auto" style="height: 62px; width: 62px; border: pink 1px solid"><i class="H-iconfont H-icon-weixin H-font-size-30 H-theme-font-color-white"></i></span>
 						<!--<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">微信</label>-->
-					<!-- </div>
+			<!-- </div>
 				</div>   -->
-				<div class="H-margin-horizontal-both-15 H-theme-font-color-white ">
-					<span class=" H-float-right H-font-size-14">忘记密码？</span>
-				</div>
+			<div class="H-margin-horizontal-both-15 H-theme-font-color-white ">
+				<span class=" H-float-right H-font-size-14">忘记密码？</span>
 			</div>
 		</div>
-		<script src="../../script/H.js" type="text/javascript"></script>
-		<script src="../../script/api.js" type="text/javascript"></script>
-		<script src="../../script/play.js" type="text/javascript"></script>
-		<script type="text/javascript">
-			function openreg() {
-				api.toast({
-				    msg: '请使用网易云音乐手机账号登录',
-				    duration: 2000,
-				    location: 'bottom'
-				});
+	</div>
+	<script src="../../script/H.js" type="text/javascript"></script>
+	<script src="../../script/api.js" type="text/javascript"></script>
+	<script src="../../script/play.js" type="text/javascript"></script>
+	<script src="../../script/music.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	var wy=new neteaseMusic()
+		function openreg() {
+			api.toast({
+				msg: '请使用网易云音乐手机账号登录',
+				duration: 2000,
+				location: 'bottom'
+			});
 
-				// api.openWin({
-				// 	name : 'reg_head',
-				// 	url : 'reg_head.html',
-				// 	bgColor : 'widget://image/1.jpg',
-				// 	animation : {
-				// 		type : "push", //动画类型（详见动画类型常量）
-				// 		subType : "from_bottom", //动画子类型（详见动画子类型常量）
-				// 		duration : 300 //动画过渡时间，默认300毫秒
-				// 	}
-				// });
-			}
+			// api.openWin({
+			// 	name : 'reg_head',
+			// 	url : 'reg_head.html',
+			// 	bgColor : 'widget://image/1.jpg',
+			// 	animation : {
+			// 		type : "push", //动画类型（详见动画类型常量）
+			// 		subType : "from_bottom", //动画子类型（详见动画子类型常量）
+			// 		duration : 300 //动画过渡时间，默认300毫秒
+			// 	}
+			// });
+		}
 
-			var userdata;
-			apiready = function() {
-				$api.byId('login').onclick = function() {
-					if ($api.byId('name').value.length == 0) {
-						$api.byId('name').focus();
-						api.toast({
-							msg : '用户名不能为空'
-						});
-						return;
-					} else if ($api.byId('password').value.length == 0) {
-						$api.byId('password').focus();
-						api.toast({
-							msg : '密码不能为空！'
-						});
-						return;
-					} else {
-						//						var nameVal = $api.byId('name').value;
-						var phone = $api.val($api.byId('name'));
-						var psw = $api.byId('password').value;
-						uiloading();
-						api.ajax({
-							url : musicApi + '/login/cellphone?phone='+phone+'&password='+psw,
-			    	}, function(ret, err) {
-							// console.log(JSON.stringify(ret));
-							if (ret.code == 200) {
+		var userdata;
+		apiready = function() {
+			$api.byId('login').onclick = function() {
+				if ($api.byId('name').value.length == 0) {
+					$api.byId('name').focus();
+					api.toast({
+						msg: '用户名不能为空'
+					});
+					return;
+				} else if ($api.byId('password').value.length == 0) {
+					$api.byId('password').focus();
+					api.toast({
+						msg: '密码不能为空！'
+					});
+					return;
+				} else {
+					//						var nameVal = $api.byId('name').value;
+					var phone = $api.val($api.byId('name'));
+					var psw = $api.byId('password').value;
+					uiloading();
+					api.ajax({
+						url: musicApi + '/login/cellphone?phone=' + phone + '&password=' + psw,
+					}, function(ret, err) {
+
+						if (ret.code == 200) {
+             wy.getUserLikeLlistID(ret.account.id, function(data) {
+								var UserLikeLlistID = data.playlist[0].id
+								ret.profile.UserLikeLlistID = UserLikeLlistID;
 								api.toast({
-									msg : '登录成功'
+									msg: '登录成功'
 								});
-								var nameVal=ret.profile.nickname
-								ret.profile.psw=psw;
+								var nameVal = ret.profile.nickname
+								ret.profile.psw = psw;
+
 								// console.log(JSON.stringify(ret.profile));
 								$api.setStorage('userinfo', ret.profile);
+
 								api.setPrefs({
-									key : 'user',
-									value : nameVal
+									key: 'userinfo',
+									value: $api.jsonToStr(ret.profile)
 								});
 								api.sendEvent({
-									name : 'reg_login_successEvent',
-									extra : {
-										user : nameVal,
+									name: 'reg_login_successEvent',
+									extra: {
+										user: nameVal,
 									}
 								});
 								api.sendEvent({
-									name : 'updateuserinfo'
+									name: 'updateuserinfo'
 								});
 								$api.setStorage('user', nameVal);
 								stoploading();
 								closelogin()
-							} else {
-								alert(ret.msg);
-								stoploading();
-							}
-						});
-					}
+							})
+
+						} else {
+							alert(ret.msg);
+							stoploading();
+						}
+					});
 				}
 			}
+		}
 
-			function closelogin(){
+		function closelogin() {
+			$api.rmStorage('isopen');
+			H.openSlidLayout(null, {
+				name: "slidLayout",
+				url: "../../html/slidLayout_body.html",
+				bgColor: "transparent",
+				bounces: false
+			}, {
+				name: "index",
+				url: "../../html/index/index_head.html",
+				bounces: false
+			}, {
+				leftEdge: 100
+			});
+		}
 
-				$api.rmStorage('isopen');
-				H.openSlidLayout(null, {
-						name: "slidLayout",
-						url: "../../html/slidLayout_body.html",
-						bgColor: "transparent",
-						bounces: false
-				}, {
-						name: "index",
-						url: "../../html/index/index_head.html",
-						bounces: false
-				}, {
-						leftEdge: 100
-				});
-			}
-		</script>
-	</body>
+	</script>
+</body>
+
 </html>

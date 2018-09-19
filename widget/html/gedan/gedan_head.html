@@ -25,9 +25,15 @@
     <script src="../../script/H.js" type="text/javascript"></script>
     <script src="../../script/api.js" type="text/javascript"></script>
     <script type="text/javascript">
-
+        var uid
         H.ready(function() {
-            H.openFrameNavOrFoot('gedanframe', 'gedan.html', "#header",{isku:true});
+          var userinfo = $api.getStorage('userinfo')
+          if(api.pageParam.ismylsit){
+            uid=userinfo.userId
+          }else{
+             uid=1602618880
+          }
+            H.openFrameNavOrFoot('gedanframe', 'gedan.html', "#header",{isku:true,uid:uid});
         })
     </script>
 </body>

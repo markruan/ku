@@ -587,7 +587,7 @@
 			clicktoolitem.setAttribute("data-click", 0);
 			toolbarlist.src = "./image/musiclist/musiclistcollect.png";
 			getinfo.getDengLuInfo('/playlist/subscribe?t=1&id=' + lid, function(data) {
-				  console.log(JSON.stringify(data));
+					console.log(JSON.stringify(data));
 					if (data.code == 200) {
 						api.toast({
 							msg: '收藏成功',
@@ -635,14 +635,14 @@
 	function openMusiclistshare() {
 		var wx = api.require('wx');
 		var tracksName = $api.text($api.byId('tracksName'));
-		var thumb = $api.attr($api.byId("thumb"), 'data-img')+'?param=80y80';
+		var thumb = $api.attr($api.byId("thumb"), 'data-img') + '?param=80y80';
 		//          获取专辑封面缓存
 
 		api.imageCache({
-			url: thumb+'.jpg'
+			url: thumb + '.jpg'
 		}, function(ret, err) {
 			if (ret) {
-				var thumbb = ret.url 
+				var thumbb = ret.url
 					//分享页面
 				wx.shareWebpage({
 					apiKey: '',
@@ -746,9 +746,9 @@
 	//  初始化数据
 	function getlistdata() {
 		var lid = api.pageParam.lid
-		// getinfo.getDengLuInfo('/playlist/detail?id='+lid,function(data){
-		// 	 console.log(JSON.stringify(data));
-		// })
+			// getinfo.getDengLuInfo('/playlist/detail?id='+lid,function(data){
+			// 	 console.log(JSON.stringify(data));
+			// })
 		api.ajax({
 			url: 'http://music.163.com/api/playlist/detail?updateTime=-1&id=' + lid,
 			// url: musicUrl + lid,
@@ -792,7 +792,7 @@
 		$api.text($api.byId('CommCount'), CommCount);
 		$api.text($api.byId('shoucangcount'), shoucangcount);
 
-		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img id="thumb" data-img="'+mdata.coverImgUrl +'" src="' + coverImgUrl +
+		str1 = '<div class="egret-flex-item musiclistprofile"><div class="egret-flex-item-logo"><img id="thumb" data-img="' + mdata.coverImgUrl + '" src="' + coverImgUrl +
 			'" alt="" onclick="photoV()"></div><div class="egret-flex-item-shelf"><div class="egret-flex-item-shelf01"style="font-size: 1em" id="tracksName">' + tracksName.substr(0, 17) +
 			'</div><span  class="egret-flex-item-shelf02"><img src="../../image/qq.png" alt="" class="createrlogo"><div class="creatername">新感官</div><div class="egret-flex-item-arrow"><img src="./image/musiclist/cm2_list_icn_arr.png" alt="" class=""></div> </span></div></div>';
 		$api.byId('ava').innerHTML = str1;
@@ -812,13 +812,14 @@
 			var position = myobj[i].no;
 			var sid = myobj[i].id;
 			var artists = myobj[i].artists[0].name
+			var artistId = myobj[i].artists[0].id
 			var a = i;
 			var n = i + 1;
 			//                      var nType = thisItem.type;
 			html += '<div class="egret-flex-item musiclist-item" tapmode > <div class="egret-flex-item-logo">' + n + '</div>';
 			html += '<div class="egret-flex-item-abright"><div class="egret-flex-item-shelf" onclick="abc(' + sid + ',' + i + ')" >';
 			html += '<div class="egret-flex-item-shelf01">' + bb + '</div><div class="egret-flex-item-shelf02">';
-			html += '' + artists + '</div></div><div class="egret-flex-item-arrow" onclick="expandlist('+i+',123)"><img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg"">';
+			html += '' + artists + '</div></div><div class="egret-flex-item-arrow" onclick="expandlist(' + i + ',123)"><img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg"">';
 			html += '</div></div></div><div class="musiclist-item-tool" >';
 			html += '<div class="userinfocol" tapmode="toolhover" >';
 			html += '<div class="info"><img src="./image/musiclist/musiclisttool01.png" alt=""></div>';
@@ -826,8 +827,8 @@
 			html += '<div class="info"><img src="./image/musiclist/musiclisttool02.png" alt=""></div>';
 			html += '<div class="num">下载</div></div><div class="userinfocol" tapmode="toolhover" onclick="openMusiclistshare()">';
 			html +=
-				'<div class="info"><img src="./image/musiclist/musiclisttool03.png" alt=""></div><div class="num">分享</div></div><div class="userinfocol" tapmode="toolhover" onclick=""><div class="info"><img src="./image/musiclist/musiclisttool04.png" alt="">';
-			html += '</div><div class="num">歌手</div></div><div class="userinfocol" tapmode="toolhover" onclick=""><div class="info"><img src="./image/musiclist/musiclisttool05.png" alt=""></div><div class="num">专辑</div></div></div>';
+				'<div class="info"><img src="./image/musiclist/musiclisttool03.png" alt=""></div><div class="num">分享</div></div><div class="userinfocol" tapmode="toolhover" data-artist="' + artists + '" onclick="openArtistList(' + artistId +',this)"  ><div class="info"><img src="./image/musiclist/musiclisttool04.png" alt="">';
+			html += '</div><div class="num">歌手</div></div><div class="userinfocol" tapmode="toolhover" ><div class="info"><img src="./image/musiclist/musiclisttool05.png" alt=""></div><div class="num">专辑</div></div></div>';
 		}
 		$api.html(obj, html);
 		//                  api.hideProgress();
@@ -902,6 +903,20 @@
 			})
 		}
 	};
+
+	function openArtistList(artistId,button) {
+
+		var artistName = $api.attr(button, 'data-artist')
+		api.openWin({
+			name: 'artistlist_h',
+			url: '../../html/artist/artist_head.html',
+			reload:true,
+			pageParam: {
+				artistId: artistId,
+				artistName: artistName
+			}
+		});
+	}
 </script>
 
 </html>

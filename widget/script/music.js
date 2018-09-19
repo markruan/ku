@@ -122,7 +122,10 @@ function neteaseMusic() {
     }
 
     this.getmvlist = function() {
-        return neteaseMusicURL('/top/mv?limit=10');
+        return neteaseMusicURL('/mv/first?limit=6');
+    }
+    this.getartistlist = function(artistId) {
+        return neteaseMusicURL('/artists?id=' + artistId);
     }
     this.getcatlist = function() {
         return neteaseMusicURL('/playlist/catlist');
@@ -145,6 +148,13 @@ function neteaseMusic() {
             callback(ret, err)
         });
     }
+    this.getUserLikeLlistID = function(uid, callback) { //获取歌单详情
+        api.ajax({
+            url: musicApi + '/user/playlist?uid=' + uid,
+        }, function(ret, err) {
+            callback(ret, err)
+        });
+    }
     this.getmv = function(mvid, callback) {
             api.ajax({
                 url: 'https://api.imjad.cn/cloudmusic/?type=mv&id=' + mvid,
@@ -163,32 +173,32 @@ function neteaseMusic() {
 
     }
 
-    this.mv = function(songid, callback) {
-        api.ajax({
-            url: "http://music.baidu.com/playmv/" + songid,
-            dataType: 'html',
-            data: {
-                "songId": null,
-                "title": "\u6211\u5bb3\u6015",
-                "albumId": null,
-                "albumTitle": null,
-                "author": "\u859b\u4e4b\u8c26",
-                "authorId": "2517",
-                "time": null,
-                "publishTime": null,
-                "tvid": null,
-                "vid": null,
-                "resourceType": null,
-                "relateStatus": null,
-                "moduleName": "mvCover",
-                "id": null,
-                "delStatus": null
-            }
-        }, function(ret, err) {
-            console.log("RES:" + JSON.stringify(ret) + "|" + JSON.stringify(err));
-            callback(ret, err); //回调
-        });
-    }
+    // this.mv = function(songid, callback) {
+    //     api.ajax({
+    //         url: "http://music.baidu.com/playmv/" + songid,
+    //         dataType: 'html',
+    //         data: {
+    //             "songId": null,
+    //             "title": "\u6211\u5bb3\u6015",
+    //             "albumId": null,
+    //             "albumTitle": null,
+    //             "author": "\u859b\u4e4b\u8c26",
+    //             "authorId": "2517",
+    //             "time": null,
+    //             "publishTime": null,
+    //             "tvid": null,
+    //             "vid": null,
+    //             "resourceType": null,
+    //             "relateStatus": null,
+    //             "moduleName": "mvCover",
+    //             "id": null,
+    //             "delStatus": null
+    //         }
+    //     }, function(ret, err) {
+    //         console.log("RES:" + JSON.stringify(ret) + "|" + JSON.stringify(err));
+    //         callback(ret, err); //回调
+    //     });
+    // }
 }
 
 
@@ -214,34 +224,34 @@ function listRecurSend(bm, ind, listRe, callback) { //递归发送多条请求�
 // 获取相似mv
 
 function getinfo() {
-  var userinfo=$api.getStorage('userinfo')
+    var userinfo = $api.getStorage('userinfo')
     this.getDengLuInfo = function(dourl, callback) {
         if (typeof callback !== 'function') { //检查回调函数是否可用调用的
             callback = false;
         }
         $.ajax({
-            url: musicApi+"/login/cellphone?phone="+userinfo.nickname+"&password="+userinfo.psw,
+            url: musicApi + "/login/cellphone?phone=" + userinfo.nickname + "&password=" + userinfo.psw,
             xhrFields: {
                 withCredentials: true
             },
             success: function(data) {
 
-              var url=musicApi+dourl
-                 $.ajax({
+                var url = musicApi + dourl
+                $.ajax({
                     url: url,
                     xhrFields: {
                         withCredentials: true
                     },
                     success: function(data1) {
-                     callback(data1)
-                    //  console.log(JSON.stringify(data1));
-                        // app.listData = data.recommend
-                        // $api.setStorage('listm', app.listData);
-                        // stoploading()
+                        callback(data1)
+                            //  console.log(JSON.stringify(data1));
+                            // app.listData = data.recommend
+                            // $api.setStorage('listm', app.listData);
+                            // stoploading()
                     },
                     error: function(err) {
-                      console.log(JSON.stringify(err));
-                      callback(data)
+                        console.log(JSON.stringify(err));
+                        callback(data)
                     }
                 })
             },
