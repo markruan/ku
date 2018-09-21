@@ -25,12 +25,12 @@ function play_c() {
                         return
                     } else {
                         // 恢复圈子里的播放图标
-                        var jsfun = 'allPlayicon()';
-                        api.execScript({
-                            name: 'index',
-                            frameName: 'quanzi',
-                            script: jsfun
-                        });
+                        // var jsfun = 'allPlayicon()';
+                        // api.execScript({
+                        //     name: 'index',
+                        //     frameName: 'quanzi',
+                        //     script: jsfun
+                        // });
 
                         app.playNext()
 
@@ -85,7 +85,7 @@ function play_c() {
 
                 }else{
                   // 取消状态栏通知
-                 
+
                   api.cancelNotification({id:-1});
                 }
 

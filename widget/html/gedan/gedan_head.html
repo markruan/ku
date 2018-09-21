@@ -29,7 +29,7 @@
         H.ready(function() {
             var userinfo = $api.getStorage('userinfo')
             if (api.pageParam.ismylsit && api.pageParam.iscreatlist == 1) {
-               $api.text($api.byId('title'),'创建的歌单' );
+               $api.text($api.byId('title'),'我的歌单' );
 
                 pageParam = {
                     uid: userinfo.userId,
