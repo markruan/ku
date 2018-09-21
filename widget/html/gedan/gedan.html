@@ -53,11 +53,14 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript" src="../../script/music.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
     var page = 0;
     var datalist;
     var tuilist;
     var initdata
+    var getinfo = new getinfo()
         // 打开歌曲列表
     function openMusicList(lid) {
         api.openWin({
@@ -76,32 +79,28 @@
         });
     }
     //  判断本地是否有数据
-    function isdata() {
-        uiloading();
-        api.readFile({
-            path: 'fs://mlist/1081875.json',
-        }, function(ret, err) {
-
-            if (ret.status) {
-                mdata = $api.strToJson(ret.data);
-                // initpage(mdata)
-            } else {
-                findinfo1()
-            }
-        });
-    }
-
-
-    // 渲染页面
-    function initpage(data) {
-        console.log(JSON.stringify(data));
+    // function isdata() {
+    //     uiloading();
+    //     api.readFile({
+    //         path: 'fs://mlist/1081875.json',
+    //     }, function(ret, err) {
+    //
+    //         if (ret.status) {
+    //             mdata = $api.strToJson(ret.data);
+    //             // initpage(mdata)
+    //         } else {
+    //             findinfo1()
+    //         }
+    //     });
+    // }
 
 
-    }
+
+
 
     //  获取用户的歌单
     var pageNum, offset, uid;
-    var isjiazai=true
+    var isjiazai = true
 
     function findinfo1() {
         pageNum = 0
@@ -111,7 +110,8 @@
         api.ajax({
             url: kulist,
         }, function(ret, err) {
-            if (ret.playlist!=[]&&ret.playlist.length > 31) {
+
+            if (ret.playlist != [] && ret.playlist.length > 31) {
                 isjiazai = false
                 $api.html($api.byId('footer'), '<div  class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">没有更多了......</div>');
                 stoploading();
@@ -122,7 +122,20 @@
             if (ret.playlist.length > 0) {
                 var data = ret
                 var html = ''
-                for (i = 1; i < data.playlist.length; i++) {
+                var count, startnum
+                if (uid == 1602618880) {
+                    count = data.playlist.length;
+                    startnum = 1;
+                } else if (api.pageParam.iscreatlist) {
+                    count = $api.getStorage('usercount').createdPlaylistCount
+                    startnum = 1
+                } else {
+                    count = data.playlist.length
+                    startnum = $api.getStorage('usercount').createdPlaylistCount
+                }
+
+
+                for (i = startnum; i < count; i++) {
                     var Idd = data.playlist[i].id;
                     var coverImgUrl = imageCache(data.playlist[i].coverImgUrl + '?param=180y180')
                     var tracksName = data.playlist[i].name
@@ -134,6 +147,7 @@
                     api.refreshHeaderLoadDone();
                 }
                 var obj = $api.byId('main');
+
 
                 $api.html(obj, html);
 
@@ -152,10 +166,11 @@
     }
 
     apiready = function() {
-        findinfo1()
-        isdata()
+        // console.log(JSON.stringify($api.getStorage('userinfo')));
         uid = api.pageParam.uid
-            // findinfo(page)
+        findinfo1()
+
+        // findinfo(page)
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
             visible: true,
@@ -181,10 +196,10 @@
                 threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
-           if(isjiazai){
-             pageNum++
-             findinfo()
-           }
+            if (isjiazai) {
+                pageNum++
+                findinfo()
+            }
 
 
         });

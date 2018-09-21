@@ -59,13 +59,13 @@
                     <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-delegate H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">每日推荐  </label>
                 </div>
-                <div class="H-flex-item" tapmode onclick="openmylist('ismylsit',true)">
+                <div class="H-flex-item" tapmode onclick="openmylist('ismylsit',true,1)">
                     <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">我的歌单</label>
                 </div>
-                <div class="H-flex-item" tapmode onclick="openjingxuanlist('欧美','oumei')">
+                <div class="H-flex-item" tapmode onclick="openmylist('ismylsit',true,2)">
                     <span class="H-icon H-center-all H-theme-background-color5 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music H-font-size-22 H-theme-font-color-white"></i></span>
-                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">欧美</label>
+                    <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">收藏</label>
                 </div>
                 <div class="H-flex-item" tapmode onclick="openWin('shoucang', '我喜欢的')">
                     <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
@@ -217,6 +217,13 @@
 
         var userinfo = $api.getStorage('userinfo')
         huandeng()
+            // 初始化获取用户统计
+        if (!$api.getStorage('usercount')) {
+            getinfo.getDengLuInfo('/user/subcount', function(data) {
+                $api.setStorage('usercount', data)
+
+            })
+        }
         api.parseTapmode();
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
@@ -356,13 +363,14 @@
         });
     }
 
-    function openmylist(pinyin, ismylsit) {
+    function openmylist(pinyin,ismylsit,iscreatlist) {
         api.openWin({
             name: 'win_' + pinyin,
             url: '../gedan/gedan_head.html',
             pageParam: {
                 slidBackEnabled: false,
-                ismylsit: ismylsit
+                ismylsit: ismylsit,
+                iscreatlist:iscreatlist
 
             },
             animation: {
