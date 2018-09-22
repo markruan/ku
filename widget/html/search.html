@@ -10,7 +10,9 @@
 		.bgg {
 			background-image: url(../image/hd2.jpg);
 			background-position: right bottom, left top;
-		};
+		}
+
+		;
 		#main {
 			height: 100%;
 		}
@@ -19,7 +21,7 @@
 
 <body>
 	<header class="H-header  bgg" id="header">
-		<span tapmode="" onclick="H.closeWin();" class="H-icon H-position-relative H-display-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-10 H-z-index-1000"><i class="H-iconfont H-icon-arrow-left  H-font-size-18 H-vertical-middle"></i></span>
+		<span tapmode="" onclick="closeWin()" class="H-icon H-position-relative H-display-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-10 H-z-index-1000"><i class="H-iconfont H-icon-arrow-left  H-font-size-18 H-vertical-middle"></i></span>
 		<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
 			<div class="H-search H-flexbox-horizontal H-box-sizing-border-box  H-theme-background-color-transparent H-border-radius-3 H-overflow-hidden" style="width: 70%; height: 35px">
 				<div name="keyword" id="search" placeholder="Search...." class="H-border-none H-theme-background-color-transparent H-flex-item H-font-size-16 H-padding-horizontal-both-10 H-padding-vertical-both-2 H-vertical-align-middle H-theme-border-color-ccc H-theme-font-color-white"
@@ -33,17 +35,24 @@
 <script type="text/javascript" src="../script/H.js"></script>
 <script type="text/javascript">
 	var listdata = []
+
 	function closeWin() {
-		api.closeWin();
-		$api.rmStorage('h_list');
-		var audioCover = api.require('audioCover');
-		audioCover.cancel(function(ret, err) {});
+
+		api.openWin({
+			name: 'slidLayout',
+			animation: ''
+		});
+		api.closeWin()
+
 	}
+
 	function cleanText() {
 		var UIInput = api.require('UIInput');
 		UIInput.value({
 			msg: ''
 		});
+		 
+
 	}
 	apiready = function() {
 		//		  $api.rmStorage('h_list');
@@ -54,57 +63,64 @@
 		var headerPos = $api.offset(header);
 		var body_h = $api.offset($api.dom('body')).h;
 		menulist(headerPos);
-		// api.openFrame({
-		// 	name: 'my_frm',
-		// 	url: 'search_body.html',
-		// 	bounces: false,
-		// 	rect: {
-		// 		x: 0,
-		// 		y: headerPos.h,
-		// 		w: headerPos.w,
-		// 		h: 'auto'
-		// 	}
-		// });
-		api.openFrameGroup ({
-		    name: 'group1',
-		    background: '#fff',
-		    scrollEnabled: true,
-		    rect: {
-		         x: 0,
-						 y: headerPos.h+44,
- 						 w: headerPos.w,
- 						 h: 'auto'
-		    },
-		    index: 0,
-		    frames: [{
-		        name: 'frame1',
-		        url: 'search_body.html',
-		        bgColor: '#fff'
-		    },{
-		        name: 'frame2',
-		        url: 'search_body0.html',
-		        bgColor: '#fff'
-		    }]
-		}, function(ret, err){
-		    if( ret ){
-					var index=ret.index
+
+		api.openFrameGroup({
+			name: 'group1',
+			background: '#fff',
+			scrollEnabled: true,
+			rect: {
+				x: 0,
+				y: headerPos.h + 44,
+				w: headerPos.w,
+				h: 'auto'
+			},
+			index: 0,
+			preload:2,
+			frames: [{
+				name: 'frame1',
+				url: 'search_body.html',
+				bgColor: '#fff'
+			}, {
+				name: 'frame2',
+				url: 'search_body0.html',
+				bgColor: '#fff'
+			}, {
+				name: 'frame3',
+				url: 'search_body1.html',
+				bgColor: '#fff'
+			}]
+		}, function(ret, err) {
+			if (ret) {
+				var index = ret.index
 					// console.log(index);
-					var MNNavigationMenu = api.require('MNNavigationMenu');
-					 MNNavigationMenu.setIndex({
-					     index: index
-					 }, function(ret, err) {
-					     if (ret) {
-					        //  alert(JSON.stringify(ret));
-					     } else {
-					         alert(JSON.stringify(err));
-					     }
-					 });
-		    }else{
-		         alert( JSON.stringify( err ) );
-		    }
+				var MNNavigationMenu = api.require('MNNavigationMenu');
+				MNNavigationMenu.setIndex({
+					index: index
+				}, function(ret, err) {
+					if (ret) {
+						//  alert(JSON.stringify(ret));
+					} else {
+						alert(JSON.stringify(err));
+					}
+				});
+			} else {
+				alert(JSON.stringify(err));
+			}
 		});
 
+		api.addEventListener({
+			name: 'keyback'
+		}, function(ret, err) {
+			if (ret) {
+				closeWin()
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
+		});
+
+
 	};
+
 	function searchbar() {
 		var UIInput = api.require('UIInput');
 		var searcht = $api.offset($api.byId('search')).t
@@ -159,69 +175,74 @@
 		});
 	}
 
-function menulist(headerPos){
-	var MNNavigationMenu = api.require('MNNavigationMenu');
-MNNavigationMenu.open({
-    rect: {
-        x: 0,
-        y: headerPos.h,
-        w: api.winWidth,
-        h: 44
-    },
-    index: 0,
-    animation: true,
-    styles: {
-        column: 2,
-        bg: '#eee',
-        item: {
-            bg: '#fff',
-            active: '#eee',
-            highlight: '#eee',
-            title: {
-                marginB: 6,
-                size: 18,
-                height: 14,
-                color: '#888',
-                active: '#f00',
-                highlight: '#f00',
-                ttf:'Alkatip Basma Tom'
-            },
-            icon: {
-                marginT: 0,
-                width: 30,
-                height: 30,
-                corner: 2
-            }
-        }
-    },
-    items: [{
-        title: '歌曲',
-        icon: 'fs://menu/0.png',
-        active: 'fs://menu/0.acitve.png',
-        highlight: 'fs://menu/0.highlight.png'
-    }, {
-        title: 'mv',
-        icon: 'fs://menu/1.png',
-        active: 'fs://menu/1.acitve.png',
-        highlight: 'fs://menu/1.highlight.png'
-    }],
-    fixedOn: api.frameName,
-    fixed: false
-}, function(ret, err) {
-    if (ret) {
-     var index=ret.index
+	function menulist(headerPos) {
+		var MNNavigationMenu = api.require('MNNavigationMenu');
+		MNNavigationMenu.open({
+			rect: {
+				x: 0,
+				y: headerPos.h,
+				w: api.winWidth,
+				h: 44
+			},
+			index: 0,
+			animation: true,
+			styles: {
+				column: 3,
+				bg: '#eee',
+				item: {
+					bg: '#fff',
+					active: '#eee',
+					highlight: '#eee',
+					title: {
+						marginB: 6,
+						size: 18,
+						height: 14,
+						color: '#888',
+						active: '#f00',
+						highlight: '#f00',
+						ttf: 'Alkatip Basma Tom'
+					},
+					icon: {
+						marginT: 0,
+						width: 30,
+						height: 30,
+						corner: 2
+					}
+				}
+			},
+			items: [{
+				title: '歌曲',
+				icon: 'fs://menu/0.png',
+				active: 'fs://menu/0.acitve.png',
+				highlight: 'fs://menu/0.highlight.png'
+			}, {
+				title: 'mv',
+				icon: 'fs://menu/1.png',
+				active: 'fs://menu/1.acitve.png',
+				highlight: 'fs://menu/1.highlight.png'
+			}, {
+				title: '歌手',
+				icon: 'fs://menu/1.png',
+				active: 'fs://menu/1.acitve.png',
+				highlight: 'fs://menu/1.highlight.png'
+			}],
+			fixedOn: api.frameName,
+			fixed: false
+		}, function(ret, err) {
+			if (ret) {
+				var index = ret.index
 
-			       api.setFrameGroupIndex({
-			           name: 'group1',
-			           index: index,
-			           scroll: true
-			       });
+				api.setFrameGroupIndex({
+					name: 'group1',
+					index: index,
+					scroll: true
+				});
 
-    } else {
-        alert(JSON.stringify(err));
-    }
-});
-}
+			} else {
+				alert(JSON.stringify(err));
+			}
+		});
+	}
 </script>
 
 </html>

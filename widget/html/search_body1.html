@@ -20,20 +20,21 @@
 			<div v-html="html2"></div>
 		</div>
 		<ul v-if='articles.length>0'>
-			<div v-for='item in articles'>
+			<!-- <div v-for='item in articles'>
 				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle ">
-					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active" @click="ting(item.id,item.audio,item.album.picUrl,item.name,item.artists[0].name)">{{item.name}}-{{item.artists[0].name}}</div>
-					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openww(item.id, item.album.picUrl, item.audio, item.name, item.artists[0].name) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
-				</div>
-				<!-- <div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle " @click="ting(item.id,item.audio,item.al.picUrl,item.name,item.ar[0].name)">
-					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-						{{item.name}}-{{item.ar[0].name}}
-					</div>
-					<div class=" H-touch-active" @click="openww(item.id, item.al.picUrl, item.audio, item.name, item.ar[0].name) ">
-					<span class="H-icon H-padding-horizontal-right-20 H-display-block " ><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-          </div>
-				</div>
-			</div> -->
+					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active"  @click="openartist(item.id,item.name)">{{item.name}}</div>
+					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openwv(item.id) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
+				<!-- </div> -->
+
+				<div v-for='item in articles' class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after"  @click="openartist(item.id,item.name)">
+						<div class="H-padding-vertical-both-10"><img  v-bind:src=item.img1v1Url+'?param=100y100' alt="" title="" class="H-display-block H-margin-horizontal-left-10  animated fadeIn" style="width: 40px; height: 40px;"></div>
+						<div class="H-flex-item H-padding-20">
+								<strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block">{{item.name}}</strong>
+								<!-- <div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-5">
+										<%=list[i].ar[0].name %>
+								</div> -->
+						</div>
+						</div>
 		</ul>
 		</div>
 </body>
@@ -45,6 +46,7 @@
 		api.addEventListener({
 			name: 'smsg'
 		}, function(ret, err) {
+		 
 			app.say(ret.value.msg);
 		});
 		app.search_histry()
@@ -54,38 +56,41 @@
 		data: {
 			message: '',
 			articles: '',
-			html2: '',
+       html2: '',
 			xianshi: 'block',
 		},
 		mounted: function() {},
 		methods: {
-			openww: function(sid, img, mp3, song, artists) {
+			openartist: function(artistId,artistName) {
 				api.openWin({
-					name: 'addmusic',
-					url: '../html/kong/music/index.html',
+					name: 'artistlist_h',
+					url: '../html/artist/artist_head.html',
 					pageParam: {
-						img: img,
-						mp3: mp3,
-						song: song,
-						artists: artists,
-						sid: sid
+						artistId: artistId,
+						artistName:artistName,
+						from:'search'
+					},
+					animation: {
+						type: "movein", //动画类型（详见动画类型常量）
+						subType: "from_bottom", //动画子类型（详见动画子类型常量）
+						duration: 400
 					}
 				});
 			},
 			say: function(message) {
-				// console.log(message);
 				this.xianshi = 'none';
 				// api.showProgress({});
 				uiloading();
 				app.articles = []
 				api.ajax({
-					url: sUrl + message,
+					url: musicApi + '/search?keywords=' + message + "&type=100",
 				}, function(ret, err) {
-					// console.log(JSON.stringify(ret))
+
 					if (ret.code == 200 && ret.result) {
 						//							$api.addCls(obj, 'H-display-none');
-						var data = ret.result.songs
+						var data = ret.result.artists
 						app.articles = data
+						// console.log(JSON.stringify(app.articles));
 						stoploading()
 					} else {
 
@@ -101,27 +106,28 @@
 				uiloading()
 				list = $api.getStorage('h_list')
 
-				//					大于10条删除最后一条
 
 				if ($api.getStorage('h_list') && $api.getStorage('h_list').length > 0) {
+					//						$api.removeCls(obj, 'H-display-none');
+					//					大于10条删除最后一条
 					if (list.length > 9) {
 						list.splice(0, 1);
 						$api.setStorage('h_list', list);
 					}
-					//						$api.removeCls(obj, 'H-display-none');
 					for (var i = 0; i < list.length; i++) {
 						this.html2 += '<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle "   >';
 						this.html2 += '<div onclick="app.inputkey(' + i + ')"  class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12"><span   class="H-touch-active ">' + list[i] + '</span></div><span onclick="app.clean_h(' + i +
 							')"class="H-icon H-padding-horizontal-both-20   H-display-block "><i class="H-iconfont H-icon-close  H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span></div>';
 					}
 				} else {
-					this.html2 = '<div class="H-center-all H-padding-vertical-top-25">暂无记录</div>';
+					this.html2 = '<div class="H-center-all H-padding-vertical-top-20">暂无记录</div>';
 				}
 				stoploading()
 					//					$api.html(obj, this.html2);
 			},
 			inputkey: function(index) {
 				var list = $api.getStorage('h_list');
+
 				api.sendEvent({
 					name: 'smsg',
 					extra: {
@@ -138,7 +144,7 @@
 			},
 			ting: function(sid, mp3, cover, title, artist) {
 				if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
-					$api.setStorage('listopen', 5);
+					$api.setStorage('listopen', 3);
 					api.openWin({
 						name: 'nww',
 						url: '../html/music/bo_head.html',

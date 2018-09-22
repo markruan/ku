@@ -27,23 +27,38 @@
     <script type="text/javascript">
         var uid
         H.ready(function() {
-            var artistName=api.pageParam.artistName
-            $api.text($api.byId('title') ,artistName);
+            var artistName = api.pageParam.artistName
+            $api.text($api.byId('title'), artistName);
 
 
-            H.openFrameNavOrFoot('artist_frame', 'artist_body.html', "#header",api.pageParam,null,{reload:true});
+            H.openFrameNavOrFoot('artist_frame', 'artist_body.html', "#header", api.pageParam, null, {
+                reload: true
+            });
             api.addEventListener({
                 name: 'keyback'
             }, function(ret, err) {
-              api.openWin({
-                  name: 'musiclist',
-                  animation: {
-                      type: "push", //动画类型（详见动画类型常量）
-                      subType: "from_left", //动画子类型（详见动画子类型常量）
-                      duration: 300
-                  }
-              });
-           });
+                if (api.pageParam.from == 'search') {
+
+
+                    api.openWin({
+                        name: 'slidLayout',
+                    });
+                    setTimeout(api.closeWin({name:'artist_head'}), 600)
+
+
+
+                } else {
+                    api.openWin({
+                        name: 'musiclist',
+                        animation: {
+                            type: "push", //动画类型（详见动画类型常量）
+                            subType: "from_left", //动画子类型（详见动画子类型常量）
+                            duration: 300
+                        }
+                    });
+                }
+
+            });
 
         })
     </script>

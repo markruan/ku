@@ -27,8 +27,7 @@
                     <%=list[i].ar[0].name %>
                 </div>
             </div>
-
-        </div>
+            </div>
         <% } %>
 </script>
 
@@ -124,7 +123,7 @@
               data = ret.playlist.tracks
                   // 存储缓存
               api.writeFile({
-                  path: api.fsDir + '/cache/like.json',
+                  path: api.fsDir +  '/cache/like'+UserLikeLlistID+'.json',
                   data: data
               }, function(ret, err) {
 
@@ -152,7 +151,7 @@
             textUp: '松开刷新...',
             showTime: true
         }, function(ret, err) {
-              updateinfo()
+              getdata()
             api.hideProgress();
             api.refreshHeaderLoadDone();
         });
