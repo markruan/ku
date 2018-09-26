@@ -19,7 +19,7 @@
     <header class="H-header bgg" id="header">
         <span tapmode="" onclick="api.closeWin()" class=" H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100 "><i class="H-iconfont H-icon-arrow-left H-font-size-18
             H-vertical-middle "></i><label class="H-display-block H-vertical-middle H-font-size-15 ">返回</label></span>
-        <div id="title " class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
+        <div id="title" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
         </div>
     </header>
     <script src="../../script/H.js " type="text/javascript "></script>
@@ -30,6 +30,7 @@
         var title = api.pageParam.title
         var id = api.pageParam.id
         $api.text($api.byId('title'), title);
+
         H.openFrameNavOrFoot(id, id + '.html', "#header");
     });
     </script>

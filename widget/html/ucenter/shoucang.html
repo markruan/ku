@@ -19,15 +19,41 @@
 
 
     <% for(var i=0; i < list.length; i++){ %>
-        <div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after" onclick="openPlayer(<%=list[i].id %>,<%=i %>)">
-            <div class="H-padding-vertical-both-10"><img data-echo="<%=imageCache(list[i].al.picUrl+'?param=100y100')%>" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10 H-border-radius-circle animated fadeIn" style="width: 70px; height: 70px;"></div>
-            <div class="H-flex-item H-padding-20">
-                <strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block"><%=list[i].name %></strong>
-                <div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-5">
-                    <%=list[i].ar[0].name %>
+        <!-- <div class="H-qq-item H-vertical-middle H-overflow-hidden">
+            <div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after" onclick="openPlayer(<%=list[i].id %>,<%=i %>)">
+                <div class="H-padding-vertical-both-10"><img data-echo="<%=imageCache(list[i].al.picUrl+'?param=100y100')%>" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10 H-border-radius-circle animated fadeIn" style="width: 70px; height: 70px;"></div>
+                <div class="H-flex-item H-padding-20">
+                    <strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block"><%=list[i].name %></strong>
+                    <div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-5">
+                        <%=list[i].ar[0].name %>
+                    </div>
                 </div>
+                <div class="H-qq-menu H-vertical-middle H-position-relative H-overflow-hidden">
+                    <div class="H-font-size-16 H-padding-horizontal-both-20 H-theme-background-color1 H-display-block H-theme-font-color-white white-space-nowrap">置顶</div>
+                    <div class="H-font-size-16 H-padding-horizontal-both-20 H-theme-background-color-red H-display-block H-theme-font-color-white white-space-nowrap">删除</div>
+                </div>
+
             </div>
+        </div> -->
+
+        <div class="H-qq-item H-vertical-middle H-overflow-hidden">
+            <div class="H-flexbox-horizontal H-box-sizing-border-box H-theme-background-color-white H-border-vertical-bottom-after H-clear-both H-padding-horizontal-both-10 H-padding-vertical-both-8 H-touch-active" onclick="openPlayer(<%=list[i].id %>,<%=i %>)">
+                <div style="width:50px;height:50px;"><img data-echo="<%=imageCache(list[i].al.picUrl+'?param=100y100')%>" src="../../image/default.jpg" class="H-width-100-percent H-height-100-percent H-display-block H-border-radius-circle H-border-both" /></div>
+                <div class="H-flex-item H-padding-horizontal-both-10 H-vertical-middle H-overflow-hidden">
+                    <div class="H-width-100-percent">
+                        <strong class="H-font-weight-normal H-display-block   H-font-size-16 H-text-show-row-1"><%=list[i].name %></strong>
+                        <div class="H-theme-font-color-999 H-font-size-14 H-padding-vertical-top-3 H-text-show-row-1">
+                            <%=list[i].ar[0].name %>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+            <div class="H-qq-menu H-vertical-middle H-position-relative H-overflow-hidden">
+                <!-- <div class="H-font-size-16 H-padding-horizontal-both-20 H-theme-background-color1 H-display-block H-theme-font-color-white white-space-nowrap">置顶</div> -->
+                <div class="H-font-size-16 H-padding-horizontal-both-20 H-theme-background-color-red H-display-block H-theme-font-color-white white-space-nowrap" onclick="quxiao(<%=list[i].id %>)">删除</div>
+            </div>
+        </div>
         <% } %>
 </script>
 
@@ -39,27 +65,28 @@
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/comm.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
-<!-- <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script> -->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
 
 <script type="text/javascript">
     H.tppl_flag = ["<%", "%>"];
     var UserLikeLlistID = $api.getStorage('userinfo').UserLikeLlistID
-    // console.log(UserLikeLlistID);
+        // console.log(UserLikeLlistID);
     var getinfo = new getinfo()
 
-    var data,data1
+    var data, data1
 
     function getdata() {
         uiloading();
         api.readFile({
-            path: api.fsDir + '/cache/like'+UserLikeLlistID+'.json'
+            path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json'
         }, function(ret, err) {
             if (ret.status) {
                 var data = $api.strToJson(ret.data)
                 data1 = {
                     list: data
                 };
+                // console.log(JSON.stringify(data));
 
                 var render = H.tppl(H.D("#tppl").innerHTML);
                 H.D(".result").innerHTML = render(data1);
@@ -75,14 +102,14 @@
 
             } else {
                 api.ajax({
-                    url: musicApi + '/playlist/detail?id='+UserLikeLlistID+'&limit=50',
+                    url: musicApi + '/playlist/detail?id=' + UserLikeLlistID + '&limit=50',
                     cache: true
                 }, function(ret, err) {
                     if (ret) {
                         data = ret.playlist.tracks
                             // 存储缓存
                         api.writeFile({
-                            path: api.fsDir + '/cache/like'+UserLikeLlistID+'.json',
+                            path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json',
                             data: data
                         }, function(ret, err) {
 
@@ -115,33 +142,57 @@
     }
 
     function updateinfo() {
-      api.ajax({
-          url: musicApi + '/playlist/detail?id='+UserLikeLlistID+'&limit=50',
-          cache: true
-      }, function(ret, err) {
-          if (ret) {
-              data = ret.playlist.tracks
-                  // 存储缓存
-              api.writeFile({
-                  path: api.fsDir +  '/cache/like'+UserLikeLlistID+'.json',
-                  data: data
-              }, function(ret, err) {
+        api.ajax({
+            url: musicApi + '/playlist/detail?id=' + UserLikeLlistID + '&limit=50',
+            cache: true
+        }, function(ret, err) {
+            if (ret) {
+                data = ret.playlist.tracks
+                    // 存储缓存
+                api.writeFile({
+                    path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json',
+                    data: data
+                }, function(ret, err) {
 
-              });
-              ///
+                });
+                ///
 
 
-          } else {
-              alert(JSON.stringify(err));
-          }
-      });
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
     }
 
+    function quxiao(id) {
+        api.actionSheet({
+            title: '取消收藏？',
+            cancelTitle: '先留着',
+            destructiveTitle: '确定',
+            buttons: []
+        }, function(ret, err) {
+            if (ret.buttonIndex == 1) {
+                getinfo.getDengLuInfo('/like?like=false&id=' + id, function(data) {
+                    if (data.code == 200) {
+                        api.toast({
+                            msg: '取消成功',
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+
+                    }
+                })
+
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+
+    }
 
 
     H.ready(function() {
         getdata()
-
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
             visible: true,
@@ -151,7 +202,7 @@
             textUp: '松开刷新...',
             showTime: true
         }, function(ret, err) {
-              getdata()
+            getdata()
             api.hideProgress();
             api.refreshHeaderLoadDone();
         });
@@ -190,6 +241,126 @@
             });
         }
     }
+
+
+    //################## 侧滑全部代码
+    //返回角度
+    function GetSlideAngle(dx, dy) {
+        return Math.atan2(dy, dx) * 180 / Math.PI;
+    }
+
+    //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
+    function GetSlideDirection(startX, startY, endX, endY) {
+        var dy = startY - endY;
+        var dx = endX - startX;
+        var result = 0;
+
+        //如果滑动距离太短
+        if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+            return result;
+        }
+
+        var angle = GetSlideAngle(dx, dy);
+        if (angle >= -45 && angle < 45) {
+            result = 4;
+        } else if (angle >= 45 && angle < 135) {
+            result = 1;
+        } else if (angle >= -135 && angle < -45) {
+            result = 2;
+        } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+            result = 3;
+        }
+
+        return result;
+    }
+
+    var _startX = 0;
+    var _startY = 0;
+    var scrollHeight = 0;
+    var scrollWidth = 0;
+    var currentRange = 0;
+    var parentEle = null;
+    var direction = 1;
+
+    // 设置侧滑动画
+    function setScroll(parentElement, value, time) {
+        parentElement.firstElementChild.style.cssText = "-webkit-transition: transform " + time + "s;-webkit-transform:translateX(" + value + "px);";
+        parentElement.lastElementChild.style.cssText = "-webkit-transition: transform " + time + "s;-webkit-transform:translateX(" + value + "px);";
+    }
+
+    // 触摸开始
+    window.addEventListener("touchstart", function(event) {
+        if (event.targetTouches.length == 1) {
+            var touch = event.targetTouches[0];
+            parentEle = H.getParents(event.target, "H-qq-item");
+            if (H.isElement(parentEle)) {
+
+                // 其他兄弟隐藏
+                var siblings = H.siblings(parentEle);
+                for (var i = 0; i < siblings.length; i++) {
+                    var _siblingObj = siblings[i];
+                    setScroll(_siblingObj, 0, 0);
+                }
+
+                scrollHeight = parentEle.firstElementChild.clientHeight;
+                scrollWidth = H.D(".H-qq-menu", parentEle).clientWidth;
+
+                for (var i = 0; i < parentEle.lastElementChild.childNodes.length; i++) {
+                    var child = parentEle.lastElementChild.childNodes[i];
+                    if (H.isElement(child)) {
+                        child.style.cssText = "height:" + scrollHeight + "px;line-height:" + scrollHeight + "px;";
+                    }
+                }
+
+                currentRange = Number(parentEle.firstElementChild.style.WebkitTransform.replace(/translateX\(/g, "").replace(/px\)/g, ""));
+                _startX = touch.pageX;
+                _startY = touch.pageY;
+            }
+        }
+    }, false);
+    // 触摸过程
+    window.addEventListener("touchmove", function(event) {
+        if (event.targetTouches.length == 1) {
+            var touch = event.targetTouches[0];
+            direction = GetSlideDirection(_startX, _startY, touch.pageX, touch.pageY);
+            if (direction == 3 || direction == 4) {
+                event.preventDefault();
+                if (H.isElement(parentEle)) {
+                    var range = touch.pageX - _startX;
+                    if (range <= 0) {
+                        if (range - currentRange >= -scrollWidth && range - currentRange <= 0) {
+                            setScroll(parentEle, (range - currentRange), 0);
+                        }
+                    } else {
+                        if (range + currentRange <= 0) {
+                            setScroll(parentEle, (range + currentRange), 0);
+                        }
+                    }
+                }
+            }
+        }
+    }, false);
+    // 触摸接触
+    window.addEventListener("touchend", function(event) {
+        var touch = event.targetTouches[0];
+        if (H.isElement(parentEle)) {
+            currentRange = Number(parentEle.firstElementChild.style.WebkitTransform.replace(/translateX\(/g, "").replace(/px\)/g, ""));
+            if (direction == 3 && (currentRange < 0)) {
+                setScroll(parentEle, -scrollWidth, 0.4);
+            } else if (direction == 4 && currentRange < 80) {
+                setScroll(parentEle, 0, 0.4);
+            } else {
+                setScroll(parentEle, 0, 0.4);
+            }
+        }
+    }, false);
+    // 点击
+    window.addEventListener("click", function(event) {
+        var parentEle = H.getParents(event.target, "H-qq-item");
+        if (H.isElement(parentEle)) {
+            setScroll(parentEle, 0, 0.4);
+        }
+    }, false);
 </script>
 
 </html>

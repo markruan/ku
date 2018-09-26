@@ -49,7 +49,7 @@
         api.addEventListener({
             name: 'scrolltobottom',
             extra: {
-                threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+                threshold: 250 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
 
@@ -118,7 +118,7 @@
                     html += '<div class="H-font-size-12  H-margin-vertical-top-2 H-font-size-12"id="address">' + coo + '</div>';
                     html += '<div class="H-font-size-10 H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12" id="address">' + time + '</div></div></div>';
                 }
-                console.log(page);
+               
                 if (page > 0) {
                     $api.append(objc1, html);
                 } else if (page == 0 && ret.length == 30) {

@@ -28,7 +28,7 @@
         <% } %>
 </script>
 
-<body id="body" >
+<body id="body">
     <div class="result H-margin-vertical-top-20 H-padding-horizontal-left-10" id="list" style="margin-top:55px"></div>
 </body>
 <script type="text/javascript" src="../../script/H.js"></script>
@@ -42,15 +42,18 @@
 <script type="text/javascript">
     H.tppl_flag = ["<%", "%>"];
     var userId = $api.getStorage('userinfo').id
-    var data, data1,catindex
+    var data, data1, catindex
 
     function getdata(cat) {
         uiloading();
+
         api.ajax({
-            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + cat,
-            cache: true
+            url: musicApi + '/top/playlist?limit=30&order=new&cat=' + cat,
+            cache: true,
         }, function(ret, err) {
             if (ret) {
+                // console.log(JSON.stringify(ret));
+
                 data = ret.playlists
                 data1 = {
                     list: data
@@ -80,6 +83,7 @@
         api.ajax({
             url: musicApi + '/playlist/catlist',
         }, function(ret, err) {
+
             if (ret) {
                 var data = []
                 for (var i = 0; i < ret.sub.length; i++) {
@@ -103,6 +107,9 @@
     function start(data) {
         var MNNavigationMenu = api.require('MNNavigationMenu');
         getdata(data[catindex].title)
+
+
+
         MNNavigationMenu.open({
             rect: {
                 x: 0,
@@ -138,11 +145,14 @@
             },
             items: data,
             fixedOn: api.frameName,
-            fixed: false
+            fixed: true
         }, function(ret, err) {
             if (ret) {
-                 catindex=ret.index
-               getdata(data[catindex].title)
+
+                catindex = ret.index
+
+                getdata(data[catindex].title)
+
             } else {
                 alert(JSON.stringify(err));
             }
@@ -151,7 +161,7 @@
 
     H.ready(function() {
         // getdata()
-        catindex=0
+        catindex = 0
         getcatlist()
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
@@ -171,22 +181,22 @@
     });
 
     // 打开歌曲列表
-function openMusicList(lid) {
-    api.openWin({
-        name: 'musiclist',
-        url: '../../html/music/mlist_win.html',
-        reload: true,
-        slidBackEnabled: false,
-        animation: {
-            type: "reveal", //动画类型（详见动画类型常量）
-            subType: "from_right", //动画子类型（详见动画子类型常量）
-            duration: 400 //动画过渡时间，默认300毫秒
-        },
-        pageParam: {
-            lid: lid
-        }
-    });
-}
+    function openMusicList(lid) {
+        api.openWin({
+            name: 'musiclist',
+            url: '../../html/music/mlist_win.html',
+            reload: true,
+            slidBackEnabled: false,
+            animation: {
+                type: "reveal", //动画类型（详见动画类型常量）
+                subType: "from_right", //动画子类型（详见动画子类型常量）
+                duration: 400 //动画过渡时间，默认300毫秒
+            },
+            pageParam: {
+                lid: lid
+            }
+        });
+    }
 </script>
 
 </html>
