@@ -49,15 +49,15 @@
 			if (content && username) {
 				uiloading();
 				api.ajax({
-					url : hostUrl + '/addyijian.php',
+					url : 'http://47.99.116.131:8081',
 					data : {
 						values : {
-							username : username,
+							nickname : username,
 							content : content
 						}
 					}
 				}, function(ret, err) {
-					if (ret.status == 0) {
+					if (ret.code ==200) {
 						api.toast({
 							msg : ret.msg
 						});
