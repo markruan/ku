@@ -48,7 +48,7 @@
         uiloading();
 
         api.ajax({
-            url: musicApi + '/top/playlist?limit=30&order=new&cat=' + cat,
+            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + cat,
             cache: true,
         }, function(ret, err) {
             if (ret) {
