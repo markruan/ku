@@ -152,10 +152,9 @@
                 name: "美国Billboard周榜",
                 pic: "http://p1.music.126.net/EBRqPmY8k8qyVHyF8AyjdQ==/18641120139148117.jpg?param=320y180",
             }
-
-        ];
+          ];
         uiloading()
-
+        // console.log(JSON.stringify(data));
 
         var html = '';
         for (i = 0; i < 4; i++) {
@@ -363,14 +362,14 @@
         });
     }
 
-    function openmylist(pinyin,ismylsit,iscreatlist) {
+    function openmylist(pinyin, ismylsit, iscreatlist) {
         api.openWin({
             name: 'win_' + pinyin,
             url: '../gedan/gedan_head.html',
             pageParam: {
                 slidBackEnabled: false,
                 ismylsit: ismylsit,
-                iscreatlist:iscreatlist
+                iscreatlist: iscreatlist
 
             },
             animation: {

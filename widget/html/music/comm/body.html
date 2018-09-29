@@ -95,6 +95,7 @@
             cache: false,
 
         }, function(ret, err) {
+         
             var commtotal = ret.total
             var ret = ret.comments
             if (ret != []) {
@@ -118,7 +119,7 @@
                     html += '<div class="H-font-size-12  H-margin-vertical-top-2 H-font-size-12"id="address">' + coo + '</div>';
                     html += '<div class="H-font-size-10 H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12" id="address">' + time + '</div></div></div>';
                 }
-               
+
                 if (page > 0) {
                     $api.append(objc1, html);
                 } else if (page == 0 && ret.length == 30) {

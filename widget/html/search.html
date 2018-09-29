@@ -51,7 +51,7 @@
 		UIInput.value({
 			msg: ''
 		});
-		 
+
 
 	}
 	apiready = function() {
@@ -75,7 +75,7 @@
 				h: 'auto'
 			},
 			index: 0,
-			preload:2,
+			preload:3,
 			frames: [{
 				name: 'frame1',
 				url: 'search_body.html',
@@ -87,6 +87,10 @@
 			}, {
 				name: 'frame3',
 				url: 'search_body1.html',
+				bgColor: '#fff'
+			}, {
+				name: 'frame4',
+				url: 'search_gedan.html',
 				bgColor: '#fff'
 			}]
 		}, function(ret, err) {
@@ -187,7 +191,7 @@
 			index: 0,
 			animation: true,
 			styles: {
-				column: 3,
+				column: 4,
 				bg: '#eee',
 				item: {
 					bg: '#fff',
@@ -222,6 +226,11 @@
 				highlight: 'fs://menu/1.highlight.png'
 			}, {
 				title: '歌手',
+				icon: 'fs://menu/1.png',
+				active: 'fs://menu/1.acitve.png',
+				highlight: 'fs://menu/1.highlight.png'
+			}, {
+				title: '歌单',
 				icon: 'fs://menu/1.png',
 				active: 'fs://menu/1.acitve.png',
 				highlight: 'fs://menu/1.highlight.png'

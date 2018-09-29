@@ -41,6 +41,7 @@
 	}
 	.controler-bg {
 		width: 100%;
+
 		/*position: absolute;*/
 		/*图片模糊*/
 		/*-webkit-filter: blur(30px);
@@ -284,12 +285,12 @@
 						// app.music_mp3="http://music.163.com/song/media/outer/url?id="+app.music_id;
 						// play_c();
 						api.ajax({
-							url: musicApi + '/music/url?id=' + app.music_id,
+							url: musicApi + '/check/music?id=' + app.music_id,
 						}, function(ret, err) {
 							// console.log(JSON.stringify(ret));
-							if (ret.data[0].url == "") {
+							if (!ret.success) {
 								api.toast({
-									msg: '数据错误',
+									msg: ret.message,
 									duration: 2000,
 									location: 'bottom'
 								});
@@ -297,7 +298,7 @@
 								app.playNext()
 
 							} else {
-								app.music_mp3 = ret.data[0].url
+								app.music_mp3 =  'http://music.163.com/song/media/outer/url?id='+app.music_id+'.mp3'
 								play_c();
 
 							}
