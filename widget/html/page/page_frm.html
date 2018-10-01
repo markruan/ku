@@ -107,7 +107,7 @@
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/H.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript"  src="../../script/jquery/jquery.min.js"></script>
 <script type="text/javascript">
     H.tppl_flag = ["<%", "%>"];
     var wy
@@ -213,9 +213,10 @@
     }
 
     apiready = function() {
-
+        console.log(123);
         var userinfo = $api.getStorage('userinfo')
         huandeng()
+
             // 初始化获取用户统计
         if (!$api.getStorage('usercount')) {
             getinfo.getDengLuInfo('/user/subcount', function(data) {

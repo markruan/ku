@@ -33,8 +33,7 @@
 <script type="text/javascript" src="../../../script/common.js"></script>
 <script type="text/javascript" src="../../../script/play.js"></script>
 <script type="text/javascript" src="../../../script/music.js"></script>
-
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript"  src="../../script/jquery/jquery.min.js"></script>
 
 <script type="text/javascript">
     var getinfo = new getinfo()
@@ -95,7 +94,7 @@
             cache: false,
 
         }, function(ret, err) {
-         
+
             var commtotal = ret.total
             var ret = ret.comments
             if (ret != []) {
