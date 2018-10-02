@@ -489,134 +489,126 @@
 		}
 
 		.loading {
-			position: absolute;
-			top: 0;
-			left: 50%;
-			background: #fff;
-			width: 2.5rem;
-			height: 2.5rem;
-			margin-top: 70%;
-			margin-left: -1.25rem;
-			background: url('../../image/loading.gif') no-repeat;
-			background-size: cover;
-			-webkit-animation: rotating 5s linear infinite;
-			animation: rotating 5s linear infinite;
-		}
-
-		.loading-txt {
-			position: absolute;
-			top: 0;
-			color: #4a4a4a;
-			margin-top: 87%;
-			width: 100%;
-			text-align: center;
-		}
+    position: absolute;
+    top: 0;
+    left: 50%;
+    background: #fff;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-top: 70%;
+    margin-left: -1.25rem;
+    background: url('../../static/rage_loading.png') no-repeat;
+    background-size: cover;
+    -webkit-animation: rotating 5s  linear infinite;
+    animation: rotating 5s linear infinite;
+  }
+  .loading-txt {
+    position: absolute;
+    top:0;
+    color: #4a4a4a;
+    margin-top: 87%;
+    width: 100%;
+    text-align:center;
+  }
 	</style>
 </head>
 
 <body>
 	<!-- 1 用户登录 -->
 	<div id="app" v-cloak>
-		<div v-show="!isloading">
-			<div id='ava' class="egret-flex-item musiclistprofile">
-				<div class="egret-flex-item-logo">
-					<img :src="coverImgUrl" alt="" class="">
+		<div id='ava' class="egret-flex-item musiclistprofile">
+			<div class="egret-flex-item-logo">
+				<img :src="coverImgUrl" alt="" class="">
+			</div>
+			<div class="egret-flex-item-shelf">
+				<div class="egret-flex-item-shelf01" style="font-size: 1em">
+					{{listdata.name}}
 				</div>
-				<div class="egret-flex-item-shelf">
-					<div class="egret-flex-item-shelf01" style="font-size: 1em">
-						{{listdata.name}}
-					</div>
-					<span class="egret-flex-item-shelf02"> <img :src="avatarUrl" alt="" class="createrlogo">
+				<span class="egret-flex-item-shelf02"> <img :src="avatarUrl" alt="" class="createrlogo">
 							 <div class="creatername">
-								 {{nickname}}
+								 {{listdata.creator.nickname}}
 							 </div>
 							 <div class="egret-flex-item-arrow">
 								 <img src="./image/musiclist/cm2_list_icn_arr.png"  alt="" class="">
 							 </div> </span>
-				</div>
 			</div>
-			<div class="userinfo">
-				<div class="userinfocol01 userinfocol br" tapmode="toolhover" @click="collectmusic" data-click="0">
-					<div class="info"><img :src="collectmusicIcon" alt="" class="collectmusic">
-					</div>
-					<div class="num" id="shoucangcount">
+		</div>
+		<div class="userinfo">
+			<div class="userinfocol01 userinfocol br" tapmode="toolhover" onclick="collectmusic(this)" data-click="0">
+				<div class="info"><img src="./image/musiclist/musiclistcollect.png" alt="" class="collectmusic">
+				</div>
+				<div class="num" id="shoucangcount">
 
-						{{listdata.subscribedCount}}
-					</div>
-				</div>
-				<div class="userinfocol02 userinfocol br" tapmode="toolhover" @click="openCom">
-					<div class="info"><img src="./image/musiclist/musiclistcommet.png" alt="">
-					</div>
-					<div class="num" id="CommCount">
-						{{listdata.commentCount}}
-					</div>
-				</div>
-				<div class="userinfocol03 userinfocol br" tapmode="toolhover" @click="openMusiclistshare">
-					<div class="info"><img src="./image/musiclist/musiclistshare.png" alt="">
-					</div>
-					<div class="num">
-						{{listdata.shareCount}}
-					</div>
-				</div>
-				<div class="userinfocol03 userinfocol" tapmode="toolhover" @click="downloadAll">
-					<div class="info"><img src="./image/musiclist/musiclistdown.png" alt="">
-					</div>
-					<div class="num">
-						下载
-					</div>
+					{{listdata.subscribedCount}}
 				</div>
 			</div>
-			<div class="egret-flex-item isolateitem-bottom playall" tapmode="allplayhover" onclick="">
-				<div class="egret-flex-item-logo">
-					<img src="./image/musiclist/musiclistplay.png" alt="" class="">
+			<div class="userinfocol02 userinfocol br" tapmode="toolhover" @click="openCom">
+				<div class="info"><img src="./image/musiclist/musiclistcommet.png" alt="">
 				</div>
-				<div class="egret-flex-item-shelf">
-					<div class="egret-flex-item-shelf01">
-						专辑<span id="Num" class="totalnum">共{{songlistcount}}首音乐</span>
-					</div>
-				</div>
-				<div class="egret-flex-item-arrow">
-					<img src="./image/musiclist/musiclistplayarrow.png" alt="" class="">
+				<div class="num" id="CommCount">
+					{{listdata.commentCount}}
 				</div>
 			</div>
-			<!-- 列表部分 -->
-			<div class="egret-flex-item musiclist-item" v-for="(item,index) in songdatalist">
-				<div class="egret-flex-item-logo">
-					{{index+1}}
+			<div class="userinfocol03 userinfocol br" tapmode="toolhover" @click="openMusiclistshare">
+				<div class="info"><img src="./image/musiclist/musiclistshare.png" alt="">
 				</div>
-				<div class="egret-flex-item-abright">
-					<div class="egret-flex-item-shelf" @click="openMusci(item.id,index)">
-						<div class="egret-flex-item-shelf01">{{item.name}}</div>
-						<div class="egret-flex-item-shelf02">{{item.ar['0'].name}}</div>
-					</div>
-					<div class="egret-flex-item-arrow">
-						<img src="../image/musiclist/musiclistmore.png" alt="" class="toobarimg" onclick="expandlist(0, this)">
-					</div>
+				<div class="num">
+					{{listdata.shareCount}}
+				</div>
+			</div>
+			<div class="userinfocol03 userinfocol" tapmode="toolhover" onclick="downloadAll()">
+				<div class="info"><img src="./image/musiclist/musiclistdown.png" alt="">
+				</div>
+				<div class="num">
+					下载
 				</div>
 			</div>
 		</div>
-
+		<div class="egret-flex-item isolateitem-bottom playall" tapmode="allplayhover" onclick="">
+			<div class="egret-flex-item-logo">
+				<img src="./image/musiclist/musiclistplay.png" alt="" class="">
+			</div>
+			<div class="egret-flex-item-shelf">
+				<div class="egret-flex-item-shelf01">
+					专辑<span id="Num" class="totalnum">共{{songlistcount}}首音乐</span>
+				</div>
+			</div>
+			<div class="egret-flex-item-arrow">
+				<img src="./image/musiclist/musiclistplayarrow.png" alt="" class="">
+			</div>
+		</div>
+		<!-- 列表部分 -->
+		<div class="egret-flex-item musiclist-item" v-for="(item,index) in songdatalist">
+			<div class="egret-flex-item-logo">
+				{{index+1}}
+			</div>
+			<div class="egret-flex-item-abright">
+				<div class="egret-flex-item-shelf" @click="openMusci(item.id,index)">
+					<div class="egret-flex-item-shelf01">{{item.name}}</div>
+					<div class="egret-flex-item-shelf02">{{item.ar['0'].name}}</div>
+				</div>
+				<div class="egret-flex-item-arrow">
+					<img src="../image/musiclist/musiclistmore.png" alt="" class="toobarimg" onclick="expandlist(0, this)">
+				</div>
+			</div>
+		</div>
 	</div>
+
+
 </body>
 <script type="text/javascript " src="../../script/api.js "></script>
 <script type="text/javascript " src="../../script/mm.js "></script>
 <script type="text/javascript " src="../../script/music.js "></script>
-<script type="text/javascript" src="../../script/jquery/jquery.min.js"></script>
 <!-- <script type="text/javascript " src="../../script/jquery/jquery.min.js "></script> -->
 
 
 
 <script type="text/javascript ">
 	var lid
-	var getinfo = new getinfo()
 	var isopen = $api.getStorage('isopen');
 	apiready = function() {
 		lid = api.pageParam.lid
-		app.inti()
-		api.setFrameAttr({
-			name: api.frameName,
-			bounces: true
-		});
+		app.getlistdata()
 	}
 
 	var app = new Vue({
@@ -624,21 +616,15 @@
 
 		data: {
 			coverImgUrl: '../../image/default.jpg',
-			min_coverImgUrl: '',
+			min_coverImgUrl:'',
 			avatarUrl: '',
 			listdata: '',
-			nickname: '',
 			songdatalist: '',
-			songlistcount: '',
-			isloading: true,
-			iscollectmusic: false,
-			collectmusicIcon: './image/musiclist/musiclisttool01.png'
+			songlistcount:'',
+			loading:true
 		},
 		created() {
-
-		},
-		mounted: function() {
-
+			// this.getlistdata
 		},
 		methods: {
 			inti: function() {
@@ -646,18 +632,14 @@
 				api.readFile({
 					path: api.fsDir + '/cache/' + lid + '.json',
 				}, function(ret, err) {
-					// console.log(JSON.stringify(ret));
 					if (ret.status) {
-						app.isloading = false
 						var cachedata = $api.strToJson(ret.data)
-							// console.log(JSON.stringify(cachedata));
 						app.coverImgUrl = imageCache(cachedata.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(cachedata.creator.avatarUrl + '?param=40y40')
 						app.listdata = cachedata;
 						app.songdatalist = cachedata.tracks
-						app.songlistcount = cachedata.tracks.length
-						stoploading()
-
+						app.songlistcount=cachedata.tracks.length
+					  stoploading()
 					} else {
 						app.getlistdata()
 
@@ -667,26 +649,24 @@
 			},
 			getlistdata: function() {
 				// var url='http://music.163.com/api/playlist/detail?updateTime=-1&id=' + lid,
-
+				uiloading()
 				var url = musicApi + '/playlist/detail?id=' + lid
 				api.ajax({
 					url: url,
-					cache: true,
+          cache: true,
 				}, function(ret, err) {
 					if (ret.code = 200) {
 						// console.log(JSON.stringify(ret));
-						app.isloading = false
 						app.coverImgUrl = imageCache(ret.playlist.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(ret.playlist.creator.avatarUrl + '?param=40y40')
-						app.min_coverImgUrl = imageCache(ret.playlist.coverImgUrl + '?param=40y40')
-						app.nickname = ret.playlist.creator.nickname
-						app.songlistcount = ret.playlist.tracks.length
+						app.min_coverImgUrl=imageCache(ret.playlist.coverImgUrl + '?param=40y40')
+							app.songlistcount=ret.playlist.tracks.length
 						app.listdata = ret.playlist
 						app.songdatalist = ret.playlist.tracks
 						stoploading()
 						api.writeFile({
 							path: api.fsDir + '/cache/' + lid + '.json',
-							data: ret.playlist
+							data: this.listdata
 						}, function(ret, err) {});
 					} else {
 						api.toast({
@@ -696,9 +676,8 @@
 						});
 
 					}
-
 				});
-			}, //
+			},//
 			openMusci: function(lid, index) {
 				var mlistdata = $api.setStorage('listm')
 				$api.setStorage('listm', app.songdatalist);
@@ -746,115 +725,51 @@
 					})
 				}
 			},
-			openMusiclistshare: function() {
-				var wx = api.require('wx');
+		 openMusiclistshare:function(){
+			 var wx = api.require('wx');
 
-				//分享页面
-				wx.shareWebpage({
-					apiKey: '',
-					scene: 'timeline',
-					title: app.listdata.name,
-					description: '聆听音乐 感悟人生',
-					thumb: app.min_coverImgUrl + '.jpg',
-					contentUrl: 'http://sfun.me/#/playListDetail/' + api.pageParam.lid
-				}, function(ret, err) {
-					if (ret.status) {
-						api.toast({
-							msg: '分享成功'
-						});
-					} else {
-						api.toast({
-							msg: '取消分享'
-						});
-					}
-
-
-				});
-
-			}, //结束
-			openCom: function() {
-				if (!$api.getStorage('userinfo')) {
-					api.toast({
-						msg: '请先登陆'
-					});
-					return
-				}
-
-				api.openWin({
-					name: 'comm',
-					url: '../../html/music/comm/head.html',
-					opaque: true,
-					vScrollBarEnabled: false,
-					pageParam: {
-						type: 2,
-						sid: lid
-					}
-				});
-			},
-			downloadAll: function() {
-				api.toast({
-					msg: '因版权问题暂无法提供下载'
-				});
-
-			},
-			collectmusic: function() {
+						 //分享页面
+					 wx.shareWebpage({
+						 apiKey: '',
+						 scene: 'timeline',
+						 title: app.listdata.name,
+						 description: '聆听音乐 感悟人生',
+						 thumb: app.min_coverImgUrl+'.jpg',
+						 contentUrl: 'http://sfun.me/#/playListDetail/' + api.pageParam.lid
+					 }, function(ret, err) {
+						 if (ret.status) {
+							 api.toast({
+								 msg: '分享成功'
+							 });
+						 } else {
+							 api.toast({
+								 msg: '取消分享'
+							 });
+						 }
 
 
-				if (app.iscollectmusic) {
-					// 点开
+			 });
 
-					app.collectmusicIcon = "./image/musiclist/musiclisttool01.png";
-					// 取消收藏
+		 },//结束
+     openCom:function(){
+			 if (!$api.getStorage('userinfo')) {
+				 api.toast({
+					 msg: '请先登陆'
+				 });
+				 return
+			 }
 
-				} else {
-					// 关闭
-
-
-					getinfo.getDengLuInfo('/playlist/subscribe?t=1&id=' + app.listdata.id, function(data) {
-
-						if (data.code == 200) {
-							app.collectmusicIcon = "./image/musiclist/musiclistcollect.png";
-							api.toast({
-								msg: '成功',
-								duration: 1000,
-								location: 'bottom'
-							});
-						} else if (data.code == 501) {
-							app.collectmusicIcon = "./image/musiclist/musiclistcollect.png";
-							api.actionSheet({
-								title: '已经收藏，要取消吗？',
-								cancelTitle: '先留着',
-								destructiveTitle: '确定',
-								buttons: []
-							}, function(ret, err) {
-								if (ret.buttonIndex == 1) {
-									getinfo.getDengLuInfo('/playlist/subscribe?t=2&id=' + app.listdata.id, function(data) {
-										if (data.code == 200) {
-											api.toast({
-												msg: '取消成功',
-												duration: 2000,
-												location: 'bottom'
-											});
-
-										}
-									})
-
-								} else {
-									// alert( JSON.stringify( err ) );
-								}
-							});
-						} else {
-							api.toast({
-								msg: '收藏失败',
-								duration: 1000,
-								location: 'bottom'
-							});
-						}
-					})
-
-				}
-			}
-
+			 api.openWin({
+				 name: 'comm',
+				 url: '../../html/music/comm/head.html',
+				 opaque: true,
+				 vScrollBarEnabled: false,
+				 pageParam: {
+					 type: 2,
+					 sid: lid
+				 }
+			 });
+		 }
 		}
 	})
 </script>

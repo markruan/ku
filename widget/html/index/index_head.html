@@ -171,7 +171,7 @@
 
 
         H.ready(function() {
-            console.log(0);
+ 
             H.dblclickToCloseApp();
             var fs = api.require('fs');
             fs.createDir({
@@ -183,7 +183,7 @@
                     // alert(JSON.stringify(err));
                 }
             });
-         
+
             // 监听耳机拔下事件
             var phoneListener = api.require('phoneListener');
             phoneListener.headphonePluggedListener({

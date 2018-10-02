@@ -33,11 +33,12 @@
 <script type="text/javascript" src="../../../script/common.js"></script>
 <script type="text/javascript" src="../../../script/play.js"></script>
 <script type="text/javascript" src="../../../script/music.js"></script>
-<script type="text/javascript"  src="../../script/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../../script/jquery/jquery.min.js"></script>
 
 <script type="text/javascript">
     var getinfo = new getinfo()
     var type, sid
+    var isjiazai = true
     var page = 0
     apiready = function() {
         var obj = api.require('inputField');
@@ -51,10 +52,12 @@
                 threshold: 250 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
+            if (isjiazai) {
+                page++
 
-            page++
+                initPage()
+            }
 
-            initPage()
 
         });
         api.parseTapmode();
@@ -68,6 +71,7 @@
             showTime: true
         }, function(ret, err) {
             page = 0
+            isjiazai = true
             initPage()
             api.hideProgress();
             api.refreshHeaderLoadDone();
@@ -119,16 +123,26 @@
                     html += '<div class="H-font-size-10 H-theme-font-color-999 H-text-show-row-1 H-margin-vertical-top-2 H-font-size-12" id="address">' + time + '</div></div></div>';
                 }
 
-                if (page > 0) {
-                    $api.append(objc1, html);
-                } else if (page == 0 && ret.length == 30) {
-                    $api.html(objc1, html);
-                } else if (page == 0 && ret.length < 30) {
+                if (page == 0 && ret.length < 30) {
+                    isjiazai = false
                     $api.html(objc1, html);
                     str1 = '<div class="H-theme-background-color-white "><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">没有更多了...</p><div class="H-padding-vertical-bottom-10"></div></div>';
 
                     $api.html($api.byId('footer'), str1);
+                } else if (page > 0 && ret.length == 30) {
 
+                    $api.append(objc1, html);
+
+
+                } else if (page > 0 && 0 < ret.length < 30) {
+                    isjiazai = false
+                    $api.append(objc1, html);
+                    str1 = '<div class="H-theme-background-color-white "><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">没有更多了...</p><div class="H-padding-vertical-bottom-10"></div></div>';
+
+                    $api.html($api.byId('footer'), str1);
+
+                } else {
+                    $api.append(objc1, html);
                 }
 
                 stoploading();

@@ -162,7 +162,7 @@ function neteaseMusic() {
             }, function(ret, err) {
                 callback(ret, err)
             });
-        }
+    }
         // 获取相似mv
     this.simi = function(mvid, callback) {
         api.ajax({
