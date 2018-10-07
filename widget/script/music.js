@@ -260,7 +260,7 @@ function getinfo() {
             }
         })
     }
-
+ 
 
 }
 

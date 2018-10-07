@@ -159,6 +159,16 @@
                 });
                 $api.removeCls($api.byId('body'), 'H-display-none');
                 stoploading()
+
+                // 存储收藏的歌单ID,歌单list页面使用
+                var likelistids=[]
+
+                for (var i = 0; i < ret.playlist.length; i++) {
+                  var list=[]
+                  list=ret.playlist[i].id
+                  likelistids[i]=list
+                }
+              $api.setStorage('likelistids', likelistids);
             }
 
 

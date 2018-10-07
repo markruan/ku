@@ -537,7 +537,7 @@
 			</div>
 			<div class="userinfo">
 				<div class="userinfocol01 userinfocol br" tapmode="toolhover" @click="collectmusic" data-click="0">
-					<div class="info"><img :src="collectmusicIcon" alt="" class="collectmusic">
+					<div class="info"><img :src="iscollectmusic?collectmusicIcon1:collectmusicIcon" alt="" class="collectmusic">
 					</div>
 					<div class="num" id="shoucangcount">
 
@@ -632,7 +632,8 @@
 			songlistcount: '',
 			isloading: true,
 			iscollectmusic: false,
-			collectmusicIcon: './image/musiclist/musiclisttool01.png'
+			collectmusicIcon: './image/musiclist/musiclisttool01.png',
+			collectmusicIcon1:"./image/musiclist/musiclistcollect.png"
 		},
 		created() {
 
@@ -667,6 +668,8 @@
 			},
 			getlistdata: function() {
 				// var url='http://music.163.com/api/playlist/detail?updateTime=-1&id=' + lid,
+				var likelistids=$api.getStorage('likelistids')
+
 
 				var url = musicApi + '/playlist/detail?id=' + lid
 				api.ajax({
@@ -674,7 +677,14 @@
 					cache: true,
 				}, function(ret, err) {
 					if (ret.code = 200) {
-						// console.log(JSON.stringify(ret));
+            // 判断歌单是否被收藏
+						var res=$.inArray(lid, likelistids);
+						if(res!=-1){
+							app.iscollectmusic=true
+						}else{
+							app.iscollectmusic=false
+						}
+
 						app.isloading = false
 						app.coverImgUrl = imageCache(ret.playlist.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(ret.playlist.creator.avatarUrl + '?param=40y40')

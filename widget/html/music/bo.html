@@ -80,6 +80,12 @@
 	.H-theme-font-color-white1 {
 		color: white;
 	}
+	.classA{
+		color: red;
+	}
+	.calssB{
+		color: white
+	}
 	</style>
 </head>
 
@@ -134,7 +140,7 @@
 					</div>
 					<div class="H-display-table-cell H-float-left H-box-sizing-border-box H-width-avg-5 H-center-all H-theme-background-color-transparent    H-padding-vertical-both-10" style="min-height: 50px;">
 						<div>
-							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" tapmode @click='shoucang' tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white"style="    font-size:25px;"></i></span>
+							<span class="H-icon H-display-block H-horizontal-center"><i  id="shouC" tapmode @click='shoucang' tapmode=" iconfont  icon-focus " class="iconfont icon-xin   H-vertical-middle H-theme-font-color-white " :style="{fontSize:'25px', color:islike?'red':''}"></i></span>
 
 						</div>
 					</div>
@@ -190,6 +196,15 @@
 				app.music_id = ret.value.sid
 				app.music_index = ret.value.index
 				app.mlistdata = ret.value.mlistdata ? ret.value.mlistdata : $api.getStorage('listm');
+				// 判断是否like
+				var likelist=$api.getStorage('likelist')
+
+				var res=$.inArray(app.music_id, likelist);
+				if(res!=-1){
+					app.islike=true
+				}else{
+					app.islike=false
+				}
 
 				app.init()
 			} else {
@@ -227,6 +242,8 @@
 				//  alert( JSON.stringify( err ) );
 			}
 		});
+
+
 	}
 
 	var app = new Vue({
@@ -249,13 +266,27 @@
 			pauseicon: 'icon-zanting',
 			current: '00:00',
 			duration: '3:27',
+			islike:false,
 			cur: '',
 			dur: '',
 			lyric: '',
-			per: ''
+			per: '',
+			calssA:"calssA",
+			calssB:"calssB"
 		},
 		methods: {
 			init: function() {
+				// 判断是否like
+				var likelist=$api.getStorage('likelist')
+
+				var res=$.inArray(app.music_id, likelist);
+				if(res!=-1){
+					app.islike=true
+				}else{
+					app.islike=false
+				}
+
+
 				// uiloading();
 				// var murl = songDetail +app.music_id;
 				var murl = 'http://music.163.com/api/song/detail/?id=' + app.music_id + '&ids=[' + app.music_id + ']'
@@ -531,14 +562,15 @@
 				}
 			},
 			shoucang: function() {
-				if (!$api.getStorage('userinfo')) {
-					api.toast({
-						msg: '先登陆'
-					});
-					return
-				}
-				getinfo.getDengLuInfo('/like?id=' + app.music_id, function(data) {
+				// if (!$api.getStorage('userinfo')) {
+				// 	api.toast({
+				// 		msg: '先登陆'
+				// 	});
+				// 	return
+				// }
+				getinfo.getDengLuInfo('/like?like='+app.islike+'&id=' + app.music_id, function(data) {
 					//  console.log(JSON.stringify(data));
+					app.islike=app.islike?false:true
 					if (data.code == 200) {
 						api.toast({
 							msg: '成功',
