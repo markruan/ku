@@ -163,10 +163,11 @@
 						name: 'songid',
 						extra: {
 							id: sid,
-							index: 0,
+							index: index,
 							songlist: app.articles
 						}
 					})
+					$api.setStorage('listm', app.articles);
 				// 	api.closeWin();
 				//
 				// }

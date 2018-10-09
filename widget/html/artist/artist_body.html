@@ -660,54 +660,24 @@
 
             },
             openMusic: function(sid, index) {
-                // var Idd = api.pageParam.name;
-
-                $api.setStorage('name', 1);
-                $api.setStorage('idi', index);
-                $api.setStorage('listopen', 3);
-                if (!isopen) {
-                    api.openWin({
-                        name: 'nww',
-                        url: '../../html/music/bo_head.html',
-                        // delay: 300,
-                        slidBackEnabled: false,
-                        animation: {
-                            type: "push", //动画类型（详见动画类型常量）
-                            subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                            duration: 400 //动画过渡时间，默认300毫秒
-                        },
-                        pageParam: {
-                            sid: sid,
-                            index: index,
-                            mlistdata: app.listData
-
-                        }
-                    });
-
-                    api.sendEvent({
-                        name: 'songid',
-                        extra: {
-                            sid: sid,
-                            index: index,
-                            // mlistdata: $api.jsonToStr(app.listData)
-                        }
-                    })
-                } else {
-                    api.openWin({
-                        name: 'nww',
-                    });
-                    api.sendEvent({
-                        name: 'songid',
-                        extra: {
-                            sid: sid,
-                            index: index,
-                            // mlistdata: $api.jsonToStr(app.listData)
-                        }
-                    })
-                }
+              api.sendEvent({
+                  name: 'songid',
+                  extra: {
+                      id: sid,
+                      index: index,
+                      songlist: $api.jsonToStr(app.listData)
+                  }
+              })
             },
             openMusicPlay: function() {
-                app.openMusic(app.listData[0].id, 0)
+              api.sendEvent({
+                  name: 'songid',
+                  extra: {
+                      id: app.listData[0].id,
+                      index: 0,
+                      songlist: $api.jsonToStr(app.listData)
+                  }
+              })
             },
             getdaily: function() {
 

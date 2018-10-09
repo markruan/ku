@@ -234,11 +234,17 @@
             var sid = ret.value.id
             app.songid = ret.value.id
             app.index = ret.value.index
-            // console.log(JSON.stringify(ret.value.songlist));
-            app.songdatalist=ret.value.songlist
+                // console.log(JSON.stringify(ret.value.songlist));
+            if (typeof(ret.value.songlist) == 'string') {
+                app.songdatalist = $api.strToJson(ret.value.songlist);
+
+            } else {
+                app.songdatalist = ret.value.songlist
+            }
+
             app.pause()
             app.init()
-       });
+        });
 
         api.addEventListener({
             name: 'replaying'
@@ -259,19 +265,19 @@
 
         api.addEventListener({
             name: 'playNext'
-        }, function(ret, err){
-            if( ret ){
+        }, function(ret, err) {
+            if (ret) {
                 app.playNext()
-            }else{
+            } else {
                 //  alert( JSON.stringify( err ) );
             }
         });
         api.addEventListener({
             name: 'playBack'
-        }, function(ret, err){
-            if( ret ){
+        }, function(ret, err) {
+            if (ret) {
                 app.playBack()
-            }else{
+            } else {
                 //  alert( JSON.stringify( err ) );
             }
         });
@@ -290,7 +296,7 @@
         audioPlayer.addEventListener({
             name: "state"
         }, function(ret) {
-          // console.log(JSON.stringify(ret));
+            // console.log(JSON.stringify(ret));
             app.state = ret.state
             switch (ret.state) {
                 case "playing":
@@ -304,22 +310,22 @@
 
                     break
                 case "error":
-                  api.sendEvent({
-                      name: 'isNotPlaying',
-                  });
-                  app.playNext()
-                  break;
+                    api.sendEvent({
+                        name: 'isNotPlaying',
+                    });
+                    app.playNext()
+                    break;
                 case "finished":
                     api.sendEvent({
                         name: 'isNotPlaying',
                     });
                     app.playNext()
-                break;
+                    break;
 
                 default:
-                api.sendEvent({
-                    name: 'isNotPlaying',
-                });
+                    api.sendEvent({
+                        name: 'isNotPlaying',
+                    });
 
             }
         });
@@ -343,60 +349,53 @@
             current: '',
             music_imgurl: '',
             duration: '',
-            songdatalist:''
+            songdatalist: ''
         },
         watch: {
             isPlaying(curVal, oldVal) {
                 // console.log(curVal, oldVal);　　　　　　　　
             },
             music_imgurl(curVal, oldVal) {
-              api.sendEvent({
-                  name: 'upDateSongInfo',
-                  extra: {
-                      songName: app.songName,
-                      artists: app.artists,
-                      songid: app.songid,
-                      music_imgurl: app.music_imgurl,
-                      duration: app.duration
-                  }
-              });;　　　　　　　　
+                api.sendEvent({
+                    name: 'upDateSongInfo',
+                    extra: {
+                        songName: app.songName,
+                        artists: app.artists,
+                        songid: app.songid,
+                        music_imgurl: app.music_imgurl,
+                        duration: app.duration
+                    }
+                });;　　　　　　　　
             }
         },
         methods: {
-            init:function(){
-              music.isPlay(app.songid, function(ret, err) {
+            init: function() {
+                music.isPlay(app.songid, function(ret, err) {
 
-                  if (ret.success) {
-                      app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
-                      music.play()
-                      music.getMusicInfo(app.songid, function(ret, err) {
-                         if(ret.privileges.st<0){
-                            app.playNext()
-                         }else {
+                    if (ret.success) {
+                        app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
+                        music.play()
+                        music.getMusicInfo(app.songid, function(ret, err) {
+                            var songDetail = ret.songs[0]
+                            app.songName = songDetail.name
+                            app.artists = songDetail.ar[0].name
+                            api.imageCache({
+                                url: songDetail.al.picUrl + '?param=300y300'
+                            }, function(ret, err) {
+                                app.music_imgurl = ret.url;
+                                app.audioCover()
+                            });
+                        })
+                    } else {
+                        api.toast({
+                            msg: ret.message,
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                        app.playNext()
 
-
-                          var songDetail = ret.songs[0]
-                          app.songName = songDetail.name
-                          app.artists = songDetail.ar[0].name
-                          api.imageCache({
-                              url: songDetail.al.picUrl + '?param=300y300'
-                          }, function(ret, err) {
-                              app.music_imgurl = ret.url;
-                              app.audioCover()
-                          });
-                        }
-
-                      })
-                  } else {
-                      api.toast({
-                          msg: ret.message,
-                          duration: 2000,
-                          location: 'bottom'
-                      });
-                      app.playNext()
-
-                  }
-              })
+                    }
+                })
             },
             getMlistDB: function() { //首页获取播放历史列表
                 api.openFrame({
@@ -464,31 +463,31 @@
                     }
                 });
             },
-            playNext:function(){
-              // console.log(app.index+1);
-              if(app.index+1==app.songdatalist.length){
-                app.songid=app.songdatalist[0].id
-                app.init()
-                app.index=0
-              }else {
-                app.songid=app.songdatalist[app.index+1].id
-                app.init()
-                app.index=app.index+1
+            playNext: function() {
+                // console.log(app.index+1);
+                if (app.index + 1 == app.songdatalist.length) {
+                    app.songid = app.songdatalist[0].id
+                    app.init()
+                    app.index = 0
+                } else {
+                    app.songid = app.songdatalist[app.index + 1].id
+                    app.init()
+                    app.index = app.index + 1
 
-              }
+                }
 
             },
-            playBack:function(){
-              if(app.index==0){
-                app.songid=app.songdatalist[0].id
-                app.init()
-                app.index=0
-              }else {
-                app.songid=app.songdatalist[app.index-1].id
-                app.init()
-                app.index=app.index-1
+            playBack: function() {
+                if (app.index == 0) {
+                    app.songid = app.songdatalist[0].id
+                    app.init()
+                    app.index = 0
+                } else {
+                    app.songid = app.songdatalist[app.index - 1].id
+                    app.init()
+                    app.index = app.index - 1
 
-              }
+                }
             },
             audioCover: function() {
                 audioCover = api.require('audioCover');
@@ -521,7 +520,7 @@
                 });
             },
             openPlayer() {
-                if (this.songName!='新感官音乐世界') {
+                if (this.songName != '新感官音乐世界') {
                     api.openWin({
                         name: 'nww',
                         url: '../../html/music/bo_head.html',
