@@ -8,6 +8,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
     <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1466120150_564351.css">
+    <script type="text/javascript" src="../../script/vue.min.js"></script>
     <style type="text/css">
         .bgg {
             background-image: url(../../image/hd2.jpg);
@@ -18,248 +19,535 @@
             position: fixed;
             bottom: 0px;
         }
+
+        {
+            height: 52px;
+            border-top: 3px solid #e6e6e6;
+            -webkit-background-size: cover;
+            background-size: cover;
+            position: relative;
+            width: 100%;
+        }
+
+        span {
+            position: absolute;
+            white-space: nowrap;
+            background-repeat: no-repeat;
+            background-position: center;
+            -webkit-background-size: contain;
+            background-size: contain;
+        }
+
+        .radio.active {
+            background-color: rgba(0, 0, 0, .2);
+        }
+
+        .radio .inner {
+            padding-left: 62px;
+            max-width: 60%;
+            color: #fff;
+            font-size: 14px;
+            line-height: 50px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            background: url(../../image/scheduleliving2.png) no-repeat 48px center;
+            -webkit-background-size: 25px 13px;
+            background-size: 25px 13px;
+        }
+
+        .menu,
+        .play,
+        .xin,
+        .pause,
+        .buffer,
+        .next {
+            width: 36px;
+            height: 36px;
+            top: 6px;
+        }
+
+        .menu {
+            left: 10px;
+            background-image: url(../../image/miniplay_menu.png);
+        }
+
+        .menu.active {
+            background-image: url(../../image/miniplay_menu_s.png);
+        }
+
+        .play {
+            right: 56px;
+            background-image: url(../../image/miniplay_play.png);
+        }
+
+        .xin {
+            right: 10px;
+            background-image: url(../../image/ic_channel_addfav.png);
+        }
+
+        .xin.active {
+            right: 10px;
+            background-image: url(../../image/ic_play_faved.png);
+        }
+
+        .play.active {
+            background-image: url(../../image/miniplay_play_s.png);
+        }
+
+        .pause {
+            right: 56px;
+            background-image: url(../../image/miniplay_pause.png);
+        }
+
+        .pause.active {
+            background-image: url(../../image/miniplay_pause_s.png);
+        }
+
+        .buffer {
+            background-image: none;
+            right: 56px;
+        }
+
+        @-webkit-keyframes rotate {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .buffer:before {
+            content: '';
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            background: url(../../image/miniplay_buffer.png) no-repeat center;
+            -webkit-background-size: contain;
+            background-size: contain;
+            -webkit-animation: rotate 4s linear infinite;
+            animation: rotate 4s linear infinite;
+        }
+
+        .next {
+            right: 10px;
+            background-image: url(../../image/miniplay_next.png);
+        }
+
+        .next.active {
+            background-image: url(../../image/miniplay_next_s.png);
+        }
     </style>
 </head>
 
 <body class="">
-    <header class="H-header  bgg H-border-vertical-bottom-after" id="header">
-        <span tapmode="" onclick="H.openSlidPane();" class="H-icon H-position-relative H-display-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-10 H-z-index-1000"><i class="H-iconfont H-icon-more-menu H-font-size-18 H-vertical-middle"></i></span>
-        <div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
-            <div class="H-search H-flexbox-horizontal H-box-sizing-border-box  H-theme-background-color-transparent H-border-radius-3 H-overflow-hidden" style="width: 70%; height: 35px">
-                <input tapmode onclick="openS() " name="keyword" id="search" placeholder="Search...." class="H-border-none H-theme-background-color-transparent H-flex-item H-font-size-16 H-padding-horizontal-both-10 H-padding-vertical-both-2 H-vertical-align-middle H-theme-border-color-ccc H-theme-font-color-white"
-                    style="border-width: 0 0 1px  0; ">
-            </div>
-        </div>
-        <span class="H-icon H-position-relative H-display-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-5 H-z-index-1000" tapmode onclick="openS()"><i  class="H-iconfont H-icon-search H-font-size-18 H-vertical-middle H-margin-horizontal-right-15"></i></span>
-        <div class="H-flexbox-horizontal H-theme-background-color-white" id="tag">
-            <div tapmode="" onclick="setPage(0, '../../html/page/page_frm.html');" class="H-flex-item H-center-all H-theme-font-color-red H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16 H-theme-border-color-52ace5 H-theme-font-color-52ace5 H-theme-border-color-red H-theme-font-color-red"
-                style="border-width: 0 0 1px  0">
-                精选
-            </div>
-            <div tapmode="" onclick="setPage(1, '../../html/quan/index.html');" class="H-flex-item H-center-all H-theme-font-color-666 H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16" style="border-width: 0 0 1px  0">
-                歌单
-            </div>
-        </div>
-    </header>
-    <div class="H-main H-flex-item"></div>
-    <footer class="H-footer H-flexbox-horizontal bgg H-border-vertical-top-after" id="footer">
-        <div id="miniplayer">
-            <span class="menu" tapmode="active" onclick="getMlistDB()"> </span>
-            <div id="str6" class="radio" tapmode="active">
-                <!--onclick="openRadioDetail()"openPlayer()-->
-                <div tapmode onclick=" openPlayer()" class="inner" id="title" style="overflow-x:hidden;white-space:nowrap;width: 200px;">
-                    新感官音乐
+    <div id="app">
+        <header class="H-header  bgg H-border-vertical-bottom-after" id="header">
+            <span tapmode="" onclick="H.openSlidPane();" class="H-icon H-position-relative H-display-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-10 H-z-index-1000"><i class="H-iconfont H-icon-more-menu H-font-size-18 H-vertical-middle"></i></span>
+            <div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
+                <div class="H-search H-flexbox-horizontal H-box-sizing-border-box  H-theme-background-color-transparent H-border-radius-3 H-overflow-hidden" style="width: 70%; height: 35px">
+                    <input tapmode @click="openS()" name="keyword" id="search" placeholder="Search...." class="H-border-none H-theme-background-color-transparent H-flex-item H-font-size-16 H-padding-horizontal-both-10 H-padding-vertical-both-2 H-vertical-align-middle H-theme-border-color-ccc H-theme-font-color-white"
+                        style="border-width: 0 0 1px  0; ">
                 </div>
             </div>
-            <span id="pp" class="play" tapmode="focus" data-click="0" onclick="switchmusic(this)" data-mp3=""></span>
-            <span class="next" tapmode="active" onclick="next()"></span>
-        </div>
-    </footer>
-    <script type="text/javascript" src="../../script/H.js"></script>
-    <script type="text/javascript" src="../../script/api.js"></script>
-    <!-- <script type="text/javascript" src="../../script/touchpoint.js"></script> -->
-    <script type="text/javascript">
-        // 点击效果初始化
-        // TouchPoint.color = 'white';
-        // TouchPoint.size = 10;
-        // TouchPoint.init();
-        var playid = $api.byId('pp')
+            <span class="H-icon H-position-relative H-display-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-5 H-z-index-1000" tapmode @click="openS()"><i  class="H-iconfont H-icon-search H-font-size-18 H-vertical-middle H-margin-horizontal-right-15"></i></span>
+            <div class="H-flexbox-horizontal H-theme-background-color-white" id="tag">
+                <div tapmode="" @click="setPage(0, '../../html/page/page_frm.html');" class="H-flex-item H-center-all H-theme-font-color-red H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16 H-theme-border-color-52ace5 H-theme-font-color-52ace5 H-theme-border-color-red H-theme-font-color-red"
+                    style="border-width: 0 0 1px  0">
+                    精选
+                </div>
+                <div tapmode="" @click="setPage(1, '../../html/quan/index.html');" class="H-flex-item H-center-all H-theme-font-color-666 H-padding-vertical-both-10 H-theme-border-color-white  H-font-size-16" style="border-width: 0 0 1px  0">
+                    歌单
+                </div>
+            </div>
+        </header>
+        <div class="H-main H-flex-item"></div>
+        <footer class="H-footer H-flexbox-horizontal bgg H-border-vertical-top-after" id="footer">
+            <div id="miniplayer">
+                <span class="menu" tapmode="active" @click="getMlistDB()"> </span>
+                <div id="str6" class="radio" tapmode="active">
+                    <!--onclick="openRadioDetail()"openPlayer()-->
+                    <div tapmode @click="openPlayer()" class="inner" id="title" style="overflow-x:hidden;white-space:nowrap;width: 200px;">
+                        {{songName}}-{{artists}}
+                    </div>
+                </div>
+                <span id="pp" :class="isPlaying?'pause':'play'" tapmode="focus" data-click="0" @click="switchmusic()" data-mp3=""></span>
+                <span class="next" tapmode="active" @click="playNext"></span>
+            </div>
+        </footer>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/H.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/music.js"></script>
+<script type="text/javascript" src="../../script/lyric.js"></script>
+<script type="text/javascript" src="../../script/play.js"></script>
 
-        // 底部打开播放页面
-        function openPlayer() {
-            $api.setStorage('listopen', false);
-            if ($api.getStorage('isopen')) {
-                api.openWin({
-                    name: 'nww',
-                    slidBackEnabled: false,
-                    animation: {
-                        type: "reveal", //动画类型（详见动画类型常量）
-                        subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                        duration: 500 //动画过渡时间，默认300毫秒
-                    },
-                });
-            }
-        }
-        // 打开搜索页面
-        function openS() {
-            api.openWin({
-                name: 'search',
-                url: '../../html/search.html',
-                animation: {
-                    type: "fade", //动画类型（详见动画类型常量）
-                    subType: "from_right", //动画子类型（详见动画子类型常量）
-                    duration: 600 //动画过渡时间，默认300毫秒
-                }
-            });
-        }
-        // 打开添加内容页面
-        function openkong() {
-            api.toast({
-                msg: '废弃掉了',
-                duration: 2000,
-                location: 'bottom'
-            });
-            return
-
-            api.openFrame({
-                name: 'kong',
-                url: "../../html/kong/index.html",
-
-                bgColor: 'rgba(21, 20, 20, 0.37)',
-                rect: {
-                    x: 0,
-                    y: 64,
-                    w: 'auto',
-                    h: 'auto',
-                },
-                animation: {
-                    type: "cube", //动画类型（详见动画类型常量）
-                    subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                    duration: 500
-                }
-            });
-        }
-
-
-        // 底部控件-下一曲
-        function next() {
-            api.sendEvent({
-                name: 'playNext'
-            });
-        }
-        // 底部控件——播放
-        function switchmusic(button) {
-            var click = button.getAttribute("data-click");
-            if (click == 0) {
-                // 点开
-                $api.attr(playid, 'class', 'play');
-                button.setAttribute("data-click", 1);
-                api.sendEvent({
-                    name: 'pause'
-                });
-
+<script type="text/javascript">
+    var playid = $api.byId('pp')
+    var music, audioCover
+    music = new neteaseMusic()
+    H.ready(function() {
+        H.dblclickToCloseApp();
+        var fs = api.require('fs');
+        fs.createDir({
+            path: 'fs://cache'
+        }, function(ret, err) {
+            if (ret.status) {
+                // /song/detail?ids=
             } else {
-                button.setAttribute("data-click", 0);
-                api.sendEvent({
-                    name: 'replaying'
-                });
-                $api.attr(playid, 'class', 'pause');
-                //				}
+                // alert(JSON.stringify(err));
             }
-        }
-        // 设置切换TAB 样式效果
-        function setStyle(index) {
-            var that = H.D("#tag div:nth-child(" + (index + 1) + ")");
-            H.addClass(that, "H-theme-border-color-red H-theme-font-color-red");
-            H.removeClass(H.siblings(that), "H-theme-border-color-red H-theme-font-color-red");
-        }
-        //设置首页显示页面
-        function setPage(index, url) {
-            setStyle(index);
-            if (H.isAPICloud()) {
-                H.setFrameGroupIndex("groups", index, true);
-            } else {
-                H.D("#H-frame").setAttribute("src", url);
-            }
-        }
-        function buffering(){
-          $api.text($api.byId('title'), '缓冲中..');
+        });
 
-
-        }
-
-
-
-        H.ready(function() {
- 
-            H.dblclickToCloseApp();
-            var fs = api.require('fs');
-            fs.createDir({
-                path: 'fs://cache'
-            }, function(ret, err) {
-                if (ret.status) {
-                    // alert(JSON.stringify(ret));
-                } else {
-                    // alert(JSON.stringify(err));
+        // 监听耳机拔下事件
+        var phoneListener = api.require('phoneListener');
+        phoneListener.headphonePluggedListener({
+                enable: true
+            },
+            function(ret) {
+                if (!ret.state) {
+                    api.sendEvent({
+                        name: 'paused',
+                    });
                 }
-            });
 
-            // 监听耳机拔下事件
-            var phoneListener = api.require('phoneListener');
-            phoneListener.headphonePluggedListener({
-                    enable: true
-                },
-                function(ret) {
-                    if (!ret.state) {
-                        api.sendEvent({
-                            name: 'pause',
-                        });
-                    }
-
-                });
-            api.setWinAttr({
-                bounces: false
             });
-            api.addEventListener({
-                name: 'playing'
-            }, function(ret, err) {
-
-                $api.attr(playid, 'class', 'pause');
-                var txt = ret.value.songName + '-' + ret.value.artists
-                $api.text($api.byId('title'), txt);
-                $api.attr(playid, 'data-click', 0);
-                stoploading();
-            });
-            api.addEventListener({
-                name: 'replaying'
-            }, function(ret, err) {
-                $api.attr(playid, 'data-click', 0);
-            });
-
-            api.addEventListener({
-                name: 'pause'
-            }, function(ret, err) {
-                $api.attr($api.byId('pp'), 'class', 'play');
-            });
-            H.openFrameGroupNavOrFoot(function(ret, err) {
-                setStyle(ret.index);
-            }, "groups", [{
-                url: '../../html/page/page_frm.html',
-                name: 'kuxuan'
-            }, {
-                url: '../../html/quan/jingxuan.html',
-                name: 'quanzi'
-            }], 0, "#header", "#footer");
+        api.setWinAttr({
+            bounces: false
         });
 
 
-        //首页获取播放历史列表
-        function getMlistDB() {
-            api.openFrame({
-                name: 'page2',
-                url: 'history.html',
-                rect: {
-                    x: 0,
-                    y: api.winHeight - 300,
-                    w: api.winWidth,
-                    h: 300
-                },
-                bounces: false,
-                bgColor: 'rgba(0,0,0,0)',
-                vScrollBarEnabled: true,
-                hScrollBarEnabled: true,
-                animation: {
-                    type: "flip", //动画类型（详见动画类型常量）
-                    subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                    duration: 500
+        api.addEventListener({
+            name: 'songid'
+        }, function(ret, err) {
+            var sid = ret.value.id
+            app.songid = ret.value.id
+            app.index = ret.value.index
+            // console.log(JSON.stringify(ret.value.songlist));
+            app.songdatalist=ret.value.songlist
+            app.pause()
+            app.init()
+       });
+
+        api.addEventListener({
+            name: 'replaying'
+        }, function(ret, err) {
+            $api.attr(playid, 'data-click', 0);
+        });
+
+        api.addEventListener({
+            name: 'paused'
+        }, function(ret, err) {
+            app.pause()
+        });
+        api.addEventListener({
+            name: 'replay'
+        }, function(ret, err) {
+            app.play()
+        });
+
+        api.addEventListener({
+            name: 'playNext'
+        }, function(ret, err){
+            if( ret ){
+                app.playNext()
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        api.addEventListener({
+            name: 'playBack'
+        }, function(ret, err){
+            if( ret ){
+                app.playBack()
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+        H.openFrameGroupNavOrFoot(function(ret, err) {
+            app.setStyle(ret.index);
+        }, "groups", [{
+            url: '../../html/page/page_frm.html',
+            name: 'kuxuan'
+        }, {
+            url: '../../html/quan/jingxuan.html',
+            name: 'quanzi'
+        }], 0, "#header", "#footer");
+
+        var audioPlayer = api.require('audioPlayer');
+        audioPlayer.addEventListener({
+            name: "state"
+        }, function(ret) {
+          // console.log(JSON.stringify(ret));
+            app.state = ret.state
+            switch (ret.state) {
+                case "playing":
+                    app.isPlaying = true
+                    break;
+                case "paused":
+                    app.isPlaying = false
+                    api.sendEvent({
+                        name: 'isNotPlaying',
+                    });
+
+                    break
+                case "error":
+                  api.sendEvent({
+                      name: 'isNotPlaying',
+                  });
+                  app.playNext()
+                  break;
+                case "finished":
+                    api.sendEvent({
+                        name: 'isNotPlaying',
+                    });
+                    app.playNext()
+                break;
+
+                default:
+                api.sendEvent({
+                    name: 'isNotPlaying',
+                });
+
+            }
+        });
+    });
+
+
+
+
+    //  重写播放模块
+    var app = new Vue({
+        el: "#app",
+        data: {
+            songName: '新感官音乐世界',
+            artists: '聆听音乐 感悟人生',
+            songid: '',
+            music_mp3: '',
+            isPlaying: false,
+            state: '',
+            cur: '',
+            per: '',
+            current: '',
+            music_imgurl: '',
+            duration: '',
+            songdatalist:''
+        },
+        watch: {
+            isPlaying(curVal, oldVal) {
+                // console.log(curVal, oldVal);　　　　　　　　
+            },
+            music_imgurl(curVal, oldVal) {
+              api.sendEvent({
+                  name: 'upDateSongInfo',
+                  extra: {
+                      songName: app.songName,
+                      artists: app.artists,
+                      songid: app.songid,
+                      music_imgurl: app.music_imgurl,
+                      duration: app.duration
+                  }
+              });;　　　　　　　　
+            }
+        },
+        methods: {
+            init:function(){
+              music.isPlay(app.songid, function(ret, err) {
+
+                  if (ret.success) {
+                      app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
+                      music.play()
+                      music.getMusicInfo(app.songid, function(ret, err) {
+                         if(ret.privileges.st<0){
+                            app.playNext()
+                         }else {
+
+
+                          var songDetail = ret.songs[0]
+                          app.songName = songDetail.name
+                          app.artists = songDetail.ar[0].name
+                          api.imageCache({
+                              url: songDetail.al.picUrl + '?param=300y300'
+                          }, function(ret, err) {
+                              app.music_imgurl = ret.url;
+                              app.audioCover()
+                          });
+                        }
+
+                      })
+                  } else {
+                      api.toast({
+                          msg: ret.message,
+                          duration: 2000,
+                          location: 'bottom'
+                      });
+                      app.playNext()
+
+                  }
+              })
+            },
+            getMlistDB: function() { //首页获取播放历史列表
+                api.openFrame({
+                    name: 'page2',
+                    url: 'history.html',
+                    rect: {
+                        x: 0,
+                        y: api.winHeight - 300,
+                        w: api.winWidth,
+                        h: 300
+                    },
+                    bounces: false,
+                    bgColor: 'rgba(0,0,0,0)',
+                    vScrollBarEnabled: true,
+                    hScrollBarEnabled: true,
+                    animation: {
+                        type: "flip", //动画类型（详见动画类型常量）
+                        subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                        duration: 500
+                    }
+                });
+            },
+            pause: function() {
+                var audioPlayer = api.require('audioPlayer');
+                audioPlayer.pause();
+            },
+            play: function() {
+                var audioPlayer = api.require('audioPlayer');
+                audioPlayer.play();
+            },
+            setPage: function(index, url) { //设置首页显示页面
+                app.setStyle(index);
+                if (H.isAPICloud()) {
+                    H.setFrameGroupIndex("groups", index, true);
+                } else {
+                    H.D("#H-frame").setAttribute("src", url);
                 }
-            });
+            },
+            setStyle: function(index) { // 设置切换TAB 样式效果
+                var that = H.D("#tag div:nth-child(" + (index + 1) + ")");
+                H.addClass(that, "H-theme-border-color-red H-theme-font-color-red");
+                H.removeClass(H.siblings(that), "H-theme-border-color-red H-theme-font-color-red");
+            },
+            switchmusic: function() { // 底部控件——播放
+
+                if (this.isPlaying) {
+                    // 点开
+
+                    this.pause()
+
+                } else {
+
+                    this.play()
+                        //				}
+                }
+            },
+            openS: function() {
+                api.openWin({
+                    name: 'search',
+                    url: '../../html/search.html',
+                    animation: {
+                        type: "fade", //动画类型（详见动画类型常量）
+                        subType: "from_right", //动画子类型（详见动画子类型常量）
+                        duration: 600 //动画过渡时间，默认300毫秒
+                    }
+                });
+            },
+            playNext:function(){
+              // console.log(app.index+1);
+              if(app.index+1==app.songdatalist.length){
+                app.songid=app.songdatalist[0].id
+                app.init()
+                app.index=0
+              }else {
+                app.songid=app.songdatalist[app.index+1].id
+                app.init()
+                app.index=app.index+1
+
+              }
+
+            },
+            playBack:function(){
+              if(app.index==0){
+                app.songid=app.songdatalist[0].id
+                app.init()
+                app.index=0
+              }else {
+                app.songid=app.songdatalist[app.index-1].id
+                app.init()
+                app.index=app.index-1
+
+              }
+            },
+            audioCover: function() {
+                audioCover = api.require('audioCover');
+                var msg = {
+                    totalTime: app.duration,
+                    cover: app.music_imgurl,
+                    progress: app.per,
+                    audio: app.songName,
+                    author: app.artists,
+                }
+
+                audioCover.set(msg, function(ret, err) {
+
+                    if (ret.eventType == 'pause') {
+                        //			pause();
+                        app.play()
+
+                    } else if (ret.eventType == 'next') {
+                        app.pause();
+                        app.playNext()
+                    } else if (ret.eventType == 'previous') {
+                        app.stop();
+                        app.playBack()
+                    } else if (ret.eventType == 'play') {
+                        //			play()
+
+                        app.pause()
+
+                    } else {}
+                });
+            },
+            openPlayer() {
+                if (this.songName!='新感官音乐世界') {
+                    api.openWin({
+                        name: 'nww',
+                        url: '../../html/music/bo_head.html',
+                        delay: 100,
+                        slidBackEnabled: false,
+                        animation: {
+                            type: "reveal", //动画类型（详见动画类型常量）
+                            subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                            duration: 400 //动画过渡时间，默认300毫秒
+                        },
+                        pageParam: {
+                            id: this.songid,
+                            mp3: this.mp3,
+                            songName: this.songName,
+                            artists: this.artists,
+                            music_imgurl: this.music_imgurl,
+                            index: this.index,
+                            duration: this.duration
+                        }
+                    });
+                }
+            }
 
         }
+    })
+</script>
 
-        // 登录测试获取cookie
-
-    </script>
-</body>
 
 </html>

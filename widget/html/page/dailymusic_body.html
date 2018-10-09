@@ -554,14 +554,14 @@
 		</div>
 
 		<!-- 2 播放全部 -->
-		<div class="egret-flex-item isolateitem-bottom playall" tapmode="allplayhover" @click="openMusicPlay">
+		<!-- <div class="egret-flex-item isolateitem-bottom playall" tapmode="allplayhover" @click="openMusicPlay">
 			<div class="egret-flex-item-logo">
 				<img src="../../image/musiclist/musiclistplay.png" alt="" class="">
 			</div>
 			<div class="egret-flex-item-shelf">
 				<div class="egret-flex-item-shelf01">播放全部</div>
 			</div>
-		</div>
+		</div> -->
 
 		<!-- 3  -->
 
@@ -579,153 +579,48 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/vue.min.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
-<script type="text/javascript"  src="../../script/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../script/jquery/jquery.min.js"></script>
 
 <script type="text/javascript">
-	var isopen
-	var wy
-	wy = new neteaseMusic()
-
-
+	var wy = new neteaseMusic()
 	var app = new Vue({
 		el: '#app',
 		data: {
 			listData: ''
 		},
 		methods: {
-
-			getTui: function() {
-				api.readFile({
-					path: api.fsDir + '/cache/dailymusic.json',
-				}, function(ret, err) {
-					if (ret.status && ret.data != '') {
-						// console.log(JSON.stringify(ret));
-						app.listData = $api.strToJson(ret.data);
-						$api.setStorage('listm', $api.strToJson(ret.data));
-						stoploading()
-						wy.getListDetail(1317159, function(ret, err) {
-							if (ret) {
-
-								app.listData = ret.result.tracks
-								var arr = ret.result.tracks
-								api.writeFile({
-									path: api.fsDir + '/cache/dailymusic.json',
-									data: ret.result.tracks
-								}, function(ret, err) {
-
-								});
-
-								$api.setStorage('listm', arr);
-							} else {
-								// alert(JSON.stringify(err));
-								// console.log();
-							}
-						});
-					} else {
-
-						wy.getListDetail(1317159, function(ret, err) {
-							if (ret) {
-								// console.log(JSON.stringify(ret));
-								app.listData = ret.result.tracks
-								var arr = ret.result.tracks
-								api.writeFile({
-									path: api.fsDir + '/cache/dailymusic.json',
-									data: ret.result.tracks
-								}, function(ret, err) {
-
-								});
-
-								$api.setStorage('listm', arr);
-								stoploading()
-							} else {
-								alert(JSON.stringify(err));
-								// console.log();
-							}
-						});
-
-					}
-				});
-
-				api.refreshHeaderLoadDone();
-
-			},
 			openMusic: function(sid, index) {
-				// var Idd = api.pageParam.name;
-
-				$api.setStorage('name', 1);
-				$api.setStorage('idi', index);
-				$api.setStorage('listopen', 2);
-				if (!isopen) {
-					api.openWin({
-						name: 'nww',
-						url: '../../html/music/bo_head.html',
-						// delay: 300,
-						slidBackEnabled: false,
-						animation: {
-							type: "push", //动画类型（详见动画类型常量）
-							subType: "from_bottom", //动画子类型（详见动画子类型常量）
-							duration: 400 //动画过渡时间，默认300毫秒
-						},
-						pageParam: {
-							sid: sid,
-							index: index,
-							mlistdata: app.listData
-
-						}
-					});
-
 					api.sendEvent({
 						name: 'songid',
 						extra: {
-							sid: sid,
+							id: sid,
 							index: index,
-							// mlistdata: $api.jsonToStr(app.listData)
+							songlist: $api.jsonToStr(app.listData)
 						}
 					})
-				} else {
-					api.openWin({
-						name: 'nww',
-					});
-					api.sendEvent({
-						name: 'songid',
-						extra: {
-							sid: sid,
-							index: index,
-							// mlistdata: $api.jsonToStr(app.listData)
-						}
-					})
-				}
 			},
 			openMusicPlay: function() {
 				app.openMusic(app.listData[0].id, 0)
 			},
 			getdaily: function() {
-        var getdailysong=new getinfo()
-				getdailysong.getDengLuInfo('/recommend/songs',function(data){
-					// console.log(JSON.stringify(data));
+				var getdailysong = new getinfo()
+				getdailysong.getDengLuInfo('/recommend/songs', function(data) {
 					app.listData = data.recommend
 					$api.setStorage('listm', app.listData);
 					stoploading()
 				})
-
-
 			}
-
-		},
+  	},
 		created: function() {
 			// console.log(123);
 		}
-
-	})
+ 	})
 
 
 	apiready = function() {
 		$api.attr($api.byId('usericon'), 'src', $api.getStorage('userinfo').avatarUrl);
-
-		var isopen = $api.getStorage('isopen');
-		uiloading()
-
-		app.getdaily();
+    uiloading()
+   	app.getdaily();
 		api.setRefreshHeaderInfo({
 			loadingImg: 'widget://image/refresh.png',
 			visible: true,

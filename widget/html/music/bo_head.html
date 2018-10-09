@@ -22,92 +22,81 @@
 
 <body>
     <header class="H-header bgg H-theme-background-color-transparent" id="header">
-        <span tapmode="" onclick="goback() " class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="H-iconfont H-icon-arrow-left H-font-size-18 H-vertical-middle"></i><label class="H-display-block H-vertical-middle H-font-size-15"></label></span>
+        <span tapmode="" onclick="goback()" class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="H-iconfont H-icon-arrow-left H-font-size-18 H-vertical-middle"></i><label class="H-display-block H-vertical-middle H-font-size-15"></label></span>
         <div id="title" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent"></div>
     </header>
     <script src="../../script/H.js" type="text/javascript"></script>
     <script src="../../script/api.js" type="text/javascript"></script>
     <script type="text/javascript">
         function goback() {
+          api.closeWin();
 
-            if ($api.getStorage('listopen') == 1) {
-                api.openWin({
-                    name: 'musiclist',
-                    animation: {
-                        type: "push", //动画类型（详见动画类型常量）
-                        subType: "from_left", //动画子类型（详见动画子类型常量）
-                        duration: 300 //动画过渡时间，默认300毫秒
-                    }
-                });
-            } else if ($api.getStorage('listopen') == 2) {
-              api.openWin({
-                  name: 'dailymusic',
-                  animation: {
-                      type: "push", //动画类型（详见动画类型常量）
-                      subType: "from_left", //动画子类型（详见动画子类型常量）
-                      duration: 300 //动画过渡时间，默认300毫秒
-                  }
-              });
 
-            }  else if ($api.getStorage('listopen') == 3) {
-              api.openWin({
-                  name: 'artistlist_h',
-                  animation: {
-                      type: "push", //动画类型（详见动画类型常量）
-                      subType: "from_left", //动画子类型（详见动画子类型常量）
-                      duration: 300 //动画过渡时间，默认300毫秒
-                  }
-              });
-          } else if ($api.getStorage('listopen') == 4) {
-              api.openWin({
-                  name: 'slidLayout',
-                  animation: {
-                      type: "push", //动画类型（详见动画类型常量）
-                      subType: "from_left", //动画子类型（详见动画子类型常量）
-                      duration: 300 //动画过渡时间，默认300毫秒
-                  }
-              });
-          }else if ($api.getStorage('listopen') == 5) {
-              api.openWin({
-                  name: 'search',
-                  animation: {
-                      type: "push", //动画类型（详见动画类型常量）
-                      subType: "from_left", //动画子类型（详见动画子类型常量）
-                      duration: 300 //动画过渡时间，默认300毫秒
-                  }
-              });
-          }else {
-                api.openWin({
-                    name: 'slidLayout',
-                    animation: {
-                        type: "push", //动画类型（详见动画类型常量）
-                        subType: "from_left", //动画子类型（详见动画子类型常量）
-                        duration: 300 //动画过渡时间，默认300毫秒
-                    }
-                })
-            }
+          //   if ($api.getStorage('listopen') == 1) {
+          //       api.openWin({
+          //           name: 'musiclist',
+          //           animation: {
+          //               type: "push", //动画类型（详见动画类型常量）
+          //               subType: "from_left", //动画子类型（详见动画子类型常量）
+          //               duration: 300 //动画过渡时间，默认300毫秒
+          //           }
+          //       });
+          //   } else if ($api.getStorage('listopen') == 2) {
+          //     api.openWin({
+          //         name: 'dailymusic',
+          //         animation: {
+          //             type: "push", //动画类型（详见动画类型常量）
+          //             subType: "from_left", //动画子类型（详见动画子类型常量）
+          //             duration: 300 //动画过渡时间，默认300毫秒
+          //         }
+          //     });
+          //
+          //   }  else if ($api.getStorage('listopen') == 3) {
+          //     api.openWin({
+          //         name: 'artistlist_h',
+          //         animation: {
+          //             type: "push", //动画类型（详见动画类型常量）
+          //             subType: "from_left", //动画子类型（详见动画子类型常量）
+          //             duration: 300 //动画过渡时间，默认300毫秒
+          //         }
+          //     });
+          // } else if ($api.getStorage('listopen') == 4) {
+          //     api.openWin({
+          //         name: 'slidLayout',
+          //         animation: {
+          //             type: "push", //动画类型（详见动画类型常量）
+          //             subType: "from_left", //动画子类型（详见动画子类型常量）
+          //             duration: 300 //动画过渡时间，默认300毫秒
+          //         }
+          //     });
+          // }else if ($api.getStorage('listopen') == 5) {
+          //     api.openWin({
+          //         name: 'search',
+          //         animation: {
+          //             type: "push", //动画类型（详见动画类型常量）
+          //             subType: "from_left", //动画子类型（详见动画子类型常量）
+          //             duration: 300 //动画过渡时间，默认300毫秒
+          //         }
+          //     });
+          // }else {
+          //       api.openWin({
+          //           name: 'slidLayout',
+          //           animation: {
+          //               type: "push", //动画类型（详见动画类型常量）
+          //               subType: "from_left", //动画子类型（详见动画子类型常量）
+          //               duration: 300 //动画过渡时间，默认300毫秒
+          //           }
+          //       })
+          //   }
         }
-
-        var music_data
+        //
+        // var music_data
         H.ready(function() {
             api.setStatusBarStyle({
                 style: 'dark'
             });
-
-            music_data={
-              sid:api.pageParam.sid,
-              index:api.pageParam.index,
-              title:api.pageParam.title,
-              mp3:api.pageParam.mp3,
-              cover:api.pageParam.cover,
-              artist:api.pageParam.artist
-            }
-            H.openFrameNavOrFoot('bo', 'bo.html', "#header", {
-                sid: api.pageParam.sid,
-                index: api.pageParam.index,
-                mlistdata:api.pageParam.mlistdata,
-                music_data:music_data
-            }, null, {
+           
+            H.openFrameNavOrFoot('bo', 'bo.html', "#header", api.pageParam, null, {
                 bounces: false,
                 reload: true
             });
@@ -116,9 +105,7 @@
             }, function(ret, err) {
                 goback()
             });
-            api.sendEvent({
-                name: 'bofangye'
-            });
+
         });
     </script>
 </body>

@@ -135,39 +135,7 @@
 				app.search_histry();
 			},
 			ting: function(sid, mp3, cover, title, artist) {
-				if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
-					$api.setStorage('listopen', 3);
-					api.openWin({
-						name: 'nww',
-						url: '../html/music/bo_head.html',
-						slidBackEnabled: false,
-						animation: {
-							type: "movein", //动画类型（详见动画类型常量）
-							subType: "from_bottom", //动画子类型（详见动画子类型常量）
-							duration: 500 //动画过渡时间，默认300毫秒
-						},
-						pageParam: {
-							sid: sid,
-							mp3: mp3,
-							index: 0,
-							mlistdata: false,
-							cover: cover,
-							title: title,
-							artist: artist
-						}
-					});
-				} else {
-					api.sendEvent({
-						name: 'songid',
-						extra: {
-							sid: sid,
-							index: 0,
-							mlistdata: false
-						}
-					})
-					api.closeWin();
-
-				}
+				 
 
 			}
 		}

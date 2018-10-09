@@ -93,22 +93,71 @@ function neteaseMusic() {
 
         return 'http://music.163.com/song/media/outer/url?id=' + id + '.mp3'
     }
+    this.getMusicInfo = function(id, callback) {
+        api.ajax({
+            url: 'https://api.imjad.cn/cloudmusic/?type=detail&id=' + id
+
+        }, function(ret, err) {
+            callback(ret, err);
+        });
+    }
+    this.isPlay = function(id, callback) {
+        api.ajax({
+            url: musicApi + '/check/music?id=' + id,
+
+        }, function(ret, err) {
+            callback(ret, err);
+        });
+    }
+    this.play = function() {
+        var audioPlayer = api.require('audioPlayer');
+        audioPlayer.pause();
+        audioPlayer.initPlayer({
+            path: app.music_mp3,
+            cache: true
+        }, function(ret) {
+            if (ret.status) {
+                stoploading()
+                var duration = ret.duration;
+                app.duration = ret.duration
+                var dur = formatSeconds(duration);
+                app.dur = dur
+                audioPlayer.addEventListener({
+                    name: 'playing'
+                }, function(ret, err) {
+                    app.cur = ret.current
+                    var percent = (app.cur / app.duration) * 100;
+                    app.per = Math.round(percent);
+                    app.current = formatSeconds(app.cur);
+                    app.audioCover()
+                    app.cur = ret.current
+                    var percent = (app.cur / app.duration) * 100;
+                    app.per = Math.round(percent);
+
+                    app.current = formatSeconds(app.cur);
+                    api.sendEvent({
+                        name: 'per',
+                        extra: {
+                            per: app.per,
+                            current: app.current
+                        }
+                    });
+
+
+                });
+
+            } else {
+
+
+
+            }
+        });
+    }
 
 
 
     //#########################  接口主要方法  ###########################################//
 
-    // this.slide = function(){//百度音乐幻灯片接口
-    // 	return neteaseMusicURL("baidu.ting.plaza.getFocusPic","&from=android&version=2.4.0&format=json&limit=111");
-    // }
-    //
-    // this.list = function(type,size,offset){//获取百度音乐排行榜单信息接口
-    // 	console.log(debug(arguments,"third"));
-    // 	type = (type == undefined)?1:type;//默认获取新歌榜
-    // 	size = (size == undefined)?10:size;//默认10条
-    // 	offset = (offset == undefined)?0:offset;//默认无偏移
-    // 	return neteaseMusicURL("baidu.ting.billboard.billList","&type="+type+"&size="+size+"&offset="+offset);
-    // }
 
     this.search = function(query) { //百度音乐搜索接口
         // console.log(debug(arguments,"third"));
@@ -162,7 +211,7 @@ function neteaseMusic() {
             }, function(ret, err) {
                 callback(ret, err)
             });
-    }
+        }
         // 获取相似mv
     this.simi = function(mvid, callback) {
         api.ajax({
@@ -173,32 +222,7 @@ function neteaseMusic() {
 
     }
 
-    // this.mv = function(songid, callback) {
-    //     api.ajax({
-    //         url: "http://music.baidu.com/playmv/" + songid,
-    //         dataType: 'html',
-    //         data: {
-    //             "songId": null,
-    //             "title": "\u6211\u5bb3\u6015",
-    //             "albumId": null,
-    //             "albumTitle": null,
-    //             "author": "\u859b\u4e4b\u8c26",
-    //             "authorId": "2517",
-    //             "time": null,
-    //             "publishTime": null,
-    //             "tvid": null,
-    //             "vid": null,
-    //             "resourceType": null,
-    //             "relateStatus": null,
-    //             "moduleName": "mvCover",
-    //             "id": null,
-    //             "delStatus": null
-    //         }
-    //     }, function(ret, err) {
-    //         console.log("RES:" + JSON.stringify(ret) + "|" + JSON.stringify(err));
-    //         callback(ret, err); //回调
-    //     });
-    // }
+
 }
 
 
@@ -260,8 +284,51 @@ function getinfo() {
             }
         })
     }
- 
+
 
 }
 
 //#############################################  接口方法说明  #############################################//
+
+
+
+function formatSeconds(value) {
+    var theTime = parseInt(value);
+    // 秒
+    var theTime1 = 0;
+    // 分
+    var theTime2 = 0;
+    // 小时 // alert(theTime);
+    if (theTime > 60) {
+        theTime1 = parseInt(theTime / 60);
+        theTime = parseInt(theTime % 60);
+        // alert(theTime1+"-"+theTime);
+        if (theTime1 > 60) {
+            theTime2 = parseInt(theTime1 / 60);
+            theTime1 = parseInt(theTime1 % 60);
+        }
+    }
+    var result = "" + parseInt(theTime) + "";
+    if (result < 10) {
+        var result = "0" + parseInt(theTime) + "";
+        if (10 > theTime1 > 0) {
+            result = "0" + parseInt(theTime1) + ":" + result;
+        } else {
+            result = "" + parseInt(theTime1) + ":" + result;
+        }
+        if (theTime2 > 0) {
+            result = "" + parseInt(theTime2) + ":" + result;
+        }
+        return result;
+    } else {
+        if (10 > theTime1 > 0) {
+            result = "0" + parseInt(theTime1) + ":" + result;
+        } else {
+            result = "" + parseInt(theTime1) + ":" + result;
+        }
+        if (theTime2 > 0) {
+            result = "" + parseInt(theTime2) + ":" + result;
+        }
+        return result;
+    }
+}

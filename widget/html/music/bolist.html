@@ -59,10 +59,13 @@
         api.sendEvent({
             name: 'songid',
             extra: {
-                sid: sid,
-                index: index
+                id: sid,
+                index: index,
+                songlist:data
             }
         });
+
+
         api.closeFrame();
     }
 </script>

@@ -213,7 +213,7 @@
     }
 
     apiready = function() {
-     
+
         var userinfo = $api.getStorage('userinfo')
         huandeng()
 
@@ -470,12 +470,12 @@
 
     function getTuiList() {
         getinfo.getDengLuInfo('/recommend/resource', function(data) {
-
+              // console.log(JSON.stringify(data));
             if (data.code == 200) {
                 var html = ''
                 ret = data.recommend
 
-                for (i = 0; i < 6; i++) {
+                for (i = 0; i < ret.length; i++) {
                     var Idd = ret[i].id
                     var coverImgUrl = imageCache(ret[i].picUrl + '?param=180y180')
                     var tracksName = ret[i].name

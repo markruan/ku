@@ -80,10 +80,10 @@
 	.H-theme-font-color-white1 {
 		color: white;
 	}
-	.classA {
+	.classA{
 		color: red;
 	}
-	.calssB {
+	.calssB{
 		color: white
 	}
 	</style>
@@ -95,7 +95,7 @@
 
 		<div class="" style="padding-top: 5%">
 			<!-- <img id="bg" :src='music_imgurl' alt=""  v-blind:class="play-up-bg H-center-all "> -->
-			<img id="bg" :src='music_thumb' alt="" :class="{ xuanzhuan:isPlaying }" class="play-up-bg H-center-all ">
+			<img id="bg" :src='music_imgurl' alt="" :class="{ xuanzhuan:playState }" class="play-up-bg H-center-all ">
 
 		</div>
 		<!-- 歌词 -->
@@ -165,9 +165,10 @@
 	</div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/play.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
 <script type="text/javascript" src="../../script/lyric.js"></script>
-<script type="text/javascript" src="../../script/jquery/jquery.min.js"></script>
+<script type="text/javascript"  src="../../script/jquery/jquery.min.js"></script>
 
 
 <script type="text/javascript">
@@ -175,62 +176,72 @@
 	wy = new neteaseMusic()
 	var getinfo = new getinfo()
 	apiready = function() {
-		app.music_id = api.pageParam.id
+		app.music_id = api.pageParam.sid
+			// 歌词获取测试
+			// wy.send(wy.lrc(api.pageParam.sid),function(ret,err){
+			// 	console.log("返回数据："+JSON.stringify(ret));
+			// })
 		app.music_index = api.pageParam.index
+
 		app.mlistdata = api.pageParam.mlistdata ? api.pageParam.mlistdata : $api.getStorage('listm');
 		app.slider()
+		$api.setStorage('isopen', 1);
 		app.init()
-		app.getLyric()
 		api.addEventListener({
-		    name: 'upDateSongInfo'
-		}, function(ret, err){
-		    if( ret ){
-					// console.log(JSON.stringify(ret))
-		         app.music_title=ret.value.songName
-						 app.music_artist=ret.value.artists
-						 app.music_id=ret.value.songid
-						 app.music_thumb=ret.value.music_imgurl
-						 app.duration=ret.value.duration
-
-						 app.getLyric()
-		    }else{
-		         alert( JSON.stringify( err ) );
-		    }
-		});
-
-
-		api.addEventListener({
-			name: 'per'
+			name: 'songid'
 		}, function(ret, err) {
 			if (ret) {
-				app.current = ret.value.current
-				app.isPlaying=true
-					// 歌词显示
-				getLyrics(app.lyric, app.current, function(i) {
+				// console.log(JSON.stringify(ret));
+				app.stop();
+				app.music_id = ret.value.sid
+				app.music_index = ret.value.index
+				app.mlistdata = ret.value.mlistdata ? ret.value.mlistdata : $api.getStorage('listm');
+				// 判断是否like
+				var likelist=$api.getStorage('likelist')
 
-					$api.text($api.byId("zxx-lyric"), app.lyric[i].split(']')[1]);
-				});
-				var uislider = api.require('UISlider');
-				uislider.setValue({
-					id: 1,
-					value: {
-						min: 0,
-						max: 100,
-						step: 1,
-						value: ret.value.per
-					}
-				});
+				var res=$.inArray(app.music_id, likelist);
+				if(res!=-1){
+					app.islike=true
+				}else{
+					app.islike=false
+				}
+
+				app.init()
 			} else {
-				alert(JSON.stringify(err));
+
+				// alert(JSON.stringify(err));
 			}
 		});
 
 		api.addEventListener({
-		    name: 'isNotPlaying'
-		}, function(ret, err){
-		   app.isPlaying=false
+			name: 'playNext'
+		}, function(ret, err) {
+			if (ret) {
+				app.playNext()
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
 		});
-
+		api.addEventListener({
+			name: 'pause'
+		}, function(ret, err) {
+			if (ret) {
+				app.isPlaying = false
+				app.pause()
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
+		});
+		api.addEventListener({
+			name: 'replaying'
+		}, function(ret, err) {
+			if (ret) {
+				app.isPlaying = true
+				app.replay()
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
+		});
 
 
 	}
@@ -240,14 +251,14 @@
 		data: {
 			mlistdata: '',
 			music_imgurl: '../../image/default.jpg',
-			music_thumb: '../../image/default.jpg',
+			music_thumb: '',
 			music_title: '',
 			music_artist: '',
 			music_id: '',
 			music_mp3: '',
 			music_index: '',
-			playState: true,
-			isPlaying: false,
+			playState: false,
+			isPlaying: true,
 			isRepeat: false,
 			xunHuanIcon: 'icon-danquxunhuan',
 			noXunHuanIcon: 'icon-xunhuan',
@@ -255,53 +266,113 @@
 			pauseicon: 'icon-zanting',
 			current: '00:00',
 			duration: '3:27',
-			islike: false,
+			islike:false,
 			cur: '',
 			dur: '',
 			lyric: '',
 			per: '',
-			calssA: "calssA",
-			calssB: "calssB"
+			calssA:"calssA",
+			calssB:"calssB"
 		},
 		methods: {
 			init: function() {
 				// 判断是否like
-				var likelist = $api.getStorage('likelist')
+				var likelist=$api.getStorage('likelist')
 
-				var res = $.inArray(app.music_id, likelist);
-				if (res != -1) {
-					app.islike = true
-				} else {
-					app.islike = false
+				var res=$.inArray(app.music_id, likelist);
+				if(res!=-1){
+					app.islike=true
+				}else{
+					app.islike=false
 				}
-				app.music_title = api.pageParam.songName
-				app.music_artist = api.pageParam.artists
-				app.music_thumb = api.pageParam.music_imgurl
-				app.duration = api.pageParam.duration
-				app.dur = formatSeconds(app.duration)
 
-				var datetime = Number(new Date())
-				saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime)
 
+				// uiloading();
+				// var murl = songDetail +app.music_id;
+				var murl = 'http://music.163.com/api/song/detail/?id=' + app.music_id + '&ids=[' + app.music_id + ']'
+
+				wy.send(murl, function(ret, err) {
+					//  console.log($api.jsonToStr(ret));
+					if (ret.code == 200) {
+						app.music_title = ret.songs[0].name
+						app.music_artist = ret.songs[0].artists[0].name
+						app.music_thumb = ret.songs[0].album.picUrl + '?param=80y80'
+						api.imageCache({
+							url: ret.songs[0].album.picUrl + '?param=500y500'
+						}, function(ret, err) {
+							if (ret) {
+								app.music_imgurl = ret.url
+							} else {
+								//  alert( JSON.stringify( err ) );
+							}
+						});
+
+						// getinfo.getDengLuInfo('/song/detail?ids='+app.music_id,function(data){
+						// 	console.log(JSON.stringify(data));
+						// })
+						// app.getMusic(ret.songs[0].id)
+						// app.music_mp3="http://music.163.com/song/media/outer/url?id="+app.music_id;
+						// play_c();
+						api.ajax({
+							url: musicApi + '/check/music?id=' + app.music_id,
+						}, function(ret, err) {
+							// console.log(JSON.stringify(ret));
+							if (ret.success) {
+								app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.music_id + '.mp3'
+								play_c();
+
+
+							} else {
+								api.toast({
+									msg: ret.message,
+									duration: 2000,
+									location: 'bottom'
+								});
+
+								app.playNext()
+
+							}
+						});
+
+						// app.music_mp3 = wy.mp3(app.music_id)
+						// console.log(app.music_mp3);
+
+						var datetime = Number(new Date())
+						saveMlistDB(app.music_id, app.music_title, app.music_artist, app.music_imgurl, datetime)
+						app.getLyric()
+					} else {
+						// alert( JSON.stringify( err ) );
+						api.toast({
+							msg: '网络错误',
+							duration: 2000,
+							location: 'bottom'
+						});
+
+					}
+				});
 			},
+
 			switchmusic: function() {
 				if (app.isPlaying) {
 					app.isPlaying = false;
-
+					app.pause()
 					api.sendEvent({
-						name: 'paused',
+						name: 'pause',
+
 					});
 
 				} else {
 					app.isPlaying = true;
-					api.sendEvent({
-						name: 'replay',
-					});
+					app.replay()
+
+
 				}
 			},
 			pause: function() {
 				var audioPlayer = api.require('audioPlayer');
 				audioPlayer.pause();
+
+
 			},
 			replay: function() {
 				var audioPlayer = api.require('audioPlayer');
@@ -347,15 +418,16 @@
 					fixedOn: api.frameName,
 					fixed: false
 				}, function(ret, err) {
-
+					//			alert(JSON.stringify(ret));
 					if (ret.eventType == 'end') {
 						var audioPlayer = api.require('audioPlayer');
+
 						audioPlayer.setCurrent({
-							current: ret.value
+							current: ret.value / 100 * app.duration
 						});
-						// alert(JSON.stringify(ret));
+						//					alert(JSON.stringify(ret));
 					} else {
-						// alert(JSON.stringify(err));
+						//					alert(JSON.stringify(err));
 					}
 				});
 			},
@@ -412,7 +484,12 @@
 
 			},
 			openComm: function() {
-
+				if (!$api.getStorage('userinfo')) {
+					api.toast({
+						msg: '请先登陆'
+					});
+					return
+				}
 				api.openWin({
 					name: 'comm',
 					url: '../../html/music/comm/head.html',
@@ -433,26 +510,67 @@
 				}
 			},
 			playNext: function() {
-
+				// app.stop()
+				var arr = app.mlistdata;
+				var index_m = Number(app.music_index) + 1
+				if (index_m == arr.length) {
 					api.sendEvent({
-						name: 'playNext',
-
+						name: 'songid',
+						extra: {
+							sid: arr[0].id,
+							index: 0
+						}
 					});
 
+				} else {
+					api.sendEvent({
+						name: 'songid',
+						extra: {
+							sid: arr[index_m].id,
+							index: index_m,
+							mlistdata: app.mlistdata
+						}
+					});
 
+				}
 			},
 			playBack: function() {
-				api.sendEvent({
-					name: 'playBack',
-
-				});
-
+				app.stop()
+				var arr = app.mlistdata;
+				var index_m = Number(app.music_index) - 1
+				if (index_m <= 0) {
+					api.sendEvent({
+						name: 'songid',
+						extra: {
+							sid: arr[0].id,
+							index: 0
+						}
+					});
+					api.toast({
+						msg: '第一首了',
+						duration: 2000,
+						location: 'bottom'
+					});
+				} else {
+					api.sendEvent({
+						name: 'songid',
+						extra: {
+							sid: arr[index_m].id,
+							index: index_m
+						}
+					});
+				}
 			},
 			shoucang: function() {
-
-				getinfo.getDengLuInfo('/like?like=' + app.islike + '&id=' + app.music_id, function(data) {
+				// if (!$api.getStorage('userinfo')) {
+				// 	api.toast({
+				// 		msg: '先登陆'
+				// 	});
+				// 	return
+				// }
+				getinfo.getDengLuInfo('/like?like='+app.islike+'&id=' + app.music_id, function(data) {
 					//  console.log(JSON.stringify(data));
-					app.islike = app.islike ? false : true
+					app.islike=app.islike?false:true
 					if (data.code == 200) {
 						api.toast({
 							msg: '成功',
@@ -475,6 +593,7 @@
 			getLyric: function() {
 				var lrc_url = 'http://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id=' + app.music_id
 				wy.send(lrc_url, function(ret, err) {
+
 					$api.html($api.byId('zxx-lyric'), "");
 					if (ret.lrc) {
 

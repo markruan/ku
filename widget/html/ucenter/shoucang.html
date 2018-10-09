@@ -19,23 +19,6 @@
 
 
     <% for(var i=0; i < list.length; i++){ %>
-        <!-- <div class="H-qq-item H-vertical-middle H-overflow-hidden">
-            <div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after" onclick="openPlayer(<%=list[i].id %>,<%=i %>)">
-                <div class="H-padding-vertical-both-10"><img data-echo="<%=imageCache(list[i].al.picUrl+'?param=100y100')%>" src="../../image/default.jpg" alt="" title="" class="H-display-block H-margin-horizontal-left-10 H-border-radius-circle animated fadeIn" style="width: 70px; height: 70px;"></div>
-                <div class="H-flex-item H-padding-20">
-                    <strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block"><%=list[i].name %></strong>
-                    <div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-5">
-                        <%=list[i].ar[0].name %>
-                    </div>
-                </div>
-                <div class="H-qq-menu H-vertical-middle H-position-relative H-overflow-hidden">
-                    <div class="H-font-size-16 H-padding-horizontal-both-20 H-theme-background-color1 H-display-block H-theme-font-color-white white-space-nowrap">置顶</div>
-                    <div class="H-font-size-16 H-padding-horizontal-both-20 H-theme-background-color-red H-display-block H-theme-font-color-white white-space-nowrap">删除</div>
-                </div>
-
-            </div>
-        </div> -->
-
         <div class="H-qq-item H-vertical-middle H-overflow-hidden">
             <div class="H-flexbox-horizontal H-box-sizing-border-box H-theme-background-color-white H-border-vertical-bottom-after H-clear-both H-padding-horizontal-both-10 H-padding-vertical-both-8 H-touch-active" onclick="openPlayer(<%=list[i].id %>,<%=i %>)">
                 <div style="width:50px;height:50px;"><img data-echo="<%=imageCache(list[i].al.picUrl+'?param=100y100')%>" src="../../image/default.jpg" class="H-width-100-percent H-height-100-percent H-display-block H-border-radius-circle H-border-both" /></div>
@@ -83,16 +66,16 @@
             path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json'
         }, function(ret, err) {
             if (ret.status) {
-                var data = $api.strToJson(ret.data)
-                // 存储喜欢的歌单ID,播放页面使用
-                var likeids=[]
+                  data = $api.strToJson(ret.data)
+                    // 存储喜欢的歌单ID,播放页面使用
+                var likeids = []
 
                 for (var i = 0; i < data.length; i++) {
-                  var list=[]
-                  list=data[i].id
-                  likeids[i]=list
+                    var list = []
+                    list = data[i].id
+                    likeids[i] = list
                 }
-              $api.setStorage('likelist', likeids);
+                $api.setStorage('likelist', likeids);
 
                 data1 = {
                     list: data
@@ -118,15 +101,15 @@
                 }, function(ret, err) {
                     if (ret) {
                         data = ret.playlist.tracks
-                        var likeids=[]
+                        var likeids = []
 
                         for (var i = 0; i < data.length; i++) {
-                          var list=[]
-                          list[i]=data[i].id
-                          likeids[i]=list
+                            var list = []
+                            list[i] = data[i].id
+                            likeids[i] = list
                         }
                         $api.setStorage('likelist', likeids);
-                            // 存储缓存
+                        // 存储缓存
                         api.writeFile({
                             path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json',
                             data: data
@@ -230,35 +213,14 @@
     });
 
     function openPlayer(sid, index) {
-
-        if ($api.getStorage('isopen')) {
-            api.sendEvent({
-                name: 'songid',
-                extra: {
-                    sid: sid,
-                    mlistdata: data,
-                    index: index
-                }
-            });
-        } else {
-            $api.setStorage('listopen', 4)
-            api.openWin({
-                name: 'nww',
-                url: '../../html/music/bo_head.html',
-                slidBackEnabled: false,
-                animation: {
-                    type: "movein", //动画类型（详见动画类型常量）
-                    subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                    duration: 500 //动画过渡时间，默认300毫秒
-                },
-                pageParam: {
-                    sid: sid,
-                    index: index,
-                    mlistdata: data,
-
-                }
-            });
-        }
+        api.sendEvent({
+            name: 'songid',
+            extra: {
+                id: sid,
+                songlist: data,
+                index: index
+            }
+        });
     }
 
 

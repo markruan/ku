@@ -8,7 +8,9 @@
 	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
 	<title>歌单</title>
 	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
 	<script type="text/javascript" src="../../script/vue.min.js"></script>
+
 	<style>
 		html,
 		body {
@@ -511,6 +513,9 @@
 			width: 100%;
 			text-align: center;
 		}
+		.active{
+			background-color: #ccc;
+		}
 	</style>
 </head>
 
@@ -580,12 +585,12 @@
 				</div>
 			</div>
 			<!-- 列表部分 -->
-			<div class="egret-flex-item musiclist-item" v-for="(item,index) in songdatalist">
+			<div class="egret-flex-item musiclist-item H-touch-active" v-for="(item,index) in songdatalist"  @click="openMusci(item.id,index,item.name) "  :class="{active: activeName == item.name}">
 				<div class="egret-flex-item-logo">
 					{{index+1}}
 				</div>
-				<div class="egret-flex-item-abright">
-					<div class="egret-flex-item-shelf" @click="openMusci(item.id,index)">
+				<div class="egret-flex-item-abright" >
+					<div tapmode class="egret-flex-item-shelf  " >
 						<div class="egret-flex-item-shelf01">{{item.name}}</div>
 						<div class="egret-flex-item-shelf02">{{item.ar['0'].name}}</div>
 					</div>
@@ -633,7 +638,8 @@
 			isloading: true,
 			iscollectmusic: false,
 			collectmusicIcon: './image/musiclist/musiclisttool01.png',
-			collectmusicIcon1:"./image/musiclist/musiclistcollect.png"
+			collectmusicIcon1: "./image/musiclist/musiclistcollect.png",
+			activeName:''
 		},
 		created() {
 
@@ -668,7 +674,7 @@
 			},
 			getlistdata: function() {
 				// var url='http://music.163.com/api/playlist/detail?updateTime=-1&id=' + lid,
-				var likelistids=$api.getStorage('likelistids')
+				var likelistids = $api.getStorage('likelistids')
 
 
 				var url = musicApi + '/playlist/detail?id=' + lid
@@ -677,12 +683,12 @@
 					cache: true,
 				}, function(ret, err) {
 					if (ret.code = 200) {
-            // 判断歌单是否被收藏
-						var res=$.inArray(lid, likelistids);
-						if(res!=-1){
-							app.iscollectmusic=true
-						}else{
-							app.iscollectmusic=false
+						// 判断歌单是否被收藏
+						var res = $.inArray(lid, likelistids);
+						if (res != -1) {
+							app.iscollectmusic = true
+						} else {
+							app.iscollectmusic = false
 						}
 
 						app.isloading = false
@@ -709,52 +715,62 @@
 
 				});
 			}, //
-			openMusci: function(lid, index) {
-				var mlistdata = $api.setStorage('listm')
-				$api.setStorage('listm', app.songdatalist);
+			openMusci: function(lid, index,name) {
+				this.activeName = name
+				api.sendEvent({
+					name: 'songid',
+					extra: {
+						id: lid,
+						index: index,
+						songlist:app.songdatalist
+					}
+				});
 
-				$api.setStorage('name', 1);
-				$api.setStorage('idi', index);
-				$api.setStorage('listopen', 1);
-				if (!isopen) {
-					api.openWin({
-						name: 'nww',
-						url: '../../html/music/bo_head.html',
-						// delay: 300,
-						slidBackEnabled: false,
-						animation: {
-							type: "push", //动画类型（详见动画类型常量）
-							subType: "from_bottom", //动画子类型（详见动画子类型常量）
-							duration: 400 //动画过渡时间，默认300毫秒
-						},
-						pageParam: {
-							sid: lid,
-							index: index,
-							mlistdata: mlistdata
-						}
-					});
-					setTimeout(
-						api.sendEvent({
-							name: 'songid',
-							extra: {
-								sid: lid,
-								index: index,
-								mlistdata: mlistdata
-							}
-						}), 1000)
-				} else {
-					api.openWin({
-						name: 'nww',
-					});
-					api.sendEvent({
-						name: 'songid',
-						extra: {
-							sid: lid,
-							index: index,
-							mlistdata: mlistdata
-						}
-					})
-				}
+				// var mlistdata = $api.setStorage('listm')
+				$api.setStorage('listm', app.songdatalist);
+				//
+				// $api.setStorage('name', 1);
+				// $api.setStorage('idi', index);
+				// $api.setStorage('listopen', 1);
+				// if (!isopen) {
+				// 	api.openWin({
+				// 		name: 'nww',
+				// 		url: '../../html/music/bo_head.html',
+				// 		// delay: 300,
+				// 		slidBackEnabled: false,
+				// 		animation: {
+				// 			type: "push", //动画类型（详见动画类型常量）
+				// 			subType: "from_bottom", //动画子类型（详见动画子类型常量）
+				// 			duration: 400 //动画过渡时间，默认300毫秒
+				// 		},
+				// 		pageParam: {
+				// 			sid: lid,
+				// 			index: index,
+				// 			mlistdata: mlistdata
+				// 		}
+				// 	});
+				// 	setTimeout(
+				// 		api.sendEvent({
+				// 			name: 'songid',
+				// 			extra: {
+				// 				sid: lid,
+				// 				index: index,
+				// 				mlistdata: mlistdata
+				// 			}
+				// 		}), 1000)
+				// } else {
+				// 	api.openWin({
+				// 		name: 'nww',
+				// 	});
+				// 	api.sendEvent({
+				// 		name: 'songid',
+				// 		extra: {
+				// 			sid: lid,
+				// 			index: index,
+				// 			mlistdata: mlistdata
+				// 		}
+				// 	})
+				// }
 			},
 			openMusiclistshare: function() {
 				var wx = api.require('wx');

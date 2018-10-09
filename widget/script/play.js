@@ -66,10 +66,9 @@ function play_c() {
 
                 var percent = (app.cur / app.duration) * 100;
                 app.per = Math.round(percent);
-                // app.duration = formatSeconds(duration);
+
                 app.current = formatSeconds(app.cur);
-                // app.current=cur
-                // console.log(app.per+'--'+app.current+'--'+app.dur);
+
 
 
                 // 歌词显示
