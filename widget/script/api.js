@@ -6,17 +6,17 @@
 function saveMlistDB(sid, name, artist, pic, date) {
     var db = api.require('db');
     db.openDatabase({
-        name: 'test'
+        name: 'history1'
     }, function(ret, err) {
         if (ret.status) {
             db.executeSql({
-                name: 'test',
-                sql: 'CREATE TABLE IF NOT EXISTS mlist(mlist_id INT  AUTO_INCREMENT, mlist_sid INT(25),mlist_name varchar(255), mlist_artist varchar(255), mlist_pic varchar(255),mlist_date int(23),PRIMARY KEY ( mlist_id ))'
+                name: 'history1',
+                sql: 'CREATE TABLE IF NOT EXISTS mlist(mlist_id INT AUTO_INCREMENT, sid INT(25),mlist_name varchar(255), mlist_artist varchar(255), mlist_pic varchar(255),mlist_date int(23),PRIMARY KEY ( mlist_id ))'
             }, function(ret, err) {
                 if (ret.status) {
                     db.executeSql({
-                        name: 'test',
-                        sql: "INSERT INTO mlist (mlist_sid,mlist_name,mlist_artist,mlist_pic,mlist_date) VALUES ('" + sid + "', '" + name + "', '" + artist + "', '" + pic + "','" + date + "')",
+                        name: 'history1',
+                        sql: "INSERT INTO mlist (mlist_id,mlist_name,mlist_artist,mlist_pic,mlist_date) VALUES ('" + sid + "', '" + name + "', '" + artist + "', '" + pic + "','" + date + "')",
                     }, function(ret, err) {
                         if (ret.status) {
                             //  alert(JSON.stringify(ret));
@@ -278,7 +278,7 @@ function imageCache(url) { //图片缓存方法
 }
 
 (function(window) {
-    
+
     hostUrl = 'http://api.iqimeng.com/ku/api';
     musicApi = 'http://47.99.116.131:3000',
     //  musicApi1 = 'http://iqimeng.leanapp.cn',

@@ -67,10 +67,10 @@
 		uiloading()
 		var audioPlayer = api.require('audioPlayer');
 		audioPlayer.scanAudioLibrary(function(ret) {
-
-			var data = {
+    	var data = {
 				list: ret.audios
 			};
+			console.log(JSON.stringify(data));
 			var render = H.tppl(H.D("#tppl").innerHTML);
 			H.D(".result").innerHTML = render(data);
 			//						懒加载
@@ -95,13 +95,10 @@
 		api.showProgress({});
 
 		var audioPlayer = api.require('audioPlayer');
-
-		console.log(JSON.stringify(button));
-		audioPlayer.initPlayer({
+  	audioPlayer.initPlayer({
 			path: mp3
 		}, function(ret, err) {
-			console.log(JSON.stringify(mp3));
-			if (ret.status) {
+   	if (ret.status) {
 
 				api.hideProgress();
 				api.toast({

@@ -28,6 +28,7 @@
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/play.js"></script>
 <script type="text/javascript">
+    var data
     H.ready(function() {
         initpage();
 
@@ -47,21 +48,25 @@
         // });
 
         db.openDatabase({
-            name: 'test'
+            name: 'history1'
         }, function(ret, err) {
             if (ret.status) {
                 db.selectSql({
-                    name: 'test',
-                    sql: 'SELECT * FROM mlist group by mlist_sid order by mlist_date desc'
+                    name: 'history1',
+                    sql: 'SELECT * FROM mlist group by mlist_id order by mlist_date desc'
                 }, function(ret, err) {
-                    // console.log(JSON.stringify(ret));
+
                   var html = ''
                     if (ret.status) {
+                        data = ret.data
+                        for (var i = 0; i < data.length; i++) {
+                           data[i].id=data[i].mlist_id
+                        }
+                      //  console.log(JSON.stringify(ret));
 
-                        var data = ret.data
                         if (ret.data && ret.data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
-                                html += '<div onclick="opensong(' + data[i].mlist_sid + ',' + i +
+                                html += '<div onclick="opensong(' + data[i].mlist_id + ',' + i +
                                     ')"   class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">';
                                 html += '<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">' + data[i].mlist_name + '-' + data[i].mlist_artist + '</div>';
                                 html += '<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span></div>';
@@ -86,28 +91,14 @@
     }
 
     function opensong(sid, index) {
-        if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
-            // $api.setStorage('listopen', 2);
-            api.openWin({
-                name: 'nww',
-                url: '../../html/music/bo_head.html',
-                slidBackEnabled: false,
-                animation: {
-                    type: "movein", //动画类型（详见动画类型常量）
-                    subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                    duration: 500 //动画过渡时间，默认300毫秒
-                },
-                pageParam: {
-                    sid: sid,
-                    index: index,
-                }
-            });
-        }
+
         api.sendEvent({
             name: 'songid',
             extra: {
-                sid: sid,
-                index: index
+                id: sid,
+                index: index,
+                songlist:data
+
             }
         });
         api.closeFrame();

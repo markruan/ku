@@ -94,8 +94,11 @@ function neteaseMusic() {
         return 'http://music.163.com/song/media/outer/url?id=' + id + '.mp3'
     }
     this.getMusicInfo = function(id, callback) {
+      var url1="http://music.163.com/api/song/detail/?id="
+      var url2="https://api.imjad.cn/cloudmusic/?type=detail&id="
+
         api.ajax({
-            url: 'https://api.imjad.cn/cloudmusic/?type=detail&id=' + id
+            url: url1 + id+'&ids=['+id+']'
 
         }, function(ret, err) {
             callback(ret, err);

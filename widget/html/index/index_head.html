@@ -177,7 +177,7 @@
                 <span class="menu" tapmode="active" @click="getMlistDB()"> </span>
                 <div id="str6" class="radio" tapmode="active">
                     <!--onclick="openRadioDetail()"openPlayer()-->
-                    <div tapmode @click="openPlayer()" class="inner" id="title" style="overflow-x:hidden;white-space:nowrap;width: 200px;">
+                    <div tapmode @click="openPlayer()" class="inner" id="title" style="overflow-x:hidden;white-space:nowrap;width: 250px;">
                         {{songName}}-{{artists}}
                     </div>
                 </div>
@@ -209,6 +209,7 @@
                 // alert(JSON.stringify(err));
             }
         });
+        // app.initmlist()  初始化播放BAR,还没弄好
 
         // 监听耳机拔下事件
         var phoneListener = api.require('phoneListener');
@@ -376,14 +377,19 @@
                         app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
                         music.play()
                         music.getMusicInfo(app.songid, function(ret, err) {
+
+                            // console.log(JSON.stringify(ret));
                             var songDetail = ret.songs[0]
                             app.songName = songDetail.name
-                            app.artists = songDetail.ar[0].name
+                            app.artists = songDetail.ar ? songDetail.ar[0].name : songDetail.artists[0].name
                             api.imageCache({
-                                url: songDetail.al.picUrl + '?param=300y300'
+                                url: songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl + '?param=300y300'
                             }, function(ret, err) {
                                 app.music_imgurl = ret.url;
                                 app.audioCover()
+                                    // 存播放记录
+                                var datetime = Number(new Date())
+                                saveMlistDB(app.songid, app.songName, app.artists, app.music_imgurl, datetime)
                             });
                         })
                     } else {
@@ -489,6 +495,33 @@
 
                 }
             },
+            initmlist() {初始化播放BAR,还没弄好
+                var db = api.require('db');
+
+                db.openDatabase({
+                    name: 'history1'
+                }, function(ret, err) {
+                    if (ret.status) {
+                        db.selectSql({
+                            name: 'history1',
+                            sql: 'SELECT * FROM mlist group by mlist_id order by mlist_date desc'
+                        }, function(ret, err) {
+                          if (ret.status) {
+
+
+
+                            } else {
+
+                                // $api.html($api.byId('main'), '<span class="H-center-all">暂无数据</span>');
+                                // alert(JSON.stringify(err));
+                            }
+                        });
+
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            },
             audioCover: function() {
                 audioCover = api.require('audioCover');
                 var msg = {
@@ -519,6 +552,7 @@
                     } else {}
                 });
             },
+
             openPlayer() {
                 if (this.songName != '新感官音乐世界') {
                     api.openWin({
@@ -542,8 +576,7 @@
                         }
                     });
                 }
-            }
-
+            },
         }
     })
 </script>

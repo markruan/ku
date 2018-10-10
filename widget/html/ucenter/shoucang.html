@@ -213,6 +213,8 @@
     });
 
     function openPlayer(sid, index) {
+       $api.setStorage('listm', data);
+
         api.sendEvent({
             name: 'songid',
             extra: {
