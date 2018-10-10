@@ -62,6 +62,7 @@
 		<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
 			每日推荐
 		</div>
+		<span id="shan" onclick="openPlayer()" class="H-icon H-position-relative H-display-inline-block H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100 " style="float:right"></span>
 	</header>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
@@ -69,15 +70,21 @@
 <script type="text/javascript">
 	function goback1() {
 
-			api.openWin({
-				name: 'slidLayout',
-				animation: {
-					type: "push", //动画类型（详见动画类型常量）
-					subType: "from_left", //动画子类型（详见动画子类型常量）
-					duration: 200 //动画过渡时间，默认300毫秒
-				},
-			})
+		api.openWin({
+			name: 'slidLayout',
+			animation: {
+				type: "push", //动画类型（详见动画类型常量）
+				subType: "from_left", //动画子类型（详见动画子类型常量）
+				duration: 200 //动画过渡时间，默认300毫秒
+			},
+		})
+	}
 
+	function openPlayer() {
+		api.execScript({
+			name: 'index',
+			script: 'app.openPlayer();'
+		});
 
 	}
 	var lid
@@ -94,6 +101,17 @@
 			name: 'keyback'
 		}, function(ret, err) {
 			goback1()
+		});
+		api.addEventListener({
+			name: "per"
+		}, function(ret) {
+			if (ret) {
+				$api.html($api.byId('shan'), '<img src="../../image/loading.svg" style="height:30px" alt="">');
+
+			} else {
+				$api.html($api.byId('shan'), '');
+			}
+
 		});
 	}
 

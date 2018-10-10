@@ -21,6 +21,8 @@
             H-vertical-middle "></i><label class="H-display-block H-vertical-middle H-font-size-15 ">返回</label></span>
         <div id="title" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
         </div>
+        <span id="shan" onclick="openPlayer()" class="H-icon H-position-relative H-display-inline-block H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100 " style="float:right"></span>
+    
     </header>
     <script src="../../script/H.js " type="text/javascript "></script>
     <script src="../../script/api.js " type="text/javascript "></script>
@@ -32,7 +34,25 @@
         $api.text($api.byId('title'), title);
 
         H.openFrameNavOrFoot(id, id + '.html', "#header");
+        api.addEventListener({
+    			name: "per"
+    		}, function(ret) {
+    			if (ret) {
+    				$api.html($api.byId('shan'), '<img src="../../image/loading.svg" style="height:30px" alt="">');
+
+    			} else {
+    				$api.html($api.byId('shan'), '');
+    			}
+
+    		});
     });
+    function openPlayer() {
+  		api.execScript({
+  			name: 'index',
+  			script: 'app.openPlayer();'
+  		});
+
+  	}
     </script>
 </body>
 
