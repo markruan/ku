@@ -21,8 +21,8 @@
         </div>
         <ul v-if='playlists.length>0'>
             <div v-for='item in playlists' class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-5  H-margin-vertical-bottom-10" tapmode  @click="openMusicList(item.id)">
-                <img v-bind:src=item.coverImgUrl+'?param=300y300' class=" animated fadeIn H-width-100-percent H-display-block  ">
-                <div class=" H-text-align-center  H-padding-vertical-top-5 H-text-show-row-1" style="font-size:10px">{{item.name}}</div>
+                <img v-bind:src=item.coverImgUrl+'?param=300y300' class=" animated fadeIn H-width-100-percent H-display-block H-paper-2 ">
+                <div class=" H-text-align-center  H-padding-vertical-top-5 H-text-show-row-2" style="font-size:10px;height:27px;">{{item.name}}</div>
             </div>
    </ul>
     </div>

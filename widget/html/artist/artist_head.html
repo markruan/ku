@@ -37,26 +37,7 @@
             api.addEventListener({
                 name: 'keyback'
             }, function(ret, err) {
-                if (api.pageParam.from == 'search') {
-
-
-                    api.openWin({
-                        name: 'slidLayout',
-                    });
-                    setTimeout(api.closeWin({name:'artist_head'}), 600)
-
-
-
-                } else {
-                    api.openWin({
-                        name: 'musiclist',
-                        animation: {
-                            type: "push", //动画类型（详见动画类型常量）
-                            subType: "from_left", //动画子类型（详见动画子类型常量）
-                            duration: 300
-                        }
-                    });
-                }
+                H.closeWin();
 
             });
 
