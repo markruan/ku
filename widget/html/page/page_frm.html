@@ -40,7 +40,7 @@
 
     <% for(var i=1; i <7; i++){ %>
         <div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-8  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(<%=playlist[i].id%>)">
-            <img src="<%=imageCache(playlist[i].coverImgUrl+'?param=200y200')%>" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 3px">
+            <img src="<%=imageCache(playlist[i].coverImgUrl+'?param=200y200')%>" class=" animated fadeIn H-width-100-percent H-display-block H-paper-1" style="border-radius: 3px">
             <div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5 H-text-show-row-1">
                 <%=playlist[i].name%>
             </div>
@@ -56,19 +56,19 @@
             <div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-top-12 H-padding-vertical-both-10 H-border-vertical-bottom-after">
                 <!-- <div class="H-flex-item" tapmode onclick="openjingxuanlist('流行','liuxing')"> -->
                 <div class="H-flex-item" tapmode onclick="openDaily()">
-                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-delegate H-font-size-22 H-theme-font-color-white"></i></span>
+                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto H-paper-2" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-delegate H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">每日推荐  </label>
                 </div>
                 <div class="H-flex-item" tapmode onclick="openmylist('ismylsit',true,1)">
-                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
+                    <span class="H-icon H-center-all H-theme-background-color4 H-border-radius-15 H-margin-horizontal-auto H-paper-2" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music1 H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">我的歌单</label>
                 </div>
                 <div class="H-flex-item" tapmode onclick="openmylist('ismylsit',true,2)">
-                    <span class="H-icon H-center-all H-theme-background-color5 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music H-font-size-22 H-theme-font-color-white"></i></span>
+                    <span class="H-icon H-center-all H-theme-background-color5 H-border-radius-15 H-margin-horizontal-auto H-paper-2" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-music H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">收藏</label>
                 </div>
                 <div class="H-flex-item" tapmode onclick="openWin('shoucang', '我喜欢的')">
-                    <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
+                    <span class="H-icon H-center-all H-theme-background-color6 H-border-radius-15 H-margin-horizontal-auto H-paper-2" style="height: 42px; width: 42px; "><i class="H-iconfont H-icon-like H-font-size-22 H-theme-font-color-white"></i></span>
                     <label class="H-display-block H-font-size-13 H-margin-vertical-top-5">I Like</label>
                 </div>
             </div>
@@ -162,7 +162,7 @@
             var coverImgUrl = imageCache(data[i].pic)
             var tracksName = data[i].name
             html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + lid + ')">';
-            html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:120px;"    >';
+            html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-paper-2 " style="border-radius: 5px;height:120px;"    >';
             html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
         }
         var tui = $api.byId('tui');
@@ -255,7 +255,7 @@
                     var vid = data[i].id;
                     var coverImgUrl = imageCache(data[i].cover + '?param=320y180')
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
-                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:110px;"    >';
+                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  H-paper-3" style="border-radius: 5px;height:110px;"    >';
                     html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
 
                     html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-2">' + data[i].artistName.substring(0, 18) + '</div></div>';
@@ -294,7 +294,7 @@
                     var coverImgUrl = imageCache(data[i].cover + '?param=320y180')
                         // var tracksName = data[i].name + "-" + data[i].artists[0].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openMv(' + vid + ')">';
-                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 5px;height:110px;"    >';
+                    html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  H-paper-3 " style="border-radius: 5px;height:110px;"    >';
                     html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div>';
 
                     html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-2">' + data[i].artistName.substring(0, 18) + '</div></div>';
@@ -480,7 +480,7 @@
                     var coverImgUrl = imageCache(ret[i].picUrl + '?param=180y180')
                     var tracksName = ret[i].name
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-8  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
-                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  " style="border-radius: 3px"    >';
+                    html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-paper-1 " style="border-radius: 3px"    >';
 
                     html += '<div class="H-text-align-center H-font-size-10 H-padding-vertical-top-5 H-text-show-row-1">' + tracksName.substring(0, 16) + '</div></div>';
 
