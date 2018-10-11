@@ -282,6 +282,30 @@
                 //  alert( JSON.stringify( err ) );
             }
         });
+        // 断网了
+        api.addEventListener({
+            name: 'offline'
+        }, function(ret, err) {
+            api.toast({
+                msg: '掉线了',
+                duration: 2000,
+                location: 'bottom'
+            });
+
+            app.pause()
+        });
+
+        // 已连接到网络
+        api.addEventListener({
+            name: 'online'
+        }, function(ret, err) {
+          api.toast({
+              msg: '连上网络了',
+              duration: 2000,
+              location: 'bottom'
+          });
+            app.play()
+        });
 
         H.openFrameGroupNavOrFoot(function(ret, err) {
             app.setStyle(ret.index);
@@ -349,7 +373,7 @@
             per: '',
             current: '',
             music_imgurl: '',
-            music_thumb:'',
+            music_thumb: '',
             duration: '',
             songdatalist: '',
             isfirstopen: ''
@@ -367,8 +391,8 @@
                         songid: app.songid,
                         music_imgurl: app.music_imgurl,
                         duration: app.duration,
-                        music_mp3:app.music_mp3,
-                        music_thumb:app.music_thumb
+                        music_mp3: app.music_mp3,
+                        music_thumb: app.music_thumb
                     }
                 });;　　　　　　　　
             }
@@ -377,7 +401,7 @@
             init: function() {
                 app.isfirstopen = true
                 music.isPlay(app.songid, function(ret, err) {
-
+                    console.log(JSON.stringify(ret) + '-------------' + JSON.stringify(err));
                     if (ret.success) {
                         app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
                         music.play()
@@ -386,7 +410,7 @@
                             // console.log(JSON.stringify(ret));
                             var songDetail = ret.songs[0]
                             app.songName = songDetail.name
-                            app.music_thumb=songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl
+                            app.music_thumb = songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl
                             app.artists = songDetail.ar ? songDetail.ar[0].name : songDetail.artists[0].name
                             api.imageCache({
                                 url: songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl + '?param=300y300'
@@ -485,10 +509,10 @@
             },
             playNext: function() {
                 // console.log(app.index+1);
-                var isRepeat = $api.getStorage('isRepeat')&&$api.getStorage('isRepeat')==1 ? true : false
+                var isRepeat = $api.getStorage('isRepeat') && $api.getStorage('isRepeat') == 1 ? true : false
                 if (isRepeat) {
-                   app.pause()
-                   app.init()
+                    app.pause()
+                    app.init()
                 } else {
 
 
@@ -580,7 +604,7 @@
                 });
             },
 
-            openPlayer() { 
+            openPlayer() {
                 if (this.songName != '新感官音乐世界') {
                     api.openWin({
                         name: 'nww',
@@ -600,7 +624,7 @@
                             music_imgurl: this.music_imgurl,
                             index: this.index,
                             duration: this.duration,
-                            music_thumb:this.music_thumb
+                            music_thumb: this.music_thumb
 
                         }
                     });

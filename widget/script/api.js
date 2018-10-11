@@ -37,45 +37,45 @@ function saveMlistDB(sid, name, artist, pic, date) {
 
 }
 
-function share(title, art, img, sid) {
-    var data = {}
-    data.title = title;
-    data.art = art;
-    data.img = img;
-
-    api.ajax({
-        url: 'https://api.imjad.cn/cloudmusic/?id=' + sid,
-
-    }, function(ret, err) {
-        if (ret.code = 200) {
-            data.mp3 = ret.data[0].url
-            api.openFrame({
-                name: 'sing_share',
-                url: '../../html/single_share_body.html',
-                bgColor: 'rgba(0,0,0,0.1)',
-                rect: {
-                    x: 0,
-                    y: 0,
-                    w: api.winWidth,
-                    h: api.winHeight
-                },
-                pageParam: {
-                    data: data
-                },
-            });
-
-        } else {
-            api.toast({
-                msg: '数据错误',
-                duration: 2000,
-                location: 'bottom'
-            });
-
-        }
-    });
-
-
-}
+// function share(title, art, img, sid) {
+//     var data = {}
+//     data.title = title;
+//     data.art = art;
+//     data.img = img;
+//
+//     api.ajax({
+//         url: 'https://api.imjad.cn/cloudmusic/?id=' + sid,
+//
+//     }, function(ret, err) {
+//         if (ret.code = 200) {
+//             data.mp3 = ret.data[0].url
+//             api.openFrame({
+//                 name: 'sing_share',
+//                 url: '../../html/single_share_body.html',
+//                 bgColor: 'rgba(0,0,0,0.1)',
+//                 rect: {
+//                     x: 0,
+//                     y: 0,
+//                     w: api.winWidth,
+//                     h: api.winHeight
+//                 },
+//                 pageParam: {
+//                     data: data
+//                 },
+//             });
+//
+//         } else {
+//             api.toast({
+//                 msg: '数据错误',
+//                 duration: 2000,
+//                 location: 'bottom'
+//             });
+//
+//         }
+//     });
+//
+//
+// }
 
 function login_winxin() {
     var wx = api.require('wx');
