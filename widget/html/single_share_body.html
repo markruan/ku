@@ -1,125 +1,137 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>Hui</title>
-		<link href="../css/Hui.css" rel="stylesheet" type="text/css" />
-		<style type="text/css">
-			html, body {
-				background: rgba(255, 255, 255, 0);
-			}
-		</style>
-	</head>
-	<body class="H-flexbox-vertical">
-		<div class="space H-flex-item"></div>
-		<div class="share-menu H-animate-scale-big">
-			<div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-both-10">
-				<div class="H-flex-item" onclick="shareWx('session')">
-					<span class="H-icon H-center-all H-theme-background-color1 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white"></i></span>
-					<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">分享好友</label>
-				</div>
-				<div class="H-flex-item"  onclick="shareWx('favorite')">
-					<span class="H-icon H-center-all H-theme-background-color2 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white"></i></span>
-					<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">收藏</label>
-				</div>
-				<div class="H-flex-item" onclick="shareWx('timeline')">
-					<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-friends H-font-size-22 H-theme-font-color-white"></i></span>
-					<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">朋友圈</label>
-				</div>
-				<div class="H-flex-item" onclick="api.closeFrame();">
-					<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height:40px; width: 40px;"><i class="H-iconfont H-icon-close H-font-size-22 H-theme-font-color-white"></i></span>
-					<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">取消</label>
-				</div>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>Hui</title>
+	<link href="../css/Hui.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		html,
+		body {
+			background: rgba(255, 255, 255, 0);
+		}
+	</style>
+</head>
+
+<body class="H-flexbox-vertical">
+	<div class="space H-flex-item"></div>
+	<div class="share-menu H-animate-scale-big">
+		<div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-both-10">
+			<div class="H-flex-item" onclick="shareWx('session')">
+				<span class="H-icon H-center-all H-theme-background-color1 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white"></i></span>
+				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">分享好友</label>
 			</div>
-			<!--<div tapmode="" onclick="closeDropMenu();" class="H-theme-background-color-eee H-padding-12 H-font-size-16 H-center-all">取消分享</div>-->
+			<div class="H-flex-item" onclick="shareWx('favorite')">
+				<span class="H-icon H-center-all H-theme-background-color2 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-weixin H-font-size-22 H-theme-font-color-white"></i></span>
+				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">收藏</label>
+			</div>
+			<div class="H-flex-item" onclick="shareWx('timeline')">
+				<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height: 40px; width: 40px; "><i class="H-iconfont H-icon-friends H-font-size-22 H-theme-font-color-white"></i></span>
+				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">朋友圈</label>
+			</div>
+			<div class="H-flex-item" onclick="api.closeFrame();">
+				<span class="H-icon H-center-all H-theme-background-color5 H-border-radius-circle H-margin-horizontal-auto" style="height:40px; width: 40px;"><i class="H-iconfont H-icon-close H-font-size-22 H-theme-font-color-white"></i></span>
+				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">取消</label>
+			</div>
 		</div>
-		<script src="../script/H.js" type="text/javascript"></script>
-		<script src="../script/api.js" type="text/javascript"></script>
-		<script type="text/javascript">
+		<!--<div tapmode="" onclick="closeDropMenu();" class="H-theme-background-color-eee H-padding-12 H-font-size-16 H-center-all">取消分享</div>-->
+	</div>
+	<script src="../script/H.js" type="text/javascript"></script>
+	<script src="../script/api.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		apiready = function() {
 
-	apiready = function() {
+		}
 
-	}
-
-			// function closeDropMenu() {
-			// 	H.addClass(H.D(".share-menu"), "H-animate-scale-small");
-			// 	setTimeout(function() {
-			// 		//					H.closeFrame();
-			// 		api.setFrameAttr({
-			// 			name : api.frameName,
-			// 			hidden : true
-			// 		});
-			// 	}, 200);
-			// }
+		// function closeDropMenu() {
+		// 	H.addClass(H.D(".share-menu"), "H-animate-scale-small");
+		// 	setTimeout(function() {
+		// 		//					H.closeFrame();
+		// 		api.setFrameAttr({
+		// 			name : api.frameName,
+		// 			hidden : true
+		// 		});
+		// 	}, 200);
+		// }
 
 
-			document.body.addEventListener('touchstart', function(e) {
-				var evt = event || window.event;
-				var src = evt.target || evt.srcElement;
-				if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
-					api.closeFrame();
+		document.body.addEventListener('touchstart', function(e) {
+			var evt = event || window.event;
+			var src = evt.target || evt.srcElement;
+			if (src.tagName.toLowerCase() == "div" && src.classList.contains("space")) {
+				api.closeFrame();
 
-				}
-			});
-			function shareWx(cha) {
-				var img = api.pageParam.img
-        var data = api.pageParam.data
-				if (!data.mp3) {
-					api.imageCache({
-						url : img
+			}
+		});
+
+		function shareWx(cha) {
+			var img = api.pageParam.data.img
+			var data = api.pageParam.data
+				// console.log(JSON.stringify(api.pageParam));
+			if (!data.mp3) {
+				api.imageCache({
+					url: img
+				}, function(ret, err) {
+					var url = ret.url;
+					var wx = api.require('wx');
+					wx.shareImage({
+						apiKey: '',
+						scene: cha,
+						thumb: url,
+						contentUrl: url
 					}, function(ret, err) {
-						var url = ret.url;
-						var wx = api.require('wx');
-						wx.shareImage({
-							apiKey : '',
-							scene : cha,
-							thumb : url,
-							contentUrl : url
-						}, function(ret, err) {
-							if (ret.status) {
-								api.toast({
-									msg : '分享成功'
-								});
-							} else {
-								api.toast({
-									msg : '取消分享'
-								});
-							}
-						});
+						if (ret.status) {
+							api.toast({
+								msg: '分享成功'
+							});
+						} else {
+							api.toast({
+								msg: '取消分享'
+							});
+						}
 					});
-				} else {
-					api.imageCache({
-						url : data.img+'.jpg'
-					}, function(ret, err) {
-						var url = ret.url;
+				});
+			} else {
+				api.download({
+					url: img + '?param=100y100',
+					// savePath: 'fs://fenxiang.jpg',
+					// report: true,
+					cache: true,
+					allowResume: true
+				}, function(ret, err) {
+					if (ret.state == 1) {
+						var url = ret.savePath;
 						var wx = api.require('wx');
 						wx.shareMusic({
-							apiKey : '',
-							scene : cha,
-							title : data.title,
-							description : data.art,
-							thumb : url,
-							contentUrl : 'http://sfun.me/music/?id='+data.id,
-							musicDataUrl : data.mp3
+							apiKey: '',
+							scene: cha,
+							title: data.title,
+							description: data.art,
+							thumb: url,
+							contentUrl: 'http://sfun.me/music/?id=' + data.id,
+							musicDataUrl: data.mp3
 						}, function(ret, err) {
+							console.log(JSON.stringify(err));
+							console.log(JSON.stringify(ret));
 							if (ret.status) {
 								api.toast({
-									msg : '分享成功'
+									msg: '分享成功'
 								});
 								closeDropMenu();
 							} else {
 								api.toast({
-									msg : '取消分享'
+									msg: '取消分享'
 								});
-							api.closeFrame();
-
+								api.closeFrame();
 							}
 						});
-					});
-				}
+					}
+				});
 			}
-		</script>
-	</body>
+		}
+	</script>
+</body>
+
 </html>

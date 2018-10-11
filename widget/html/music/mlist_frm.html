@@ -513,7 +513,8 @@
 			width: 100%;
 			text-align: center;
 		}
-		.active{
+
+		.active {
 			color: red;
 		}
 	</style>
@@ -585,12 +586,12 @@
 				</div>
 			</div>
 			<!-- 列表部分 -->
-			<div class="egret-flex-item musiclist-item H-touch-active" v-for="(item,index) in songdatalist"  @click="openMusci(item.id,index,item.name) "  :class="{active: activeName == item.name}">
+			<div class="egret-flex-item musiclist-item H-touch-active" v-for="(item,index) in songdatalist" @click="openMusci(item.id,index,item.name) " :class="{active: activeName == item.name}">
 				<div class="egret-flex-item-logo">
 					{{index+1}}
 				</div>
-				<div class="egret-flex-item-abright" >
-					<div tapmode class="egret-flex-item-shelf  " >
+				<div class="egret-flex-item-abright">
+					<div tapmode class="egret-flex-item-shelf  ">
 						<div class="egret-flex-item-shelf01">{{item.name}}</div>
 						<div class="egret-flex-item-shelf02">{{item.ar['0'].name}}</div>
 					</div>
@@ -639,7 +640,7 @@
 			iscollectmusic: false,
 			collectmusicIcon: './image/musiclist/musiclisttool01.png',
 			collectmusicIcon1: "./image/musiclist/musiclistcollect.png",
-			activeName:''
+			activeName: ''
 		},
 		created() {
 
@@ -660,6 +661,7 @@
 							// console.log(JSON.stringify(cachedata));
 						app.coverImgUrl = imageCache(cachedata.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(cachedata.creator.avatarUrl + '?param=40y40')
+						app.min_coverImgUrl =cachedata.coverImgUrl + '?param=100y100'
 						app.listdata = cachedata;
 						app.songdatalist = cachedata.tracks
 						app.songlistcount = cachedata.tracks.length
@@ -694,7 +696,7 @@
 						app.isloading = false
 						app.coverImgUrl = imageCache(ret.playlist.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(ret.playlist.creator.avatarUrl + '?param=40y40')
-						app.min_coverImgUrl = imageCache(ret.playlist.coverImgUrl + '?param=40y40')
+						app.min_coverImgUrl =ret.playlist.coverImgUrl + '?param=40y40'
 						app.nickname = ret.playlist.creator.nickname
 						app.songlistcount = ret.playlist.tracks.length
 						app.listdata = ret.playlist
@@ -715,14 +717,14 @@
 
 				});
 			}, //
-			openMusci: function(lid, index,name) {
+			openMusci: function(lid, index, name) {
 				this.activeName = name
 				api.sendEvent({
 					name: 'songid',
 					extra: {
 						id: lid,
 						index: index,
-						songlist:app.songdatalist
+						songlist: app.songdatalist
 					}
 				});
 
@@ -773,31 +775,36 @@
 				// }
 			},
 			openMusiclistshare: function() {
-				var wx = api.require('wx');
 
-				//分享页面
-				wx.shareWebpage({
-					apiKey: '',
-					scene: 'timeline',
-					title: app.listdata.name,
-					description: '聆听音乐 感悟人生',
-					thumb: app.min_coverImgUrl + '.jpg',
-					contentUrl: 'http://sfun.me/#/playListDetail/' + api.pageParam.lid
+				var wx = api.require('wx');
+				api.download({
+					url: app.min_coverImgUrl,
+					cache: true,
+					allowResume: true
 				}, function(ret, err) {
-					if (ret.status) {
-						api.toast({
-							msg: '分享成功'
-						});
-					} else {
-						api.toast({
-							msg: '取消分享'
+					if (ret.state == 1) {
+						//分享页面
+						wx.shareWebpage({
+							apiKey: '',
+							scene: 'timeline',
+							title: app.listdata.name,
+							description: '聆听音乐 感悟人生',
+							thumb: ret.savePath,
+							contentUrl: 'http://sfun.me/#/playListDetail/' + api.pageParam.lid
+						}, function(ret, err) {
+							if (ret.status) {
+								api.toast({
+									msg: '分享成功'
+								});
+							} else {
+								api.toast({
+									msg: '取消分享'
+								});
+							}
 						});
 					}
-
-
 				});
-
-			}, //结束
+ 	}, //结束
 			openCom: function() {
 				if (!$api.getStorage('userinfo')) {
 					api.toast({

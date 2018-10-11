@@ -95,7 +95,7 @@
 
 		<div class="" style="padding-top: 5%">
 			<!-- <img id="bg" :src='music_imgurl' alt=""  v-blind:class="play-up-bg H-center-all "> -->
-			<img id="bg" :src='music_thumb' alt="" :class="{ xuanzhuan:isPlaying }" class="play-up-bg H-center-all ">
+			<img id="bg" :src='music_imgurl' alt="" :class="{ xuanzhuan:isPlaying }" class="play-up-bg H-center-all ">
 
 		</div>
 		<!-- 歌词 -->
@@ -189,8 +189,10 @@
 		         app.music_title=ret.value.songName
 						 app.music_artist=ret.value.artists
 						 app.music_id=ret.value.songid
-						 app.music_thumb=ret.value.music_imgurl
+						 app.music_imgurl=ret.value.music_imgurl
 						 app.duration=ret.value.duration
+						 app.music_mp3=ret.value.mp3
+						 app.music_thumb=ret.value.thumb
 
 						 app.getLyric()
 		    }else{
@@ -265,8 +267,8 @@
 			calssB: "calssB"
 		},
 		watch: {
-				isRepeat(curVal, oldVal) {
-						console.log(curVal, oldVal);　　　　　　　　
+				music_mp3(curVal, oldVal) {
+						// console.log(curVal, oldVal);　　　　　　　　
 				}
 
 		},
@@ -283,9 +285,12 @@
 				}
 				app.music_title = api.pageParam.songName
 				app.music_artist = api.pageParam.artists
-				app.music_thumb = api.pageParam.music_imgurl
+				app.music_imgurl = api.pageParam.music_imgurl
+				app.music_thumb=api.pageParam.music_thumb
 				app.duration = api.pageParam.duration
 				app.dur = formatSeconds(app.duration)
+				app.music_mp3=api.pageParam.mp3
+
 
 
 
@@ -396,6 +401,7 @@
 				data.img = app.music_thumb;
 				data.mp3 = app.music_mp3;
 				data.id = app.music_id;
+		 
 				api.openFrame({
 					name: 'sing_share',
 					url: '../../html/single_share_body.html',
