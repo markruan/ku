@@ -6,17 +6,17 @@
 function saveMlistDB(sid, name, artist, pic, date) {
     var db = api.require('db');
     db.openDatabase({
-        name: 'history1'
+        name: 'history2'
     }, function(ret, err) {
         if (ret.status) {
             db.executeSql({
-                name: 'history1',
-                sql: 'CREATE TABLE IF NOT EXISTS mlist(mlist_id INT AUTO_INCREMENT, sid INT(25),mlist_name varchar(255), mlist_artist varchar(255), mlist_pic varchar(255),mlist_date int(23),PRIMARY KEY ( mlist_id ))'
+                name: 'history2',
+                sql: 'CREATE TABLE IF NOT EXISTS mlist(mlist_id INT AUTO_INCREMENT, id INT(25),mlist_name varchar(255), mlist_artist varchar(255), mlist_pic varchar(255),mlist_date int(23),PRIMARY KEY ( mlist_id ))'
             }, function(ret, err) {
                 if (ret.status) {
                     db.executeSql({
-                        name: 'history1',
-                        sql: "INSERT INTO mlist (mlist_id,mlist_name,mlist_artist,mlist_pic,mlist_date) VALUES ('" + sid + "', '" + name + "', '" + artist + "', '" + pic + "','" + date + "')",
+                        name: 'history2',
+                        sql: "INSERT INTO mlist (mlist_id,id,mlist_name,mlist_artist,mlist_pic,mlist_date) VALUES ('" + sid + "', '" + sid + "','" + name + "', '" + artist + "', '" + pic + "','" + date + "')",
                     }, function(ret, err) {
                         if (ret.status) {
                             //  alert(JSON.stringify(ret));

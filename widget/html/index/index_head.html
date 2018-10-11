@@ -209,7 +209,7 @@
                 // alert(JSON.stringify(err));
             }
         });
-        // app.initmlist()  初始化播放BAR,还没弄好
+        app.initmlist() //初始化播放BAR,还没弄好
 
         // 监听耳机拔下事件
         var phoneListener = api.require('phoneListener');
@@ -350,7 +350,8 @@
             current: '',
             music_imgurl: '',
             duration: '',
-            songdatalist: ''
+            songdatalist: '',
+            isfirstopen: ''
         },
         watch: {
             isPlaying(curVal, oldVal) {
@@ -371,6 +372,7 @@
         },
         methods: {
             init: function() {
+                app.isfirstopen = true
                 music.isPlay(app.songid, function(ret, err) {
 
                     if (ret.success) {
@@ -418,9 +420,9 @@
                     vScrollBarEnabled: true,
                     hScrollBarEnabled: true,
                     animation: {
-                        type: "flip", //动画类型（详见动画类型常量）
+                        type: "push", //动画类型（详见动画类型常量）
                         subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                        duration: 500
+                        duration: 400
                     }
                 });
             },
@@ -431,6 +433,10 @@
             play: function() {
                 var audioPlayer = api.require('audioPlayer');
                 audioPlayer.play();
+            },
+            stop: function() {
+                var audioPlayer = api.require('audioPlayer');
+                audioPlayer.stop();
             },
             setPage: function(index, url) { //设置首页显示页面
                 app.setStyle(index);
@@ -453,9 +459,13 @@
                     this.pause()
 
                 } else {
+                    if (this.isfirstopen) {
+                        this.play()
+                    } else {
+                        this.init()
+                    }
 
-                    this.play()
-                        //				}
+                    //				}
                 }
             },
             openS: function() {
@@ -471,15 +481,23 @@
             },
             playNext: function() {
                 // console.log(app.index+1);
-                if (app.index + 1 == app.songdatalist.length) {
-                    app.songid = app.songdatalist[0].id
-                    app.init()
-                    app.index = 0
+                var isRepeat = $api.getStorage('isRepeat')&&$api.getStorage('isRepeat')==1 ? true : false
+                if (isRepeat) {
+                   app.pause()
+                   app.init()
                 } else {
-                    app.songid = app.songdatalist[app.index + 1].id
-                    app.init()
-                    app.index = app.index + 1
 
+
+                    if (app.index + 1 == app.songdatalist.length) {
+                        app.songid = app.songdatalist[0].id
+                        app.init()
+                        app.index = 0
+                    } else {
+                        app.songid = app.songdatalist[app.index + 1].id
+                        app.init()
+                        app.index = app.index + 1
+
+                    }
                 }
 
             },
@@ -495,20 +513,25 @@
 
                 }
             },
-            initmlist() {初始化播放BAR,还没弄好
+            initmlist() { //初始化播放BAR,还没弄好
                 var db = api.require('db');
 
+
                 db.openDatabase({
-                    name: 'history1'
+                    name: 'history2'
                 }, function(ret, err) {
                     if (ret.status) {
                         db.selectSql({
-                            name: 'history1',
+                            name: 'history2',
                             sql: 'SELECT * FROM mlist group by mlist_id order by mlist_date desc'
                         }, function(ret, err) {
-                          if (ret.status) {
-
-
+                            if (ret.status) {
+                                app.songName = ret.data[0].mlist_name
+                                app.songid = ret.data[0].id
+                                app.artists = ret.data[0].mlist_artist
+                                app.music_imgurl = ret.data[0].mlist_pic
+                                app.index = 0
+                                app.songdatalist = ret.data
 
                             } else {
 

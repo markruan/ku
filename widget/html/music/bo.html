@@ -231,7 +231,8 @@
 		   app.isPlaying=false
 		});
 
-
+ // 判断是否循环播放
+   app.isRepeat=$api.getStorage('isRepeat')&&$api.getStorage('isRepeat')==1 ? true : false
 
 	}
 
@@ -263,6 +264,12 @@
 			calssA: "calssA",
 			calssB: "calssB"
 		},
+		watch: {
+				isRepeat(curVal, oldVal) {
+						console.log(curVal, oldVal);　　　　　　　　
+				}
+
+		},
 		methods: {
 			init: function() {
 				// 判断是否like
@@ -280,7 +287,7 @@
 				app.duration = api.pageParam.duration
 				app.dur = formatSeconds(app.duration)
 
-				
+
 
 
 			},
@@ -428,8 +435,11 @@
 			isXunHuan: function() {
 				if (app.isRepeat) {
 					app.isRepeat = false
+					$api.setStorage('isRepeat', 0);
+
 				} else {
 					app.isRepeat = true
+						$api.setStorage('isRepeat', 1);
 				}
 			},
 			playNext: function() {
