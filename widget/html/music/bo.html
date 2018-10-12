@@ -90,7 +90,7 @@
 </head>
 
 <body>
-	<div id="app">
+	<div id="app" v-cloak>
 
 
 		<div class="" style="padding-top: 5%">
@@ -401,7 +401,7 @@
 				data.img = app.music_thumb;
 				data.mp3 = app.music_mp3;
 				data.id = app.music_id;
-		 
+
 				api.openFrame({
 					name: 'sing_share',
 					url: '../../html/single_share_body.html',

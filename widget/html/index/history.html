@@ -53,7 +53,7 @@
             if (ret.status) {
                 db.selectSql({
                     name: 'history2',
-                    sql: 'SELECT * FROM mlist group by mlist_id order by mlist_date desc'
+                    sql: 'SELECT * FROM mlist group by id order by mlist_date desc'
                 }, function(ret, err) {
 
                   var html = ''

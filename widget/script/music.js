@@ -98,7 +98,8 @@ function neteaseMusic() {
       var url2="https://api.imjad.cn/cloudmusic/?type=detail&id="
 
         api.ajax({
-            url: url1 + id+'&ids=['+id+']'
+            // url: url1 + id+'&ids=['+id+']'
+            url:url2+id
 
         }, function(ret, err) {
             callback(ret, err);

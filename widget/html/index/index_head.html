@@ -151,7 +151,7 @@
 </head>
 
 <body class="">
-    <div id="app">
+    <div id="app" v-clock>
         <header class="H-header  bgg H-border-vertical-bottom-after" id="header">
             <span tapmode="" onclick="H.openSlidPane();" class="H-icon H-position-relative H-display-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-both-10 H-z-index-1000"><i class="H-iconfont H-icon-more-menu H-font-size-18 H-vertical-middle"></i></span>
             <div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent ">
@@ -299,11 +299,11 @@
         api.addEventListener({
             name: 'online'
         }, function(ret, err) {
-          api.toast({
-              msg: '连上网络了',
-              duration: 2000,
-              location: 'bottom'
-          });
+            api.toast({
+                msg: '连上网络了',
+                duration: 2000,
+                location: 'bottom'
+            });
             app.play()
         });
 
@@ -321,7 +321,7 @@
         audioPlayer.addEventListener({
             name: "state"
         }, function(ret) {
-            // console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(ret));
             app.state = ret.state
             switch (ret.state) {
                 case "playing":
@@ -338,7 +338,13 @@
                     api.sendEvent({
                         name: 'isNotPlaying',
                     });
-                    app.playNext()
+                    app.stop()
+                    api.toast({
+                        msg: '出现错误，请稍后重试',
+                        duration: 2000,
+                        location: 'bottom'
+                    });
+
                     break;
                 case "finished":
                     api.sendEvent({
@@ -384,43 +390,44 @@
             },
             music_imgurl(curVal, oldVal) {
                 api.sendEvent({
-                    name: 'upDateSongInfo',
-                    extra: {
-                        songName: app.songName,
-                        artists: app.artists,
-                        songid: app.songid,
-                        music_imgurl: app.music_imgurl,
-                        duration: app.duration,
-                        music_mp3: app.music_mp3,
-                        music_thumb: app.music_thumb
-                    }
-                });;　　　　　　　　
+                        name: 'upDateSongInfo',
+                        extra: {
+                            songName: app.songName,
+                            artists: app.artists,
+                            songid: app.songid,
+                            music_imgurl: app.music_imgurl,
+                            duration: app.duration,
+                            music_mp3: app.music_mp3,
+                            music_thumb: app.music_thumb
+                        }
+                    })
+                    // 存播放记录
+                var datetime = Number(new Date())
+                saveMlistDB(app.songid, app.songName, app.artists, app.music_imgurl, datetime)　　　　　　　　
             }
         },
         methods: {
             init: function() {
                 app.isfirstopen = true
                 music.isPlay(app.songid, function(ret, err) {
-                    console.log(JSON.stringify(ret) + '-------------' + JSON.stringify(err));
-                    if (ret.success) {
+
+                    if (ret.success&&app.state!='error') {
                         app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
                         music.play()
                         music.getMusicInfo(app.songid, function(ret, err) {
+                           if(ret.code==200){
+                             var songDetail = ret.songs[0]
+                             app.songName = songDetail.name
+                             app.music_thumb = songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl
+                             app.artists = songDetail.ar ? songDetail.ar[0].name : songDetail.artists[0].name
+                             api.imageCache({
+                                 url: songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl + '?param=300y300'
+                             }, function(ret, err) {
+                                 app.music_imgurl = ret.url;
+                                 app.audioCover()
+                             });
+                           }
 
-                            // console.log(JSON.stringify(ret));
-                            var songDetail = ret.songs[0]
-                            app.songName = songDetail.name
-                            app.music_thumb = songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl
-                            app.artists = songDetail.ar ? songDetail.ar[0].name : songDetail.artists[0].name
-                            api.imageCache({
-                                url: songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl + '?param=300y300'
-                            }, function(ret, err) {
-                                app.music_imgurl = ret.url;
-                                app.audioCover()
-                                    // 存播放记录
-                                var datetime = Number(new Date())
-                                saveMlistDB(app.songid, app.songName, app.artists, app.music_imgurl, datetime)
-                            });
                         })
                     } else {
                         api.toast({

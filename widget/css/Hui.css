@@ -2792,3 +2792,7 @@ textarea.H-textbox { min-height: 150px; resize: none; }
 .H-paper-5 {
     box-shadow: 0 19px 60px rgba(0,0,0,.298039), 0 15px 20px rgba(0,0,0,.219608);
 }
+
+[v-cloak]{
+  display: none;
+}
