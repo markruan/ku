@@ -26,7 +26,7 @@
 					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openwv(item.id) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
 				<!-- </div> -->
 
-				<div v-for='item in articles' class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after"  @click="openartist(item.id,item.name)">
+				<div v-for='item in articles' class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after"  @click="openartist(item.id,item.name,item.picUrl+'?param=440y250')">
 						<div class="H-padding-vertical-both-10"><img  v-bind:src=item.img1v1Url+'?param=100y100' alt="" title="" class="H-display-block H-margin-horizontal-left-10  animated fadeIn" style="width: 40px; height: 40px;"></div>
 						<div class="H-flex-item H-padding-20">
 								<strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block">{{item.name}}</strong>
@@ -61,13 +61,14 @@
 		},
 		mounted: function() {},
 		methods: {
-			openartist: function(artistId,artistName) {
+			openartist: function(artistId,artistName,img) {
 				api.openWin({
 					name: 'artistlist_h',
 					url: '../html/artist/artist_head.html',
 					pageParam: {
 						artistId: artistId,
 						artistName:artistName,
+						artistImg:img,
 						from:'search'
 					},
 					animation: {

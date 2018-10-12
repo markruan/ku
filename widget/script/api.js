@@ -266,7 +266,7 @@ function stoploading() {
 }
 
 function imageCache(url) { //图片缓存方法
-    var path = url;
+    var path ;
     api.imageCache({
         url: url,
     }, function(ret, err) {

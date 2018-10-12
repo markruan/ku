@@ -36,13 +36,21 @@
     </style>
 </head>
 <script type="text/html" id="tppl">
-
-
     <% for(var i=1; i <7; i++){ %>
         <div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-8  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(<%=playlist[i].id%>)">
             <img src="<%=imageCache(playlist[i].coverImgUrl+'?param=200y200')%>" class=" animated fadeIn H-width-100-percent H-display-block H-paper-2" style="border-radius: 3px">
             <div class="H-text-align-center H-font-size-11 H-padding-vertical-top-5 H-text-show-row-2" style="height:28px">
                 <%=playlist[i].name%>
+            </div>
+        </div>
+        <% } %>
+</script>
+<script type="text/html" id="artists_tppl">
+    <% for(var i=1; i <7; i++){ %>
+        <div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-8  H-margin-vertical-bottom-10" tapmode onclick="openartist(<%=artists[i].id%>,'<%=artists[i].name%>',this)">
+            <img src="<%=imageCache(artists[i].picUrl+'?param=440y250')%>" class=" animated fadeIn H-width-100-percent H-display-block H-paper-2" style="border-radius: 3px">
+            <div class="H-text-align-center H-font-size-11 H-padding-vertical-top-5 H-text-show-row-1">
+                <%=artists[i].name%>
             </div>
         </div>
         <% } %>
@@ -79,12 +87,19 @@
                 <span class="H-vertical-middle H-theme-font-color-ccc" tapmode onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
             </div>
             <div id="main" class="test1 H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+
             <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
                 <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
                 <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">排行榜</div>
                 <!-- <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span> -->
             </div>
             <div id="tui" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+            <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
+                <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+                <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">热门歌手</div>
+                <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'artistslist',url:'../../html/artistlist/artistlist_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
+            </div>
+            <div id="artists" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
             <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
                 <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
                 <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">推荐歌单</div>
@@ -107,11 +122,12 @@
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/H.js"></script>
 <script type="text/javascript" src="../../script/music.js"></script>
-<script type="text/javascript"  src="../../script/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../script/jquery/jquery.min.js"></script>
 <script type="text/javascript">
     H.tppl_flag = ["<%", "%>"];
     var wy
     var getinfo = new getinfo()
+    var music = new neteaseMusic()
     var page = 0;
     var datalist;
     var tuilist;
@@ -136,25 +152,24 @@
     // 热门推荐初始化
     function tui() {
         var data = [{
-                idx: 3779629,
-                name: "新歌榜",
-                pic: "http://p1.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg?param=320y180",
-            }, {
-                idx: 3778678,
-                name: "热歌榜",
-                pic: "http://p1.music.126.net/GhhuF6Ep5Tq9IEvLsyCN7w==/18708190348409091.jpg?param=320y180",
-            }, {
-                idx: 4395559,
-                name: "金曲榜",
-                pic: "http://p1.music.126.net/N2whh2Prf0l8QHmCpShrcQ==/19140298416347251.jpg?param=320y180",
-            }, {
-                idx: 60198,
-                name: "美国Billboard周榜",
-                pic: "http://p1.music.126.net/EBRqPmY8k8qyVHyF8AyjdQ==/18641120139148117.jpg?param=320y180",
-            }
-          ];
+            idx: 3779629,
+            name: "新歌榜",
+            pic: "http://p1.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg?param=320y180",
+        }, {
+            idx: 3778678,
+            name: "热歌榜",
+            pic: "http://p1.music.126.net/GhhuF6Ep5Tq9IEvLsyCN7w==/18708190348409091.jpg?param=320y180",
+        }, {
+            idx: 4395559,
+            name: "金曲榜",
+            pic: "http://p1.music.126.net/N2whh2Prf0l8QHmCpShrcQ==/19140298416347251.jpg?param=320y180",
+        }, {
+            idx: 60198,
+            name: "美国Billboard周榜",
+            pic: "http://p1.music.126.net/EBRqPmY8k8qyVHyF8AyjdQ==/18641120139148117.jpg?param=320y180",
+        }];
         uiloading()
-        // console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
 
         var html = '';
         for (i = 0; i < 4; i++) {
@@ -217,7 +232,7 @@
         var userinfo = $api.getStorage('userinfo')
         huandeng()
 
-            // 初始化获取用户统计
+        // 初始化获取用户统计
         if (!$api.getStorage('usercount')) {
             getinfo.getDengLuInfo('/user/subcount', function(data) {
                 $api.setStorage('usercount', data)
@@ -443,6 +458,7 @@
         tui()
         findinfo()
         getTuiList()
+        getArtists()
     }
 
     function openDaily() {
@@ -470,7 +486,7 @@
 
     function getTuiList() {
         getinfo.getDengLuInfo('/recommend/resource', function(data) {
-              // console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             if (data.code == 200) {
                 var html = ''
                 ret = data.recommend
@@ -513,6 +529,37 @@
                 pageParam: data
             });
         }
+    }
+
+    function getArtists() {
+        music.getartists(function(ret) {
+            $api.setStorage('mlist', ret.artists);
+
+            if (ret.code = 200) {
+                var render = H.tppl(H.D("#artists_tppl").innerHTML);
+                H.D("#artists").innerHTML = render(ret);
+            }
+
+
+        })
+    }
+
+    function openartist(artistId, artistName,button) {
+        var img=$api.attr($api.first(button),"src")
+        api.openWin({
+            name: 'artistlist_h',
+            url: '../../html/artist/artist_head.html',
+            pageParam: {
+                artistId: artistId,
+                artistName: artistName,
+                  artistImg:img
+            },
+            animation: {
+                type: "movein", //动画类型（详见动画类型常量）
+                subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                duration: 400
+            }
+        });
     }
 </script>
 

@@ -105,6 +105,17 @@ function neteaseMusic() {
             callback(ret, err);
         });
     }
+    this.getartists = function(callback) {
+
+
+        api.ajax({
+            // url: url1 + id+'&ids=['+id+']'
+            url:musicApi+'/top/artists?offset=0&limit=12'
+
+        }, function(ret, err) {
+            callback(ret, err);
+        });
+    }
     this.isPlay = function(id, callback) {
         api.ajax({
             url: musicApi + '/check/music?id=' + id,
@@ -122,6 +133,9 @@ function neteaseMusic() {
         }, function(ret) {
             if (ret.status) {
                 stoploading()
+                // 存播放记录
+            var datetime = Number(new Date())
+            saveMlistDB(app.songid, app.songName, app.artists, app.music_img_min, datetime)　
                 var duration = ret.duration;
                 app.duration = ret.duration
                 var dur = formatSeconds(duration);

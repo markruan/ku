@@ -1,0 +1,156 @@
+<!doctype html>
+<html class="H-theme-background-color-white">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>Hello APP</title>
+    <link href="../../css/Hui.css" rel="stylesheet" type="text/css" />
+    <style>
+        #imgg {
+            height: 44px;
+            margin-left: 60px
+        }
+    </style>
+</head>
+
+<body class="H-theme-background-color-white">
+    <!-- <div class="H-channel-title  H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
+        <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
+        <div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">
+            评论列表
+        </div>
+    </div> -->
+    <div id="mvlist" class="H-display-block H-theme-background-color-white H-border-vertical-bottom-after H-margin-vertical-top-10 H-padding-horizontal-left-5"></div>
+    <div class="H-header  H-display-block H-theme-background-color-white" id="footbar">
+        <span id="footer">
+        <span class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><img id="imgg" src="../../image/loading.gif" alt=""></span>
+        <div class="H-header-title H-center-all H-font-size-14 H-text-show-row-1 H-theme-font-color-ccc H-position-absolute H-width-100-percent">加载中......</div>
+        </span>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/play.js"></script>
+<script type="text/javascript" src="../../script/music.js"></script>
+
+
+<script type="text/javascript">
+    var getinfo = new getinfo()
+    var type, sid
+    var page = 0
+    apiready = function() {
+
+
+        initPage()
+
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            page++
+
+            initPage()
+
+        });
+        api.parseTapmode();
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/refresh.png',
+            visible: true,
+            bgColor: '#f2f2f2',
+            textColor: '#4d4d4d',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            page = 0
+            initPage()
+            api.hideProgress();
+            api.refreshHeaderLoadDone();
+        });
+    }
+
+    function initPage() {
+
+
+        var offset = page * 30
+
+        var html = '';
+        var html1 = '';
+        var url = musicApi + '/top/artists?limit=30&offset=' + offset
+        api.ajax({
+                url: url,
+                // cache: true,
+
+            }, function(ret, err) {
+
+                  // console.log(JSON.stringify(ret))
+                 var data = ret.artists
+                if (data.length > 0) {
+                    var html = '';
+                    for (i = 0; i < data.length; i++) {
+                        var id = data[i].id;
+                        var imm=data[i].picUrl + '?param=440y250'
+                        var coverImgUrl = imageCache(imm)
+                            // var tracksName = data[i].name + "-" + data[i].artists[0].name
+                        html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-5" tapmode onclick="openartist(' + id + ',\''+data[i].name+'\',this)">';
+                        html += '<img  src1="../../image/default.jpg"    src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-paper-3 " style="border-radius: 5px;"    >';
+                        html += '<div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5">' + data[i].name.substring(0, 12) + '</div></div>';
+
+                    }
+                    var mvlist = $api.byId('mvlist');
+                    // $api.html(mvlist, html);
+                    api.parseTapmode();
+
+                if (page > 0 && data.length == 30) {
+                    $api.append(mvlist, html);
+                } else if (page == 0 && data.length == 30) {
+                    $api.html(mvlist, html);
+                } else if (page == 0 && data.length < 30) {
+                    $api.html(mvlist, html);
+                    str1 = '<div class="H-theme-background-color-white "><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">没有更多了...</p><div class="H-padding-vertical-bottom-10"></div></div>';
+
+                    $api.html($api.byId('footer'), str1);
+
+                }else if (page> 0 && data.length < 30) {
+                    $api.append (mvlist, html);
+                    str1 = '<div class="H-theme-background-color-white "><p class="H-font-size-12 H-theme-font-color-999 H-text-align-center" id="noreplay">没有更多了...</p><div class="H-padding-vertical-bottom-10"></div></div>';
+
+                    $api.html($api.byId('footer'), str1);
+
+                }
+
+                stoploading();
+                api.refreshHeaderLoadDone();
+
+            } else {
+
+            };
+        });
+    }
+
+    function openartist(artistId, artistName,button) {
+      var img=$api.attr($api.first(button),"src")
+
+
+        api.openWin({
+            name: 'artistlist_h',
+            url: '../../html/artist/artist_head.html',
+            pageParam: {
+                artistId: artistId,
+                artistName: artistName,
+                artistImg:img
+            },
+            animation: {
+                type: "movein", //动画类型（详见动画类型常量）
+                subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                duration: 400
+            }
+        });
+    }
+</script>
+
+</html>
