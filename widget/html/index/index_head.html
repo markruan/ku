@@ -218,6 +218,19 @@
             }
         });
         app.initmlist() //初始化播放BAR,还没弄好
+        isOnLineStatus(function(is_true, line_type){
+          if(is_true){
+              if (line_type == '3g' || line_type == '2g') {
+                app.pause()
+                api.toast({
+                    msg: '网络信号不稳定，请稍后再试',
+                    duration: 2000,
+                    location: 'bottom'
+                });
+
+              }
+          }
+        })
 
         // 监听耳机拔下事件
         var phoneListener = api.require('phoneListener');

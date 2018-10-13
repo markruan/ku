@@ -104,6 +104,7 @@
 
     function findinfo1() {
         pageNum = 0
+
         var kulist = musicApi + '/user/playlist?uid=' + uid + '&limit=30&offset=0'
 
         uiloading()
@@ -120,30 +121,46 @@
             }
 
             if (ret.playlist.length > 0) {
-                var data = ret
+                var data
                 var html = ''
                 var count, startnum
-                if (uid == 1602618880) {
-                    count = data.playlist.length;
-                    startnum = 1;
-                } else if (api.pageParam.iscreatlist) {
-                    count = $api.getStorage('usercount').createdPlaylistCount
-                    startnum = 1
-                } else {
-                    count = data.playlist.length
-                    startnum = $api.getStorage('usercount').createdPlaylistCount
+                // if (uid == 1602618880) {
+                //     count = data.playlist.length;
+                //     startnum = 1;
+                // } else if (api.pageParam.iscreatlist) {
+                //     count = $api.getStorage('usercount').createdPlaylistCount
+                //     startnum = 1
+                // } else {
+                //     count = data.playlist.length
+                //     startnum = $api.getStorage('usercount').createdPlaylistCount
+                // }
+
+                var arr=ret.playlist
+                if(uid==1602618880){
+                  data = arr.filter(function(x) {
+                          return x.creator.userId!=uid;
+                  });
+                }else if(api.pageParam.iscreatlist){
+                  data = arr.filter(function(x) {
+                          return x.creator.userId==uid;
+                  });
+                }else{
+                  data = arr.filter(function(x) {
+                          return x.creator.userId!=uid;
+                  });
                 }
 
 
-                for (i = startnum; i < count; i++) {
-                    var Idd = data.playlist[i].id;
-                    var coverImgUrl = imageCache(data.playlist[i].coverImgUrl + '?param=180y180')
-                    var tracksName = data.playlist[i].name
-                    $api.setStorage('lenpage', data.playlist.length);
+
+                for (i = 0; i < data.length; i++) {
+                    var Idd = data[i].id;
+                    var coverImgUrl = imageCache(data[i].coverImgUrl + '?param=180y180')
+                    var tracksName = data[i].name
+                    $api.setStorage('lenpage', data.length);
                     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + Idd + ')">';
                     html += '<img  src="../../image/default.jpg"   data-echo="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block  H-paper-2 " style="border-radius: 5px"    >';
 
-                    html += '<div class=" H-text-align-center  H-padding-vertical-top-5 H-text-show-row-2" style="font-size:10px">' + tracksName + '</div></div>';
+                    html += '<div class=" H-text-align-center  H-padding-vertical-top-5 H-text-show-row-2" style="font-size:10px;height:28px;">' + tracksName + '</div></div>';
                     api.refreshHeaderLoadDone();
                 }
                 var obj = $api.byId('main');

@@ -105,12 +105,12 @@ function neteaseMusic() {
             callback(ret, err);
         });
     }
-    this.getartists = function(callback) {
+    this.getartists = function(limit,callback) {
 
 
         api.ajax({
             // url: url1 + id+'&ids=['+id+']'
-            url:musicApi+'/top/artists?offset=0&limit=12'
+            url:musicApi+'/top/artists?offset=0&limit='+limit
 
         }, function(ret, err) {
             callback(ret, err);

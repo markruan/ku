@@ -362,10 +362,11 @@
 
 					if (ret.eventType == 'end') {
 						var audioPlayer = api.require('audioPlayer');
+
 						audioPlayer.setCurrent({
-							current: ret.value
+							current: ret.value / 100 * app.duration
 						});
-						// alert(JSON.stringify(ret));
+
 					} else {
 						// alert(JSON.stringify(err));
 					}

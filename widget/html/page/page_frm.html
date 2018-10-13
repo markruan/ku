@@ -46,7 +46,7 @@
         <% } %>
 </script>
 <script type="text/html" id="artists_tppl">
-    <% for(var i=1; i <7; i++){ %>
+    <% for(var i=0; i <artists.length; i++){ %>
         <div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-8  H-margin-vertical-bottom-10" tapmode onclick="openartist(<%=artists[i].id%>,'<%=artists[i].name%>',this)">
             <img src="<%=imageCache(artists[i].picUrl+'?param=440y250')%>" class=" animated fadeIn H-width-100-percent H-display-block H-paper-2" style="border-radius: 3px">
             <div class="H-text-align-center H-font-size-11 H-padding-vertical-top-5 H-text-show-row-1">
@@ -532,7 +532,7 @@
     }
 
     function getArtists() {
-        music.getartists(function(ret) {
+        music.getartists(6,function(ret) {
             $api.setStorage('mlist', ret.artists);
 
             if (ret.code = 200) {
