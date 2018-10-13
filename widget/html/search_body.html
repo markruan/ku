@@ -25,15 +25,7 @@
 					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active" @click="ting(item.id,index)">{{item.name}}-{{item.artists[0].name}}</div>
 					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openww(item.id, item.album.picUrl, item.audio, item.name, item.artists[0].name) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
 				</div>
-				<!-- <div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle " @click="ting(item.id,item.audio,item.al.picUrl,item.name,item.ar[0].name)">
-					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-						{{item.name}}-{{item.ar[0].name}}
-					</div>
-					<div class=" H-touch-active" @click="openww(item.id, item.al.picUrl, item.audio, item.name, item.ar[0].name) ">
-					<span class="H-icon H-padding-horizontal-right-20 H-display-block " ><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-          </div>
-				</div>
-			</div> -->
+
 		</ul>
 		</div>
 </body>
@@ -59,19 +51,7 @@
 		},
 		mounted: function() {},
 		methods: {
-			// openww: function(sid, img, mp3, song, artists) {
-			// 	api.openWin({
-			// 		name: 'addmusic',
-			// 		url: '../html/kong/music/index.html',
-			// 		pageParam: {
-			// 			img: img,
-			// 			mp3: mp3,
-			// 			song: song,
-			// 			artists: artists,
-			// 			sid: sid
-			// 		}
-			// 	});
-			// },
+
 			say: function(message) {
 				// console.log(message);
 				this.xianshi = 'none';
@@ -81,9 +61,7 @@
 				api.ajax({
 					url: sUrl + message,
 				}, function(ret, err) {
-					// console.log(JSON.stringify(ret))
 					if (ret.code == 200 && ret.result) {
-						//							$api.addCls(obj, 'H-display-none');
 						var data = ret.result.songs
 						app.articles = data
 						stoploading()
@@ -92,7 +70,6 @@
 						api.toast({
 							msg: '数据错误,稍后再试'
 						});
-						// api.hideProgress();
 						stoploading()
 					}
 				});
@@ -137,41 +114,15 @@
 				app.search_histry();
 			},
 			ting: function(sid, index) {
-				// if (!$api.getStorage('isopen') || $api.getStorage('isopen') != 1) {
-				// 	$api.setStorage('listopen', 5);
-				// 	api.openWin({
-				// 		name: 'nww',
-				// 		url: '../html/music/bo_head.html',
-				// 		slidBackEnabled: false,
-				// 		animation: {
-				// 			type: "movein", //动画类型（详见动画类型常量）
-				// 			subType: "from_bottom", //动画子类型（详见动画子类型常量）
-				// 			duration: 500 //动画过渡时间，默认300毫秒
-				// 		},
-				// 		pageParam: {
-				// 			sid: sid,
-				// 			mp3: mp3,
-				// 			index: 0,
-				// 			mlistdata: false,
-				// 			cover: cover,
-				// 			title: title,
-				// 			artist: artist
-				// 		}
-				// 	});
-				// } else {
-					api.sendEvent({
-						name: 'songid',
-						extra: {
-							id: sid,
-							index: index,
-							songlist: app.articles
-						}
-					})
-					$api.setStorage('listm', app.articles);
-				// 	api.closeWin();
-				//
-				// }
-
+				api.sendEvent({
+					name: 'songid',
+					extra: {
+						id: sid,
+						index: index,
+						songlist: app.articles
+					}
+				})
+				$api.setStorage('listm', app.articles);
 			}
 		}
 	})

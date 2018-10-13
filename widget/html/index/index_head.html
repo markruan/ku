@@ -150,7 +150,7 @@
         .minbar_img{
           width: 42px;
           height: 42px;
-          border-radius: 5px;
+          border-radius: 21px;
 
         }
     </style>
@@ -180,8 +180,8 @@
         <div class="H-main H-flex-item"></div>
         <footer class="H-footer H-flexbox-horizontal bgg H-border-vertical-top-after" id="footer">
             <div id="miniplayer">
-                <span  class="menu H-paper-2" tapmode="active" @click="openPlayer()">
-                <img :src="music_img_min" alt=" " class="minbar_img">
+                <span  class="menu " tapmode="active" @click="openPlayer()">
+                <img :src="music_img_min" alt=" " class="minbar_img H-paper-2">
                 </span>
                 <div id="str6" class="radio" tapmode="active">
                     <!--onclick="openRadioDetail()"openPlayer()-->
@@ -347,6 +347,7 @@
             switch (ret.state) {
                 case "playing":
                     app.isPlaying = true
+                    app.music_img_min=imageCache(app.music_thumb + '?param=100y100')
                     break;
                 case "paused":
                     app.isPlaying = false
@@ -373,7 +374,12 @@
                     });
                     app.playNext()
                     break;
-
+                case "idle":
+                  app.music_img_min='https://loading.io/spinners/microsoft/index.svg'
+                  break;
+                  case "buffering":
+                  app.music_img_min='https://loading.io/spinners/microsoft/index.svg'
+                  break;
                 default:
                     api.sendEvent({
                         name: 'isNotPlaying',
@@ -404,7 +410,7 @@
             duration: '',
             songdatalist: '',
             isfirstopen: '',
-            music_img_min:'https://loading.io/spinners/blocks/index.rotating-squares-preloader-gif.gif'
+            music_img_min:'https://loading.io/spinners/microsoft/index.svg'
         },
         watch: {
             isPlaying(curVal, oldVal) {
@@ -420,7 +426,8 @@
                             music_imgurl: app.music_imgurl,
                             duration: app.duration,
                             music_mp3: app.music_mp3,
-                            music_thumb: app.music_thumb
+                            music_thumb: app.music_thumb,
+                            music_img_min: app.music_img_min
                         }
                     })
                   　　　　　　　
@@ -431,11 +438,12 @@
                 app.isfirstopen = true
                 music.isPlay(app.songid, function(ret, err) {
 
-                    if (ret.success&&app.state!='error') {
+                    if (ret.success) {
                         app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
-                        music.play()
+
                         music.getMusicInfo(app.songid, function(ret, err) {
                            if(ret.code==200){
+                               music.play()
                              var songDetail = ret.songs[0]
                              app.songName = songDetail.name
                              app.music_thumb = songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl
@@ -451,12 +459,25 @@
 
                         })
                     } else {
-                        api.toast({
-                            msg: ret.message,
-                            duration: 2000,
-                            location: 'bottom'
-                        });
-                        app.playNext()
+
+                        if(err.msg=="连接错误，请检查网络或者请求配置是否正确"){
+                          api.alert({
+                              title: '错误',
+                              msg: err.msg,
+                          }, function(ret, err){
+
+                          });
+
+                        }else{
+                          api.toast({
+                              msg: ret.message,
+                              duration: 2000,
+                              location: 'bottom'
+                          });
+                          app.playNext()
+                        }
+
+
 
                     }
                 })

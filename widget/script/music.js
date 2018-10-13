@@ -164,11 +164,7 @@ function neteaseMusic() {
 
                 });
 
-            } else {
-
-
-
-            }
+            } 
         });
     }
 

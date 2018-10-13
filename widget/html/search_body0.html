@@ -25,15 +25,7 @@
 					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active" @click="openwv(item.id)">{{item.name}}-{{item.artists[0].name}}</div>
 					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openwv(item.id) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
 				</div>
-				<!-- <div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle " @click="ting(item.id,item.audio,item.al.picUrl,item.name,item.ar[0].name)">
-					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-						{{item.name}}-{{item.ar[0].name}}
-					</div>
-					<div class=" H-touch-active" @click="openww(item.id, item.al.picUrl, item.audio, item.name, item.ar[0].name) ">
-					<span class="H-icon H-padding-horizontal-right-20 H-display-block " ><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-          </div>
-				</div>
-			</div> -->
+
 		</ul>
 		</div>
 </body>
@@ -76,7 +68,7 @@
 			say: function(message) {
 				this.xianshi = 'none';
 				// api.showProgress({});
-				uiloading();
+				// uiloading();
 				app.articles = []
 				api.ajax({
 					url: musicApi + '/search?keywords=' + message + "&type=1004",
@@ -86,14 +78,14 @@
 						//							$api.addCls(obj, 'H-display-none');
 						var data = ret.result.mvs
 						app.articles = data
-						stoploading()
+						// stoploading()
 					} else {
 
 						api.toast({
 							msg: '数据错误,稍后再试'
 						});
 						// api.hideProgress();
-						stoploading()
+						// stoploading()
 					}
 				});
 			},
