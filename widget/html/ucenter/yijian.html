@@ -49,15 +49,18 @@
 			if (content && username) {
 				uiloading();
 				api.ajax({
-					url : 'http://47.99.116.131:8081',
-					data : {
-						values : {
-							nickname : username,
-							content : content
-						}
+					url : 'http://sfun.me/api',
+					// method: 'post',
+					data: {
+							values: {
+									username: username,
+									msg:content,
+									type:1123
+							}
 					}
 				}, function(ret, err) {
-					if (ret.code ==200) {
+					console.log(JSON.stringify(ret));
+					if (ret.status ==0) {
 						api.toast({
 							msg : ret.msg
 						});
@@ -67,7 +70,7 @@
 						}, 800)
 					} else {
 						api.toast({
-							msg : err.msg
+							msg : ret.msg
 						});
 					}
 					stoploading();

@@ -657,7 +657,7 @@
             },
 
             openPlayer() {
-                if (this.songName != '新感官音乐世界') {
+                if (this.songName != '新感官音乐世界'&&this.music_imgurl!='') {
                     api.openWin({
                         name: 'nww',
                         url: '../../html/music/bo_head.html',
@@ -673,7 +673,7 @@
                             mp3: this.music_mp3,
                             songName: this.songName,
                             artists: this.artists,
-                            music_imgurl: this.music_imgurl,
+                            music_imgurl: this.music_imgurl||this.music_img_min,
                             index: this.index,
                             duration: this.duration,
                             music_thumb: this.music_thumb

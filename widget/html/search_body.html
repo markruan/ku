@@ -61,7 +61,7 @@
 				api.ajax({
 					url: sUrl + message,
 				}, function(ret, err) {
-					if (ret.code == 200 && ret.result) {
+					if (ret.code == 200 && ret.result!=[]) {
 						var data = ret.result.songs
 						app.articles = data
 						stoploading()
