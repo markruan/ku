@@ -253,19 +253,22 @@
         api.addEventListener({
             name: 'songid'
         }, function(ret, err) {
-            var sid = ret.value.id
-            app.songid = ret.value.id
-            app.index = ret.value.index
-                // console.log(JSON.stringify(ret.value.songlist));
-            if (typeof(ret.value.songlist) == 'string') {
-                app.songdatalist = $api.strToJson(ret.value.songlist);
+            if(ret.value.id!=app.songid){
+              var sid = ret.value.id
+              app.songid = ret.value.id
+              app.index = ret.value.index
+                  // console.log(JSON.stringify(ret.value.songlist));
+              if (typeof(ret.value.songlist) == 'string') {
+                  app.songdatalist = $api.strToJson(ret.value.songlist);
 
-            } else {
-                app.songdatalist = ret.value.songlist
+              } else {
+                  app.songdatalist = ret.value.songlist
+              }
+
+              app.pause()
+              app.init()
             }
 
-            app.pause()
-            app.init()
         });
 
         api.addEventListener({
@@ -342,7 +345,7 @@
         audioPlayer.addEventListener({
             name: "state"
         }, function(ret) {
-            // console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(ret));
             app.state = ret.state
             switch (ret.state) {
                 case "playing":

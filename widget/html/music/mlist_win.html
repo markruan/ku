@@ -97,6 +97,12 @@
 		}, function(ret, err) {
 			goback1()
 		});
+		api.addEventListener({
+		    name: 'songid'
+		}, function(ret, err){
+		     	$api.html($api.byId('shan'), '<img src="https://loading.io/spinners/microsoft/index.svg" style="height:30px" alt="">');
+		});
+
 		var audioPlayer = api.require('audioPlayer');
 		api.addEventListener({
 			name: "per"
