@@ -290,12 +290,7 @@
 				app.duration = api.pageParam.duration
 				app.dur = formatSeconds(app.duration)
 				app.music_mp3=api.pageParam.mp3
-
-
-
-
-
-			},
+ 	},
 			switchmusic: function() {
 				if (app.isPlaying) {
 					app.isPlaying = false;
@@ -466,8 +461,8 @@
 
 			},
 			shoucang: function() {
-
-				getinfo.getDengLuInfo('/like?like=' + app.islike + '&id=' + app.music_id, function(data) {
+        var islike=app.islike?false:true
+				getinfo.getDengLuInfo('/like?like=' + islike + '&id=' + app.music_id, function(data) {
 					//  console.log(JSON.stringify(data));
 					app.islike = app.islike ? false : true
 					if (data.code == 200) {

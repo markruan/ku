@@ -586,7 +586,7 @@
 				</div>
 			</div>
 			<!-- 列表部分 -->
-			<div class="egret-flex-item musiclist-item H-touch-active" v-for="(item,index) in songdatalist" @click="openMusci(item.id,index,item.name) " :class="{active: activeName == item.name}">
+			<div class="egret-flex-item musiclist-item H-touch-active" v-for="(item,index) in songdatalist" @click="openMusci(item.id,index,item.id) " :class="{active: activeName == item.id}">
 				<div class="egret-flex-item-logo">
 					{{index+1}}
 				</div>
@@ -622,6 +622,19 @@
 		api.setFrameAttr({
 			name: api.frameName,
 			bounces: true
+		});
+		api.setRefreshHeaderInfo({
+				loadingImg: 'widget://image/refresh.png',
+				visible: true,
+				bgColor: '#f2f2f2',
+				textColor: '#4d4d4d',
+				textDown: '下拉刷新...',
+				textUp: '松开刷新...',
+				showTime: true
+		}, function(ret, err) {
+				app.getlistdata()
+				api.hideProgress();
+				api.refreshHeaderLoadDone();
 		});
 	}
 
@@ -666,6 +679,7 @@
 						app.songdatalist = cachedata.tracks
 						app.songlistcount = cachedata.tracks.length
 						stoploading()
+						app.getlistdata()
 
 					} else {
 						app.getlistdata()
@@ -717,8 +731,8 @@
 
 				});
 			}, //
-			openMusci: function(lid, index, name) {
-				this.activeName = name
+			openMusci: function(lid, index, id) {
+				this.activeName = id
 				api.sendEvent({
 					name: 'songid',
 					extra: {

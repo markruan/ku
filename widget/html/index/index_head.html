@@ -345,7 +345,7 @@
         audioPlayer.addEventListener({
             name: "state"
         }, function(ret) {
-            console.log(JSON.stringify(ret));
+            // console.log(JSON.stringify(ret));
             app.state = ret.state
             switch (ret.state) {
                 case "playing":
@@ -445,6 +445,7 @@
                         app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
 
                         music.getMusicInfo(app.songid, function(ret, err) {
+                            // console.log(JSON.stringify(ret));
                            if(ret.code==200){
                                music.play()
                              var songDetail = ret.songs[0]
@@ -458,6 +459,19 @@
                                  app.music_imgurl = ret.url;
                                  app.audioCover()
                              });
+                           }else{
+
+                             api.alert({
+                                 title: '错误提示',
+                                 msg: "API故障请联系管理员",
+                             }, function(ret, err){
+                                 if( ret ){
+                                      alert( JSON.stringify( ret ) );
+                                 }else{
+                                      alert( JSON.stringify( err ) );
+                                 }
+                             });
+
                            }
 
                         })

@@ -537,6 +537,9 @@
 			font-size: 0.6em;
 			color: #fff;
 		}
+		.active {
+			color: red;
+		}
 	</style>
 </head>
 
@@ -566,7 +569,7 @@
 		<!-- 3  -->
 
 		<div v-for="(item,index) in listData" class="egret-flex-item musiclist-item">
-			<div class="egret-flex-item-abright" @click='openMusic(item.id,index)'>
+			<div class="egret-flex-item-abright" @click='openMusic(item.id,index,item.name)' :class="{active: activeName == item.name}">
 				<div class="egret-flex-item-shelf pl10">
 					<div v-cloak class="egret-flex-item-shelf01">{{item.name}}</div>
 					<div v-cloak class="egret-flex-item-shelf02">{{item.artists[0].name}}
@@ -586,10 +589,12 @@
 	var app = new Vue({
 		el: '#app',
 		data: {
-			listData: ''
+			listData: '',
+			activeName:''
 		},
 		methods: {
-			openMusic: function(sid, index) {
+			openMusic: function(sid, index,name) {
+				this.activeName = name
 					api.sendEvent({
 						name: 'songid',
 						extra: {

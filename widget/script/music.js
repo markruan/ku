@@ -95,11 +95,11 @@ function neteaseMusic() {
     }
     this.getMusicInfo = function(id, callback) {
       var url1="http://music.163.com/api/song/detail/?id="
-      var url2="https://api.imjad.cn/cloudmusic/?type=detail&id="
+      // var url2="https://api.imjad.cn/cloudmusic/?type=detail&id="
 
         api.ajax({
-            // url: url1 + id+'&ids=['+id+']'
-            url:url2+id
+            url: url1 + id+'&ids=['+id+']'
+            // url:url2+id
 
         }, function(ret, err) {
             callback(ret, err);
@@ -131,6 +131,7 @@ function neteaseMusic() {
             path: app.music_mp3,
             cache: true
         }, function(ret) {
+
             if (ret.status) {
                 stoploading()
                 // 存播放记录
@@ -164,7 +165,7 @@ function neteaseMusic() {
 
                 });
 
-            } 
+            }
         });
     }
 
