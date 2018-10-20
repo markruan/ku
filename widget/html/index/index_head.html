@@ -147,11 +147,11 @@
         .next.active {
             background-image: url(../../image/miniplay_next_s.png);
         }
-        .minbar_img{
-          width: 42px;
-          height: 42px;
-          border-radius: 21px;
 
+        .minbar_img {
+            width: 42px;
+            height: 42px;
+            border-radius: 21px;
         }
     </style>
 </head>
@@ -180,7 +180,7 @@
         <div class="H-main H-flex-item"></div>
         <footer class="H-footer H-flexbox-horizontal bgg H-border-vertical-top-after" id="footer">
             <div id="miniplayer">
-                <span  class="menu " tapmode="active" @click="openPlayer()">
+                <span class="menu " tapmode="active" @click="openPlayer()">
                 <img :src="music_img_min" alt=" " class="minbar_img H-paper-2">
                 </span>
                 <div id="str6" class="radio" tapmode="active">
@@ -218,18 +218,18 @@
             }
         });
         app.initmlist() //初始化播放BAR,还没弄好
-        isOnLineStatus(function(is_true, line_type){
-          if(is_true){
-              if (line_type == '3g' || line_type == '2g') {
-                app.pause()
-                api.toast({
-                    msg: '网络信号不稳定，请稍后再试',
-                    duration: 2000,
-                    location: 'bottom'
-                });
+        isOnLineStatus(function(is_true, line_type) {
+            if (is_true) {
+                if (line_type == '3g' || line_type == '2g') {
+                    app.pause()
+                    api.toast({
+                        msg: '网络信号不稳定，请稍后再试',
+                        duration: 2000,
+                        location: 'bottom'
+                    });
 
-              }
-          }
+                }
+            }
         })
 
         // 监听耳机拔下事件
@@ -253,20 +253,20 @@
         api.addEventListener({
             name: 'songid'
         }, function(ret, err) {
-            if(ret.value.id!=app.songid){
-              var sid = ret.value.id
-              app.songid = ret.value.id
-              app.index = ret.value.index
-                  // console.log(JSON.stringify(ret.value.songlist));
-              if (typeof(ret.value.songlist) == 'string') {
-                  app.songdatalist = $api.strToJson(ret.value.songlist);
+            if (ret.value.id != app.songid) {
+                var sid = ret.value.id
+                app.songid = ret.value.id
+                app.index = ret.value.index
+                    // console.log(JSON.stringify(ret.value.songlist));
+                if (typeof(ret.value.songlist) == 'string') {
+                    app.songdatalist = $api.strToJson(ret.value.songlist);
 
-              } else {
-                  app.songdatalist = ret.value.songlist
-              }
+                } else {
+                    app.songdatalist = ret.value.songlist
+                }
 
-              app.pause()
-              app.init()
+                app.pause()
+                app.init()
             }
 
         });
@@ -350,7 +350,7 @@
             switch (ret.state) {
                 case "playing":
                     app.isPlaying = true
-                    app.music_img_min=imageCache(app.music_thumb + '?param=100y100')
+                    app.music_img_min = imageCache(app.music_thumb + '?param=100y100')
                     break;
                 case "paused":
                     app.isPlaying = false
@@ -360,10 +360,11 @@
 
                     break
                 case "error":
+                    app.stop()
                     api.sendEvent({
                         name: 'isNotPlaying',
                     });
-                    app.stop()
+
                     api.toast({
                         msg: '出现错误，请稍后重试',
                         duration: 2000,
@@ -378,11 +379,11 @@
                     app.playNext()
                     break;
                 case "idle":
-                  app.music_img_min='https://loading.io/spinners/microsoft/index.svg'
-                  break;
-                  case "buffering":
-                  app.music_img_min='https://loading.io/spinners/microsoft/index.svg'
-                  break;
+                    app.music_img_min = 'https://loading.io/spinners/microsoft/index.svg'
+                    break;
+                case "buffering":
+                    app.music_img_min = 'https://loading.io/spinners/microsoft/index.svg'
+                    break;
                 default:
                     api.sendEvent({
                         name: 'isNotPlaying',
@@ -413,7 +414,8 @@
             duration: '',
             songdatalist: '',
             isfirstopen: '',
-            music_img_min:'https://loading.io/spinners/microsoft/index.svg'
+            isclick: true,
+            music_img_min: 'https://loading.io/spinners/microsoft/index.svg'
         },
         watch: {
             isPlaying(curVal, oldVal) {
@@ -421,77 +423,76 @@
             },
             music_imgurl(curVal, oldVal) {
                 api.sendEvent({
-                        name: 'upDateSongInfo',
-                        extra: {
-                            songName: app.songName,
-                            artists: app.artists,
-                            songid: app.songid,
-                            music_imgurl: app.music_imgurl,
-                            duration: app.duration,
-                            music_mp3: app.music_mp3,
-                            music_thumb: app.music_thumb,
-                            music_img_min: app.music_img_min
-                        }
-                    })
-                  　　　　　　　
+                    name: 'upDateSongInfo',
+                    extra: {
+                        songName: app.songName,
+                        artists: app.artists,
+                        songid: app.songid,
+                        music_imgurl: app.music_imgurl,
+                        duration: app.duration,
+                        music_mp3: app.music_mp3,
+                        music_thumb: app.music_thumb,
+                        music_img_min: app.music_img_min
+                    }
+                })　　　　　　　
             }
         },
         methods: {
             init: function() {
                 app.isfirstopen = true
                 music.isPlay(app.songid, function(ret, err) {
-
+                    console.log(JSON.stringify(err));
                     if (ret.success) {
                         app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
 
                         music.getMusicInfo(app.songid, function(ret, err) {
                             // console.log(JSON.stringify(ret));
-                           if(ret.code==200){
-                               music.play()
-                             var songDetail = ret.songs[0]
-                             app.songName = songDetail.name
-                             app.music_thumb = songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl
-                             app.music_img_min=imageCache(app.music_thumb + '?param=100y100')
-                             app.artists = songDetail.ar ? songDetail.ar[0].name : songDetail.artists[0].name
-                             api.imageCache({
-                                 url: songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl + '?param=300y300'
-                             }, function(ret, err) {
-                                 app.music_imgurl = ret.url;
-                                 app.audioCover()
-                             });
-                           }else{
+                            if (ret.code == 200) {
+                                music.play()
+                                var songDetail = ret.songs[0]
+                                app.songName = songDetail.name
+                                app.music_thumb = songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl
+                                app.music_img_min = imageCache(app.music_thumb + '?param=100y100')
+                                app.artists = songDetail.ar ? songDetail.ar[0].name : songDetail.artists[0].name
+                                api.imageCache({
+                                    url: songDetail.al ? songDetail.al.picUrl : songDetail.album.picUrl + '?param=300y300'
+                                }, function(ret, err) {
+                                    app.music_imgurl = ret.url;
+                                    app.audioCover()
+                                });
+                            } else {
 
-                             api.alert({
-                                 title: '错误提示',
-                                 msg: "API故障请联系管理员",
-                             }, function(ret, err){
-                                 if( ret ){
-                                      alert( JSON.stringify( ret ) );
-                                 }else{
-                                      alert( JSON.stringify( err ) );
-                                 }
-                             });
+                                api.alert({
+                                    title: '错误提示',
+                                    msg: "API故障请联系管理员",
+                                }, function(ret, err) {
+                                    if (ret) {
+                                        // alert( JSON.stringify( ret ) );
+                                    } else {
+                                        // alert( JSON.stringify( err ) );
+                                    }
+                                });
 
-                           }
+                            }
 
                         })
                     } else {
 
-                        if(err.msg=="连接错误，请检查网络或者请求配置是否正确"){
-                          api.alert({
-                              title: '错误',
-                              msg: err.msg,
-                          }, function(ret, err){
+                        if (err.statusCode == 400) {
+                            api.alert({
+                                title: '错误',
+                                msg: err.msg,
+                            }, function(ret, err) {
 
-                          });
+                            });
 
-                        }else{
-                          api.toast({
-                              msg: ret.message,
-                              duration: 2000,
-                              location: 'bottom'
-                          });
-                          app.playNext()
+                        } else {
+                            api.toast({
+                                msg: ret.message,
+                                duration: 2000,
+                                location: 'bottom'
+                            });
+                            app.playNext()
                         }
 
 
@@ -575,23 +576,28 @@
             },
             playNext: function() {
                 // console.log(app.index+1);
-                var isRepeat = $api.getStorage('isRepeat') && $api.getStorage('isRepeat') == 1 ? true : false
-                if (isRepeat) {
-                    app.pause()
-                    app.init()
-                } else {
-
-
-                    if (app.index + 1 == app.songdatalist.length) {
-                        app.songid = app.songdatalist[0].id
+                if (this.isclick) {
+                   app.isclick= false;
+                    var isRepeat = $api.getStorage('isRepeat') && $api.getStorage('isRepeat') == 1 ? true : false
+                    if (isRepeat) {
+                        app.pause()
                         app.init()
-                        app.index = 0
                     } else {
-                        app.songid = app.songdatalist[app.index + 1].id
-                        app.init()
-                        app.index = app.index + 1
+                        if (app.index + 1 == app.songdatalist.length) {
+                            app.songid = app.songdatalist[0].id
+                            app.init()
+                            app.index = 0
+                        } else {
+                            app.songid = app.songdatalist[app.index + 1].id
+                            app.init()
+                            app.index = app.index + 1
 
+                        }
                     }
+                    //定时器
+                    setTimeout(function() {
+                        app.isclick = true;
+                    }, 500);
                 }
 
             },
@@ -609,8 +615,6 @@
             },
             initmlist() { //初始化播放BAR,还没弄好
                 var db = api.require('db');
-
-
                 db.openDatabase({
                     name: 'history2'
                 }, function(ret, err) {
@@ -671,7 +675,7 @@
             },
 
             openPlayer() {
-                if (this.songName != '新感官音乐世界'&&this.music_imgurl!='') {
+                if (this.songName != '新感官音乐世界' && this.music_imgurl != '') {
                     api.openWin({
                         name: 'nww',
                         url: '../../html/music/bo_head.html',
@@ -687,7 +691,7 @@
                             mp3: this.music_mp3,
                             songName: this.songName,
                             artists: this.artists,
-                            music_imgurl: this.music_imgurl||this.music_img_min,
+                            music_imgurl: this.music_imgurl || this.music_img_min,
                             index: this.index,
                             duration: this.duration,
                             music_thumb: this.music_thumb

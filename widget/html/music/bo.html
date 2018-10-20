@@ -182,22 +182,32 @@
 		app.init()
 		app.getLyric()
 		api.addEventListener({
-		    name: 'upDateSongInfo'
-		}, function(ret, err){
-		    if( ret ){
-					// console.log(JSON.stringify(ret))
-		         app.music_title=ret.value.songName
-						 app.music_artist=ret.value.artists
-						 app.music_id=ret.value.songid
-						 app.music_imgurl=ret.value.music_imgurl
-						 app.duration=ret.value.duration
-						 app.music_mp3=ret.value.mp3
-						 app.music_thumb=ret.value.thumb
+			name: 'upDateSongInfo'
+		}, function(ret, err) {
+			if (ret) {
+				// console.log(JSON.stringify(ret))
+				app.music_title = ret.value.songName
+				app.music_artist = ret.value.artists
+				app.music_id = ret.value.songid
+				app.music_imgurl = ret.value.music_imgurl
+				app.duration = ret.value.duration
+				app.music_mp3 = ret.value.mp3
+				app.music_thumb = ret.value.thumb
 
-						 app.getLyric()
-		    }else{
-		         alert( JSON.stringify( err ) );
-		    }
+				// 判断是否like
+				var likelist = $api.getStorage('likelist')
+
+				var res = $.inArray(app.music_id, likelist);
+				if (res != -1) {
+					app.islike = true
+				} else {
+					app.islike = false
+				}
+
+				app.getLyric()
+			} else {
+				alert(JSON.stringify(err));
+			}
 		});
 
 
@@ -206,7 +216,7 @@
 		}, function(ret, err) {
 			if (ret) {
 				app.current = ret.value.current
-				app.isPlaying=true
+				app.isPlaying = true
 					// 歌词显示
 				getLyrics(app.lyric, app.current, function(i) {
 
@@ -228,13 +238,13 @@
 		});
 
 		api.addEventListener({
-		    name: 'isNotPlaying'
-		}, function(ret, err){
-		   app.isPlaying=false
+			name: 'isNotPlaying'
+		}, function(ret, err) {
+			app.isPlaying = false
 		});
 
- // 判断是否循环播放
-   app.isRepeat=$api.getStorage('isRepeat')&&$api.getStorage('isRepeat')==1 ? true : false
+		// 判断是否循环播放
+		app.isRepeat = $api.getStorage('isRepeat') && $api.getStorage('isRepeat') == 1 ? true : false
 
 	}
 
@@ -267,9 +277,9 @@
 			calssB: "calssB"
 		},
 		watch: {
-				music_mp3(curVal, oldVal) {
-						// console.log(curVal, oldVal);　　　　　　　　
-				}
+			music_mp3(curVal, oldVal) {
+				console.log(curVal, oldVal);　　　　　　　　
+			}
 
 		},
 		methods: {
@@ -286,11 +296,11 @@
 				app.music_title = api.pageParam.songName
 				app.music_artist = api.pageParam.artists
 				app.music_imgurl = api.pageParam.music_imgurl
-				app.music_thumb=api.pageParam.music_thumb
+				app.music_thumb = api.pageParam.music_thumb
 				app.duration = api.pageParam.duration
 				app.dur = formatSeconds(app.duration)
-				app.music_mp3=api.pageParam.mp3
- 	},
+				app.music_mp3 = api.pageParam.mp3
+			},
 			switchmusic: function() {
 				if (app.isPlaying) {
 					app.isPlaying = false;
@@ -441,15 +451,15 @@
 
 				} else {
 					app.isRepeat = true
-						$api.setStorage('isRepeat', 1);
+					$api.setStorage('isRepeat', 1);
 				}
 			},
 			playNext: function() {
 
-					api.sendEvent({
-						name: 'playNext',
+				api.sendEvent({
+					name: 'playNext',
 
-					});
+				});
 
 
 			},
@@ -461,7 +471,7 @@
 
 			},
 			shoucang: function() {
-        var islike=app.islike?false:true
+				var islike = app.islike ? false : true
 				getinfo.getDengLuInfo('/like?like=' + islike + '&id=' + app.music_id, function(data) {
 					//  console.log(JSON.stringify(data));
 					app.islike = app.islike ? false : true
