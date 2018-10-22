@@ -19,7 +19,7 @@ function saveMlistDB(sid, name, artist, pic, date) {
                         sql: "INSERT INTO mlist (mlist_id,id,mlist_name,mlist_artist,mlist_pic,mlist_date) VALUES ('" + sid + "', '" + sid + "','" + name + "', '" + artist + "', '" + pic + "','" + date + "')",
                     }, function(ret, err) {
                         if (ret.status) {
-                            //  alert(JSON.stringify(ret));
+                            console.log(JSON.stringify(ret));
                         } else {
                             //  alert(JSON.stringify(err));
                         }

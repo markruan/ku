@@ -257,7 +257,7 @@
                 var sid = ret.value.id
                 app.songid = ret.value.id
                 app.index = ret.value.index
-                    // console.log(JSON.stringify(ret.value.songlist));
+                    console.log(JSON.stringify(ret.value.songlist));
                 if (typeof(ret.value.songlist) == 'string') {
                     app.songdatalist = $api.strToJson(ret.value.songlist);
 
@@ -441,12 +441,12 @@
             init: function() {
                 app.isfirstopen = true
                 music.isPlay(app.songid, function(ret, err) {
-                    console.log(JSON.stringify(err));
+
                     if (ret.success) {
                         app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
 
                         music.getMusicInfo(app.songid, function(ret, err) {
-                            // console.log(JSON.stringify(ret));
+
                             if (ret.code == 200) {
                                 music.play()
                                 var songDetail = ret.songs[0]
