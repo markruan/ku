@@ -64,7 +64,7 @@
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-white H-font-size-14 H-vertical-middle"></i></span>
 		</div>
 
-		<div tapmode="" onclick="openWin('yijian', '意见反馈') " class="H-text-list H-flexbox-horizontal  H-theme-background-transparent H-vertical-middle H-touch-active">
+		<div tapmode="" onclick="startZhiChi() " class="H-text-list H-flexbox-horizontal  H-theme-background-transparent H-vertical-middle H-touch-active">
 			<span class="H-icon H-display-block H-margin-horizontal-left-10"><i class="H-iconfont H-icon-pen H-font-size-20 H-vertical-middle H-theme-font-color-white"></i></span>
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-theme-font-color-white">
 				意见反馈
@@ -165,6 +165,47 @@
 					});
 				}
 			}
+
+			function startZhiChi() {
+                var appkey = '345113f094c4441d90fe57b3de4cbb2d';
+                // androidkey
+                if (api.systemType == 'ios') {
+                        appkey = 'xxxxxxxx';
+                }
+                var param = {
+                        appkey: appkey,
+                        userId: "Your userId",
+                        nickName: "lucy",
+                        customInfo: {
+                                "age": "18",
+                        },
+                        isShowEvaluate: true,
+                        isSettingSkillSet: false,
+                        skillSetId: "",
+                        isShowTansfer: true,
+                        titleFont: 18.0,
+                        backgroundColor: "#f0f0f0",
+												customBannerColor:'#e8747e',
+                        topViewTextColor: "#FFFFFF",
+                        isCustomLinkClick: false,
+                        satisfactionSelectedBgColor: "#ffff00",
+                        satisfactionTextSelectedColor: "ff0000",
+                        customRobotHelloWord: "hello  我是机器人",
+                        customAdminNonelineTitle: '小符不在线',
+                        customAdminHelloWord: '客服来了',
+                        isCloseAfterEvaluation: "NO",
+                        notificationTopViewLabelColor: '#ff0000',
+                        notificationTopViewBgColor: '#ffff00'
+
+                };
+
+                function callBack(ret, err) {
+                        console.log(JSON.stringify(ret));
+                }
+
+                var zhichi = api.require('zhiChiSobot');
+                zhichi.startZhiChiSobot(param, callBack);
+        };
 		</script>
 </body>
 

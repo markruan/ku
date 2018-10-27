@@ -645,6 +645,7 @@
             },
             audioCover: function() {
                 audioCover = api.require('audioCover');
+                console.log(app.per);
                 var msg = {
                     totalTime: app.duration,
                     cover: app.music_imgurl,
@@ -660,7 +661,7 @@
                         app.play()
 
                     } else if (ret.eventType == 'next') {
-                        app.pause();
+                        app.stop();
                         app.playNext()
                     } else if (ret.eventType == 'previous') {
                         app.stop();
