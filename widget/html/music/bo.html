@@ -218,8 +218,8 @@
 				app.current = ret.value.current
 				app.isPlaying = true
 					// 歌词显示
+				// console.log(JSON.stringify(app.lyric));
 				getLyrics(app.lyric, app.current, function(i) {
-
 					$api.text($api.byId("zxx-lyric"), app.lyric[i].split(']')[1]);
 				});
 				var uislider = api.require('UISlider');

@@ -6,6 +6,8 @@
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <title>title</title>
     <link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+    <script type="text/javascript" src="../../script/vue.min.js"></script>
+
     <style>
         .zanting {
             width: 20px;
@@ -44,11 +46,38 @@
     var userId = $api.getStorage('userinfo').id
     var data, data1, catindex
 
-    function getdata(cat) {
+    var app = new Vue({
+        el: "#body",
+        data: {
+            index: 0,
+            cat:'流行',
+            menulength: '',
+            menudata: [],
+            listdata:[],
+            page:1
+        },
+        watch: {
+            index(curVal, oldVal) {
+                console.log(curVal);　
+                this.cat=　this.menudata[curVal].title
+                this.page=1
+                getdata()
+
+                　　　　　
+            }
+        },
+        methods:{
+
+
+        }
+    })
+
+
+    function getdata() {
         uiloading();
 
         api.ajax({
-            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + cat,
+            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + app.cat+'&offset='+(app.page -1)*30,
             cache: true,
         }, function(ret, err) {
 
@@ -97,7 +126,9 @@
                     data[i] = list
                 }
                     // console.log(JSON.stringify(ret));
-                start(data)
+                    app.menudata = data
+                    app.menulength = data.length
+                    start()
             } else {
                 alert(JSON.stringify(err));
             }
@@ -106,10 +137,11 @@
 
     }
 
-    function start(data) {
+    function start() {
         var MNNavigationMenu = api.require('MNNavigationMenu');
 
-        getdata(data[catindex].title)
+       getdata()
+
        MNNavigationMenu.open({
             rect: {
                 x: 0,
@@ -143,15 +175,20 @@
                     }
                 }
             },
-            items: data,
+            items: app.menudata,
             fixedOn: api.frameName,
             fixed: true
         }, function(ret, err) {
+          // console.log(JSON.stringify(ret));
+
             if (ret) {
 
-                catindex = ret.index
+                app.index = ret.index
 
-                getdata(data[catindex].title)
+                // getdata(app.menudata[catindex].title)
+                app.cat=app.menudata[app.index].title
+                getdata()
+
 
             } else {
                 alert(JSON.stringify(err));
@@ -160,7 +197,6 @@
     }
 
     H.ready(function() {
-        catindex = 0
         getcatlist()
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
@@ -171,11 +207,40 @@
             textUp: '松开刷新...',
             showTime: true
         }, function(ret, err) {
+            app.page=1
             getcatlist()
             api.hideProgress();
             api.refreshHeaderLoadDone();
         });
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+           app.page++
+           loadmore()
 
+
+        });
+
+        api.addEventListener({
+            name: 'swipeleft'
+        }, function(ret, err) {
+            if (app.index == app.menulength - 1) {
+                app.index = 0
+            } else {
+                app.index = app.index + 1
+            }
+
+            getdata(app.menudata[app.index].id)
+            var MNNavigationMenu = api.require('MNNavigationMenu');
+            MNNavigationMenu.setIndex({
+                index: app.index
+            }, function(ret, err) {
+
+            });
+        });
 
     });
 
@@ -195,6 +260,41 @@
                 lid: lid
             }
         });
+    }
+
+    function loadmore(){
+      uiloading();
+
+      api.ajax({
+          url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + app.cat+'&offset='+( app.page -1)*30,
+          cache: true,
+      }, function(ret, err) {
+
+          if (ret) {
+              // console.log(JSON.stringify(ret));
+
+              data = ret.playlists
+              data1 = {
+                  list: data
+              };
+              var render = H.tppl(H.D("#tppl").innerHTML);
+              H.append((".result"),null,render(data1)) ;
+              //						懒加载
+              echo.init({
+                  offset: 0,
+                  throttle: 350,
+                  unload: false,
+                  callback: function(element, op) {}
+              });
+              stoploading()
+
+              // $api.removeCls($api.byId('body'), 'H-display-none');
+
+
+          } else {
+              alert(JSON.stringify(err));
+          }
+      });
     }
 </script>
 

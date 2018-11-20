@@ -29,6 +29,7 @@ function parseLyrics(lyric) {
 //		return a[0] - b[0];
 //	});
 var lines = lyric.split('\n')
+  // console.log(lines);
 	return lines;
 }
 
@@ -60,7 +61,7 @@ function getLyrics(lyric, currTime, callback) {
 		callback = false;
 	}
 	for (var i = 0; i < lyric.length; i++) {
-//		console.log(lyric[i]);
+		// console.log(lyric.length);
 		if (lyric[i].indexOf(currTime) > 0) {
 			callback(i);//回调
 			break;
