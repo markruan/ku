@@ -1,11 +1,11 @@
+
 function play_c() {
     // uiloading();
     var audioPlayer = api.require('audioPlayer');
     audioPlayer.stop();
-    // console.log(app.music_mp3);
     audioPlayer.initPlayer({
         path: app.music_mp3,
-        cache: true
+        cache: false
     }, function(ret) {
         // console.log(ret.status);
         if (ret.status) {

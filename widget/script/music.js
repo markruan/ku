@@ -28,34 +28,51 @@ function neteaseMusicURL(params) {
     return ApiURL + params;
 }
 
-var listAry = [1, 2, 11, 12, 16, 21, 22, 23, 24, 25];
+function player() {
+    var audioPlayer = api.require('audioPlayer');
+    audioPlayer.pause();
+    audioPlayer.initPlayer({
+        path: app.music_mp3,
+        cache: false
+    }, function(ret) {
 
-function listName(type) { //获取榜单名称
-    switch (type) {
-        case 1:
-            return '新歌榜';
-        case 2:
-            return '热歌榜';
-        case 11:
-            return '摇滚榜';
-        case 12:
-            return '爵士榜';
-        case 16:
-            return '流行音乐榜';
-        case 21:
-            return '欧美金曲榜';
-        case 22:
-            return '经典老歌榜';
-        case 23:
-            return '情歌榜';
-        case 24:
-            return '影视金曲榜';
-        case 25:
-            return '网络歌曲榜';
-        default:
-            return '非法索引！';
-    }
+        if (ret.status) {
+            stoploading()
+                // 存播放记录
+            var datetime = Number(new Date())
+            saveMlistDB(app.songid, app.songName, app.artists, app.music_img_min, datetime)　
+            var duration = ret.duration;
+            app.duration = ret.duration
+            var dur = formatSeconds(duration);
+            app.dur = dur
+            audioPlayer.addEventListener({
+                name: 'playing'
+            }, function(ret, err) {
+                app.cur = ret.current
+                var percent = (app.cur / app.duration) * 100;
+                app.per = Math.round(percent);
+                app.current = formatSeconds(app.cur);
+                app.audioCover()
+                app.cur = ret.current
+                var percent = (app.cur / app.duration) * 100;
+                app.per = Math.round(percent);
+
+                app.current = formatSeconds(app.cur);
+                api.sendEvent({
+                    name: 'per',
+                    extra: {
+                        per: app.per,
+                        current: app.current
+                    }
+                });
+
+
+            });
+
+        }
+    });
 }
+
 
 
 /**
@@ -64,14 +81,6 @@ function listName(type) { //获取榜单名称
 function neteaseMusic() {
 
 
-
-    /**
-     *  使用示例
-     * 	var bm = new neteaseMusic();
-     *  bm.send(bm.info(877578),function(ret,err){
-    		zxx_netAudio(netAudio,ret.bitrate.file_link);
-    	});
-     */
     this.send = function(doUrl, callback) { //发送远程请求
             if (typeof callback !== 'function') { //检查回调函数是否可用调用的
                 callback = false;
@@ -94,23 +103,23 @@ function neteaseMusic() {
         return 'http://music.163.com/song/media/outer/url?id=' + id + '.mp3'
     }
     this.getMusicInfo = function(id, callback) {
-      var url1="http://music.163.com/api/song/detail/?id="
-      // var url2="https://api.imjad.cn/cloudmusic/?type=detail&id="
+        var url1 = "http://music.163.com/api/song/detail/?id="
+            // var url2="https://api.imjad.cn/cloudmusic/?type=detail&id="
 
         api.ajax({
-            url: url1 + id+'&ids=['+id+']'
-            // url:url2+id
+            url: url1 + id + '&ids=[' + id + ']'
+                // url:url2+id
 
         }, function(ret, err) {
             callback(ret, err);
         });
     }
-    this.getartists = function(limit,callback) {
+    this.getartists = function(limit, callback) {
 
 
         api.ajax({
             // url: url1 + id+'&ids=['+id+']'
-            url:musicApi+'/top/artists?offset=0&limit='+limit
+            url: musicApi + '/top/artists?offset=0&limit=' + limit
 
         }, function(ret, err) {
             callback(ret, err);
@@ -125,49 +134,20 @@ function neteaseMusic() {
         });
     }
     this.play = function() {
-        var audioPlayer = api.require('audioPlayer');
-        audioPlayer.pause();
-        audioPlayer.initPlayer({
-            path: app.music_mp3,
-            cache: true
-        }, function(ret) {
+          console.log(JSON.stringify(123));
+        getCache('songCache', app.songid, function(ret, err) {
 
-            if (ret.status) {
-                stoploading()
-                // 存播放记录
-            var datetime = Number(new Date())
-            saveMlistDB(app.songid, app.songName, app.artists, app.music_img_min, datetime)　
-                var duration = ret.duration;
-                app.duration = ret.duration
-                var dur = formatSeconds(duration);
-                app.dur = dur
-                audioPlayer.addEventListener({
-                    name: 'playing'
-                }, function(ret, err) {
-                    app.cur = ret.current
-                    var percent = (app.cur / app.duration) * 100;
-                    app.per = Math.round(percent);
-                    app.current = formatSeconds(app.cur);
-                    app.audioCover()
-                    app.cur = ret.current
-                    var percent = (app.cur / app.duration) * 100;
-                    app.per = Math.round(percent);
-
-                    app.current = formatSeconds(app.cur);
-                    api.sendEvent({
-                        name: 'per',
-                        extra: {
-                            per: app.per,
-                            current: app.current
-                        }
-                    });
-
-
-                });
-
+            if (ret.code == 0) {
+                console.log(JSON.stringify(ret.data));
+                app.music_mp3 = ret.data
+                player()
+            } else {
+                player()
+                songCache(app.songid, app.music_mp3)
             }
-        });
+        })
     }
+
 
 
 
@@ -346,4 +326,104 @@ function formatSeconds(value) {
         }
         return result;
     }
+}
+// 缓存方法
+function saveCache(dataName, key, data) {
+
+    if (api.systemType == 'android') {
+        var spModule = api.require('spModule');
+        spModule.writeData({
+            name: dataName,
+            key: key,
+            data: data,
+            type: 0
+        });
+    } else {
+        var data = $api.jsonToStr(data)
+        api.writeFile({
+            path: api.cacheDir + dataName + key + '.json',
+            data: data
+        }, function(ret, err) {});
+
+    }
+
+}
+
+function getCache(dataName, key, callback) {
+
+    if (api.systemType == 'android') {
+        var spModule = api.require('spModule');
+        spModule.readData({
+            name: dataName,
+            key: key,
+            type: 0
+        }, function(ret, err) {
+            if (ret.data) {
+                var data = {
+                    data: ret.data,
+                    code: 0
+                }
+
+                callback(data, err); //回调
+            } else {
+                callback(ret, err); //回调
+            }
+        });
+    } else {
+        api.readFile({
+            path: api.cacheDir + dataName + key + '.json',
+        }, function(ret, err) {
+            if (ret.status) {
+                var data = {
+                    data: ret.data,
+                    code: 0
+                }
+
+                callback(data, err); //回调
+            } else {
+                callback(ret, err); //回调
+            }
+        });
+
+
+    }
+
+}
+
+
+function delCache(dataName, key) {
+    if (api.systemType == 'android') {
+        var spModule = api.require('spModule');
+        spModule.deleteData({
+            name: dataName,
+            key: key
+        });
+    } else {
+        api.writeFile({
+            path: api.cacheDir + dataName + key + '.json',
+            data: null
+        }, function(ret, err) {
+
+        });
+
+
+    }
+}
+/////////////////歌曲缓存方法//////
+function songCache(songid, url) {
+    api.download({
+        url: url,
+        savePath: api.cacheDir + '/mp3/' + songid + '.mp3',
+        report: true,
+        cache: true,
+        allowResume: true
+    }, function(ret, err) {
+        // console.log(JSON.stringify(ret));
+        if (ret.state == 1) {
+            var savePath = ret.savePath
+
+            saveCache('songCache', songid, savePath)
+        }
+    });
+
 }
