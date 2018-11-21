@@ -62,6 +62,17 @@
                 this.cat=　this.menudata[curVal].title
                 this.page=1
                 getdata()
+                if(curVal==0){
+                  api.setFrameGroupAttr({
+                      name: 'groups',
+                      scrollEnabled: true
+                  });
+                }else{
+                  api.setFrameGroupAttr({
+                      name: 'groups',
+                      scrollEnabled: false
+                  });
+                }
 
                 　　　　　
             }
