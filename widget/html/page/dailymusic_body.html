@@ -7,6 +7,8 @@
 	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 	<title>歌单</title>
 	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+
 	<style>
 		html,
 		body {
@@ -548,25 +550,11 @@
 		<!-- 1 用户登录 -->
 		<div class="egret-flex-item musiclistprofile">
 			<img src="../../image/frame0101cover/europe_cover.jpg" alt="" class="topheaderbg">
-			<img id="usericon" src="" alt="" class="topheaderlogo">
-			<!-- <div class="topheadercollect">
-		<img src="../../image/frame0101cover/cm2_pro_head_140.png" alt="" class="border">
-		<img src="../../image/frame0101cover/cm2_mv_btn_fav.png" alt="" class="inside">
-	</div> -->
+			<img id="usericon" src="" alt="" class="topheaderlogo H-paper-2 ">
+
 			<div class="info">只推荐你喜欢的音乐...</div>
 		</div>
 
-		<!-- 2 播放全部 -->
-		<!-- <div class="egret-flex-item isolateitem-bottom playall" tapmode="allplayhover" @click="openMusicPlay">
-			<div class="egret-flex-item-logo">
-				<img src="../../image/musiclist/musiclistplay.png" alt="" class="">
-			</div>
-			<div class="egret-flex-item-shelf">
-				<div class="egret-flex-item-shelf01">播放全部</div>
-			</div>
-		</div> -->
-
-		<!-- 3  -->
 
 		<div v-for="(item,index) in listData" class="egret-flex-item musiclist-item">
 			<div class="egret-flex-item-abright" @click='openMusic(item.id,index,item.name)' :class="{active: activeName == item.name}">

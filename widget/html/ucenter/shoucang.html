@@ -62,21 +62,11 @@
 
     function getdata() {
         uiloading();
-        api.readFile({
-            path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json'
-        }, function(ret, err) {
-            if (ret.status) {
+        getCache('like',UserLikeLlistID, function(ret, err) {
+
+            if (ret.data) {
                   data = $api.strToJson(ret.data)
                     // 存储喜欢的歌单ID,播放页面使用
-                var likeids = []
-
-                for (var i = 0; i < data.length; i++) {
-                    var list = []
-                    list = data[i].id
-                    likeids[i] = list
-                }
-                $api.setStorage('likelist', likeids);
-
                 data1 = {
                     list: data
                 };
@@ -93,6 +83,14 @@
                 });
                 stoploading()
                 updateinfo()
+                var likeids = []
+
+                for (var i = 0; i < data.length; i++) {
+                    var list = []
+                    list = data[i].id
+                    likeids[i] = list
+                }
+                $api.setStorage('likelist', likeids);
 
             } else {
                 api.ajax({
@@ -101,6 +99,7 @@
                 }, function(ret, err) {
                     if (ret) {
                         data = ret.playlist.tracks
+                        saveCache('like',UserLikeLlistID,data)
                         var likeids = []
 
                         for (var i = 0; i < data.length; i++) {
@@ -110,13 +109,8 @@
                         }
                         $api.setStorage('likelist', likeids);
                         // 存储缓存
-                        api.writeFile({
-                            path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json',
-                            data: data
-                        }, function(ret, err) {
 
-                        });
-                        ///
+
                         data1 = {
                             list: data
                         };
@@ -151,12 +145,7 @@
             if (ret) {
                 data = ret.playlist.tracks
                     // 存储缓存
-                api.writeFile({
-                    path: api.fsDir + '/cache/like' + UserLikeLlistID + '.json',
-                    data: data
-                }, function(ret, err) {
-
-                });
+               saveCache('like',UserLikeLlistID,data)
                 ///
 
 
