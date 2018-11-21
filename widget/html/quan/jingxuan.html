@@ -22,7 +22,7 @@
 
     <% for(var i=0; i < list.length; i++){ %>
         <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(<%=list[i].id %>)">
-            <img data-echo="<%=imageCache(list[i].coverImgUrl+'?param=400y400')%>" src="../../image/default.jpg" class="H-width-100-percent H-display-block H-paper-2" alt="" title="">
+            <img data-echo="<%=imageCache(list[i].coverImgUrl+'?param=400y400')%>" src="../../image/default.jpg" class="animated fadeIn H-width-100-percent H-display-block H-paper-2" alt="" title="">
             <div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5 H-text-show-row-1">
                 <%=list[i].name.substring(0,16) %>
             </div>

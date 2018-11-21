@@ -595,10 +595,24 @@
 			openMusicPlay: function() {
 				app.openMusic(app.listData[0].id, 0)
 			},
+			getCache(){
+        getCache('dailymusic','daily',function(ret,err){
+					if(ret.data){
+						stoploading()
+						app.listData=$api.strToJson(ret.data)
+						app.getdaily()
+					}else{
+            app.getdaily()
+					}
+				})
+
+			},
+
 			getdaily: function() {
 				var getdailysong = new getinfo()
 				getdailysong.getDengLuInfo('/recommend/songs', function(data) {
 					app.listData = data.recommend
+					saveCache('dailymusic','daily',data.recommend)
 					$api.setStorage('listm', app.listData);
 					stoploading()
 				})
@@ -612,8 +626,8 @@
 
 	apiready = function() {
 		$api.attr($api.byId('usericon'), 'src', $api.getStorage('userinfo').avatarUrl);
-    uiloading()
-   	app.getdaily();
+    
+   	app.getCache()
 		api.setRefreshHeaderInfo({
 			loadingImg: 'widget://image/refresh.png',
 			visible: true,
