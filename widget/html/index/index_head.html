@@ -333,6 +333,20 @@
 
         H.openFrameGroupNavOrFoot(function(ret, err) {
             app.setStyle(ret.index);
+            if(ret.index==1){
+              api.setFrameGroupAttr({
+                  name: 'groups',
+                  scrollEnabled: false
+              });
+                api.lockSlidPane();
+
+            }else{
+              api.setFrameGroupAttr({
+                  name: 'groups',
+                  scrollEnabled: true
+              });
+              api.unlockSlidPane();
+            }
         }, "groups", [{
             url: '../../html/page/page_frm.html',
             name: 'kuxuan'

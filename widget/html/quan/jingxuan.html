@@ -58,7 +58,7 @@
         },
         watch: {
             index(curVal, oldVal) {
-                console.log(curVal);　
+                // console.log(curVal);　
                 this.cat=　this.menudata[curVal].title
                 this.page=1
                 getdata()
@@ -241,9 +241,30 @@
 
             });
         });
+        api.addEventListener({
+            name: 'swiperight'
+        }, function(ret, err) {
+            if (app.index == 0) {
+              api.setFrameGroupAttr({
+                  name: 'groups',
+                  scrollEnabled: true
+              });
+            } else {
+                app.index = app.index -1
+                api.lockSlidPane();
+            }
+
+            getdata(app.menudata[app.index].id)
+            var MNNavigationMenu = api.require('MNNavigationMenu');
+            MNNavigationMenu.setIndex({
+                index: app.index
+            }, function(ret, err) {
+
+            });
+        });
 
     });
-   
+
 
     // 打开歌曲列表
     function openMusicList(lid) {
