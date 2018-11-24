@@ -90,11 +90,12 @@
 
             <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
                 <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
-                <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">排行榜</div>
+                <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">排行榜 </div>
                 <!-- <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'gedanwin',url:'../../html/gedan/gedan_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span> -->
             </div>
-            <div id="tui" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
-            <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  ">
+            <div id="tui1" class="H-margin-vertical-top-10  H-clear-both H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-10"></div>
+
+            <div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle  " style="margin-top:210px">
                 <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
                 <div class="H-channel-text H-theme-font-color-red H-flex-item H-font-size-12 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">热门歌手</div>
                 <span class="H-vertical-middle H-theme-font-color-ccc" onclick="api.openWin({name:'artistslist',url:'../../html/artistlist/artistlist_head.html'})"> <label class="H-font-size-13">更多</label> <label class="H-font-size-13 H-iconfont H-icon-arrow-right"></label> </span>
@@ -151,37 +152,53 @@
     }
     // 热门推荐初始化
     function tui() {
-        var data = [{
-            idx: 3779629,
-            name: "新歌榜",
-            pic: "http://p1.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg?param=320y180",
-        }, {
-            idx: 3778678,
-            name: "热歌榜",
-            pic: "http://p1.music.126.net/GhhuF6Ep5Tq9IEvLsyCN7w==/18708190348409091.jpg?param=320y180",
-        }, {
-            idx: 4395559,
-            name: "金曲榜",
-            pic: "http://p1.music.126.net/N2whh2Prf0l8QHmCpShrcQ==/19140298416347251.jpg?param=320y180",
-        }, {
-            idx: 60198,
-            name: "美国Billboard周榜",
-            pic: "http://p1.music.126.net/EBRqPmY8k8qyVHyF8AyjdQ==/18641120139148117.jpg?param=320y180",
-        }];
-        uiloading()
-            // console.log(JSON.stringify(data));
 
-        var html = '';
-        for (i = 0; i < 4; i++) {
-            var lid = data[i].idx;
-            var coverImgUrl = imageCache(data[i].pic)
-            var tracksName = data[i].name
-            html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + lid + ')">';
-            html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-paper-2 " style="border-radius: 5px;height:120px;"    >';
-            html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
-        }
-        var tui = $api.byId('tui');
-        $api.html(tui, html);
+        getCache('hot', 'hot', function(ret, err) {
+
+            if (ret.data) {
+                var data = $api.strToJson(ret.data)
+                    // delCache('hot','hot')
+
+                openUICoverFlow(data)
+            } else {
+                api.ajax({
+                    url: musicApi + '/toplist/detail',
+
+                }, function(ret, err) {
+
+                    if (ret.code == 200) {
+                        var data1 = ret.list
+                        var data = []
+                        for (var i = 0; i < 10; i++) {
+                            var obj = {}
+                            obj.url = data1[i].coverImgUrl + '?param=520y380"'
+                            obj.id = data1[i].id
+                            data[i] = obj
+                        }
+                        // console.log(JSON.stringify(data));
+                        openUICoverFlow(data)
+                        saveCache('hot', 'hot', data)
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+            }
+        })
+
+        // console.log(JSON.stringify(data));
+
+        // var html = '';
+        // for (i = 0; i < 4; i++) {
+        //     var lid = data[i].idx;
+        //     var coverImgUrl = imageCache(data[i].pic)
+        //     var tracksName = data[i].name
+        //     html += '<div class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10  H-margin-vertical-bottom-10" tapmode onclick="openMusicList(' + lid + ')">';
+        //     html += '<img     src="' + coverImgUrl + '" class=" animated fadeIn H-width-100-percent H-display-block H-paper-2 " style="border-radius: 5px;height:120px;"    >';
+        //     html += '<div class="H-text-align-center H-font-size-14 H-padding-vertical-top-5">' + tracksName + '</div></div>';
+        // }
+        // var tui = $api.byId('tui');
+        // $api.html(tui, html);
 
     }
 
@@ -231,6 +248,8 @@
 
         var userinfo = $api.getStorage('userinfo')
         huandeng()
+      
+
 
         // 初始化获取用户统计
         if (!$api.getStorage('usercount')) {
@@ -239,6 +258,7 @@
 
             })
         }
+
         api.parseTapmode();
         api.setRefreshHeaderInfo({
             loadingImg: 'widget://image/refresh.png',
@@ -444,7 +464,7 @@
                 }, function(ret, err) {
                     // if (ret.eventType == "click") {
                     //     // var lid = initdata.gedanlist[ret.index].idd
-                    //         // openMusicList(lid)
+                    //         // `openMusicList`(lid)
                     // } else {
                     //     // alert(JSON.stringify(err));
                     // }
@@ -532,7 +552,7 @@
     }
 
     function getArtists() {
-        music.getartists(6,function(ret) {
+        music.getartists(6, function(ret) {
             $api.setStorage('mlist', ret.artists);
 
             if (ret.code = 200) {
@@ -544,20 +564,60 @@
         })
     }
 
-    function openartist(artistId, artistName,button) {
-        var img=$api.attr($api.first(button),"src")
+    function openartist(artistId, artistName, button) {
+        var img = $api.attr($api.first(button), "src")
         api.openWin({
             name: 'artistlist_h',
             url: '../../html/artist/artist_head.html',
             pageParam: {
                 artistId: artistId,
                 artistName: artistName,
-                  artistImg:img
+                artistImg: img
             },
             animation: {
                 type: "movein", //动画类型（详见动画类型常量）
                 subType: "from_bottom", //动画子类型（详见动画子类型常量）
                 duration: 400
+            }
+        });
+    }
+
+    function openUICoverFlow(data) {
+        var UICoverFlow = api.require('UICoverFlow');
+        UICoverFlow.open({
+            rect: {
+                x: 10,
+                y: 685,
+                w: api.winWidth - 20,
+                h: 220
+            },
+            styles: {
+                bg: '#fff',
+                image: {
+                    activeW: api.winWidth - 150,
+                    activeH: 145,
+                    corner: 6,
+                    placeholder: 'widget://image/default.jpg'
+                }
+
+            },
+            images: data,
+            indicator: { //（可选项）JSON 类型；指示器的样式设置；默认：未设置时不显示
+                bg: '#c19e9e', //（可选项）字符串类型；指示器未激活时的背景，支持 rgb，rgba，#；默认：#eee
+                active: '#f00', //（可选项）字符串类型；指示器激活时的背景，支持 rgb，rgba，#；默认：#eee
+            },
+            index: 2,
+            interval: 2000,
+            fixedOn: api.frameName,
+            fixed: false
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.eventType == 'click') {
+                    var id = data[ret.index].id
+                    openMusicList(id)
+                }
+            } else {
+                alert(JSON.stringify(err));
             }
         });
     }

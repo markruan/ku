@@ -526,7 +526,7 @@
 		<div v-show="!isloading">
 			<div id='ava' class="egret-flex-item musiclistprofile">
 				<div class="egret-flex-item-logo">
-					<img :src="coverImgUrl" alt="" class="H-paper-2 animated fadeIn">
+					<img :src="coverImgUrl" alt="" class="H-paper-2 animated fadeIn" @click="openPhoto(coverImgUrl)">
 				</div>
 				<div class="egret-flex-item-shelf">
 					<div class="egret-flex-item-shelf01" style="font-size: 1em">
@@ -586,17 +586,17 @@
 				</div>
 			</div>
 			<!-- 列表部分 -->
-			<div class="egret-flex-item musiclist-item H-touch-active" v-for="(item,index) in songdatalist" @click="openMusci(item.id,index,item.id) " :class="{active: activeName == item.id}">
+			<div class="egret-flex-item musiclist-item H-touch-active" v-for="(item,index) in songdatalist" :class="{active: activeName == item.id}">
 				<div class="egret-flex-item-logo">
 					{{index+1}}
 				</div>
 				<div class="egret-flex-item-abright">
-					<div tapmode class="egret-flex-item-shelf  ">
+					<div tapmode class="egret-flex-item-shelf  " @click="openMusci(item.id,index,item.id) ">
 						<div class="egret-flex-item-shelf01">{{item.name}}</div>
 						<div class="egret-flex-item-shelf02">{{item.ar['0'].name}}</div>
 					</div>
 					<div class="egret-flex-item-arrow">
-						<!-- <img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg" onclick="expandlist(0, this)"> -->
+						<img src="./image/musiclist/musiclistmore.png" alt="" class="toobarimg" @click="openmenu(item.id,item.ar['0'].id)">
 					</div>
 				</div>
 			</div>
@@ -605,7 +605,6 @@
 	</div>
 </body>
 <script type="text/javascript " src="../../script/api.js "></script>
-<script type="text/javascript " src="../../script/mm.js "></script>
 <script type="text/javascript " src="../../script/music.js "></script>
 <script type="text/javascript" src="../../script/jquery/jquery.min.js"></script>
 <!-- <script type="text/javascript " src="../../script/jquery/jquery.min.js "></script> -->
@@ -624,17 +623,17 @@
 			bounces: true
 		});
 		api.setRefreshHeaderInfo({
-				loadingImg: 'widget://image/refresh.png',
-				visible: true,
-				bgColor: '#f2f2f2',
-				textColor: '#4d4d4d',
-				textDown: '下拉刷新...',
-				textUp: '松开刷新...',
-				showTime: true
+			loadingImg: 'widget://image/refresh.png',
+			visible: true,
+			bgColor: '#f2f2f2',
+			textColor: '#4d4d4d',
+			textDown: '下拉刷新...',
+			textUp: '松开刷新...',
+			showTime: true
 		}, function(ret, err) {
-				app.getlistdata()
-				api.hideProgress();
-				api.refreshHeaderLoadDone();
+			app.getlistdata()
+			api.hideProgress();
+			api.refreshHeaderLoadDone();
 		});
 	}
 
@@ -653,7 +652,8 @@
 			iscollectmusic: false,
 			collectmusicIcon: './image/musiclist/musiclisttool01.png',
 			collectmusicIcon1: "./image/musiclist/musiclistcollect.png",
-			activeName: ''
+			activeName: '',
+			islike:false
 		},
 		created() {
 
@@ -674,7 +674,7 @@
 							// console.log(JSON.stringify(cachedata));
 						app.coverImgUrl = imageCache(cachedata.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(cachedata.creator.avatarUrl + '?param=40y40')
-						app.min_coverImgUrl =cachedata.coverImgUrl + '?param=100y100'
+						app.min_coverImgUrl = cachedata.coverImgUrl + '?param=100y100'
 						app.listdata = cachedata;
 						app.songdatalist = cachedata.tracks
 						app.songlistcount = cachedata.tracks.length
@@ -710,7 +710,7 @@
 						app.isloading = false
 						app.coverImgUrl = imageCache(ret.playlist.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(ret.playlist.creator.avatarUrl + '?param=40y40')
-						app.min_coverImgUrl =ret.playlist.coverImgUrl + '?param=40y40'
+						app.min_coverImgUrl = ret.playlist.coverImgUrl + '?param=40y40'
 						app.nickname = ret.playlist.creator.nickname
 						app.songlistcount = ret.playlist.tracks.length
 						app.listdata = ret.playlist
@@ -776,7 +776,7 @@
 						});
 					}
 				});
- 	}, //结束
+			}, //结束
 			openCom: function() {
 				if (!$api.getStorage('userinfo')) {
 					api.toast({
@@ -801,6 +801,149 @@
 					msg: '因版权问题暂无法提供下载'
 				});
 
+			},
+			openmenu(id,aid) {
+				var dialogBox = api.require('dialogBox');
+				dialogBox.tips({
+					rect: {
+						w: 250
+					},
+					// texts: {
+					//     title: '这里是标题文本',
+					//     content: '这里是内容'
+					// },
+					buttons: [{
+						normal: 'widget://html/music/image/musiclist/musiclisttool01.png',
+						highlight: 'widget://html/music/image/musiclist/musiclisttool01.png',
+						text: '收藏'
+					}, {
+						normal: 'widget://html/music/image/musiclist/musiclisttool04.png',
+						highlight: 'widget://html/music/image/musiclist/musiclisttool04.png',
+						text: '歌手'
+					}, {
+						normal: 'widget://html/music/image/musiclist/musiclistshare.png',
+						highlight: 'widget://html/music/image/musiclist/musiclistshare.png',
+						text: '分享'
+					}],
+					styles: {
+						bg: '#FFF',
+						topImage: {
+							path: 'widget://image/frame0101cover/korea_cover.jpg',
+							w: 250,
+							h: 100
+						},
+						// title: {
+						//     color: '#000',
+						//     size: 14,
+						//     marginT: 0
+						// },
+						// content: {
+						//     color: '#000',
+						//     size: 12,
+						//     marginT: 0
+						// },
+						border: {
+							color: '#eee',
+							width: 2,
+							marginT: 2
+						},
+						buttons: [{
+							iconSize: 40,
+							textColor: '#000',
+							textSize: 12,
+							marginT: 15,
+							space: 25
+						}, {
+							iconSize: 40,
+							textColor: '#000',
+							textSize: 12,
+							marginT: 15,
+							space: 25
+						}, {
+							iconSize: 40,
+							textColor: '#000',
+							textSize: 12,
+							marginT: 15,
+							space: 25
+						}]
+					},
+					tapClose: true
+				}, function(ret) {
+
+					switch (ret.index) {
+						case 0:
+							app.shoucangSong(id)
+							break;
+						case 1:
+              app.openart(aid)
+							break;
+					  case 2:
+								alert(2)
+							break;
+						default:
+
+					}
+				});
+
+			},
+			openart(aid){
+				var dialogBox = api.require('dialogBox');
+					dialogBox.close({
+							dialogName: 'tips'
+					});
+				api.openWin({
+					name: 'artistlist_h',
+					url: '../../html/artist/artist_head.html',
+					pageParam: {
+						artistId: aid,
+						// artistName:artistName,
+						// artistImg:img,
+						// from:'search'
+					},
+					animation: {
+						type: "movein", //动画类型（详见动画类型常量）
+						subType: "from_bottom", //动画子类型（详见动画子类型常量）
+						duration: 400
+					}
+				});
+			},
+			shoucangSong(id){
+				var likelist = $api.getStorage('likelist')
+
+				var res = $.inArray(id, likelist);
+				if (res != -1) {
+					app.islike = true
+				} else {
+					app.islike = false
+				}
+				var islike = app.islike ? false : true
+ 				getinfo.getDengLuInfo('/like?like=' + islike + '&id=' + id, function(data) {
+ 					 console.log(JSON.stringify(data));
+ 					app.islike = app.islike ? false : true
+ 					if (data.code == 200) {
+						var dialogBox = api.require('dialogBox');
+							dialogBox.close({
+							    dialogName: 'tips'
+							});
+ 						api.toast({
+ 							msg: '成功',
+ 							duration: 2000,
+ 							location: 'bottom'
+ 						});
+
+ 					} else {
+						var dialogBox = api.require('dialogBox');
+							dialogBox.close({
+							    dialogName: 'tips'
+							});
+ 						api.toast({
+ 							msg: '失败',
+ 							duration: 2000,
+ 							location: 'bottom'
+ 						});
+
+ 					}
+ 				})
 			},
 			collectmusic: function() {
 
@@ -858,6 +1001,15 @@
 					})
 
 				}
+			},
+			openPhoto(url){
+				var dd = []
+        dd[0]=url
+		    var imageBrowser = api.require('imageBrowser');
+		    imageBrowser.openImages({
+		        imageUrls: dd,
+		        showList: false,
+		    });
 			}
 
 		}

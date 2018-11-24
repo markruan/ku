@@ -21,8 +21,8 @@
 
 
     <% for(var i=0; i < list.length; i++){ %>
-        <div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(<%=list[i].id %>)">
-            <img data-echo="<%=imageCache(list[i].coverImgUrl+'?param=400y400')%>" src="../../image/default.jpg" class="animated fadeIn H-width-100-percent H-display-block H-paper-2" alt="" title="">
+        <div class=" H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(<%=list[i].id %>)">
+            <img data-echo="<%=imageCache(list[i].coverImgUrl+'?param=400y400')%>" src="../../image/default.jpg" class=" H-width-100-percent H-display-block H-paper-2" alt="" title="">
             <div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5 H-text-show-row-1">
                 <%=list[i].name.substring(0,16) %>
             </div>
@@ -50,34 +50,34 @@
         el: "#body",
         data: {
             index: 0,
-            cat:'流行',
+            cat: '流行',
             menulength: '',
             menudata: [],
-            listdata:[],
-            page:1
+            listdata: [],
+            page: 1
         },
         watch: {
             index(curVal, oldVal) {
                 // console.log(curVal);　
-                this.cat=　this.menudata[curVal].title
-                this.page=1
+                this.cat = 　this.menudata[curVal].title
+                this.page = 1
                 getdata()
-                if(curVal==0){
-                  api.setFrameGroupAttr({
-                      name: 'groups',
-                      scrollEnabled: true
-                  });
-                }else{
-                  api.setFrameGroupAttr({
-                      name: 'groups',
-                      scrollEnabled: false
-                  });
+                if (curVal == 0) {
+                    api.setFrameGroupAttr({
+                        name: 'groups',
+                        scrollEnabled: true
+                    });
+                } else {
+                    api.setFrameGroupAttr({
+                        name: 'groups',
+                        scrollEnabled: false
+                    });
                 }
 
                 　　　　　
             }
         },
-        methods:{
+        methods: {
 
 
         }
@@ -85,10 +85,10 @@
 
 
     function getdata() {
-        uiloading();
+        // uiloading();
 
         api.ajax({
-            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + app.cat+'&offset='+(app.page -1)*30,
+            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + app.cat + '&offset=' + (app.page - 1) * 30,
             cache: true,
         }, function(ret, err) {
 
@@ -130,16 +130,17 @@
                 for (var i = 0; i < ret.sub.length; i++) {
                     var list = {}
                     list.title = ret.sub[i].name
-                    list.icon = 'fs://menu/0.png',
-                        list.active = 'fs://menu/0.acitve.png',
-                        list.highlight = 'fs://menu/0.highlight.png'
+                    list.bgSelected = '#eee',
+                    list.bg='#fff'
+                    //     list.active = 'fs://menu/0.acitve.png',
+                    //     list.highlight = 'fs://menu/0.highlight.png'
 
                     data[i] = list
                 }
-                    // console.log(JSON.stringify(ret));
-                    app.menudata = data
-                    app.menulength = data.length
-                    start()
+                // console.log(JSON.stringify(ret));
+                app.menudata = data
+                app.menulength = data.length
+                start()
             } else {
                 alert(JSON.stringify(err));
             }
@@ -149,88 +150,79 @@
     }
 
     function start() {
-        var MNNavigationMenu = api.require('MNNavigationMenu');
-
-       getdata()
-
-       MNNavigationMenu.open({
+        getdata()
+        var NVNavigationBar = api.require('NVNavigationBar');
+        NVNavigationBar.open({
             rect: {
-                x: 0,
-                y: 0,
-                w: api.winWidth,
-                h: 50
+              x: 0,
+              y: 0,
+              w: api.winWidth,
+              h: 50
             },
-            index: 0,
-            animation: true,
             styles: {
-                column: 4,
-                bg: '#eee',
-                item: {
-                    bg: '#fff',
-                    active: '#eee',
-                    highlight: '#eee',
-                    title: {
-                        marginB: 14,
-                        size: 14,
-                        height: 16,
-                        color: '#888',
-                        active: '#f00',
-                        highlight: '#f00',
-                        ttf: 'Alkatip Basma Tom'
-                    },
-                    icon: {
-                        marginT: 0,
-                        width: 30,
-                        height: 30,
-                        corner: 2
-                    }
+                orientation: 'horizontal',
+                bg: '#f5f5f5',
+                bgAlpha: 1,
+                font: {
+                    size: 14,
+                    sizeSelected: 18,
+                    color: '#888',
+                    colorSelected: '#ff0000',
+                    alpha: 1,
+                    // bold:true,
+                },
+                itemSize: {
+                    w: 90,
+                    h: 44
                 }
             },
             items: app.menudata,
+            selectedIndex: 0,
             fixedOn: api.frameName,
-            fixed: true
+            id: 'first'
         }, function(ret, err) {
-          // console.log(JSON.stringify(ret));
+          console.log(ret.index);
+          app.index = ret.index?ret.index:app.index
 
-            if (ret) {
-
-                app.index = ret.index
-
-                // getdata(app.menudata[catindex].title)
-                app.cat=app.menudata[app.index].title
-                getdata()
-
-
-            } else {
-                alert(JSON.stringify(err));
-            }
+          // getdata(app.menudata[catindex].title)
+          app.cat = app.menudata[app.index].title
+          getdata()
         });
     }
 
+
+
     H.ready(function() {
         getcatlist()
-        api.setRefreshHeaderInfo({
-            loadingImg: 'widget://image/refresh.png',
-            visible: true,
-            bgColor: '#f2f2f2',
-            textColor: '#4d4d4d',
-            textDown: '下拉刷新...',
-            textUp: '松开刷新...',
-            showTime: true
-        }, function(ret, err) {
-            app.page=1
-            getcatlist()
-            api.hideProgress();
-            api.refreshHeaderLoadDone();
+        api.setFrameAttr({
+            name: api.frameName,
+
+            bounces: false,
+
         });
+
+        // api.setRefreshHeaderInfo({
+        //     loadingImg: 'widget://image/refresh.png',
+        //     visible: true,
+        //     bgColor: '#f2f2f2',
+        //     textColor: '#4d4d4d',
+        //     textDown: '下拉刷新...',
+        //     textUp: '松开刷新...',
+        //     showTime: true
+        // }, function(ret, err) {
+        //     app.page=1
+        //     getcatlist()
+        //     api.hideProgress();
+        //     api.refreshHeaderLoadDone();
+        // });
         api.addEventListener({
             name: 'scrolltobottom',
             extra: {
                 threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
-           app.page++
-           loadmore()
+            app.page++
+                loadmore()
 
 
         });
@@ -243,35 +235,38 @@
             } else {
                 app.index = app.index + 1
             }
-
-            getdata(app.menudata[app.index].id)
-            var MNNavigationMenu = api.require('MNNavigationMenu');
-            MNNavigationMenu.setIndex({
-                index: app.index
-            }, function(ret, err) {
-
+            var NVNavigationBar = api.require('NVNavigationBar');
+            NVNavigationBar.setSelected({
+                id: 'first',
+                index: app.index,
+                selected: true
+            }, function(ret) {
+                // alert(JSON.stringify(ret));
             });
+            getdata()
+
         });
         api.addEventListener({
             name: 'swiperight'
         }, function(ret, err) {
             if (app.index == 0) {
-              api.setFrameGroupAttr({
-                  name: 'groups',
-                  scrollEnabled: true
-              });
+                api.setFrameGroupAttr({
+                    name: 'groups',
+                    scrollEnabled: true
+                });
             } else {
-                app.index = app.index -1
+                app.index = app.index - 1
                 api.lockSlidPane();
             }
-
-            getdata(app.menudata[app.index].id)
-            var MNNavigationMenu = api.require('MNNavigationMenu');
-            MNNavigationMenu.setIndex({
-                index: app.index
-            }, function(ret, err) {
-
+            var NVNavigationBar = api.require('NVNavigationBar');
+            NVNavigationBar.setSelected({
+                id: 'first',
+                index: app.index,
+                selected: true
+            }, function(ret) {
+                // alert(JSON.stringify(ret));
             });
+            getdata()
         });
 
     });
@@ -295,39 +290,39 @@
         });
     }
 
-    function loadmore(){
-      uiloading();
+    function loadmore() {
+        uiloading();
 
-      api.ajax({
-          url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + app.cat+'&offset='+( app.page -1)*30,
-          cache: true,
-      }, function(ret, err) {
+        api.ajax({
+            url: musicApi + '/top/playlist?limit=30&order=hot&cat=' + app.cat + '&offset=' + (app.page - 1) * 30,
+            cache: true,
+        }, function(ret, err) {
 
-          if (ret) {
-              // console.log(JSON.stringify(ret));
+            if (ret) {
+                // console.log(JSON.stringify(ret));
 
-              data = ret.playlists
-              data1 = {
-                  list: data
-              };
-              var render = H.tppl(H.D("#tppl").innerHTML);
-              H.append((".result"),null,render(data1)) ;
-              //						懒加载
-              echo.init({
-                  offset: 0,
-                  throttle: 350,
-                  unload: false,
-                  callback: function(element, op) {}
-              });
-              stoploading()
+                data = ret.playlists
+                data1 = {
+                    list: data
+                };
+                var render = H.tppl(H.D("#tppl").innerHTML);
+                H.append((".result"), null, render(data1));
+                //						懒加载
+                echo.init({
+                    offset: 0,
+                    throttle: 350,
+                    unload: false,
+                    callback: function(element, op) {}
+                });
+                stoploading()
 
-              // $api.removeCls($api.byId('body'), 'H-display-none');
+                // $api.removeCls($api.byId('body'), 'H-display-none');
 
 
-          } else {
-              alert(JSON.stringify(err));
-          }
-      });
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
     }
 </script>
 

@@ -590,17 +590,21 @@
             listData: '',
             artistId: '',
             artistImg:"",
-            activeName:''
+            activeName:'',
+            artistName:''
+
         },
         methods: {
 
             getartistlist: function(artistId) {
+              uiloading()
                 api.readFile({
                     path: api.fsDir + '/cache/artist/' + artistId + '.json',
                 }, function(ret, err) {
                     if (ret.status && ret.data != '') {
                         // console.log(JSON.stringify(ret));
                         var ret=$api.strToJson(ret.data)
+                        app.artistName=ret.artist.name
                         app.artistImg=imageCache(ret.artist.picUrl+'?param=440y250')
                         app.listData = ret.hotSongs;
                         $api.setStorage('listm', app.listData);
@@ -622,7 +626,8 @@
                         wy.send(wy.getartistlist(app.artistId), function(ret, err) {
                             if (ret) {
                                 app.listData = ret.hotSongs
-                                // app.artistImg=imageCache(ret.artist.picUrl+'?param=450y250')
+                                app.artistName=ret.artist.name
+                                app.artistImg=imageCache(ret.artist.picUrl+'?param=450y250')
                                 api.writeFile({
                               		path: api.fsDir + '/cache/artist/'+artistId+'.json',
                               		data: ret
@@ -675,7 +680,18 @@
         app.artistId = api.pageParam.artistId
         app.artistImg=api.pageParam.artistImg
          var isopen = $api.getStorage('isopen');
-        uiloading()
+
+         window.addEventListener('scroll',function(){
+           var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+           if(scrollTop>250){
+             var artistName=app.artistName
+             api.execScript({
+                 script: 'setTitle(\''+artistName+ '\' )'
+             });
+
+           }
+         })
+
 
         app.getartistlist(app.artistId)
         api.setRefreshHeaderInfo({
