@@ -182,6 +182,16 @@
 		app.init()
 		app.getLyric()
 		api.addEventListener({
+		    name: 'paused'
+		}, function(ret, err){
+		    if( ret ){
+		         app.isPlaying=false
+		    }else{
+		        //  alert( JSON.stringify( err ) );
+		    }
+		});
+
+		api.addEventListener({
 			name: 'upDateSongInfo'
 		}, function(ret, err) {
 			if (ret) {
