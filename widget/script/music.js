@@ -340,7 +340,7 @@ function saveCache(dataName, key, data) {
 }
 
 function getCache(dataName, key, callback) {
-  // alert(123)
+  alert(123)
         api.readFile({
             path: api.cacheDir+'/' + dataName + key + '.json',
         }, function(ret, err) {
