@@ -134,12 +134,11 @@ function neteaseMusic() {
         });
     }
     this.play = function() {
-          console.log(JSON.stringify(123));
-        getCache('songCache', app.songid, function(ret, err) {
 
-            if (ret.code == 0) {
-                console.log(JSON.stringify(ret.data));
-                app.music_mp3 = ret.data
+        getCache('songCache', app.songid, function(ret, err) {
+          if (ret.data&&ret.data!="") {
+
+              app.music_mp3 = $api.strToJson(ret.data).mp3
                 player()
             } else {
                 player()
@@ -329,50 +328,23 @@ function formatSeconds(value) {
 }
 // 缓存方法
 function saveCache(dataName, key, data) {
-
-    if (api.systemType == 'android') {
-        var spModule = api.require('spModule');
-        spModule.writeData({
-            name: dataName,
-            key: key,
-            data: data,
-            type: 0
-        });
-    } else {
-        var data = $api.jsonToStr(data)
+      var data=$api.jsonToStr(data)
         api.writeFile({
-            path: api.cacheDir + dataName + key + '.json',
+            path: api.cacheDir +'/'+ dataName + key + '.json',
             data: data
-        }, function(ret, err) {});
+        }, function(ret, err) {
+        });
 
-    }
+    // }
 
 }
 
 function getCache(dataName, key, callback) {
 
-    if (api.systemType == 'android') {
-        var spModule = api.require('spModule');
-        spModule.readData({
-            name: dataName,
-            key: key,
-            type: 0
-        }, function(ret, err) {
-            if (ret.data) {
-                var data = {
-                    data: ret.data,
-                    code: 0
-                }
-
-                callback(data, err); //回调
-            } else {
-                callback(ret, err); //回调
-            }
-        });
-    } else {
         api.readFile({
-            path: api.cacheDir + dataName + key + '.json',
+            path: api.cacheDir+'/' + dataName + key + '.json',
         }, function(ret, err) {
+          // console.log(JSON.stringify(ret.data));
             if (ret.status) {
                 var data = {
                     data: ret.data,
@@ -386,28 +358,22 @@ function getCache(dataName, key, callback) {
         });
 
 
-    }
+    // }
 
 }
 
 
 function delCache(dataName, key) {
-    if (api.systemType == 'android') {
-        var spModule = api.require('spModule');
-        spModule.deleteData({
-            name: dataName,
-            key: key
-        });
-    } else {
+
         api.writeFile({
-            path: api.cacheDir + dataName + key + '.json',
+            path: api.cacheDir +'/'+ dataName + key + '.json',
             data: null
         }, function(ret, err) {
 
         });
 
 
-    }
+    // }
 }
 /////////////////歌曲缓存方法//////
 function songCache(songid, url) {
@@ -420,9 +386,10 @@ function songCache(songid, url) {
     }, function(ret, err) {
         // console.log(JSON.stringify(ret));
         if (ret.state == 1) {
-            var savePath = ret.savePath
+          var info={}
+          info.mp3 = ret.savePath
 
-            saveCache('songCache', songid, savePath)
+            saveCache('songCache', songid, info)
         }
     });
 

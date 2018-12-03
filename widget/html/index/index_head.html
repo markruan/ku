@@ -217,6 +217,7 @@
                 // alert(JSON.stringify(err));
             }
         });
+
         app.initmlist() //初始化播放BAR,还没弄好
         isOnLineStatus(function(is_true, line_type) {
             if (is_true) {
@@ -257,6 +258,7 @@
                 var sid = ret.value.id
                 app.songid = ret.value.id
                 app.index = ret.value.index
+                app.music_mp3 = 'http://music.163.com/song/media/outer/url?id=' + app.songid + '.mp3'
                     // console.log(JSON.stringify(ret.value.songlist));
                 if (typeof(ret.value.songlist) == 'string') {
                     app.songdatalist = $api.strToJson(ret.value.songlist);
@@ -333,7 +335,7 @@
 
         H.openFrameGroupNavOrFoot(function(ret, err) {
             app.setStyle(ret.index);
-            
+
             if(ret.index==1){
               api.setFrameGroupAttr({
                   name: 'groups',
