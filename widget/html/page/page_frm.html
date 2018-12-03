@@ -154,7 +154,7 @@
     function tui() {
 
         getCache('hot', 'hot', function(ret, err) {
-            alert(JSON.stringify(data));
+            
             if (ret.data) {
                 var data = $api.strToJson(ret.data)
                     // delCache('hot','hot')
