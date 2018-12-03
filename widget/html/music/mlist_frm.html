@@ -670,6 +670,7 @@
 					// console.log(JSON.stringify(ret));
 					if (ret.status) {
 						app.isloading = false
+						
 						var cachedata = $api.strToJson(ret.data)
 							// console.log(JSON.stringify(cachedata));
 						app.coverImgUrl = imageCache(cachedata.coverImgUrl + '?param=140y140')

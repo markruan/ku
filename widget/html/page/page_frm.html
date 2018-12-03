@@ -57,7 +57,7 @@
 </script>
 
 <body>
-    <div id="body">
+    <div id="body"  class="H-display-none">
         <!-- <div id="index" class="H-display-none" style="  background-color: white;"> -->
         <div id="index" class="" style="  background-color: white;">
             <div style="height: 170px"></div>
@@ -245,9 +245,11 @@
     }
 
     apiready = function() {
-
+        uiloading()
         var userinfo = $api.getStorage('userinfo')
         huandeng()
+        $api.removeCls($api.byId('body'), 'H-display-none');
+
 
 
 
