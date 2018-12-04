@@ -362,7 +362,7 @@
         audioPlayer.addEventListener({
             name: "state"
         }, function(ret) {
-            // console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(ret));
             app.state = ret.state
             switch (ret.state) {
                 case "playing":
@@ -432,7 +432,7 @@
             songdatalist: '',
             isfirstopen: '',
             isclick: true,
-            music_img_min: 'https://loading.io/spinners/microsoft/index.svg'
+            music_img_min: '../../image/qq.png'
         },
         watch: {
             isPlaying(curVal, oldVal) {

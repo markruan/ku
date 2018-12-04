@@ -670,7 +670,7 @@
 					// console.log(JSON.stringify(ret));
 					if (ret.status) {
 						app.isloading = false
-						
+
 						var cachedata = $api.strToJson(ret.data)
 							// console.log(JSON.stringify(cachedata));
 						app.coverImgUrl = imageCache(cachedata.coverImgUrl + '?param=140y140')
@@ -879,7 +879,7 @@
               app.openart(aid)
 							break;
 					  case 2:
-								alert(2)
+								// alert(2)
 							break;
 						default:
 
@@ -919,7 +919,7 @@
 				}
 				var islike = app.islike ? false : true
  				getinfo.getDengLuInfo('/like?like=' + islike + '&id=' + id, function(data) {
- 					 console.log(JSON.stringify(data));
+ 				// 	 console.log(JSON.stringify(data));
  					app.islike = app.islike ? false : true
  					if (data.code == 200) {
 						var dialogBox = api.require('dialogBox');
