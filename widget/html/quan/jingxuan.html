@@ -375,39 +375,42 @@
     function openArrow(button) {
         button = $api.first(button)
         if ($api.attr(button, 'data-click') == 0) {
+          api.openFrame({
+              name: 'fenlei_frame',
+              url: 'fenlei.html',
+              rect: {
+                  x: 0,
+                  y: 164,
+                  w:'auto',
+                  h:'auto'
+
+              },
+              animation: {
+
+                  type: "push", //动画类型（详见动画类型常量）
+                  subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                  duration: 300 //动画过渡时间，默认300毫秒
+
+              },
+              bounces: false,
+            
+          });
             $api.attr(button, 'data-click', 1)
             $api.removeCls(button, 'arrow_up')
             $api.addCls(button, 'arrow_down');
-            api.openFrame({
-                name: 'fenlei_frame',
-                url: 'fenlei.html',
-                rect: {
-                    x: 0,
-                    y: 164,
-                    w:'auto',
-                    h:'auto'
 
-                },
-                animation: {
-
-                    type: "push", //动画类型（详见动画类型常量）
-                    subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                    duration: 300 //动画过渡时间，默认300毫秒
-
-                },
-                bounces: false,
-                bgColor: 'rgba(0,0,0,0)',
-                vScrollBarEnabled: true,
-                hScrollBarEnabled: true
-            });
 
         } else {
+          api.setFrameAttr({
+              name: 'fenlei_frame',
+              hidden:true
+          });
             $api.attr(button, 'data-click', 0)
             $api.removeCls(button, 'arrow_down')
             $api.addCls(button, 'arrow_up');
-            api.closeFrame({
-                name: 'fenlei_frame'
-            });
+
+
+
 
         }
 
