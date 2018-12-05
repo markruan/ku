@@ -635,6 +635,15 @@
 			api.hideProgress();
 			api.refreshHeaderLoadDone();
 		});
+		api.addEventListener({
+			name: 'upDateSongInfo'
+		}, function(ret, err) {
+			if (ret) {
+				app.activeName = ret.value.songid
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
+		});
 	}
 
 	var app = new Vue({
@@ -653,7 +662,8 @@
 			collectmusicIcon: './image/musiclist/musiclisttool01.png',
 			collectmusicIcon1: "./image/musiclist/musiclistcollect.png",
 			activeName: '',
-			islike:false
+			islike:false,
+			isPlayingId:''
 		},
 		created() {
 
@@ -825,6 +835,10 @@
 						normal: 'widget://html/music/image/musiclist/musiclistshare.png',
 						highlight: 'widget://html/music/image/musiclist/musiclistshare.png',
 						text: '分享'
+					}, {
+						normal: 'widget://image/plus.png',
+						highlight: 'widget://image/plus.png',
+						text: '添加到歌单'
 					}],
 					styles: {
 						bg: '#FFF',
@@ -851,19 +865,25 @@
 						buttons: [{
 							iconSize: 40,
 							textColor: '#000',
-							textSize: 12,
+							textSize: 8,
 							marginT: 15,
 							space: 25
 						}, {
 							iconSize: 40,
 							textColor: '#000',
-							textSize: 12,
+							textSize: 8,
 							marginT: 15,
 							space: 25
 						}, {
 							iconSize: 40,
 							textColor: '#000',
-							textSize: 12,
+							textSize: 8,
+							marginT: 15,
+							space: 25
+						}, {
+							iconSize: 40,
+							textColor: '#000',
+							textSize: 8,
 							marginT: 15,
 							space: 25
 						}]
@@ -881,6 +901,9 @@
 					  case 2:
 								// alert(2)
 							break;
+							case 3:
+								app.openMyGeDan(id)
+								break;
 						default:
 
 					}
@@ -907,6 +930,29 @@
 						duration: 400
 					}
 				});
+			},
+			openMyGeDan(id){
+				 api.openFrame({
+				     name: 'mygedan',
+				     url: '../../html/music/mygedan.html',
+				     rect: {
+				         x: 0,
+				         y: api.winHeight-500,
+
+				     } ,
+						 pageParam:{
+							 id:id
+						 },
+				     bounces: false,
+				     bgColor: 'rgba(0,0,0,0)',
+				     vScrollBarEnabled: true,
+				     hScrollBarEnabled: true
+				 });
+				 var dialogBox = api.require('dialogBox');
+					 dialogBox.close({
+							 dialogName: 'tips'
+					 });
+
 			},
 			shoucangSong(id){
 				var likelist = $api.getStorage('likelist')

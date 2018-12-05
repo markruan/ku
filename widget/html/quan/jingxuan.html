@@ -15,6 +15,22 @@
             margin-left: -45px;
             margin-top: 25px
         }
+
+        .arrow_down {
+            display: block;
+            background-size: 15px;
+            background-repeat: no-repeat;
+            background-position: center;
+            /*padding: 15px;*/
+            -webkit-box-flex: 1;
+            -webkit-transform: rotate(180deg);
+            -webkit-transition: All .5s ease;
+        }
+
+        .arrow_up {
+            -webkit-transform: rotate(0deg);
+            -webkit-transition: All .5s ease;
+        }
     </style>
 </head>
 <script type="text/html" id="tppl">
@@ -31,13 +47,20 @@
 </script>
 
 <body id="body">
-    <div class="result H-margin-vertical-top-20 H-padding-horizontal-left-10" id="list" style="margin-top:55px"></div>
+    <header class="H-header H-theme-background-color-white" id="header" style="margin-top:2px">
+        <span tapmode="" class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100" onclick="H.closeWin();"><i class="H-iconfont H-icon-arrow-left H-font-size-18 H-vertical-middle"></i></span>
+        <div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
+
+        </div>
+        <span tapmode="" class="H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-black H-padding-horizontal-right-20 H-z-index-100" onclick="openArrow(this)"><i data-click="0" class="H-iconfont H-icon-arrow-down H-font-size-18 H-vertical-middle"></i></span>
+    </header>
+    <div class="result H-margin-vertical-top-20 H-padding-horizontal-left-10" id="list" style="margin-top:10px"></div>
 </body>
 <script type="text/javascript" src="../../script/H.js"></script>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/echo.min.js"></script>
 <script type="text/javascript" src="../../script/comm.js"></script>
-<!-- <script type="text/javascript" src="../../script/music.js"></script> -->
+<script type="text/javascript" src="../../script/music.js"></script>
 <!-- <script type="text/javascript"  src="../../script/jquery/jquery.min.js"></script> -->
 
 
@@ -121,30 +144,49 @@
     }
 
     function getcatlist() {
-        api.ajax({
-            url: musicApi + '/playlist/catlist',
-        }, function(ret, err) {
 
-            if (ret) {
-                var data = []
-                for (var i = 0; i < ret.sub.length; i++) {
-                    var list = {}
-                    list.title = ret.sub[i].name
-                    list.bgSelected = '#eee',
-                    list.bg='#fff'
-                    //     list.active = 'fs://menu/0.acitve.png',
-                    //     list.highlight = 'fs://menu/0.highlight.png'
+        getCache('menudata', 'list', function(ret, err) {
+            if (ret.data) {
+                var data = $api.strToJson(ret.data)
 
-                    data[i] = list
-                }
-                // console.log(JSON.stringify(ret));
-                app.menudata = data
-                app.menulength = data.length
+                app.menudata = data.filter(function(s) {
+                    return s.select == true
+                })
+                app.menulength = app.menudata.length
                 start()
             } else {
-                alert(JSON.stringify(err));
+                api.ajax({
+                    url: musicApi + '/playlist/catlist',
+                }, function(ret, err) {
+
+                    if (ret) {
+                        var data = []
+                        for (var i = 0; i < ret.sub.length; i++) {
+                            var list = {}
+                            list.title = ret.sub[i].name
+                            list.bgSelected = '#eee',
+                                list.bg = '#fff',
+                                list.select = true
+                                //     list.active = 'fs://menu/0.acitve.png',
+                                //     list.highlight = 'fs://menu/0.highlight.png'
+
+                            data[i] = list
+                        }
+                        // console.log(JSON.stringify(ret));
+                        app.menudata = data
+                        app.menulength = data.length
+                        saveCache('menudata', 'list', data)
+                        start()
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
             }
-        });
+        })
+
+
+
+
 
 
     }
@@ -154,10 +196,10 @@
         var NVNavigationBar = api.require('NVNavigationBar');
         NVNavigationBar.open({
             rect: {
-              x: 0,
-              y: 0,
-              w: api.winWidth,
-              h: 50
+                x: 0,
+                y: 0,
+                w: api.winWidth - 50,
+                h: 50
             },
             styles: {
                 orientation: 'horizontal',
@@ -181,12 +223,12 @@
             fixedOn: api.frameName,
             id: 'first'
         }, function(ret, err) {
-          // console.log(ret.index);i
-          app.index = ret.index?ret.index:app.index
+            // console.log(ret.index);i
+            app.index = ret.index ? ret.index : app.index
 
-          // getdata(app.menudata[catindex].title)
-          app.cat = app.menudata[app.index].title
-          getdata()
+            // getdata(app.menudata[catindex].title)
+            app.cat = app.menudata[app.index].title
+            getdata()
         });
     }
 
@@ -200,6 +242,8 @@
             bounces: false,
 
         });
+
+
 
         // api.setRefreshHeaderInfo({
         //     loadingImg: 'widget://image/refresh.png',
@@ -323,6 +367,52 @@
                 alert(JSON.stringify(err));
             }
         });
+
+
+
+    }
+
+    function openArrow(button) {
+        button = $api.first(button)
+        if ($api.attr(button, 'data-click') == 0) {
+            $api.attr(button, 'data-click', 1)
+            $api.removeCls(button, 'arrow_up')
+            $api.addCls(button, 'arrow_down');
+            api.openFrame({
+                name: 'menudata',
+                url: 'fenlei.html',
+                rect: {
+                    x: 0,
+                    y: 165,
+
+                },
+                pageParam: {
+                    name: 'test'
+                },
+                animation: {
+
+                    type: "push", //动画类型（详见动画类型常量）
+                    subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                    duration: 300 //动画过渡时间，默认300毫秒
+
+                },
+                bounces: false,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+
+        } else {
+            $api.attr(button, 'data-click', 0)
+            $api.removeCls(button, 'arrow_down')
+            $api.addCls(button, 'arrow_up');
+            api.closeFrame({
+                name: 'menudata'
+            });
+
+        }
+
+
     }
 </script>
 

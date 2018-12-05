@@ -19,7 +19,7 @@ function saveMlistDB(sid, name, artist, pic, date) {
                         sql: "INSERT INTO mlist (mlist_id,id,mlist_name,mlist_artist,mlist_pic,mlist_date) VALUES ('" + sid + "', '" + sid + "','" + name + "', '" + artist + "', '" + pic + "','" + date + "')",
                     }, function(ret, err) {
                         if (ret.status) {
-                            console.log(JSON.stringify(ret));
+                            // console.log(JSON.stringify(ret));
                         } else {
                             //  alert(JSON.stringify(err));
                         }
@@ -942,41 +942,4 @@ function imageCache(url) { //图片缓存方法
         }
     });
     return path;
-}
-// 语言包
-  var yuyan
-  yuyan={
-    jingxuan:'精选',
-    quanzi:'圈子',
-    yinyue:'音乐',
-    gengduo:'更多',
-    paihang:'排行',
-    liuxing:'流行',
-    meirituijian:'每日推荐',
-    oumei:'欧美',
-    qingyinyue:'轻音乐',
-    fenxiang:'分享',
-    xiazai:'下载',
-    bofangliebao:'播放列表',
-    wodezhuye:'我的主页',
-    wodeshoucang:'我的收藏',
-    shezhi:'设置',
-    guanyuwomen:'关于我们',
-    yijianfankui:'意见反馈'
-  }
-// 公共函数
-//状态栏歌曲播放监听
-function notify(title,content,extra,updateCurrent){
-    updateCurrent = updateCurrent?updateCurrent:true;
-    api.notification({
-        sound:'',
-        notify: {
-            title:title,                //标题，默认值为应用名称，只Android有效
-            content:content,               //内容，默认值为'有新消息'
-            extra:extra,                  //传递给通知的数据，在通知被点击后，该数据将通过监听函数回调给网页
-            updateCurrent: updateCurrent    //是否覆盖更新已有的通知，取值范围true|false。只Android有效
-        }
-    }, function(ret, err) {
-        return ret.id;
-    });
 }

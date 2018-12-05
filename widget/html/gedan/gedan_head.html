@@ -21,6 +21,8 @@
         <div id="title" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
             酷选
         </div>
+        <span id="shan" onclick="openPlayer()" class="H-icon H-position-relative H-display-inline-block H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100 " style="float:right"></span>
+        
     </header>
     <script src="../../script/H.js" type="text/javascript"></script>
     <script src="../../script/api.js" type="text/javascript"></script>
@@ -29,7 +31,7 @@
         H.ready(function() {
             var userinfo = $api.getStorage('userinfo')
             if (api.pageParam.ismylsit && api.pageParam.iscreatlist == 1) {
-               $api.text($api.byId('title'),'我的歌单' );
+                $api.text($api.byId('title'), '我的歌单');
 
                 pageParam = {
                     uid: userinfo.userId,
@@ -37,11 +39,11 @@
                 }
 
             } else if (api.pageParam.ismylsit && api.pageParam.iscreatlist == 2) {
-               $api.text($api.byId('title'),'收藏的歌单' );
-              pageParam = {
-                  uid: userinfo.userId,
-                  iscreatlist: false
-              }
+                $api.text($api.byId('title'), '收藏的歌单');
+                pageParam = {
+                    uid: userinfo.userId,
+                    iscreatlist: false
+                }
 
             } else {
                 pageParam = {
@@ -50,7 +52,26 @@
 
             }
             H.openFrameNavOrFoot('gedanframe', 'gedan.html', "#header", pageParam);
+            api.addEventListener({
+                name: "per"
+            }, function(ret) {
+                if (ret) {
+                    $api.html($api.byId('shan'), '<img src="../../image/loading.svg" style="height:30px" alt="">');
+
+                } else {
+                    $api.html($api.byId('shan'), '');
+                }
+
+            });
+
         })
+
+        function openPlayer() {
+            api.execScript({
+                name: 'index',
+                script: 'app.openPlayer();'
+            });
+        }
     </script>
 </body>
 

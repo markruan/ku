@@ -340,7 +340,7 @@ function saveCache(dataName, key, data) {
 }
 
 function getCache(dataName, key, callback) {
- 
+
         api.readFile({
             path: api.cacheDir+'/' + dataName + key + '.json',
         }, function(ret, err) {
@@ -392,5 +392,24 @@ function songCache(songid, url) {
             saveCache('songCache', songid, info)
         }
     });
+
+}
+//状态栏歌曲播放监听
+function notify(title,content,extra,updateCurrent){
+    if ($api.getStorage('notify') && $api.getStorage('notify') == 1) {
+      updateCurrent = updateCurrent?updateCurrent:true;
+      api.notification({
+          sound:'',
+          notify: {
+              title:title,                //标题，默认值为应用名称，只Android有效
+              content:content,               //内容，默认值为'有新消息'
+              extra:extra,                  //传递给通知的数据，在通知被点击后，该数据将通过监听函数回调给网页
+              updateCurrent: updateCurrent    //是否覆盖更新已有的通知，取值范围true|false。只Android有效
+          }
+      }, function(ret, err) {
+          return ret.id;
+      });
+
+    }
 
 }

@@ -251,6 +251,7 @@
         });
 
 
+
         api.addEventListener({
             name: 'songid'
         }, function(ret, err) {
@@ -318,7 +319,7 @@
                 location: 'bottom'
             });
 
-            app.pause()
+            // app.pause()
         });
 
         // 已连接到网络
@@ -362,7 +363,7 @@
         audioPlayer.addEventListener({
             name: "state"
         }, function(ret) {
-            console.log(JSON.stringify(ret));
+            // console.log(JSON.stringify(ret));
             app.state = ret.state
             switch (ret.state) {
                 case "playing":
@@ -662,6 +663,7 @@
             },
             audioCover: function() {
                 audioCover = api.require('audioCover');
+                notify(app.songName+'-'+app.artists,app.current+'-'+formatSeconds(app.duration),123,true)
                 // console.log(app.per);
                 var msg = {
                     totalTime: app.duration,

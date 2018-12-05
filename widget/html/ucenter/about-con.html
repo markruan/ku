@@ -97,6 +97,17 @@
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script>
+  apiready = function() {
+    api.addEventListener({
+        name: 'swiperight'
+    }, function(ret, err){
+      api.setFrameGroupAttr({
+          name: 'groups1',
+          hidden: true
+      });
+
+    });
+  }
 
 </script>
 

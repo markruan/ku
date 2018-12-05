@@ -70,7 +70,7 @@
     	var data = {
 				list: ret.audios
 			};
-			console.log(JSON.stringify(data));
+			// console.log(JSON.stringify(data));
 			var render = H.tppl(H.D("#tppl").innerHTML);
 			H.D(".result").innerHTML = render(data);
 			//						懒加载

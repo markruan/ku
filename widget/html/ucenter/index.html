@@ -81,6 +81,9 @@
 
             } else {
                 $api.setStorage('notify', 0);
+                api.cancelNotification({
+                    id: -1
+                });
             }
         }
 
@@ -104,9 +107,11 @@
 
             if ($api.getStorage('notify') && $api.getStorage('notify') == 1) {
                 document.getElementById("notify").checked = true;
+
             } else {
                 if ($api.getStorage('notify'))
-                    document.getElementById("notify").checked = false;
+                document.getElementById("notify").checked = false;
+
 
             }
 
