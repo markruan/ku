@@ -18,7 +18,7 @@
     <div class="H-channel-title  H-flexbox-horizontal H-theme-background-color-white H-vertical-middle H-border-vertical-bottom-after">
         <div class="H-channel-line H-theme-background-color-red H-padding-vertical-top-15 H-padding-horizontal-left-3  H-margin-horizontal-left-10"></div>
         <div class="H-channel-text H-theme-font-color-black H-flex-item H-font-size-18 H-theme-font-color-black H-padding-10 H-margin-horizontal-right-10 H-text-show-row-1">
-            评论列表
+            评论列表  <span id="total" class="H-font-size-10"></span>
         </div>
     </div>
     <div id="comm" class="H-display-block H-theme-background-color-white"></div>
@@ -99,7 +99,10 @@
 
         }, function(ret, err) {
 
-            var commtotal = ret.total
+            var commtotal = ret.total>0?ret.total:null
+
+            $api.text($api.byId('total'), commtotal);
+
             var ret = ret.comments
             if (ret != []) {
                 var objc1 = $api.byId('comm');

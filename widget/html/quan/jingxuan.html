@@ -379,15 +379,14 @@
             $api.removeCls(button, 'arrow_up')
             $api.addCls(button, 'arrow_down');
             api.openFrame({
-                name: 'menudata',
+                name: 'fenlei_frame',
                 url: 'fenlei.html',
                 rect: {
                     x: 0,
                     y: 164,
+                    w:'auto',
+                    h:'auto'
 
-                },
-                pageParam: {
-                    name: 'test'
                 },
                 animation: {
 
@@ -407,7 +406,7 @@
             $api.removeCls(button, 'arrow_down')
             $api.addCls(button, 'arrow_up');
             api.closeFrame({
-                name: 'menudata'
+                name: 'fenlei_frame'
             });
 
         }
