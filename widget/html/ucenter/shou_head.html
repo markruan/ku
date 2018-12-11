@@ -33,7 +33,7 @@
         var id = api.pageParam.id
         $api.text($api.byId('title'), title);
 
-        H.openFrameNavOrFoot(id, id + '.html', "#header");
+        H.openFrameNavOrFoot(id, id + '.html', "#header",null,null,{bounces: true});
         api.addEventListener({
     			name: "per"
     		}, function(ret) {

@@ -58,29 +58,50 @@
         // console.log(UserLikeLlistID);
     var getinfo = new getinfo()
 
-    var data, data1
+    var data3
 
     function getdata() {
         uiloading();
-        getCache('like',UserLikeLlistID, function(ret, err) {
+        getCache('like', UserLikeLlistID, function(ret, err) {
 
             if (ret.data) {
-                  data = $api.strToJson(ret.data)
-                    // 存储喜欢的歌单ID,播放页面使用
+                data1 = $api.strToJson(ret.data)
+                data3 = data1
+                var data = []
+                for (var i = 0; i < data1.length; i++) {
+                    var list = {}
+                    list.title = data1[i].name
+                    list.imgPath = data1[i].al.picUrl + '?param=100y100'
+                    list.subTitle = data1[i].ar[0].name
+                    list.id = data1[i].id
+                    data[i] = list
+                }
+                // console.log(JSON.stringify(data));
+                // {
+                //     uid: '1001',
+                //     imgPath: 'widget://res/img/apicloud.png',
+                //     title: '标题',
+                //     subTitle: '子标题，说明文字',
+                //     remark: '备注',
+                //     icon: ''
+                // }
+                uilistView(data)
+
+                // 存储喜欢的歌单ID,播放页面使用
                 data1 = {
                     list: data
                 };
                 // console.log(JSON.stringify(data));
 
-                var render = H.tppl(H.D("#tppl").innerHTML);
-                H.D(".result").innerHTML = render(data1);
-                //						懒加载
-                echo.init({
-                    offset: 0,
-                    throttle: 350,
-                    unload: false,
-                    callback: function(element, op) {}
-                });
+                // var render = H.tppl(H.D("#tppl").innerHTML);
+                // H.D(".result").innerHTML = render(data1);
+                // //						懒加载
+                // echo.init({
+                //     offset: 0,
+                //     throttle: 350,
+                //     unload: false,
+                //     callback: function(element, op) {}
+                // });
                 stoploading()
                 updateinfo()
                 var likeids = []
@@ -98,8 +119,18 @@
                     cache: true
                 }, function(ret, err) {
                     if (ret) {
-                        data = ret.playlist.tracks
-                        saveCache('like',UserLikeLlistID,data)
+                        data1 = ret.playlist.tracks
+                        var data = []
+                        for (var i = 0; i < data1.length; i++) {
+                            var list = {}
+                            list.title = data1[i].name
+                            list.imgPath = data1[i].al.picUrl + '?param=100y100'
+                            list.subTitle = data1[i].ar[0].name
+                            list.id = data1[i].id
+                            data[i] = list
+                        }
+                        uilistView(data)
+                        saveCache('like', UserLikeLlistID, data1)
                         var likeids = []
 
                         for (var i = 0; i < data.length; i++) {
@@ -111,18 +142,18 @@
                         // 存储缓存
 
 
-                        data1 = {
-                            list: data
-                        };
-                        var render = H.tppl(H.D("#tppl").innerHTML);
-                        H.D(".result").innerHTML = render(data1);
-                        //						懒加载
-                        echo.init({
-                            offset: 0,
-                            throttle: 350,
-                            unload: false,
-                            callback: function(element, op) {}
-                        });
+                        // data1 = {
+                        //     list: data
+                        // };
+                        // var render = H.tppl(H.D("#tppl").innerHTML);
+                        // H.D(".result").innerHTML = render(data1);
+                        // //						懒加载
+                        // echo.init({
+                        //     offset: 0,
+                        //     throttle: 350,
+                        //     unload: false,
+                        //     callback: function(element, op) {}
+                        // });
                         stoploading()
 
                     } else {
@@ -145,8 +176,8 @@
             if (ret) {
                 data = ret.playlist.tracks
                     // 存储缓存
-               saveCache('like',UserLikeLlistID,data)
-                ///
+                saveCache('like', UserLikeLlistID, data)
+                    ///
 
 
             } else {
@@ -155,7 +186,7 @@
         });
     }
 
-    function quxiao(id) {
+    function quxiao(id, index) {
         api.actionSheet({
             title: '取消收藏',
             cancelTitle: '先留着',
@@ -169,6 +200,16 @@
                             msg: '取消成功',
                             duration: 2000,
                             location: 'bottom'
+                        });
+                        var UIListView = api.require('UIListView');
+                        UIListView.deleteItem({
+                            index: index
+                        }, function(ret, err) {
+                            if (ret) {
+                                // alert(JSON.stringify(ret));
+                            } else {
+                                // alert(JSON.stringify(err));
+                            }
                         });
 
                     }
@@ -184,25 +225,52 @@
 
     H.ready(function() {
         getdata()
-        api.setRefreshHeaderInfo({
-            loadingImg: 'widget://image/refresh.png',
-            visible: true,
-            bgColor: '#f2f2f2',
-            textColor: '#4d4d4d',
-            textDown: '下拉刷新...',
-            textUp: '松开刷新...',
+
+        // api.setRefreshHeaderInfo({
+        //     loadingImg: 'widget://image/refresh.png',
+        //     visible: true,
+        //     bgColor: '#f2f2f2',
+        //     textColor: '#4d4d4d',
+        //     textDown: '下拉刷新...',
+        //     textUp: '松开刷新...',
+        //     showTime: true
+        // }, function(ret, err) {
+        //     getdata()
+        //     api.hideProgress();
+        //     api.refreshHeaderLoadDone();
+        // });
+
+        var UIListView = api.require('UIListView');
+        UIListView.setRefreshHeader({
+            loadingImg: 'widget://res/UIListView_arrow.png',
+            bgColor: '#F5F5F5',
+            textColor: '#8E8E8E',
+            textDown: '下拉可以刷新...',
+            textUp: '松开开始刷新...',
             showTime: true
         }, function(ret, err) {
-            getdata()
-            api.hideProgress();
-            api.refreshHeaderLoadDone();
+            if (ret) {
+                alert(JSON.stringify(ret));
+                var UIListView = api.require('UIListView');
+                UIListView.reloadData({
+                    data: data3
+                }, function(ret) {
+                    if (ret) {
+                        // alert(JSON.stringify(ret));
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            } else {
+                alert(JSON.stringify(err));
+            }
         });
 
 
     });
 
-    function openPlayer(sid, index) {
-       $api.setStorage('listm', data);
+    function openPlayer(sid, index, data) {
+        $api.setStorage('listm', data);
 
         api.sendEvent({
             name: 'songid',
@@ -216,123 +284,66 @@
 
 
     //################## 侧滑全部代码
-    //返回角度
-    function GetSlideAngle(dx, dy) {
-        return Math.atan2(dy, dx) * 180 / Math.PI;
-    }
 
-    //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
-    function GetSlideDirection(startX, startY, endX, endY) {
-        var dy = startY - endY;
-        var dx = endX - startX;
-        var result = 0;
 
-        //如果滑动距离太短
-        if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-            return result;
-        }
 
-        var angle = GetSlideAngle(dx, dy);
-        if (angle >= -45 && angle < 45) {
-            result = 4;
-        } else if (angle >= 45 && angle < 135) {
-            result = 1;
-        } else if (angle >= -135 && angle < -45) {
-            result = 2;
-        } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-            result = 3;
-        }
+    function uilistView(data) {
+        var UIListView = api.require('UIListView');
+        var listheight = api.systemType == "android" ? 69 : 64
+        UIListView.open({
+            rect: {
+                x: 0,
+                y: listheight,
+                w: api.winWidth,
+                h: api.frameHeight + listheight
 
-        return result;
-    }
-
-    var _startX = 0;
-    var _startY = 0;
-    var scrollHeight = 0;
-    var scrollWidth = 0;
-    var currentRange = 0;
-    var parentEle = null;
-    var direction = 1;
-
-    // 设置侧滑动画
-    function setScroll(parentElement, value, time) {
-        parentElement.firstElementChild.style.cssText = "-webkit-transition: transform " + time + "s;-webkit-transform:translateX(" + value + "px);";
-        parentElement.lastElementChild.style.cssText = "-webkit-transition: transform " + time + "s;-webkit-transform:translateX(" + value + "px);";
-    }
-
-    // 触摸开始
-    window.addEventListener("touchstart", function(event) {
-        if (event.targetTouches.length == 1) {
-            var touch = event.targetTouches[0];
-            parentEle = H.getParents(event.target, "H-qq-item");
-            if (H.isElement(parentEle)) {
-
-                // 其他兄弟隐藏
-                var siblings = H.siblings(parentEle);
-                for (var i = 0; i < siblings.length; i++) {
-                    var _siblingObj = siblings[i];
-                    setScroll(_siblingObj, 0, 0);
+            },
+            data: data,
+            rightBtns: [{
+                bgColor: '#fb6f6f',
+                activeBgColor: '',
+                width: 70,
+                title: '取消收藏',
+                titleSize: 12,
+                titleColor: '#fff',
+                icon: '',
+                iconWidth: 20
+            }],
+            styles: {
+                borderColor: '#f1ecec',
+                item: {
+                    bgColor: '#FFF',
+                    activeBgColor: '#F5F5F5',
+                    height: 55.0,
+                    imgWidth: 40,
+                    imgHeight: 40,
+                    imgCorner: 20,
+                    placeholderImg: '',
+                    titleSize: 12.0,
+                    titleColor: '#fb6f6f',
+                    subTitleSize: 10.0,
+                    subTitleColor: '#000',
+                    remarkColor: '#000',
+                    remarkSize: 16,
+                    remarkIconWidth: 30
                 }
+            },
+            // fixedOn: api.frameName
+        }, function(ret, err) {
+            stoploading()
+            if (ret.eventType == "clickContent" || ret.eventType == "clickImg") {
 
-                scrollHeight = parentEle.firstElementChild.clientHeight;
-                scrollWidth = H.D(".H-qq-menu", parentEle).clientWidth;
+                openPlayer(data[ret.index].id, ret.index, data3)
+                    // alert(JSON.stringify(data));
+            } else if (ret.eventType == "clickRightBtn") {
 
-                for (var i = 0; i < parentEle.lastElementChild.childNodes.length; i++) {
-                    var child = parentEle.lastElementChild.childNodes[i];
-                    if (H.isElement(child)) {
-                        child.style.cssText = "height:" + scrollHeight + "px;line-height:" + scrollHeight + "px;";
-                    }
-                }
-
-                currentRange = Number(parentEle.firstElementChild.style.WebkitTransform.replace(/translateX\(/g, "").replace(/px\)/g, ""));
-                _startX = touch.pageX;
-                _startY = touch.pageY;
-            }
-        }
-    }, false);
-    // 触摸过程
-    window.addEventListener("touchmove", function(event) {
-        if (event.targetTouches.length == 1) {
-            var touch = event.targetTouches[0];
-            direction = GetSlideDirection(_startX, _startY, touch.pageX, touch.pageY);
-            if (direction == 3 || direction == 4) {
-                event.preventDefault();
-                if (H.isElement(parentEle)) {
-                    var range = touch.pageX - _startX;
-                    if (range <= 0) {
-                        if (range - currentRange >= -scrollWidth && range - currentRange <= 0) {
-                            setScroll(parentEle, (range - currentRange), 0);
-                        }
-                    } else {
-                        if (range + currentRange <= 0) {
-                            setScroll(parentEle, (range + currentRange), 0);
-                        }
-                    }
-                }
-            }
-        }
-    }, false);
-    // 触摸接触
-    window.addEventListener("touchend", function(event) {
-        var touch = event.targetTouches[0];
-        if (H.isElement(parentEle)) {
-            currentRange = Number(parentEle.firstElementChild.style.WebkitTransform.replace(/translateX\(/g, "").replace(/px\)/g, ""));
-            if (direction == 3 && (currentRange < 0)) {
-                setScroll(parentEle, -scrollWidth, 0.4);
-            } else if (direction == 4 && currentRange < 80) {
-                setScroll(parentEle, 0, 0.4);
+                quxiao(data[ret.index].id, ret.index)
             } else {
-                setScroll(parentEle, 0, 0.4);
+
             }
-        }
-    }, false);
-    // 点击
-    window.addEventListener("click", function(event) {
-        var parentEle = H.getParents(event.target, "H-qq-item");
-        if (H.isElement(parentEle)) {
-            setScroll(parentEle, 0, 0.4);
-        }
-    }, false);
+
+        });
+    }
 </script>
 
 </html>
