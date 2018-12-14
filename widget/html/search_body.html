@@ -34,39 +34,67 @@
 	var data, list
 		//		var obj = $api.byId('list');
 	apiready = function() {
+			uiloading();
 		api.addEventListener({
 			name: 'smsg'
 		}, function(ret, err) {
-			app.say(ret.value.msg);
+			app.message = ret.value.msg
+			app.say();
+
 		});
 		app.search_histry()
+		api.addEventListener({
+			name: 'scrolltobottom',
+			extra: {
+				threshold: 350 //设置距离底部多少距离时触发，默认值为0，数字类型
+			}
+		}, function(ret, err) {
+			if (app.isjiazai) {
+				app.page++
+
+					app.say()
+			}
+		});
+
 	}
 	var app = new Vue({
 		el: '#app',
 		data: {
 			message: '',
-			articles: '',
+			articles: [],
 			html2: '',
 			xianshi: 'block',
+			limit: 100,
+			page: 1,
+			isjiazai: true
+
 		},
 		mounted: function() {},
 		methods: {
 
-			say: function(message) {
-				// console.log(message);
+			say: function() {
 				this.xianshi = 'none';
 				// api.showProgress({});
-				uiloading();
-				app.articles = []
+
 				api.ajax({
-					url: sUrl + message,
+					url: musicApi + '/search?keywords=' + app.message + '&limit=' + app.limit + '&offset=' + (this.page - 1) * this.limit,
+					cache: true
 				}, function(ret, err) {
-					if (ret.code == 200 && ret.result!=[]) {
+
+					if (ret.code == 200 && ret.result != []) {
 						var data = ret.result.songs
-						app.articles = data
+						if (app.page == 1) {
+							app.articles = data
+						} else {
+							app.isjiazai=data.length<app.limit?false:true
+							 
+							app.articles = app.articles.concat(data)
+
+						}
+
 						stoploading()
 					} else {
-
+						app.isjiazai = false
 						api.toast({
 							msg: '数据错误,稍后再试'
 						});

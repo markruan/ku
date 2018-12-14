@@ -22,7 +22,7 @@
             酷选
         </div>
         <span id="shan" onclick="openPlayer()" class="H-icon H-position-relative H-display-inline-block H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100 " style="float:right"></span>
-        
+
     </header>
     <script src="../../script/H.js" type="text/javascript"></script>
     <script src="../../script/api.js" type="text/javascript"></script>
@@ -51,7 +51,23 @@
                 }
 
             }
-            H.openFrameNavOrFoot('gedanframe', 'gedan.html', "#header", pageParam);
+            H.openFrameNavOrFoot('gedanframe', 'gedan.html', "#header", pageParam,null,{bounces:false});
+            // api.openFrame({
+            //     name: 'gedanframe',
+            //     url: 'gedan.html',
+            //     rect: {
+            //         x: 0,
+            //         y: 0,
+            //         w: api.winWidth,
+            //         h:api.frameHeight
+            //     },
+            //     pageParam:pageParam,
+            //     // bounces: false,
+            //     bgColor: 'rgba(0,0,0,0)',
+            //     // vScrollBarEnabled: true,
+            //     // hScrollBarEnabled: true
+            // });
+
             api.addEventListener({
                 name: "per"
             }, function(ret) {

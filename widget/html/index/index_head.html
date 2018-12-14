@@ -13,6 +13,7 @@
         .bgg {
             background-image: url(../../image/hd2.jpg);
             background-position: right bottom, left top;
+
         }
 
         #footer {
@@ -153,6 +154,7 @@
             height: 42px;
             border-radius: 21px;
         }
+
     </style>
 </head>
 
@@ -216,8 +218,10 @@
             } else {
                 // alert(JSON.stringify(err));
             }
+
         });
 
+        // floatModule.hide()
         app.initmlist() //初始化播放BAR,还没弄好
         isOnLineStatus(function(is_true, line_type) {
             if (is_true) {
@@ -337,19 +341,19 @@
         H.openFrameGroupNavOrFoot(function(ret, err) {
             app.setStyle(ret.index);
 
-            if(ret.index==1){
-              api.setFrameGroupAttr({
-                  name: 'groups',
-                  scrollEnabled: false
-              });
+            if (ret.index == 1) {
+                api.setFrameGroupAttr({
+                    name: 'groups',
+                    scrollEnabled: false
+                });
                 api.lockSlidPane();
 
-            }else{
-              api.setFrameGroupAttr({
-                  name: 'groups',
-                  scrollEnabled: true
-              });
-              api.unlockSlidPane();
+            } else {
+                api.setFrameGroupAttr({
+                    name: 'groups',
+                    scrollEnabled: true
+                });
+                api.unlockSlidPane();
             }
         }, "groups", [{
             url: '../../html/page/page_frm.html',
@@ -357,7 +361,9 @@
         }, {
             url: '../../html/quan/jingxuan.html',
             name: 'quanzi'
-        }], 0, "#header", "#footer",{bounces:false});
+        }], 0, "#header", "#footer", {
+            bounces: false
+        });
 
         var audioPlayer = api.require('audioPlayer');
         audioPlayer.addEventListener({
@@ -431,7 +437,7 @@
             music_thumb: '',
             duration: '',
             songdatalist: '',
-            isfirstopen: '',
+            isfirstopen: true,
             isclick: true,
             music_img_min: '../../image/qq.png'
         },
@@ -453,6 +459,21 @@
                         music_img_min: app.music_img_min
                     }
                 })　　　　　　　
+            },
+            isPlaying(curVal, oldVal) {
+                // console.log(curVal);
+                var floatModule = api.require('floatModule');
+                if (curVal) {
+                    var floatModule = api.require('floatModule');
+                    floatModule.show()
+                    floatModule.changeState({
+                        state: 0
+                    })
+                } else {
+                    floatModule.changeState({
+                        state: 1
+                    })
+                }
             }
         },
         methods: {
@@ -542,10 +563,12 @@
             pause: function() {
                 var audioPlayer = api.require('audioPlayer');
                 audioPlayer.pause();
+                app.isPlaying=false
             },
             play: function() {
                 var audioPlayer = api.require('audioPlayer');
                 audioPlayer.play();
+                app.isPlaying=true
             },
             stop: function() {
                 var audioPlayer = api.require('audioPlayer');
@@ -595,7 +618,7 @@
             playNext: function() {
                 // console.log(app.index+1);
                 if (this.isclick) {
-                   app.isclick= false;
+                    app.isclick = false;
                     var isRepeat = $api.getStorage('isRepeat') && $api.getStorage('isRepeat') == 1 ? true : false
                     if (isRepeat) {
                         app.pause()
@@ -663,8 +686,8 @@
             },
             audioCover: function() {
                 audioCover = api.require('audioCover');
-                notify(app.songName+'-'+app.artists,app.current+'-'+formatSeconds(app.duration),123,true)
-                // console.log(app.per);
+                notify(app.songName + '-' + app.artists, app.current + '-' + formatSeconds(app.duration), 123, true)
+                    // console.log(app.per);
                 var msg = {
                     totalTime: app.duration,
                     cover: app.music_imgurl,
@@ -693,8 +716,44 @@
                     } else {}
                 });
             },
+            showfloatModule() {
+              var floatModule = api.require('floatModule');
+              var params = {
+                  rect: {
+                      x: api.winWidth-110,
+                      y: api.winHeight - 85,
+                      w: 62,
+                      h: 62
+                  },
+                  state: app.isPlaying?0:1,
+                  bg: '#ff0404',
+                  // avatar:'widget://image/qq.png',
+                  avatarSize: 70,
+                  margin: {
+                      firstMargin: 3,
+                      middleMargin: -40,
+                      thridMargin: 100,
+                  }
+              };
 
+              floatModule.openFloat(params, function(ret) {
+
+                  if (ret&& app.isPlaying == false) {
+                      app.play()
+
+                  } else {
+                      app.pause()
+
+                  }
+
+              });
+            },
+            hidefloatModule() {
+                var floatModule = api.require('floatModule');
+                floatModule.close()
+            },
             openPlayer() {
+                app.hidefloatModule()
                 if (this.songName != '新感官音乐世界' && this.music_imgurl != '') {
                     api.openWin({
                         name: 'nww',

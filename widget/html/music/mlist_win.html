@@ -71,6 +71,11 @@
 
 <script type="text/javascript">
 	function goback1() {
+	 api.execScript({
+	     name: 'index',
+	     script: 'app.hidefloatModule()'
+	 });
+
 		api.closeWin();
 
 

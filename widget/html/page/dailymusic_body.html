@@ -539,6 +539,7 @@
 			font-size: 0.6em;
 			color: #fff;
 		}
+
 		.active {
 			color: red;
 		}
@@ -556,7 +557,7 @@
 		</div>
 
 
-		<div v-for="(item,index) in listData" class="egret-flex-item musiclist-item">
+		<!-- <div v-for="(item,index) in listData" class="egret-flex-item musiclist-item">
 			<div class="egret-flex-item-abright" @click='openMusic(item.id,index,item.name)' :class="{active: activeName == item.name}">
 				<div class="egret-flex-item-shelf pl10">
 					<div v-cloak class="egret-flex-item-shelf01">{{item.name}}</div>
@@ -564,8 +565,8 @@
 					</div>
 
 				</div>
-			</div>
-		</div>
+			</div> -->
+	</div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/vue.min.js"></script>
@@ -578,68 +579,151 @@
 		el: '#app',
 		data: {
 			listData: '',
-			activeName:''
+			activeName: '',
+			data: []
 		},
 		methods: {
-			openMusic: function(sid, index,name) {
+			openMusic: function(sid, index, name) {
 				this.activeName = name
-					api.sendEvent({
-						name: 'songid',
-						extra: {
-							id: sid,
-							index: index,
-							songlist: $api.jsonToStr(app.listData)
-						}
-					})
+				api.sendEvent({
+					name: 'songid',
+					extra: {
+						id: sid,
+						index: index,
+						songlist: $api.jsonToStr(app.listData)
+					}
+				})
 			},
 			openMusicPlay: function() {
 				app.openMusic(app.listData[0].id, 0)
 			},
-			getCache(){
-        getCache('dailymusic','daily',function(ret,err){
-					if(ret.data){
-						stoploading()
-						app.listData=$api.strToJson(ret.data)
-						app.getdaily()
-					}else{
-            app.getdaily()
-					}
-				})
-
-			},
+			// getCache() {
+			// 	getCache('dailymusic', 'daily', function(ret, err) {
+			// 		if (ret.data) {
+			// 			stoploading()
+			// 			app.data = $api.strToJson(ret.data)
+			// 			init()
+			// 			app.getdaily()
+			// 		} else {
+			// 			app.getdaily()
+			// 		}
+			// 	})
+			//
+			// },
 
 			getdaily: function() {
 				var getdailysong = new getinfo()
 				getdailysong.getDengLuInfo('/recommend/songs', function(data) {
 					app.listData = data.recommend
-					saveCache('dailymusic','daily',data.recommend)
-					$api.setStorage('listm', app.listData);
+					var res = data.recommend
+
+					for (var i = 0; i < res.length; i++) {
+						var list = {}
+						list.title = res[i].name
+						list.subTitle = res[i].artists[0].name
+						list.id = res[i].id
+						list.itemHeight = 55
+						app.data[i] = list
+					}
+					init()
+					saveCache('dailymusic', 'daily', app.data)
+					$api.setStorage('listm', app.data);
 					stoploading()
 				})
 			}
-  	},
+		},
 		created: function() {
 			// console.log(123);
 		}
- 	})
+	})
 
 
 	apiready = function() {
 		$api.attr($api.byId('usericon'), 'src', $api.getStorage('userinfo').avatarUrl);
-    
-   	app.getCache()
-		api.setRefreshHeaderInfo({
+
+		app.getdaily()
+			// init()
+		api.execScript({
+			name: 'index',
+			script: 'app.showfloatModule();'
+		});
+		var listViewEntity = api.require('listViewEntity');
+	listViewEntity.setRefreshHeader({
 			loadingImg: 'widget://image/refresh.png',
-			visible: true,
 			bgColor: '#f2f2f2',
 			textColor: '#4d4d4d',
 			textDown: '下拉刷新...',
 			textUp: '松开刷新...',
 			showTime: true
 		}, function(ret, err) {
-			app.getdaily();
+
+			listViewEntity.reloadData({
+			    data: app.data
+			}, function(ret) {
+			    if (ret) {
+			        // alert(JSON.stringify(ret));
+			    } else {
+			        alert(JSON.stringify(err));
+			    }
+			});
 			api.hideProgress();
 			api.refreshHeaderLoadDone();
+		});
+
+	}
+
+	function init() {
+		var listViewEntity = api.require('listViewEntity');
+
+		listViewEntity.open({
+			rect: {
+				x: 0,
+				y: 177,
+				w: api.winWidth,
+				h: api.frameHeight - 177
+			},
+			data: app.data,
+			rightBtns: [{
+				bgColor: '#388e8e',
+				activeBgColor: '',
+				width: 70,
+				title: '收藏',
+				titleSize: 12,
+				titleColor: '#fff',
+				icon: '',
+				iconWidth: 20
+			},{
+				bgColor: '#388e8e',
+				activeBgColor: '',
+				width: 70,
+				title: '添加到歌单',
+				titleSize: 12,
+				titleColor: '#fff',
+				icon: '',
+				iconWidth: 20
+			}],
+			styles: {
+				borderColor: '#7a8f9a6e',
+				item: {
+					bgColor: '#FFFFFF',
+					activeBgColor: '#F5F5F5',
+					titleSize: 14.0,
+					titleColor: 'rgb(50,50,50)',
+					subTitleSize: 12.0,
+					subTitleColor: '#93948f',
+					subTitleBottomMargin:10
+				}
+			},
+			showScrollBar:false,
+			fixedOn: api.frameName
+		}, function(ret, err) {
+			if (ret.eventType=='clickContent') {
+				var index = ret.index
+				app.openMusic(app.data[index].id, index)
+					// alert(JSON.stringify(ret));
+			} else {
+				// alert(JSON.stringify(err));
+			}
 		});
 	}
 </script>

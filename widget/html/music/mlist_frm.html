@@ -526,7 +526,7 @@
 		<div v-show="!isloading">
 			<div id='ava' class="egret-flex-item musiclistprofile">
 				<div class="egret-flex-item-logo">
-					<img :src="coverImgUrl" alt="" class="H-paper-2 animated fadeIn" @click="openPhoto(coverImgUrl)">
+					<img :src="coverImgUrl" alt="" class="H-paper-2 animated fadeIn" @click="openPhoto(big_coverImgUrl)">
 				</div>
 				<div class="egret-flex-item-shelf">
 					<div class="egret-flex-item-shelf01" style="font-size: 1em">
@@ -617,7 +617,7 @@
 	var isopen = $api.getStorage('isopen');
 	apiready = function() {
 		lid = api.pageParam.lid
-		app.inti()
+		app.getlistdata()
 		api.setFrameAttr({
 			name: api.frameName,
 			bounces: true
@@ -644,6 +644,12 @@
 				//  alert( JSON.stringify( err ) );
 			}
 		});
+
+		api.execScript({
+		    name: 'index',
+		    script: 'app.showfloatModule();'
+		});
+
 	}
 
 	var app = new Vue({
@@ -652,6 +658,7 @@
 		data: {
 			coverImgUrl: '../../image/default.jpg',
 			min_coverImgUrl: '',
+			big_coverImgUrl:'',
 			avatarUrl: '',
 			listdata: '',
 			nickname: '',
@@ -672,34 +679,11 @@
 
 		},
 		methods: {
-			inti: function() {
-				uiloading()
-				api.readFile({
-					path: api.fsDir + '/cache/' + lid + '.json',
-				}, function(ret, err) {
-					// console.log(JSON.stringify(ret));
-					if (ret.status) {
-						app.isloading = false
 
-						var cachedata = $api.strToJson(ret.data)
-							// console.log(JSON.stringify(cachedata));
-						app.coverImgUrl = imageCache(cachedata.coverImgUrl + '?param=140y140')
-						app.avatarUrl = imageCache(cachedata.creator.avatarUrl + '?param=40y40')
-						app.min_coverImgUrl = cachedata.coverImgUrl + '?param=100y100'
-						app.listdata = cachedata;
-						app.songdatalist = cachedata.tracks
-						app.songlistcount = cachedata.tracks.length
-						stoploading()
-						app.getlistdata()
 
-					} else {
-						app.getlistdata()
 
-					}
-				});
-
-			},
 			getlistdata: function() {
+				uiloading()
 				// var url='http://music.163.com/api/playlist/detail?updateTime=-1&id=' + lid,
 				var likelistids = $api.getStorage('likelistids')
 
@@ -719,6 +703,7 @@
 						}
 
 						app.isloading = false
+						app.big_coverImgUrl=imageCache(ret.playlist.coverImgUrl)
 						app.coverImgUrl = imageCache(ret.playlist.coverImgUrl + '?param=140y140')
 						app.avatarUrl = imageCache(ret.playlist.creator.avatarUrl + '?param=40y40')
 						app.min_coverImgUrl = ret.playlist.coverImgUrl + '?param=40y40'

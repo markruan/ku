@@ -20,11 +20,11 @@
             <div v-html="html2"></div>
         </div>
         <ul v-if='playlists.length>0'>
-            <div v-for='item in playlists' class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-5  H-margin-vertical-bottom-10" tapmode  @click="openMusicList(item.id)">
+            <div v-for='item in playlists' class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-5  H-margin-vertical-bottom-10" tapmode @click="openMusicList(item.id)">
                 <img v-bind:src=item.coverImgUrl+'?param=300y300' class=" animated fadeIn H-width-100-percent H-display-block H-paper-2 ">
                 <div class=" H-text-align-center  H-padding-vertical-top-5 H-text-show-row-2" style="font-size:10px;height:27px;">{{item.name}}</div>
             </div>
-   </ul>
+        </ul>
     </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -32,54 +32,78 @@
     var data, list
         //		var obj = $api.byId('list');
     apiready = function() {
+        uiloading();
         api.addEventListener({
             name: 'smsg'
         }, function(ret, err) {
+            app.message = ret.value.msg
+            app.say();
 
-            app.say(ret.value.msg);
         });
         app.search_histry()
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 350 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            if (app.isjiazai) {
+                app.page++
+
+                    app.say()
+            }
+        });
     }
     var app = new Vue({
         el: '#app',
         data: {
             message: '',
-            playlists: '',
+            playlists:[],
             html2: '',
             xianshi: 'block',
+            limit: 30,
+            page: 1,
+            isjiazai: true
         },
         mounted: function() {},
         methods: {
             openMusicList: function(id) {
-              api.openWin({
-                  name: 'musiclist',
-                  url: '../html/music/mlist_win.html',
-                  slidBackEnabled: false,
-                  reload: true,
-                  animation: {
-                      type: "reveal", //动画类型（详见动画类型常量）
-                      subType: "from_right", //动画子类型（详见动画子类型常量）
-                      duration: 400 //动画过渡时间，默认300毫秒
-                  },
-                  pageParam: {
-                      lid: id
-                  }
-              });
+                api.openWin({
+                    name: 'musiclist',
+                    url: '../html/music/mlist_win.html',
+                    slidBackEnabled: false,
+                    reload: true,
+                    animation: {
+                        type: "reveal", //动画类型（详见动画类型常量）
+                        subType: "from_right", //动画子类型（详见动画子类型常量）
+                        duration: 400 //动画过渡时间，默认300毫秒
+                    },
+                    pageParam: {
+                        lid: id
+                    }
+                });
             },
             say: function(message) {
                 this.xianshi = 'none';
                 // api.showProgress({});
                 // uiloading();
-                app.playlists = []
+
                 api.ajax({
-                    url: musicApi + '/search?keywords=' + message + "&type=1000&limit=100",
+                    url: musicApi + '/search?keywords=' + app.message + "&type=1000&limit="+app.limit+ '&offset=' + (this.page - 1) * this.limit ,
+                    cache:true
                 }, function(ret, err) {
 
-                    if (ret.code == 200 && ret.result) {
+                    if (ret.code == 200&&ret.result != []) {
                         //							$api.addCls(obj, 'H-display-none');
                         var data = ret.result.playlists
-                        app.playlists = data
-                            // console.log(JSON.stringify(app.articles));
+
+                        if (app.page == 1) {
+                          app.playlists = data
+                        } else {
+                          app.isjiazai=data.length<app.limit?false:true
+                          app.playlists = app.playlists.concat(data)
+
+                        }
                         stoploading()
                     } else {
 

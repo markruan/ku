@@ -69,18 +69,24 @@
 <script type="text/javascript" src="../../script/Hui.js"></script>
 <script type="text/javascript">
 	function goback1() {
+		api.execScript({
+ 	     name: 'index',
+ 	     script: 'app.hidefloatModule()'
+ 	 });
+	 api.closeWin();
 
-		api.openWin({
-			name: 'slidLayout',
-			animation: {
-				type: "push", //动画类型（详见动画类型常量）
-				subType: "from_left", //动画子类型（详见动画子类型常量）
-				duration: 200 //动画过渡时间，默认300毫秒
-			},
-		})
+		// api.openWin({
+		// 	name: 'slidLayout',
+		// 	animation: {
+		// 		type: "push", //动画类型（详见动画类型常量）
+		// 		subType: "from_left", //动画子类型（详见动画子类型常量）
+		// 		duration: 200 //动画过渡时间，默认300毫秒
+		// 	},
+		// })
 	}
 
 	function openPlayer() {
+
 		api.execScript({
 			name: 'index',
 			script: 'app.openPlayer();'
@@ -124,7 +130,7 @@
 		api.openFrame({
 			name: 'dailymusic-fm',
 			url: 'dailymusic_body.html',
-			bounces: true,
+			// bounces: true,
 			// opaque : false,
 			reload: true,
 			pageParam: {

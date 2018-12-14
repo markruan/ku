@@ -38,9 +38,9 @@
 
     <% for(var i=0; i < list.length; i++){ %>
         <div class=" H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-2 H-padding-horizontal-right-10 H-margin-vertical-bottom-10" onclick="openMusicList(<%=list[i].id %>)">
-            <img data-echo="<%=imageCache(list[i].coverImgUrl+'?param=400y400')%>" src="../../image/default.jpg" class=" H-width-100-percent H-display-block H-paper-2" alt="" title="">
+            <img data-echo="<%=imageCache(list[i].imgPath+'?param=400y400')%>" src="../../image/default.jpg" class=" H-width-100-percent H-display-block H-paper-2" alt="" title="">
             <div class="H-text-align-center H-font-size-12 H-padding-vertical-top-5 H-text-show-row-1">
-                <%=list[i].name.substring(0,16) %>
+                <%=list[i].goodsName.substring(0,16) %>
             </div>
         </div>
         <% } %>
@@ -101,9 +101,43 @@
             }
         },
         methods: {
+            init() {
+                var UIListGoods = api.require('UIListGoods');
+                UIListGoods.open({
+                        rect: {
+                            x: 0,
+                            y: 45,
+                            w: api.winWidth,
+                            h: api.frameHeight-25
+                        },
+                        data: app.listdata,
+                        styles: {
+                            item: {
+                                bgColor: '#FFFFFF',
+                                height: (api.winWidth - 20) / 2 + 26,
+                                imgWidth: (api.winWidth - 20) / 2 - 10, //（可选项）数字类型；列表项配图的宽度；默认：列表项的高度减去10px
+                                imgHeight: (api.winWidth - 20) / 2 - 10,
+                                imgMarginTop: 0,
 
+                            }
+                        },
 
+                        fixedOn: api.frameName,
+                    },
+                    function(ret, err) {
+                      // alert(JSON.stringify(ret))
+                        if (ret.eventType == 'clickContent') {
+
+                            var artistsId = app.listdata[ret.index].id
+                            openMusicList(artistsId)
+                        } else {
+                            // alert(JSON.stringify(err));
+                        }
+                    });
+            }
         }
+
+
     })
 
 
@@ -118,10 +152,24 @@
             if (ret) {
                 // console.log(JSON.stringify(ret));
 
-                data = ret.playlists
+                var data = []
+                for (var i = 0; i < ret.playlists.length; i++) {
+                    var list = {}
+                    list.goodsName = ret.playlists[i].name
+                    list.id = ret.playlists[i].id
+                    list.imgPath = imageCache(ret.playlists[i].coverImgUrl+'?param=400y400'),
+
+
+                    data[i] = list
+                }
+                // console.log(JSON.stringify(data));
+                // app.listdata=data
+                // app.init()
+                // return
                 data1 = {
                     list: data
                 };
+
                 var render = H.tppl(H.D("#tppl").innerHTML);
                 H.D(".result").innerHTML = render(data1);
                 //						懒加载
@@ -157,6 +205,7 @@
             } else {
                 api.ajax({
                     url: musicApi + '/playlist/catlist',
+                      cache: true,
                 }, function(ret, err) {
 
                     if (ret) {
@@ -262,9 +311,10 @@
         api.addEventListener({
             name: 'scrolltobottom',
             extra: {
-                threshold: 150 //设置距离底部多少距离时触发，默认值为0，数字类型
+                threshold: 0 //设置距离底部多少距离时触发，默认值为0，数字类型
             }
         }, function(ret, err) {
+          console.log(JSON.stringify(ret));
             app.page++
                 loadmore()
 
@@ -345,7 +395,28 @@
             if (ret) {
                 // console.log(JSON.stringify(ret));
 
-                data = ret.playlists
+                var data = []
+                for (var i = 0; i < ret.playlists.length; i++) {
+                    var list = {}
+                    list.goodsName = ret.playlists[i].name
+                    list.id = ret.playlists[i].id
+                    list.imgPath = ret.playlists[i].coverImgUrl,
+
+
+                    data[i] = list
+                }
+                // console.log(JSON.stringify(data));
+                app.listdata=app.listdata.concat(data)
+                // var UIListGoods = api.require('UIListGoods');
+                // UIListGoods.appendData({
+                //     data: data
+                // }, function(ret, err) {
+                //     if (ret) {
+                //         alert(JSON.stringify(ret));
+                //     } else {
+                //         alert(JSON.stringify(err));
+                //     }
+                // });
                 data1 = {
                     list: data
                 };
@@ -375,36 +446,36 @@
     function openArrow(button) {
         button = $api.first(button)
         if ($api.attr(button, 'data-click') == 0) {
-          api.openFrame({
-              name: 'fenlei_frame',
-              url: 'fenlei.html',
-              rect: {
-                  x: 0,
-                  y: 164,
-                  w:'auto',
-                  h:'auto'
+            api.openFrame({
+                name: 'fenlei_frame',
+                url: 'fenlei.html',
+                rect: {
+                    x: 0,
+                    y: 164,
+                    w: 'auto',
+                    h: 'auto'
 
-              },
-              animation: {
+                },
+                animation: {
 
-                  type: "push", //动画类型（详见动画类型常量）
-                  subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                  duration: 300 //动画过渡时间，默认300毫秒
+                    type: "push", //动画类型（详见动画类型常量）
+                    subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                    duration: 300 //动画过渡时间，默认300毫秒
 
-              },
-              bounces: false,
-            
-          });
+                },
+                bounces: false,
+
+            });
             $api.attr(button, 'data-click', 1)
             $api.removeCls(button, 'arrow_up')
             $api.addCls(button, 'arrow_down');
 
 
         } else {
-          api.setFrameAttr({
-              name: 'fenlei_frame',
-              hidden:true
-          });
+            api.setFrameAttr({
+                name: 'fenlei_frame',
+                hidden: true
+            });
             $api.attr(button, 'data-click', 0)
             $api.removeCls(button, 'arrow_down')
             $api.addCls(button, 'arrow_up');

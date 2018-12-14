@@ -85,6 +85,7 @@
 				app.articles = []
 				api.ajax({
 					url: musicApi + '/search?keywords=' + message + "&type=100",
+					  cache: true,
 				}, function(ret, err) {
 
 					if (ret.code == 200 && ret.result) {

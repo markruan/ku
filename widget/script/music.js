@@ -88,7 +88,8 @@ function neteaseMusic() {
             api.ajax({
                 url: doUrl,
                 dataType: dType,
-                // xhrFields: { withCredentials: true },
+                cache: true
+                    // xhrFields: { withCredentials: true },
             }, function(ret, err) {
                 // console.log(debug(arguments,"third"));
                 // console.log("音乐API请求地址："+doUrl);
@@ -107,8 +108,9 @@ function neteaseMusic() {
             // var url2="https://api.imjad.cn/cloudmusic/?type=detail&id="
 
         api.ajax({
-            url: url1 + id + '&ids=[' + id + ']'
-                // url:url2+id
+            url: url1 + id + '&ids=[' + id + ']',
+            cache: true,
+            // url:url2+id
 
         }, function(ret, err) {
             callback(ret, err);
@@ -119,7 +121,8 @@ function neteaseMusic() {
 
         api.ajax({
             // url: url1 + id+'&ids=['+id+']'
-            url: musicApi + '/top/artists?offset=0&limit=' + limit
+            url: musicApi + '/top/artists?offset=0&limit=' + limit,
+            cache: true,
 
         }, function(ret, err) {
             callback(ret, err);
@@ -128,6 +131,7 @@ function neteaseMusic() {
     this.isPlay = function(id, callback) {
         api.ajax({
             url: musicApi + '/check/music?id=' + id,
+            cache: true,
 
         }, function(ret, err) {
             callback(ret, err);
@@ -136,9 +140,9 @@ function neteaseMusic() {
     this.play = function() {
 
         getCache('songCache', app.songid, function(ret, err) {
-          if (ret.data&&ret.data!="") {
+            if (ret.data && ret.data != "") {
 
-              app.music_mp3 = $api.strToJson(ret.data).mp3
+                app.music_mp3 = $api.strToJson(ret.data).mp3
                 player()
             } else {
                 player()
@@ -187,6 +191,7 @@ function neteaseMusic() {
     this.getListDetail = function(lid, callback) { //获取歌单详情
         api.ajax({
             url: musicDetail + lid,
+            cache: true,
         }, function(ret, err) {
             callback(ret, err)
         });
@@ -194,6 +199,7 @@ function neteaseMusic() {
     this.getUserLikeLlistID = function(uid, callback) { //获取歌单详情
         api.ajax({
             url: musicApi + '/user/playlist?uid=' + uid,
+            cache: true,
         }, function(ret, err) {
             callback(ret, err)
         });
@@ -201,6 +207,7 @@ function neteaseMusic() {
     this.getmv = function(mvid, callback) {
             api.ajax({
                 url: 'https://api.imjad.cn/cloudmusic/?type=mv&id=' + mvid,
+                cache: true,
 
             }, function(ret, err) {
                 callback(ret, err)
@@ -210,6 +217,7 @@ function neteaseMusic() {
     this.simi = function(mvid, callback) {
         api.ajax({
             url: ApiURL + '/simi/mv?mvid=' + mvid,
+            cache: true,
         }, function(ret, err) {
             callback(ret, err)
         });
@@ -328,12 +336,11 @@ function formatSeconds(value) {
 }
 // 缓存方法
 function saveCache(dataName, key, data) {
-      var data=$api.jsonToStr(data)
-        api.writeFile({
-            path: api.cacheDir +'/'+ dataName + key + '.json',
-            data: data
-        }, function(ret, err) {
-        });
+    var data = $api.jsonToStr(data)
+    api.writeFile({
+        path: api.cacheDir + '/' + dataName + key + '.json',
+        data: data
+    }, function(ret, err) {});
 
     // }
 
@@ -341,21 +348,21 @@ function saveCache(dataName, key, data) {
 
 function getCache(dataName, key, callback) {
 
-        api.readFile({
-            path: api.cacheDir+'/' + dataName + key + '.json',
-        }, function(ret, err) {
-          // console.log(JSON.stringify(ret.data));
-            if (ret.status) {
-                var data = {
-                    data: ret.data,
-                    code: 0
-                }
-
-                callback(data, err); //回调
-            } else {
-                callback(ret, err); //回调
+    api.readFile({
+        path: api.cacheDir + '/' + dataName + key + '.json',
+    }, function(ret, err) {
+        // console.log(JSON.stringify(ret.data));
+        if (ret.status) {
+            var data = {
+                data: ret.data,
+                code: 0
             }
-        });
+
+            callback(data, err); //回调
+        } else {
+            callback(ret, err); //回调
+        }
+    });
 
 
     // }
@@ -365,12 +372,12 @@ function getCache(dataName, key, callback) {
 
 function delCache(dataName, key) {
 
-        api.writeFile({
-            path: api.cacheDir +'/'+ dataName + key + '.json',
-            data: null
-        }, function(ret, err) {
+    api.writeFile({
+        path: api.cacheDir + '/' + dataName + key + '.json',
+        data: null
+    }, function(ret, err) {
 
-        });
+    });
 
 
     // }
@@ -386,8 +393,8 @@ function songCache(songid, url) {
     }, function(ret, err) {
         // console.log(JSON.stringify(ret));
         if (ret.state == 1) {
-          var info={}
-          info.mp3 = ret.savePath
+            var info = {}
+            info.mp3 = ret.savePath
 
             saveCache('songCache', songid, info)
         }
@@ -395,20 +402,20 @@ function songCache(songid, url) {
 
 }
 //状态栏歌曲播放监听
-function notify(title,content,extra,updateCurrent){
+function notify(title, content, extra, updateCurrent) {
     if ($api.getStorage('notify') && $api.getStorage('notify') == 1) {
-      updateCurrent = updateCurrent?updateCurrent:true;
-      api.notification({
-          sound:'',
-          notify: {
-              title:title,                //标题，默认值为应用名称，只Android有效
-              content:content,               //内容，默认值为'有新消息'
-              extra:extra,                  //传递给通知的数据，在通知被点击后，该数据将通过监听函数回调给网页
-              updateCurrent: updateCurrent    //是否覆盖更新已有的通知，取值范围true|false。只Android有效
-          }
-      }, function(ret, err) {
-          return ret.id;
-      });
+        updateCurrent = updateCurrent ? updateCurrent : true;
+        api.notification({
+            sound: '',
+            notify: {
+                title: title, //标题，默认值为应用名称，只Android有效
+                content: content, //内容，默认值为'有新消息'
+                extra: extra, //传递给通知的数据，在通知被点击后，该数据将通过监听函数回调给网页
+                updateCurrent: updateCurrent //是否覆盖更新已有的通知，取值范围true|false。只Android有效
+            }
+        }, function(ret, err) {
+            return ret.id;
+        });
 
     }
 
