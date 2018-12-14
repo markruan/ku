@@ -16,18 +16,17 @@
 
 <body>
 	<div id="app" v-cloak class="H-padding-vertical-top-5">
-		<div v-bind:style="{display:xianshi}">
+		<div v-show="xianshi">
 			<div v-html="html2"></div>
 		</div>
-		<ul v-if='articles.length>0'>
+		<ul v-if='articles.length>0' v-show="xianshi==false">
 			<div v-for='item in articles'>
 				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle ">
 					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active" @click="openwv(item.id)">{{item.name}}-{{item.artists[0].name}}</div>
 					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openwv(item.id) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
 				</div>
-
-		</ul>
-		</div>
+      </ul>
+	</div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
@@ -39,9 +38,9 @@
 			name: 'smsg'
 		}, function(ret, err) {
 			app.message = ret.value.msg
+			
 			app.say();
-
-		});
+   	});
 		app.search_histry()
 		api.addEventListener({
 			name: 'scrolltobottom',
@@ -62,7 +61,7 @@
 			message: '',
 			articles: [],
 			html2: '',
-			xianshi: 'block',
+			xianshi: true,
 			limit: 100,
 			page: 1,
 			isjiazai: true
@@ -83,20 +82,23 @@
 					}
 				});
 			},
-			say: function(message) {
-				this.xianshi = 'none';
+			setdefault() {
+				app.xianshi = true
+			},
+			say: function() {
+				this.xianshi = false;
 
 				api.ajax({
 					url: musicApi + '/search?keywords=' + app.message + '&limit=' + app.limit + '&offset=' + (this.page - 1) * this.limit + "&type=1004",
 					cache: true,
 				}, function(ret, err) {
 					// console.log(JSON.stringify(ret))
-					if (ret.code == 200&&ret.result!= []) {
+					if (ret.code == 200 && ret.result != []) {
 						var data = ret.result.mvs
 						if (app.page == 1) {
 							app.articles = data
 						} else {
-						  app.isjiazai=data.length<app.limit?false:true
+							app.isjiazai = data.length < app.limit ? false : true
 							app.articles = app.articles.concat(data)
 
 						}
@@ -146,10 +148,6 @@
 				$api.setStorage('h_list', list);
 				this.html2 = ''
 				app.search_histry();
-			},
-			ting: function(sid, mp3, cover, title, artist) {
-
-
 			}
 		}
 	})

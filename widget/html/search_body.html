@@ -16,15 +16,15 @@
 
 <body>
 	<div id="app" v-cloak class="H-padding-vertical-top-5">
-		<div v-bind:style="{display:xianshi}">
+		<div v-show="xianshi">
 			<div v-html="html2"></div>
 		</div>
-		<ul v-if='articles.length>0'>
+		<ul v-if='articles.length>0' v-show="xianshi==false">
 			<div v-for='(item,index) in articles'>
 				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle ">
 					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active" @click="ting(item.id,index)">{{item.name}}-{{item.artists[0].name}}</div>
 					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openww(item.id, item.album.picUrl, item.audio, item.name, item.artists[0].name) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
-				</div>
+		</div>
 
 		</ul>
 		</div>
@@ -33,6 +33,7 @@
 <script type="text/javascript">
 	var data, list
 		//		var obj = $api.byId('list');
+
 	apiready = function() {
 			uiloading();
 		api.addEventListener({
@@ -63,7 +64,7 @@
 			message: '',
 			articles: [],
 			html2: '',
-			xianshi: 'block',
+			xianshi: true,
 			limit: 100,
 			page: 1,
 			isjiazai: true
@@ -71,9 +72,11 @@
 		},
 		mounted: function() {},
 		methods: {
-
+      setdefault(){
+				app.xianshi=true
+			},
 			say: function() {
-				this.xianshi = 'none';
+				this.xianshi = false;
 				// api.showProgress({});
 
 				api.ajax({
@@ -87,7 +90,7 @@
 							app.articles = data
 						} else {
 							app.isjiazai=data.length<app.limit?false:true
-							 
+
 							app.articles = app.articles.concat(data)
 
 						}

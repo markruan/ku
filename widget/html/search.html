@@ -37,7 +37,7 @@
 	var listdata = []
 
 	function closeWin() {
- 
+
 		api.closeWin()
 
 	}
@@ -47,8 +47,22 @@
 		UIInput.value({
 			msg: ''
 		});
-
-
+		api.execScript({
+			frameName: 'frame1',
+			script: 'app.setdefault()'
+		});
+		api.execScript({
+			frameName: 'frame2',
+			script: 'app.setdefault()'
+		});
+		api.execScript({
+			frameName: 'frame3',
+			script: 'app.setdefault()'
+		});
+		api.execScript({
+			frameName: 'frame4',
+			script: 'app.setdefault()'
+		});
 	}
 	apiready = function() {
 		//		  $api.rmStorage('h_list');
@@ -71,7 +85,7 @@
 				h: 'auto'
 			},
 			index: 0,
-			preload:3,
+			preload: 3,
 			frames: [{
 				name: 'frame1',
 				url: 'search_body.html',

@@ -16,10 +16,10 @@
 
 <body>
     <div id="app" v-cloak class="H-padding-vertical-top-5 H-padding-horizontal-left-5">
-        <div v-bind:style="{display:xianshi}">
+        <div v-show="xianshi">
             <div v-html="html2"></div>
         </div>
-        <ul v-if='playlists.length>0'>
+        <ul v-if='playlists.length>0' v-show="xianshi==false">
             <div v-for='item in playlists' class="list H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-3 H-padding-horizontal-right-5  H-margin-vertical-bottom-10" tapmode @click="openMusicList(item.id)">
                 <img v-bind:src=item.coverImgUrl+'?param=300y300' class=" animated fadeIn H-width-100-percent H-display-block H-paper-2 ">
                 <div class=" H-text-align-center  H-padding-vertical-top-5 H-text-show-row-2" style="font-size:10px;height:27px;">{{item.name}}</div>
@@ -36,7 +36,9 @@
         api.addEventListener({
             name: 'smsg'
         }, function(ret, err) {
+
             app.message = ret.value.msg
+            app.xianshi = false
             app.say();
 
         });
@@ -60,7 +62,7 @@
             message: '',
             playlists:[],
             html2: '',
-            xianshi: 'block',
+            xianshi: true,
             limit: 30,
             page: 1,
             isjiazai: true
@@ -83,8 +85,11 @@
                     }
                 });
             },
-            say: function(message) {
-                this.xianshi = 'none';
+            setdefault() {
+              app.xianshi = true
+            },
+            say: function() {
+                this.xianshi = false;
                 // api.showProgress({});
                 // uiloading();
 

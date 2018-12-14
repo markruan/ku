@@ -16,23 +16,17 @@
 
 <body>
 	<div id="app" v-cloak class="H-padding-vertical-top-5">
-		<div v-bind:style="{display:xianshi}">
+		<div v-show="xianshi">
 			<div v-html="html2"></div>
 		</div>
-		<ul v-if='articles.length>0'>
-			<!-- <div v-for='item in articles'>
-				<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle ">
-					<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12 H-touch-active"  @click="openartist(item.id,item.name)">{{item.name}}</div>
-					<!-- <div class=" H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4  H-margin-horizontal-right-20 H-touch-active" @click="openwv(item.id) "><i class="H-iconfont H-icon-share H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></div> -->
-				<!-- </div> -->
+		<ul v-if='articles.length>0' v-show="xianshi==false">
+
 
 				<div v-for='item in articles' class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after"  @click="openartist(item.id,item.name,item.picUrl+'?param=440y250')">
 						<div class="H-padding-vertical-both-10"><img  v-bind:src=item.img1v1Url+'?param=100y100' alt="" title="" class="H-display-block H-margin-horizontal-left-10  animated fadeIn" style="width: 40px; height: 40px;"></div>
 						<div class="H-flex-item H-padding-20">
 								<strong class="H-font-weight-normal font-weight-500 H-font-size-16 H-display-block">{{item.name}}</strong>
-								<!-- <div class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 H-margin-vertical-top-5">
-										<%=list[i].ar[0].name %>
-								</div> -->
+
 						</div>
 						</div>
 		</ul>
@@ -43,21 +37,40 @@
 	var data, list
 		//		var obj = $api.byId('list');
 	apiready = function() {
+		uiloading();
 		api.addEventListener({
-			name: 'smsg'
+				name: 'smsg'
 		}, function(ret, err) {
 
-			app.say(ret.value.msg);
+				app.message = ret.value.msg
+				app.xianshi = false
+				app.say();
+
 		});
 		app.search_histry()
+		api.addEventListener({
+				name: 'scrolltobottom',
+				extra: {
+						threshold: 350 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+		}, function(ret, err) {
+				if (app.isjiazai) {
+						app.page++
+
+								app.say()
+				}
+		});
 	}
 	var app = new Vue({
 		el: '#app',
 		data: {
 			message: '',
-			articles: '',
-       html2: '',
-			xianshi: 'block',
+			articles: [],
+			html2: '',
+			xianshi: true,
+			limit: 100,
+			page: 1,
+			isjiazai: true
 		},
 		mounted: function() {},
 		methods: {
@@ -78,22 +91,23 @@
 					}
 				});
 			},
-			say: function(message) {
-				this.xianshi = 'none';
-				// api.showProgress({});
-				// uiloading();
-				app.articles = []
+			say: function() {
+
 				api.ajax({
-					url: musicApi + '/search?keywords=' + message + "&type=100",
+					url: musicApi + '/search?keywords=' + app.message + "&type=100&limit="+app.limit+ '&offset=' + (this.page - 1) * this.limit ,
 					  cache: true,
 				}, function(ret, err) {
 
 					if (ret.code == 200 && ret.result) {
 						//							$api.addCls(obj, 'H-display-none');
 						var data = ret.result.artists
-						app.articles = data
-						// console.log(JSON.stringify(app.articles));
-						stoploading()
+						if (app.page == 1) {
+							app.articles = data
+						} else {
+							app.isjiazai = data.length < app.limit ? false : true
+							app.articles = app.articles.concat(data)
+
+						}
 					} else {
 
 						api.toast({
@@ -103,6 +117,9 @@
 						stoploading()
 					}
 				});
+			},
+			setdefault() {
+				app.xianshi = true
 			},
 			search_histry: function() {
 				uiloading()
