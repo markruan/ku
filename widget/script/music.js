@@ -35,7 +35,7 @@ function player() {
         path: app.music_mp3,
         cache: false
     }, function(ret) {
-
+       console.log(JSON.stringify(app.music_mp3));
         if (ret.status) {
             stoploading()
                 // 存播放记录
@@ -69,6 +69,9 @@ function player() {
 
             });
 
+        }else{
+
+          app.playNext()
         }
     });
 }
@@ -338,7 +341,7 @@ function formatSeconds(value) {
 function saveCache(dataName, key, data) {
     var data = $api.jsonToStr(data)
     api.writeFile({
-        path: api.cacheDir + '/' + dataName + key + '.json',
+        path: api.cacheDir + '/' + dataName+'/' + key + '.json',
         data: data
     }, function(ret, err) {});
 
@@ -349,7 +352,7 @@ function saveCache(dataName, key, data) {
 function getCache(dataName, key, callback) {
 
     api.readFile({
-        path: api.cacheDir + '/' + dataName + key + '.json',
+        path: api.cacheDir + '/' + dataName+'/' + key + '.json',
     }, function(ret, err) {
         // console.log(JSON.stringify(ret.data));
         if (ret.status) {
@@ -373,7 +376,7 @@ function getCache(dataName, key, callback) {
 function delCache(dataName, key) {
 
     api.writeFile({
-        path: api.cacheDir + '/' + dataName + key + '.json',
+        path: api.cacheDir + '/' + dataName+'/' + key + '.json',
         data: null
     }, function(ret, err) {
 
@@ -386,12 +389,12 @@ function delCache(dataName, key) {
 function songCache(songid, url) {
     api.download({
         url: url,
-        savePath: api.cacheDir + '/mp3/' + songid + '.mp3',
+        savePath: api.cacheDir + '/mp3/' + app.songName+'-'+app.artists+'.mp3',
         report: true,
         cache: true,
         allowResume: true
     }, function(ret, err) {
-        // console.log(JSON.stringify(ret));
+        console.log(JSON.stringify(ret));
         if (ret.state == 1) {
             var info = {}
             info.mp3 = ret.savePath
